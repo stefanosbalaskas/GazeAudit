@@ -17,7 +17,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from .gazebase_execution import GAZEBASE_DETECTORS, GAZEBASE_TASKS, PreparedGazeBaseData
+from .gazebase_execution import (
+    GAZEBASE_DETECTORS,
+    GAZEBASE_TASKS,
+    PreparedGazeBaseData,
+    _frame_records,
+    _safe_mapping,
+)
 from .gazebase_partitioned import (
     PARTITION_SCHEMA,
     GazeBaseDetectorPartition,
@@ -28,7 +34,6 @@ from .gazebase_partitioned import (
 from .peyes_adapter import make_peyes_detector
 from .provenance import fingerprint
 from .task_contrast import detector_task_contrast
-from .gazebase_execution import _frame_records, _safe_mapping
 
 
 def run_gazebase_detector_partition_fail_closed(
@@ -58,7 +63,10 @@ def run_gazebase_detector_partition_fail_closed(
     if algorithm not in GAZEBASE_DETECTORS:
         raise ValueError(f"algorithm must be one of the frozen detectors: {GAZEBASE_DETECTORS}")
     _verify_context_against_prepared(prepared, context)
-    if not catch or not all(isinstance(item, type) and issubclass(item, BaseException) for item in catch):
+    valid_catch = all(
+        isinstance(item, type) and issubclass(item, BaseException) for item in catch
+    )
+    if not catch or not valid_catch:
         raise TypeError("catch must be a non-empty tuple of exception classes")
 
     try:
@@ -117,7 +125,11 @@ def _failed_partition(
     }
 
     detector_samples = prepared.study.data[["participant", "trial", "timestamp"]].copy()
-    detector_samples["event_label"] = pd.Series(pd.NA, index=detector_samples.index, dtype="object")
+    detector_samples["event_label"] = pd.Series(
+        pd.NA,
+        index=detector_samples.index,
+        dtype="object",
+    )
     detector_samples = detector_samples.rename(columns={"trial": "task"})
     task_summary, contrasts, effect, coverage = detector_task_contrast(
         detector_samples,
@@ -126,7 +138,9 @@ def _failed_partition(
         task_b=GAZEBASE_TASKS[1],
     )
     if coverage != 0.0 or np.isfinite(effect):
-        raise RuntimeError("failed detector partition must have zero coverage and non-finite effect")
+        raise RuntimeError(
+            "failed detector partition must have zero coverage and non-finite effect"
+        )
 
     core = {
         "schema": PARTITION_SCHEMA,
