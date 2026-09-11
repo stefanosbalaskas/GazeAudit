@@ -116,16 +116,28 @@ def test_prepare_applies_frozen_grid_tie_break_validation_mapping_and_gaze_order
     assert prepared.source_identity["protocol_fingerprint"] == KORTHALS_PROTOCOL_FINGERPRINT
 
 
-def test_prepare_applies_author_directed_exclusion_before_endpoint_structure():
+def test_prepare_drops_only_cell_made_incomplete_by_author_directed_exclusion():
     base = _aligned_fixture(participants=("21db28aa",))
-    base.loc[base["trial_number"] == 73, "trial_number"] = 82
-    base.loc[base["trial_number"] == 74, "trial_number"] = 83
+    # This remains a complete speed/trajectory pair before exclusion. Trial 82 is
+    # excluded by protocol, making trial 81's repetition-2 cell incomplete afterwards.
+    base.loc[base["trial_number"] == 73, "trial_number"] = 81
+    base.loc[base["trial_number"] == 74, "trial_number"] = 82
     prepared = prepare_korthals_aligned_data(
         base,
         _validation_fixture(participants=("21db28aa",)),
     )
     assert set(prepared.data["trial_number"]) == {1, 2}
     assert prepared.source_identity["retained_trial_count"] == 2
+
+
+def test_prepare_rejects_unrelated_pre_exclusion_pairing_gap():
+    base = _aligned_fixture(participants=("p1",))
+    base = base[base["trial_number"] != 74].copy()
+    with pytest.raises(ValueError, match="incomplete or duplicated frozen matched cell"):
+        prepare_korthals_aligned_data(
+            base,
+            _validation_fixture(participants=("p1",)),
+        )
 
 
 def test_prepare_fails_closed_for_unmapped_validation_or_zero_finite_trial():
@@ -174,6 +186,21 @@ def test_frozen_endpoint_is_unweighted_participant_then_study_contrast():
     # p1: moving=.25, jumping=.75 => +.50; p2: moving=.50, jumping=1 => +.50.
     membership = np.array([0.0, 0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0])
     assert korthals_paired_occupancy_effect(data, membership) == pytest.approx(0.5)
+
+
+def test_frozen_endpoint_rejects_incomplete_arbitrary_cell():
+    data = pd.DataFrame(
+        {
+            "participant_id": ["p1", "p1"],
+            "trial_number": [1, 1],
+            "repetition": [1, 1],
+            "target_speed": [4.0, 4.0],
+            "target_trajectory": ["east", "east"],
+            "target_type": ["moving_circle", "moving_circle"],
+        }
+    )
+    with pytest.raises(ValueError, match="complete frozen matched cell"):
+        korthals_paired_occupancy_effect(data, np.array([0.0, 1.0]))
 
 
 def test_synthetic_execution_uses_frozen_mc_and_classifies_sign_stability():
