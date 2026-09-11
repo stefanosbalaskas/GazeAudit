@@ -1,0 +1,116 @@
+{
+  "schema": "gazeaudit-aoi-uncertainty-protocol-v1",
+  "case_study_id": "korthals2026-target-tracking-aoi-v1",
+  "dataset": {
+    "name": "Korthals et al. 2026 smooth-pursuit benchmark",
+    "article_doi": "10.1038/s41597-026-06963-4",
+    "osf_doi": "10.17605/OSF.IO/ZX7HC",
+    "osf_project": "zx7hc",
+    "companion_repository": "lukekorthals/pursuing-smooth-pursuits-data",
+    "companion_commit": "1d7ebec23e3fe20f6db952eefda1a0dd58ae09da",
+    "cohort": "all participants in canonical train and test splits",
+    "trial_types": [
+      "moving_circle",
+      "jumping_circle"
+    ],
+    "author_directed_exclusion": {
+      "participant_id": "21db28aa",
+      "trial_number_start": 82,
+      "trial_number_end": 144,
+      "reason": "authors report severe gaze-target misalignment after a break and recommend removing trials 82-144"
+    },
+    "preprocessing": {
+      "implementation": "companion OriginalPreprocessor",
+      "blink_offset_ms": [
+        50,
+        50
+      ],
+      "rolling_mean_window": 1,
+      "gaze_target_units": "degrees_of_visual_angle",
+      "target_upsampling_hz": 1000,
+      "target_alignment": "participant_id + trial_number + trial_time after canonical preprocessing"
+    },
+    "sampling": {
+      "target_hz": 50.0,
+      "method": "nearest existing sample to regular within-trial grid; ties resolve to earlier sample",
+      "operation_order": "align gaze and target at canonical 1000 Hz, downsample full timeline, then remove retained rows with non-finite gaze coordinates",
+      "rationale": "maximum reported actual target speed 8.41 dva/s moves at most 0.1682 dva per 20 ms, below the 0.2-dva stimulus radius and 1.0-dva tracking-window radius"
+    }
+  },
+  "validation": {
+    "name": "EyeLink nine-point validation summaries",
+    "extractor": "Participant.validation_check",
+    "grouping": [
+      "participant_id",
+      "validation_nr"
+    ],
+    "trial_mapping": "each validation event applies to its recorded following first_trial through last_trial range",
+    "metric": "error_avg",
+    "metric_unit": "degrees_of_visual_angle",
+    "n_validation_points": 9,
+    "quality_filter": "none; retain good, fair, and poor validation summaries as measurement uncertainty",
+    "unmapped_trial_policy": "fail_closed"
+  },
+  "aoi": {
+    "name": "target_center_1dva",
+    "coordinate_transform": {
+      "observed_x": "gaze_x - target_x",
+      "observed_y": "gaze_y - target_y"
+    },
+    "geometry": "circle",
+    "cx": 0.0,
+    "cy": 0.0,
+    "radius": 1.0,
+    "unit": "degrees_of_visual_angle",
+    "interpretation": "target-centered tracking window, not the physical stimulus boundary",
+    "rationale": "the benchmark target radius is 0.2 dva; prior pursuit-position work reports typical target-center positional errors around 1 dva or less",
+    "supporting_doi": "10.1167/16.15.23"
+  },
+  "endpoint": {
+    "name": "paired jumping-minus-moving target-window occupancy",
+    "trial_estimate": "mean AOI membership across retained finite-gaze rows on the fixed 50-Hz grid",
+    "repetition_rule": "repetition 1 = trial_number 1-72; repetition 2 = trial_number 73-144",
+    "matched_cell": [
+      "participant_id",
+      "repetition",
+      "target_speed",
+      "target_trajectory"
+    ],
+    "matched_cell_rule": "after the author-directed exclusion, analyze cells containing exactly one moving_circle and one jumping_circle trial; cells intersecting the declared exclusion may be absent, but any retained trial with zero valid scheduled samples fails closed",
+    "cell_contrast": "jumping_circle occupancy minus moving_circle occupancy",
+    "participant_estimate": "unweighted mean of complete matched-cell contrasts",
+    "study_estimate": "unweighted mean of participant estimates",
+    "unit": "occupancy_proportion_difference",
+    "estimand_scope": "descriptive paired stimulus-pattern contrast; no population p-value or causal claim"
+  },
+  "error_model": {
+    "name": "grouped isotropic Gaussian from mean radial validation error",
+    "group_key": [
+      "participant_id",
+      "validation_nr"
+    ],
+    "bias": [
+      0.0,
+      0.0
+    ],
+    "sigma_formula": "error_avg / sqrt(pi/2)",
+    "assumption": "conditional on the reported mean radial validation error, x and y errors are independent zero-mean Gaussians with common sigma; validation-summary uncertainty, anisotropy, and spatial non-stationarity are not recovered",
+    "unknown_group_policy": "fail_closed"
+  },
+  "monte_carlo": {
+    "draws": 2000,
+    "batch_size": 8,
+    "interval": 0.95,
+    "reference": 0.0,
+    "rng_seed": 20260316
+  },
+  "interpretation": {
+    "name": "measurement-uncertainty sign stability",
+    "robust_positive": "hard effect > 0 and at least 0.95 of Monte Carlo endpoint draws are > 0",
+    "robust_negative": "hard effect < 0 and at least 0.95 of Monte Carlo endpoint draws are < 0",
+    "measurement_sensitive": "all other finite complete outcomes, including a hard effect equal to zero",
+    "scope": "classification is conditional on the frozen dataset, preprocessing, sampling grid, AOI, endpoint, validation grouping, and error-model assumptions",
+    "population_inference": "none; the Monte Carlo interval is measurement-model-induced and is not a population confidence or posterior credible interval"
+  },
+  "protocol_fingerprint": "2b8e8da84182316d08ab173ad7d71a2ff09fc45bd84f875ae548832a288ba291"
+}
