@@ -127,8 +127,8 @@ from .task_contrast import (
     participant_task_fixation_summary,
 )
 from .uncertainty import (
-    GazeErrorModel,
     GaussianGazeErrorModel,
+    GazeErrorModel,
     GroupedGaussianGazeErrorModel,
     aoi_probabilities,
 )
