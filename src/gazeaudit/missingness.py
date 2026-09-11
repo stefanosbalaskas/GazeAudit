@@ -54,17 +54,18 @@ def inject_missingness(
     if mechanism not in {"mcar", "block"}:
         raise ValueError("mechanism must be 'mcar' or 'block'")
 
-    data = study.data.copy()
-    complete = np.flatnonzero(~missingness_mask(study))
+    data = study.data.reset_index(drop=True).copy()
+    working = study.copy_with(data)
+    complete = np.flatnonzero(~missingness_mask(working))
     n_mask = int(round(fraction * complete.size))
     if n_mask == 0:
-        return study.copy_with(data)
+        return working
 
     generator = _as_rng(rng)
     if mechanism == "mcar":
         selected = np.sort(generator.choice(complete, size=n_mask, replace=False))
     else:
-        selected = _block_positions(study, n_mask, generator)
+        selected = _block_positions(working, n_mask, generator)
 
     data.loc[selected, [study.x, study.y]] = np.nan
     if reason is not None:
@@ -144,10 +145,13 @@ def _block_positions(
 
     if len(selected) < n_mask:
         all_complete = np.concatenate(candidates)
-        remaining = np.setdiff1d(all_complete, np.fromiter(selected, dtype=int), assume_unique=False)
+        already = np.fromiter(selected, dtype=int)
+        remaining = np.setdiff1d(all_complete, already, assume_unique=False)
         need = min(n_mask - len(selected), remaining.size)
         if need:
-            selected.update(int(value) for value in generator.choice(remaining, size=need, replace=False))
+            selected.update(
+                int(value) for value in generator.choice(remaining, size=need, replace=False)
+            )
     return np.array(sorted(selected), dtype=int)
 
 
