@@ -118,7 +118,8 @@ def test_prepare_applies_frozen_grid_tie_break_validation_mapping_and_gaze_order
 
 def test_prepare_applies_author_directed_exclusion_before_endpoint_structure():
     base = _aligned_fixture(participants=("21db28aa",))
-    # Keep a valid repetition-1 pair and append an otherwise valid repetition-2 pair.
+    base.loc[base["trial_number"] == 73, "trial_number"] = 82
+    base.loc[base["trial_number"] == 74, "trial_number"] = 83
     prepared = prepare_korthals_aligned_data(
         base,
         _validation_fixture(participants=("21db28aa",)),
