@@ -214,6 +214,8 @@ def test_source_freeze_workflow_is_manual_archive_before_reveal_and_has_no_endpo
     assert 'train_test="both"' in workflow
     assert 'participants="all"' in workflow
     assert "actions/upload-artifact@v4" in workflow
-    assert workflow.index("actions/upload-artifact@v4") < workflow.index("Reveal archived source identity")
+    assert workflow.index("actions/upload-artifact@v4") < workflow.index(
+        "Reveal archived source identity"
+    )
     assert "run_korthals_aoi_execution" not in workflow
     assert "write_korthals_execution_artifacts" not in workflow
