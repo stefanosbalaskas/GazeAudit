@@ -80,7 +80,13 @@ jobs:
             --gazeaudit-commit "$SCIENTIFIC_COMMIT" \
             --download \
             > "$FROZEN_RUN_ROOT/execution-envelope/runner-summary.json" \
-            2> "$FROZEN_RUN_ROOT/execution-envelope/runner-stderr.log"
+            2> "$FROZEN_RUN_ROOT/execution-envelope/runner-stderr.log" &
+          frozen_pid=$!
+          while kill -0 "$frozen_pid" 2>/dev/null; do
+            printf 'frozen execution active: %s\n' "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            sleep 60
+          done
+          wait "$frozen_pid"
           status=$?
           set -e
           printf '%s\n' "$status" > "$FROZEN_RUN_ROOT/execution-envelope/runner-exit-status.txt"
