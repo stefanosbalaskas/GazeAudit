@@ -1,12 +1,12 @@
 import hashlib
 import json
-from pathlib import Path
+import pathlib
 
 import pytest
 
 
 PROTOCOL_PATH = (
-    Path(__file__).resolve().parents[1]
+    pathlib.Path(__file__).resolve().parents[1]
     / "docs"
     / "case_studies"
     / "gazebase_multidetector_protocol.json"
