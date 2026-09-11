@@ -55,7 +55,7 @@ class GaussianGazeErrorModel:
         observed_y: str = "observed_y",
         target_x: str = "target_x",
         target_y: str = "target_y",
-    ) -> "GaussianGazeErrorModel":
+    ) -> GaussianGazeErrorModel:
         """Estimate systematic bias and covariance from validation targets."""
 
         required = [observed_x, observed_y, target_x, target_y]
