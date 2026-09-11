@@ -74,7 +74,10 @@ def test_injection_respects_preexisting_missingness_and_zero_fraction():
 
 def test_missingness_sensitivity_curve_reports_realized_loss_and_endpoint():
     study = _study(20)
-    endpoint = lambda current: float(current.data["x"].mean(skipna=True))
+
+    def endpoint(current):
+        return float(current.data["x"].mean(skipna=True))
+
     first = missingness_sensitivity_curve(study, [0.0, 0.25, 0.5], endpoint, rng=11)
     second = missingness_sensitivity_curve(study, [0.0, 0.25, 0.5], endpoint, rng=11)
     pd.testing.assert_frame_equal(first, second)
@@ -112,7 +115,13 @@ def test_specification_manifest_is_stable_and_sensitive_to_decisions():
 
 
 def test_results_manifest_is_deterministic_and_sensitive_to_results():
-    results = pd.DataFrame({"spec_id": [0, 1], "detector": ["ivt", "idt"], "estimate": [1.2, 1.3]})
+    results = pd.DataFrame(
+        {
+            "spec_id": [0, 1],
+            "detector": ["ivt", "idt"],
+            "estimate": [1.2, 1.3],
+        }
+    )
     first = results_manifest(results, metadata={"endpoint": "dwell"})
     second = results_manifest(results, metadata={"endpoint": "dwell"})
     assert first == second
@@ -134,4 +143,5 @@ def test_provenance_validation_and_environment():
         results_manifest(pd.DataFrame({"x": [1]}))
     with pytest.raises(ValueError, match="at least one row"):
         results_manifest(pd.DataFrame({"estimate": []}))
-    assert {"gazeaudit", "python", "numpy", "pandas", "platform"}.issubset(software_environment())
+    required = {"gazeaudit", "python", "numpy", "pandas", "platform"}
+    assert required.issubset(software_environment())
