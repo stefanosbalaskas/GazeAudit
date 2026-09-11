@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -51,6 +53,14 @@ def _native_contract_dataset(*, include_pixel=True):
     return _Dataset(recordings, pd.DataFrame(rows))
 
 
+def _materialize_selected_files(dataset, root):
+    dataset.paths = SimpleNamespace(raw=root)
+    for relative in dataset.fileinfo["gaze"]["filepath"]:
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"synthetic source for {relative}\n", encoding="utf-8")
+
+
 def test_public_preparer_accepts_native_pymovements_fileinfo_mapping():
     dataset = _native_contract_dataset()
 
@@ -70,6 +80,35 @@ def test_native_fileinfo_bridge_preserves_live_deg2pix_conversion():
 
     assert dataset.deg2pix_calls == 1
     assert prepared.study.data[["x", "y"]].notna().all().all()
+
+
+def test_content_bound_preparation_hashes_every_selected_source_file(tmp_path):
+    dataset = _native_contract_dataset()
+    _materialize_selected_files(dataset, tmp_path)
+
+    first = prepare_gazebase_pymovements_dataset(dataset, require_content_hash=True)
+    first_identity = first.source_identity
+
+    assert first_identity["selected_file_content_hash_algorithm"] == "sha256"
+    assert first_identity["selected_file_content_count"] == 4
+    assert first_identity["selected_file_content_bytes"] > 0
+    assert len(first_identity["selected_file_content_fingerprint"]) == 64
+
+    changed = tmp_path / dataset.fileinfo["gaze"].iloc[0]["filepath"]
+    changed.write_text("scientifically different source bytes\n", encoding="utf-8")
+    second = prepare_gazebase_pymovements_dataset(dataset, require_content_hash=True)
+
+    assert (
+        second.source_identity["selected_file_content_fingerprint"]
+        != first_identity["selected_file_content_fingerprint"]
+    )
+
+
+def test_content_bound_preparation_fails_without_raw_source_root():
+    dataset = _native_contract_dataset()
+
+    with pytest.raises(ValueError, match="dataset.paths.raw"):
+        prepare_gazebase_pymovements_dataset(dataset, require_content_hash=True)
 
 
 def test_native_fileinfo_mapping_without_gaze_table_fails_closed():
