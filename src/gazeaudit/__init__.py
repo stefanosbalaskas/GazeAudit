@@ -93,6 +93,13 @@ from .korthals_execution import (
     verify_korthals_protocol,
     write_korthals_execution_artifacts,
 )
+from .korthals_freeze import (
+    KORTHALS_COMPANION_REPOSITORY,
+    KORTHALS_FREEZE_WORKFLOW,
+    KORTHALS_SOURCE_FREEZE_SCHEMA,
+    verify_korthals_source_freeze_artifacts,
+    write_korthals_source_freeze_artifacts,
+)
 from .korthals_source import (
     KORTHALS_OSF_DOI,
     KORTHALS_OSF_PROJECT,
@@ -190,9 +197,12 @@ __all__ = [
     "KORTHALS_ARTIFACT_SCHEMA",
     "KORTHALS_CASE_STUDY_ID",
     "KORTHALS_COMPANION_COMMIT",
+    "KORTHALS_COMPANION_REPOSITORY",
+    "KORTHALS_FREEZE_WORKFLOW",
     "KORTHALS_OSF_DOI",
     "KORTHALS_OSF_PROJECT",
     "KORTHALS_PROTOCOL_FINGERPRINT",
+    "KORTHALS_SOURCE_FREEZE_SCHEMA",
     "KORTHALS_SOURCE_INTAKE_SCHEMA",
     "KORTHALS_SOURCE_SCHEMA",
     "KORTHALS_TARGET_TYPES",
@@ -284,6 +294,7 @@ __all__ = [
     "verify_gazebase_software_versions",
     "verify_korthals_execution_artifacts",
     "verify_korthals_protocol",
+    "verify_korthals_source_freeze_artifacts",
     "verify_korthals_source_intake_artifacts",
     "verify_korthals_source_manifest",
     "verify_publication_audit_bundle",
@@ -291,7 +302,8 @@ __all__ = [
     "write_gazebase_detector_partition",
     "write_gazebase_execution_artifacts",
     "write_korthals_execution_artifacts",
+    "write_korthals_source_freeze_artifacts",
     "write_korthals_source_intake_artifacts",
 ]
 
-__version__ = "0.1.0.dev17"
+__version__ = "0.1.0.dev18"
