@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from itertools import combinations
+
 import numpy as np
 import pandas as pd
 
@@ -83,6 +85,80 @@ def marginal_sensitivity(
 
     return pd.DataFrame(rows).sort_values(
         ["marginal_eta2", "level_mean_range"], ascending=False, ignore_index=True
+    )
+
+
+def pairwise_interaction_sensitivity(
+    results: pd.DataFrame,
+    factors: list[str] | tuple[str, ...],
+    *,
+    estimate_col: str = "estimate",
+) -> pd.DataFrame:
+    """Screen two-way specification interactions using descriptive effect variation.
+
+    For each factor pair, cell means are compared with the additive prediction
+    ``mean(A) + mean(B) - grand_mean``. The weighted squared deviation from that
+    additive prediction is divided by total endpoint sum of squares. The result
+    is a descriptive interaction-sensitivity ratio, not a causal decomposition
+    and not a replacement for a fitted factorial model. In unbalanced or
+    incomplete multiverses, ratios across pairs can overlap and need not sum to
+    one.
+    """
+
+    estimates = _estimate_array(results, estimate_col)
+    if len(factors) < 2:
+        return pd.DataFrame(
+            columns=[
+                "factor_a",
+                "factor_b",
+                "n_cells",
+                "interaction_ratio",
+                "max_abs_interaction",
+            ]
+        )
+
+    for factor in factors:
+        if factor not in results.columns:
+            raise ValueError(f"factor {factor!r} is not present in results")
+
+    grand_mean = float(np.mean(estimates))
+    total_ss = float(np.sum((estimates - grand_mean) ** 2))
+    rows: list[dict[str, object]] = []
+
+    for factor_a, factor_b in combinations(factors, 2):
+        mean_a = results.groupby(factor_a, dropna=False)[estimate_col].mean()
+        mean_b = results.groupby(factor_b, dropna=False)[estimate_col].mean()
+        cells = (
+            results.groupby([factor_a, factor_b], dropna=False)[estimate_col]
+            .agg(["count", "mean"])
+            .reset_index()
+        )
+
+        deviations: list[float] = []
+        weighted_ss = 0.0
+        for _, cell in cells.iterrows():
+            level_a = cell[factor_a]
+            level_b = cell[factor_b]
+            additive = float(mean_a.loc[level_a] + mean_b.loc[level_b] - grand_mean)
+            deviation = float(cell["mean"] - additive)
+            deviations.append(deviation)
+            weighted_ss += float(cell["count"]) * deviation**2
+
+        ratio = weighted_ss / total_ss if total_ss > 0 else 0.0
+        rows.append(
+            {
+                "factor_a": factor_a,
+                "factor_b": factor_b,
+                "n_cells": int(len(cells)),
+                "interaction_ratio": ratio,
+                "max_abs_interaction": float(max(abs(value) for value in deviations)),
+            }
+        )
+
+    return pd.DataFrame(rows).sort_values(
+        ["interaction_ratio", "max_abs_interaction"],
+        ascending=False,
+        ignore_index=True,
     )
 
 
