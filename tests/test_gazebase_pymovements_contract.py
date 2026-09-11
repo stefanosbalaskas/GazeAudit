@@ -104,6 +104,37 @@ def test_content_bound_preparation_hashes_every_selected_source_file(tmp_path):
     )
 
 
+def test_content_bound_preparation_rejects_relative_path_escape(tmp_path):
+    dataset = _native_contract_dataset()
+    raw_root = tmp_path / "raw"
+    raw_root.mkdir()
+    outside = tmp_path / "outside.csv"
+    outside.write_text("outside the frozen dataset root\n", encoding="utf-8")
+    dataset.paths = SimpleNamespace(raw=raw_root)
+    dataset.fileinfo["gaze"].loc[0, "filepath"] = "../outside.csv"
+
+    with pytest.raises(ValueError, match="escapes dataset.paths.raw"):
+        prepare_gazebase_pymovements_dataset(dataset, require_content_hash=True)
+
+
+def test_content_bound_preparation_rejects_symlink_escape(tmp_path):
+    dataset = _native_contract_dataset()
+    raw_root = tmp_path / "raw"
+    raw_root.mkdir()
+    outside = tmp_path / "outside.csv"
+    outside.write_text("outside the frozen dataset root\n", encoding="utf-8")
+    link = raw_root / "escaped.csv"
+    try:
+        link.symlink_to(outside)
+    except OSError:
+        pytest.skip("symlink creation is unavailable on this platform")
+    dataset.paths = SimpleNamespace(raw=raw_root)
+    dataset.fileinfo["gaze"].loc[0, "filepath"] = "escaped.csv"
+
+    with pytest.raises(ValueError, match="escapes dataset.paths.raw"):
+        prepare_gazebase_pymovements_dataset(dataset, require_content_hash=True)
+
+
 def test_content_bound_preparation_fails_without_raw_source_root():
     dataset = _native_contract_dataset()
 
