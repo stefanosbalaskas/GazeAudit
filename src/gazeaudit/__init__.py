@@ -76,6 +76,14 @@ from .scientific_benchmark import (
 )
 from .sensitivity import scale_error_model, spatial_sensitivity_curve
 from .study import GazeStudy
+from .task_contrast import (
+    DetectorRobustnessAudit,
+    audit_detector_robustness,
+    detector_task_contrast,
+    fixation_event_durations,
+    fixed_reference_cohort,
+    participant_task_fixation_summary,
+)
 from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
@@ -86,6 +94,7 @@ __all__ = [
     "ConclusionRule",
     "DetectionResult",
     "DetectorBackend",
+    "DetectorRobustnessAudit",
     "GazeStudy",
     "GaussianGazeErrorModel",
     "PeyesDetectorAdapter",
@@ -97,12 +106,14 @@ __all__ = [
     "adapt_study",
     "aoi_conclusion_specifications",
     "aoi_probabilities",
+    "audit_detector_robustness",
     "benchmark_known_aoi_effect",
     "build_conclusion_audit_bundle",
     "canonical_json",
     "compare_hard_probabilistic",
     "conclusion_recovery_table",
     "condition_dwell_effect",
+    "detector_task_contrast",
     "downsample_gaze",
     "effect_stability",
     "evaluate_aoi_recovery",
@@ -110,6 +121,8 @@ __all__ = [
     "expected_fixation_count",
     "fingerprint",
     "fit_error_model_from_known_truth",
+    "fixation_event_durations",
+    "fixed_reference_cohort",
     "from_pymovements_dataset",
     "from_pymovements_gaze",
     "hard_aoi_membership",
@@ -120,6 +133,7 @@ __all__ = [
     "missingness_sensitivity_curve",
     "pairwise_interaction_sensitivity",
     "parse_bids_entities",
+    "participant_task_fixation_summary",
     "read_bids_eyetrack",
     "read_bids_eyetrack_many",
     "render_publication_markdown",
@@ -144,4 +158,4 @@ __all__ = [
     "verify_publication_audit_bundle",
 ]
 
-__version__ = "0.1.0.dev7"
+__version__ = "0.1.0.dev8"
