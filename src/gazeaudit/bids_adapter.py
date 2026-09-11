@@ -105,13 +105,18 @@ def read_bids_eyetrack(
             "timestamp, x_coordinate, y_coordinate"
         )
 
-    frame = pd.read_csv(
-        source,
-        sep="\t",
-        header=None,
-        na_values=["n/a", "N/A"],
-        compression="infer",
-    )
+    try:
+        frame = pd.read_csv(
+            source,
+            sep="\t",
+            header=None,
+            na_values=["n/a", "N/A"],
+            compression="infer",
+        )
+    except pd.errors.EmptyDataError as exc:
+        raise ValueError(
+            "eye-tracking physio file must contain at least one row"
+        ) from exc
     if frame.shape[1] != len(columns):
         raise ValueError(
             f"physio data has {frame.shape[1]} columns but sidecar declares "
