@@ -1,0 +1,127 @@
+{
+  "fingerprint_definition": "sha256(GazeAudit-style canonical JSON of the protocol object: sorted keys, compact separators, UTF-8, no NaN/Infinity)",
+  "protocol_fingerprint": "3f64122f62cbc9762b0bd0e0b95c7fef6ff40c4700215ee4b90f005af77003b1",
+  "protocol": {
+    "schema": "gazeaudit-case-study-protocol-v1",
+    "case_study_id": "gazebase-r1s1-fxs-vs-tex-multidetector-v1",
+    "status": "frozen-before-detector-output-inspection",
+    "dataset": {
+      "name": "GazeBase",
+      "version": 3,
+      "paper_doi": "10.1038/s41597-021-00959-y",
+      "data_doi": "10.6084/m9.figshare.12912257",
+      "license": "CC BY 4.0",
+      "round": 1,
+      "session": 1,
+      "tasks": [
+        "FXS",
+        "TEX"
+      ],
+      "sampling_rate_hz": 1000,
+      "eye": "left_monocular",
+      "tracker": "EyeLink 1000",
+      "screen": {
+        "width_px": 1680,
+        "height_px": 1050,
+        "width_cm": 47.4,
+        "height_cm": 29.7,
+        "viewer_distance_cm": 55.0,
+        "pixel_origin": "upper left"
+      }
+    },
+    "software": {
+      "pymovements": "0.28.0",
+      "peyes": "0.2.2",
+      "gazeaudit_minimum": "0.1.0.dev7"
+    },
+    "cohort": {
+      "definition": "reference-defined before alternative detector execution",
+      "requirements": [
+        "Round 1 Session 1 FXS and TEX recordings are both present",
+        "timestamps are finite and strictly increasing within each recording",
+        "EyeLink real-time parser labels are available for both recordings",
+        "at least one EyeLink-parser fixation event is recoverable in each task"
+      ],
+      "must_not_depend_on": [
+        "alternative-detector labels",
+        "alternative-detector effect estimates",
+        "p-values",
+        "preferred direction or magnitude"
+      ]
+    },
+    "coordinate_conversion": {
+      "source_unit": "degrees_of_visual_angle",
+      "target_unit": "pixels",
+      "method": "pymovements deg2pix using GazeBase screen geometry",
+      "peyes_viewer_distance_cm": 55.0,
+      "peyes_pixel_size_cm": 0.028214285714285713
+    },
+    "detector_space": {
+      "backend": "pEYES",
+      "algorithms": [
+        "ivt",
+        "ivvt",
+        "idt",
+        "idvt",
+        "engbert",
+        "nh",
+        "remodnav"
+      ],
+      "shared_parameters": {
+        "missing_value": "NaN",
+        "min_event_duration_ms": 40.0,
+        "pad_blinks_time_ms": 0.0
+      },
+      "algorithm_specific_parameters": "pEYES 0.2.2 defaults; fully resolved parameter dictionaries must be recorded before endpoint aggregation and bound into the execution manifest",
+      "post_hoc_retuning_allowed": false,
+      "post_hoc_detector_removal_allowed": false
+    },
+    "missingness": {
+      "primary_policy": "preserve NaN gaze samples; no interpolation",
+      "reference_nonfixation_policy": "EyeLink blink, saccade, invalid, and unlabeled samples are not fixations",
+      "detector_missing_summary_policy": "do not impute missing participant-task summaries"
+    },
+    "endpoint": {
+      "name": "median_within_participant_fixation_duration_contrast_ms",
+      "event_definition": "maximal contiguous runs of samples labelled fixation",
+      "event_duration_formula": "last_timestamp_ms - first_timestamp_ms + median_positive_sample_interval_ms_within_recording",
+      "participant_task_summary": "median fixation-event duration in milliseconds",
+      "participant_contrast": "FXS minus TEX",
+      "study_effect": "median of participant-level contrasts"
+    },
+    "reference": {
+      "source": "EyeLink real-time parser labels distributed with GazeBase",
+      "role": "external reference, not ground truth",
+      "reference_effect": "same endpoint computed from EyeLink parser labels",
+      "zero_effect_guardrail": "if the reference effect is exactly zero, stop before alternative-detector endpoint inspection and version a new rule because relative error is undefined"
+    },
+    "completeness_gate": {
+      "minimum_finite_participant_fraction_per_detector": 0.95,
+      "denominator": "fixed reference-defined cohort",
+      "failure_action": "case study is incomplete and must not receive a robust/fragile classification; detector is not silently dropped"
+    },
+    "conclusion_rule": {
+      "relative_tolerance": 0.2,
+      "absolute_tolerance": null,
+      "require_sign": true,
+      "minimum_recovery_fraction": 0.8571428571428571,
+      "minimum_recovered_detectors": 6,
+      "n_predeclared_detectors": 7,
+      "uses_p_values": false
+    },
+    "secondary_descriptive_outputs": [
+      "paired participant count by detector",
+      "reference effect",
+      "detector effect estimate",
+      "absolute error",
+      "relative error",
+      "sign recovery",
+      "participant coverage",
+      "task-specific fixation-event count distribution"
+    ],
+    "interpretation": {
+      "robust_means": "at least six of seven predeclared detector specifications recover the external-reference conclusion within the declared 20% relative-error tolerance and direction, after every detector passes the completeness gate",
+      "scope_limit": "classification applies only to this predeclared dataset, cohort, tasks, endpoint, detector space, software versions, and rule"
+    }
+  }
+}
