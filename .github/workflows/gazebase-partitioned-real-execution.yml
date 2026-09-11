@@ -22,6 +22,7 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         detector: [ivt, ivvt, idt, idvt, engbert, nh, remodnav]
 
@@ -62,6 +63,46 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade 'pip==26.2.1'
           python -m pip install -e '.[gazebase]'
+
+      - name: Download and verify public GazeBase resource
+        shell: bash
+        run: |
+          set -euo pipefail
+          final_status=1
+          for attempt in 1 2 3 4; do
+            rm -rf "$DATASET_ROOT"
+            mkdir -p "$DATASET_ROOT"
+            set +e
+            python - <<'PY' \
+              > "$PARTITION_ROOT/execution-envelope/download-attempt-${attempt}.log" \
+              2>&1
+          import os
+          from pathlib import Path
+          import pymovements as pm
+
+          root = Path(os.environ["DATASET_ROOT"])
+          dataset = pm.Dataset("GazeBase", path=root)
+          dataset.download()
+          print("download_verified=true")
+          PY
+            status=$?
+            set -e
+            printf '%s\n' "$status" \
+              > "$PARTITION_ROOT/execution-envelope/download-attempt-${attempt}-status.txt"
+            if [ "$status" -eq 0 ]; then
+              printf '%s\n' "$attempt" \
+                > "$PARTITION_ROOT/execution-envelope/download-success-attempt.txt"
+              final_status=0
+              break
+            fi
+            sleep $((attempt * 20))
+          done
+          printf '%s\n' "$final_status" \
+            > "$PARTITION_ROOT/execution-envelope/download-final-status.txt"
+          if [ "$final_status" -ne 0 ]; then
+            echo 'GazeBase download failed checksum verification after four attempts.' >&2
+            exit 1
+          fi
 
       - name: Capture pre-execution environment
         shell: bash
@@ -108,7 +149,6 @@ jobs:
           commit = os.environ["SCIENTIFIC_COMMIT"]
 
           dataset = pm.Dataset("GazeBase", path=dataset_root)
-          dataset.download()
           dataset.load(
               participants=False,
               events=False,
@@ -242,6 +282,46 @@ jobs:
           python -m pip install --upgrade 'pip==26.2.1'
           python -m pip install -e '.[gazebase]'
 
+      - name: Download and verify public GazeBase resource
+        shell: bash
+        run: |
+          set -euo pipefail
+          final_status=1
+          for attempt in 1 2 3 4; do
+            rm -rf "$DATASET_ROOT"
+            mkdir -p "$DATASET_ROOT"
+            set +e
+            python - <<'PY' \
+              > "$FINAL_ROOT/execution-envelope/download-attempt-${attempt}.log" \
+              2>&1
+          import os
+          from pathlib import Path
+          import pymovements as pm
+
+          root = Path(os.environ["DATASET_ROOT"])
+          dataset = pm.Dataset("GazeBase", path=root)
+          dataset.download()
+          print("download_verified=true")
+          PY
+            status=$?
+            set -e
+            printf '%s\n' "$status" \
+              > "$FINAL_ROOT/execution-envelope/download-attempt-${attempt}-status.txt"
+            if [ "$status" -eq 0 ]; then
+              printf '%s\n' "$attempt" \
+                > "$FINAL_ROOT/execution-envelope/download-success-attempt.txt"
+              final_status=0
+              break
+            fi
+            sleep $((attempt * 20))
+          done
+          printf '%s\n' "$final_status" \
+            > "$FINAL_ROOT/execution-envelope/download-final-status.txt"
+          if [ "$final_status" -ne 0 ]; then
+            echo 'GazeBase download failed checksum verification after four attempts.' >&2
+            exit 1
+          fi
+
       - name: Download all seven archived detector partitions
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -299,7 +379,6 @@ jobs:
           commit = os.environ["SCIENTIFIC_COMMIT"]
 
           dataset = pm.Dataset("GazeBase", path=dataset_root)
-          dataset.download()
           dataset.load(
               participants=False,
               events=False,
