@@ -12,7 +12,20 @@ from .benchmark import (
     simulate_boundary_data,
 )
 from .endpoints import expected_dwell, expected_fixation_count
+from .missingness import (
+    inject_missingness,
+    missingness_mask,
+    missingness_sensitivity_curve,
+    summarize_missingness,
+)
 from .multiverse import PipelineSpace, run_specs
+from .provenance import (
+    canonical_json,
+    fingerprint,
+    results_manifest,
+    software_environment,
+    specification_manifest,
+)
 from .robustness import (
     effect_stability,
     marginal_sensitivity,
@@ -37,6 +50,7 @@ __all__ = [
     "PipelineSpace",
     "aoi_probabilities",
     "benchmark_known_aoi_effect",
+    "canonical_json",
     "compare_hard_probabilistic",
     "condition_dwell_effect",
     "downsample_gaze",
@@ -44,18 +58,26 @@ __all__ = [
     "evaluate_aoi_recovery",
     "expected_dwell",
     "expected_fixation_count",
+    "fingerprint",
     "fit_error_model_from_known_truth",
     "hard_aoi_membership",
+    "inject_missingness",
     "marginal_sensitivity",
+    "missingness_mask",
+    "missingness_sensitivity_curve",
     "pairwise_interaction_sensitivity",
+    "results_manifest",
     "run_specs",
     "sampling_sensitivity_curve",
     "scale_error_model",
     "simulate_boundary_data",
     "simulate_known_aoi_effect",
+    "software_environment",
     "spatial_sensitivity_curve",
     "specification_curve",
+    "specification_manifest",
     "summarize_aoi_risk",
+    "summarize_missingness",
 ]
 
-__version__ = "0.1.0.dev2"
+__version__ = "0.1.0.dev3"
