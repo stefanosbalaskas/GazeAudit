@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  SCIENTIFIC_COMMIT: e2c07bcf0d175dd14b15b1b1e2b610251724d227
+  SCIENTIFIC_COMMIT: 609203dfc37f2ef4984de82b888660e7cc30675c
 
 concurrency:
   group: gazebase-partitioned-real-execution-v1
@@ -38,7 +38,7 @@ jobs:
       - name: Checkout exact certified scientific commit
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: e2c07bcf0d175dd14b15b1b1e2b610251724d227
+          ref: 609203dfc37f2ef4984de82b888660e7cc30675c
           fetch-depth: 1
 
       - name: Verify exact scientific commit
@@ -139,7 +139,8 @@ jobs:
           from gazeaudit import (
               prepare_gazebase_execution_context,
               prepare_gazebase_pymovements_dataset,
-              run_gazebase_detector_partition,
+              run_gazebase_detector_partition_fail_closed,
+              run_peyes_detector,
               write_gazebase_detector_partition,
           )
 
@@ -167,10 +168,11 @@ jobs:
               prepared,
               gazeaudit_commit=commit,
           )
-          partition = run_gazebase_detector_partition(
+          partition = run_gazebase_detector_partition_fail_closed(
               prepared,
               context,
               detector,
+              detector_runner=run_peyes_detector,
           )
           write_gazebase_detector_partition(
               partition,
@@ -222,7 +224,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: gazebase-partition-${{ matrix.detector }}-e2c07bcf
+          name: gazebase-partition-${{ matrix.detector }}-609203df
           path: ${{ runner.temp }}/gazebase-partition-${{ matrix.detector }}
           if-no-files-found: error
           retention-days: 90
@@ -257,7 +259,7 @@ jobs:
       - name: Checkout exact certified scientific commit
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: e2c07bcf0d175dd14b15b1b1e2b610251724d227
+          ref: 609203dfc37f2ef4984de82b888660e7cc30675c
           fetch-depth: 1
 
       - name: Verify exact scientific commit
@@ -325,7 +327,7 @@ jobs:
       - name: Download all seven archived detector partitions
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: gazebase-partition-*-e2c07bcf
+          pattern: gazebase-partition-*-609203df
           path: ${{ runner.temp }}/gazebase-partition-downloads
           merge-multiple: false
 
@@ -402,7 +404,7 @@ jobs:
           for detector in GAZEBASE_DETECTORS:
               path = (
                   download_root
-                  / f"gazebase-partition-{detector}-e2c07bcf"
+                  / f"gazebase-partition-{detector}-609203df"
                   / "scientific"
                   / "partition.json"
               )
@@ -453,7 +455,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: gazebase-partitioned-final-e2c07bcf
+          name: gazebase-partitioned-final-609203df
           path: ${{ runner.temp }}/gazebase-partitioned-final
           if-no-files-found: error
           retention-days: 90
