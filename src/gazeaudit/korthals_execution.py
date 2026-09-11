@@ -108,6 +108,14 @@ def verify_korthals_protocol(
         "validation_metric": protocol["validation"].get("metric") == "error_avg",
         "aoi_geometry": protocol["aoi"].get("geometry") == "circle",
         "aoi_radius": float(protocol["aoi"].get("radius", -1.0)) == 1.0,
+        "matched_cell": (
+            tuple(protocol["endpoint"].get("matched_cell", ()))
+            == ("participant_id", "repetition", "target_speed", "target_trajectory")
+        ),
+        "cell_contrast": (
+            protocol["endpoint"].get("cell_contrast")
+            == "jumping_circle occupancy minus moving_circle occupancy"
+        ),
         "draws": int(protocol["monte_carlo"].get("draws", -1)) == 2000,
         "batch_size": int(protocol["monte_carlo"].get("batch_size", -1)) == 8,
         "seed": int(protocol["monte_carlo"].get("rng_seed", -1)) == 20260316,
@@ -129,8 +137,10 @@ def prepare_korthals_aligned_data(
 
     ``aligned_data`` must contain canonical target-aligned companion output with
     participant/trial identifiers, trial-relative time, gaze and target coordinates,
-    target type, actual target speed (or normalized ``target_speed``), and trajectory.
-    ``validations`` must concatenate ``Participant.validation_check()`` outputs.
+    target type, the design-factor ``target_speed``, and target trajectory.
+    ``actual_speed`` may also be present as descriptive metadata but is never silently
+    substituted for the frozen ``target_speed`` matched-cell factor. ``validations``
+    must concatenate ``Participant.validation_check()`` outputs.
 
     Full moving/jumping pairing is checked before the declared author exclusion so
     unrelated missing trials cannot masquerade as exclusion-induced gaps. The frozen
@@ -511,14 +521,12 @@ def _normalize_aligned_data(data: pd.DataFrame) -> pd.DataFrame:
         "target_x",
         "target_y",
         "target_type",
+        "target_speed",
         "target_trajectory",
     }
     missing = sorted(required.difference(data.columns))
     if missing:
         raise ValueError(f"aligned_data is missing required columns: {missing}")
-    speed_column = "actual_speed" if "actual_speed" in data.columns else "target_speed"
-    if speed_column not in data.columns:
-        raise ValueError("aligned_data must contain actual_speed or target_speed")
 
     frame = data.copy()
     frame["participant_id"] = frame["participant_id"].astype(str)
@@ -531,7 +539,7 @@ def _normalize_aligned_data(data: pd.DataFrame) -> pd.DataFrame:
         "gaze_y",
         "target_x",
         "target_y",
-        speed_column,
+        "target_speed",
     ]
     for column in numeric:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
@@ -547,12 +555,11 @@ def _normalize_aligned_data(data: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("trial_time must be finite")
     if (frame["trial_time"] < 0.0).any():
         raise ValueError("canonical trial_time must be non-negative")
-    target_numeric = frame[["target_x", "target_y", speed_column]].to_numpy(dtype=float)
+    target_numeric = frame[["target_x", "target_y", "target_speed"]].to_numpy(dtype=float)
     if np.any(~np.isfinite(target_numeric)):
-        raise ValueError("target coordinates and speed must be finite")
+        raise ValueError("target coordinates and target_speed must be finite")
     frame["target_type"] = frame["target_type"].astype(str)
     frame["target_trajectory"] = frame["target_trajectory"].astype(str)
-    frame["target_speed"] = frame[speed_column].astype(float)
 
     keys = ["participant_id", "trial_number"]
     for column in ["target_type", "target_speed", "target_trajectory"]:
