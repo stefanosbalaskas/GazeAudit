@@ -53,6 +53,7 @@ from .gazebase_execution import (
     verify_gazebase_protocol,
     verify_gazebase_software_versions,
 )
+from .gazebase_failure import run_gazebase_detector_partition_fail_closed
 from .gazebase_partitioned import (
     PARTITION_SCHEMA,
     GazeBaseDetectorPartition,
@@ -189,6 +190,7 @@ __all__ = [
     "run_canonical_conclusion_benchmark",
     "run_detector_backend",
     "run_gazebase_detector_partition",
+    "run_gazebase_detector_partition_fail_closed",
     "run_gazebase_multidetector_execution",
     "run_paired_conclusion_benchmark",
     "run_peyes_detector",
@@ -212,4 +214,4 @@ __all__ = [
     "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev11"
+__version__ = "0.1.0.dev12"
