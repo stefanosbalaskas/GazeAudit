@@ -35,9 +35,7 @@ def render_markdown_audit(
     ]
 
     if factors:
-        sensitivity = marginal_sensitivity(
-            results, list(factors), estimate_col=estimate_col
-        )
+        sensitivity = marginal_sensitivity(results, list(factors), estimate_col=estimate_col)
         lines.extend(
             [
                 "",
@@ -68,7 +66,7 @@ def render_markdown_audit(
             "",
             "This report characterizes robustness across the specifications supplied by "
             "the researcher. It does not establish that every specification is scientifically "
-            "defensible, nor does it automate substantive interpretation.",
+            "defensible. It does not automate substantive interpretation.",
             "",
         ]
     )
