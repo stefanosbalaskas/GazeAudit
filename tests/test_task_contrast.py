@@ -11,7 +11,6 @@ from gazeaudit.task_contrast import (
     participant_task_fixation_summary,
 )
 
-
 EXPECTED = ("ivt", "ivvt", "idt", "idvt", "engbert", "nh", "remodnav")
 RULE = ConclusionRule(
     relative_tolerance=0.20,
