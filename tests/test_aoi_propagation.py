@@ -46,7 +46,7 @@ def test_zero_measurement_error_collapses_to_hard_effect():
     assert audit.summary["monte_carlo_sd"] == pytest.approx(0.0)
     assert audit.summary["interval_lower"] == pytest.approx(150.0)
     assert audit.summary["interval_upper"] == pytest.approx(150.0)
-    assert (audit.draw_effects["estimate"] == pytest.approx(150.0)).all()
+    assert np.allclose(audit.draw_effects["estimate"].to_numpy(), 150.0)
     assert list(audit.membership_probabilities["membership_probability"]) == [
         0.0,
         1.0,
