@@ -89,7 +89,7 @@ class GazeStudy:
                 f"examples: {preview}"
             )
 
-    def copy_with(self, data: pd.DataFrame) -> "GazeStudy":
+    def copy_with(self, data: pd.DataFrame) -> GazeStudy:
         """Return a new study with the same semantic column mapping."""
 
         return GazeStudy(
