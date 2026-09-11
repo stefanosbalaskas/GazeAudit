@@ -24,8 +24,8 @@ import pandas as pd
 
 from .aoi import AOI
 from .uncertainty import (
-    GazeErrorModel,
     GaussianGazeErrorModel,
+    GazeErrorModel,
     GroupedGaussianGazeErrorModel,
     sample_grouped_errors_draw_major,
 )
