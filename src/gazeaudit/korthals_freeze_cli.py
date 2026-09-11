@@ -16,7 +16,6 @@ from .korthals_freeze import (
     KORTHALS_FREEZE_WORKFLOW,
     write_korthals_source_freeze_artifacts,
 )
-from .korthals_source import build_korthals_source_manifest
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -45,8 +44,6 @@ def main(argv: list[str] | None = None) -> int:
     source_manifest = json.loads(
         (intake_dir / "source_manifest.json").read_text(encoding="utf-8")
     )
-    # Rebuild only to force the same source identity verifier contract to remain importable;
-    # no source-data endpoint or AOI membership is evaluated here.
     if not isinstance(source_manifest, dict):
         raise ValueError("source_manifest.json must contain a JSON object")
 
