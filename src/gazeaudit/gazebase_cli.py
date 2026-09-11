@@ -79,7 +79,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         },
     )
 
-    prepared = prepare_gazebase_pymovements_dataset(dataset)
+    prepared = prepare_gazebase_pymovements_dataset(
+        dataset,
+        require_content_hash=True,
+    )
     execution = run_gazebase_multidetector_execution(
         prepared,
         gazeaudit_commit=args.gazeaudit_commit,
