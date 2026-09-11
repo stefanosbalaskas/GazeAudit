@@ -20,7 +20,6 @@ from gazeaudit.gazebase_execution import (
 from gazeaudit.provenance import fingerprint
 from gazeaudit.study import GazeStudy
 
-
 COMMIT = "a" * 40
 
 
@@ -81,13 +80,6 @@ def _source_identity():
     }
 
 
-def _reference_labels(n, task):
-    labels = np.full(n, "fixation", dtype=object)
-    if task == "TEX" and n > 4:
-        labels[4:] = "saccade"
-    return labels
-
-
 def _prepared(reference_equal=False):
     rows = []
     for participant in (1, 2, 3, 4):
@@ -144,10 +136,13 @@ def _runner(*, bad=(), incomplete=()):
 
 def test_packaged_protocol_matches_repository_frozen_protocol():
     packaged = load_gazebase_protocol()
-    repository = json.loads(
-        (Path(__file__).parents[1] / "docs" / "case_studies" / "gazebase_multidetector_protocol.json")
-        .read_text(encoding="utf-8")
+    protocol_path = (
+        Path(__file__).parents[1]
+        / "docs"
+        / "case_studies"
+        / "gazebase_multidetector_protocol.json"
     )
+    repository = json.loads(protocol_path.read_text(encoding="utf-8"))
 
     assert packaged == repository
     assert packaged["protocol_fingerprint"] == GAZEBASE_PROTOCOL_FINGERPRINT
