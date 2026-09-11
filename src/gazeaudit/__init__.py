@@ -49,11 +49,11 @@ from .gazebase_execution import (
     GazeBaseExecution,
     PreparedGazeBaseData,
     load_gazebase_protocol,
-    prepare_gazebase_pymovements_dataset,
     run_gazebase_multidetector_execution,
     verify_gazebase_protocol,
     verify_gazebase_software_versions,
 )
+from .gazebase_pymovements import prepare_gazebase_pymovements_dataset
 from .missingness import (
     inject_missingness,
     missingness_mask,
