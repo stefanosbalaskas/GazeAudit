@@ -25,6 +25,15 @@ from .bids_adapter import (
     read_bids_eyetrack,
     read_bids_eyetrack_many,
 )
+from .conclusion import (
+    ConclusionBenchmark,
+    ConclusionRule,
+    aoi_conclusion_specifications,
+    conclusion_recovery_table,
+    run_canonical_conclusion_benchmark,
+    run_paired_conclusion_benchmark,
+    summarize_conclusion_recovery,
+)
 from .endpoints import expected_dwell, expected_fixation_count
 from .missingness import (
     inject_missingness,
@@ -66,6 +75,8 @@ __all__ = [
     "BIDSEyeTrackingAdapter",
     "BIDSEyeTrackingRecord",
     "CircleAOI",
+    "ConclusionBenchmark",
+    "ConclusionRule",
     "DetectionResult",
     "DetectorBackend",
     "GazeStudy",
@@ -76,10 +87,12 @@ __all__ = [
     "RectangleAOI",
     "StudyAdapter",
     "adapt_study",
+    "aoi_conclusion_specifications",
     "aoi_probabilities",
     "benchmark_known_aoi_effect",
     "canonical_json",
     "compare_hard_probabilistic",
+    "conclusion_recovery_table",
     "condition_dwell_effect",
     "downsample_gaze",
     "effect_stability",
@@ -101,7 +114,9 @@ __all__ = [
     "read_bids_eyetrack",
     "read_bids_eyetrack_many",
     "results_manifest",
+    "run_canonical_conclusion_benchmark",
     "run_detector_backend",
+    "run_paired_conclusion_benchmark",
     "run_peyes_detector",
     "run_specs",
     "sampling_sensitivity_curve",
@@ -113,7 +128,8 @@ __all__ = [
     "specification_curve",
     "specification_manifest",
     "summarize_aoi_risk",
+    "summarize_conclusion_recovery",
     "summarize_missingness",
 ]
 
-__version__ = "0.1.0.dev5"
+__version__ = "0.1.0.dev6"
