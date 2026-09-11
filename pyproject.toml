@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gazeaudit"
-version = "0.1.0.dev3"
+version = "0.1.0.dev4"
 description = "Measurement uncertainty and inferential robustness for eye-tracking research"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -46,6 +46,16 @@ dev = [
   "pytest>=8",
   "pytest-cov>=5",
   "ruff>=0.6"
+]
+pymovements = [
+  "pymovements>=0.28,<0.29"
+]
+peyes = [
+  "peyes>=0.2.2,<0.3; python_version >= '3.12'"
+]
+interop = [
+  "pymovements>=0.28,<0.29",
+  "peyes>=0.2.2,<0.3; python_version >= '3.12'"
 ]
 
 [project.urls]
