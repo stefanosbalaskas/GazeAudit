@@ -18,6 +18,13 @@ from .benchmark import (
     fit_error_model_from_known_truth,
     simulate_boundary_data,
 )
+from .bids_adapter import (
+    BIDSEyeTrackingAdapter,
+    BIDSEyeTrackingRecord,
+    parse_bids_entities,
+    read_bids_eyetrack,
+    read_bids_eyetrack_many,
+)
 from .endpoints import expected_dwell, expected_fixation_count
 from .missingness import (
     inject_missingness,
@@ -56,6 +63,8 @@ from .study import GazeStudy
 from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
+    "BIDSEyeTrackingAdapter",
+    "BIDSEyeTrackingRecord",
     "CircleAOI",
     "DetectionResult",
     "DetectorBackend",
@@ -88,6 +97,9 @@ __all__ = [
     "missingness_mask",
     "missingness_sensitivity_curve",
     "pairwise_interaction_sensitivity",
+    "parse_bids_entities",
+    "read_bids_eyetrack",
+    "read_bids_eyetrack_many",
     "results_manifest",
     "run_detector_backend",
     "run_peyes_detector",
@@ -104,4 +116,4 @@ __all__ = [
     "summarize_missingness",
 ]
 
-__version__ = "0.1.0.dev4"
+__version__ = "0.1.0.dev5"
