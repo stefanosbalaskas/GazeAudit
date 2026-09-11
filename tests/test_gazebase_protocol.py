@@ -2,7 +2,6 @@ import hashlib
 import json
 from pathlib import Path
 
-
 PROTOCOL_PATH = (
     Path(__file__).resolve().parents[1]
     / "docs"
