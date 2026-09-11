@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,6 +14,7 @@ from gazeaudit import (
     verify_gazebase_execution_artifacts,
     write_gazebase_execution_artifacts,
 )
+from gazeaudit.gazebase_cli import build_parser
 
 COMMIT = "b" * 40
 
@@ -175,3 +177,36 @@ def test_overwrite_never_deletes_nested_directories(tmp_path):
 
     with pytest.raises(ValueError, match="nested directories"):
         write_gazebase_execution_artifacts(_execution(), output_dir, overwrite=True)
+
+
+def test_frozen_cli_exposes_execution_paths_but_no_scientific_tuning_knobs():
+    parser = build_parser()
+    args = parser.parse_args(
+        [
+            "--dataset-root",
+            "data/GazeBase",
+            "--output-dir",
+            "artifacts/frozen-run",
+            "--gazeaudit-commit",
+            COMMIT,
+            "--download",
+        ]
+    )
+
+    assert args.dataset_root == Path("data/GazeBase")
+    assert args.output_dir == Path("artifacts/frozen-run")
+    assert args.gazeaudit_commit == COMMIT
+    assert args.download is True
+    assert args.overwrite is False
+
+    help_text = parser.format_help()
+    forbidden = (
+        "detector-threshold",
+        "relative-tolerance",
+        "coverage-fraction",
+        "minimum-recovery",
+        "task-a",
+        "task-b",
+        "endpoint",
+    )
+    assert all(option not in help_text for option in forbidden)
