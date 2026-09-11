@@ -96,6 +96,7 @@ def _selected_file_content_identity(
             )
         return {}
 
+    root = Path(raw_root).resolve()
     records = _fileinfo_records(gaze_fileinfo)
     if not records:
         if required:
@@ -112,8 +113,13 @@ def _selected_file_content_identity(
             return {}
         relative_text = str(relative).replace("\\", "/")
         candidate = Path(relative_text)
-        if not candidate.is_absolute():
-            candidate = Path(raw_root) / candidate
+        candidate = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+        try:
+            candidate.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(
+                f"selected GazeBase source path escapes dataset.paths.raw: {relative_text}"
+            ) from exc
         if not candidate.is_file():
             if required:
                 raise FileNotFoundError(
