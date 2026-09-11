@@ -13,7 +13,8 @@ import re
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from importlib import resources
-from importlib.metadata import PackageNotFoundError, version as package_version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as package_version
 from typing import Any
 
 import numpy as np
@@ -204,7 +205,9 @@ def prepare_gazebase_pymovements_dataset(dataset: Any) -> PreparedGazeBaseData:
         frame[GAZEBASE_REFERENCE_LABEL_COLUMN] = raw["lab"].map(_reference_label).to_numpy()
         frames.append(frame)
 
-        filename = _portable_basename(info.get("filepath", info.get("filename", f"recording_{index}")))
+        filename = _portable_basename(
+            info.get("filepath", info.get("filename", f"recording_{index}"))
+        )
         source_files.append(
             {
                 "subject_id": participant,
@@ -251,7 +254,9 @@ def verify_gazebase_software_versions(
         try:
             found[key] = str(getter(distribution))
         except PackageNotFoundError as exc:
-            raise RuntimeError(f"required execution dependency is not installed: {distribution}") from exc
+            raise RuntimeError(
+                f"required execution dependency is not installed: {distribution}"
+            ) from exc
 
     if found["pymovements"] != "0.28.0":
         raise RuntimeError("frozen GazeBase execution requires pymovements==0.28.0")
