@@ -53,6 +53,17 @@ from .gazebase_execution import (
     verify_gazebase_protocol,
     verify_gazebase_software_versions,
 )
+from .gazebase_partitioned import (
+    PARTITION_SCHEMA,
+    GazeBaseDetectorPartition,
+    GazeBaseExecutionContext,
+    assemble_gazebase_partitioned_execution,
+    detector_partition_document,
+    prepare_gazebase_execution_context,
+    read_gazebase_detector_partition,
+    run_gazebase_detector_partition,
+    write_gazebase_detector_partition,
+)
 from .gazebase_pymovements import prepare_gazebase_pymovements_dataset
 from .missingness import (
     inject_missingness,
@@ -120,9 +131,12 @@ __all__ = [
     "GAZEBASE_DETECTORS",
     "GAZEBASE_PROTOCOL_FINGERPRINT",
     "GAZEBASE_TASKS",
+    "GazeBaseDetectorPartition",
     "GazeBaseExecution",
+    "GazeBaseExecutionContext",
     "GazeStudy",
     "GaussianGazeErrorModel",
+    "PARTITION_SCHEMA",
     "PeyesDetectorAdapter",
     "PipelineSpace",
     "PreparedGazeBaseData",
@@ -133,6 +147,7 @@ __all__ = [
     "adapt_study",
     "aoi_conclusion_specifications",
     "aoi_probabilities",
+    "assemble_gazebase_partitioned_execution",
     "audit_detector_robustness",
     "benchmark_known_aoi_effect",
     "build_conclusion_audit_bundle",
@@ -140,6 +155,7 @@ __all__ = [
     "compare_hard_probabilistic",
     "conclusion_recovery_table",
     "condition_dwell_effect",
+    "detector_partition_document",
     "detector_task_contrast",
     "downsample_gaze",
     "effect_stability",
@@ -162,14 +178,17 @@ __all__ = [
     "pairwise_interaction_sensitivity",
     "parse_bids_entities",
     "participant_task_fixation_summary",
+    "prepare_gazebase_execution_context",
     "prepare_gazebase_pymovements_dataset",
     "read_bids_eyetrack",
     "read_bids_eyetrack_many",
+    "read_gazebase_detector_partition",
     "render_publication_markdown",
     "render_publication_methods",
     "results_manifest",
     "run_canonical_conclusion_benchmark",
     "run_detector_backend",
+    "run_gazebase_detector_partition",
     "run_gazebase_multidetector_execution",
     "run_paired_conclusion_benchmark",
     "run_peyes_detector",
@@ -189,7 +208,8 @@ __all__ = [
     "verify_gazebase_protocol",
     "verify_gazebase_software_versions",
     "verify_publication_audit_bundle",
+    "write_gazebase_detector_partition",
     "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev10"
+__version__ = "0.1.0.dev11"
