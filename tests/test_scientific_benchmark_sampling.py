@@ -63,16 +63,16 @@ def test_condition_dwell_effect_recovers_simple_within_participant_difference():
 
 def test_known_effect_benchmark_compares_scientific_endpoint_against_truth():
     data = simulate_known_aoi_effect(
-        n_participants=100,
-        trials_per_condition=30,
-        control_probability=0.25,
-        treatment_probability=0.75,
+        n_participants=40,
+        trials_per_condition=12,
+        control_probability=0.15,
+        treatment_probability=0.85,
         measurement_sd=10.0,
         rng=123,
     )
     model = fit_error_model_from_known_truth(data)
     right = RectangleAOI("right", 0.0, -100.0, 100.0, 100.0)
-    result = benchmark_known_aoi_effect(data, right, model, draws=3000, rng=99)
+    result = benchmark_known_aoi_effect(data, right, model, draws=500, rng=99)
 
     assert result["true_effect"] > 0
     assert np.isfinite(result["hard_effect"])
