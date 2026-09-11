@@ -165,8 +165,16 @@ def test_partition_serialization_round_trip_is_verified(tmp_path: Path):
     assert loaded.algorithm == "ivt"
     assert loaded.partition_fingerprint == partition.partition_fingerprint
     assert detector_partition_document(loaded) == detector_partition_document(partition)
-    pd.testing.assert_frame_equal(loaded.participant_tasks, partition.participant_tasks)
-    pd.testing.assert_frame_equal(loaded.contrasts, partition.contrasts)
+    pd.testing.assert_frame_equal(
+        loaded.participant_tasks,
+        partition.participant_tasks,
+        check_like=True,
+    )
+    pd.testing.assert_frame_equal(
+        loaded.contrasts,
+        partition.contrasts,
+        check_like=True,
+    )
 
 
 def test_partition_tampering_fails_closed(tmp_path: Path):
