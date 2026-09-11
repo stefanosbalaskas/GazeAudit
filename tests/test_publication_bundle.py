@@ -31,12 +31,12 @@ def _rule():
     )
 
 
-def _bundle(results=None, rule=None):
+def _bundle(results=None, rule=None, title="Example robustness audit"):
     return build_conclusion_audit_bundle(
         _results() if results is None else results,
         10.0,
         _rule() if rule is None else rule,
-        title="Example robustness audit",
+        title=title,
         endpoint="treatment-minus-control dwell",
         source_description="Synthetic known-truth validation fixture",
         metadata={"design": "repeated-measures", "preregistered": True},
@@ -87,6 +87,14 @@ def test_changed_rule_changes_scientific_identity():
     assert revised.scientific_fingerprint != original.scientific_fingerprint
     assert revised.manifest["rule"]["relative_tolerance"] == 0.10
     assert revised.manifest["rule"]["minimum_recovery_fraction"] == 0.90
+
+
+def test_title_change_does_not_change_scientific_identity():
+    original = _bundle()
+    retitled = _bundle(title="Retitled publication audit")
+
+    assert retitled.scientific_fingerprint == original.scientific_fingerprint
+    assert retitled.bundle_fingerprint != original.bundle_fingerprint
 
 
 def test_bundle_does_not_use_significance_as_recovery_rule():
