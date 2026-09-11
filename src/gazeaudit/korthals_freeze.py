@@ -11,10 +11,9 @@ import json
 import re
 import shutil
 from collections.abc import Mapping
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
-
-from importlib.metadata import PackageNotFoundError, version
 
 from .korthals_execution import (
     KORTHALS_CASE_STUDY_ID,
@@ -96,7 +95,9 @@ def write_korthals_source_freeze_artifacts(
     _write_json(destination / "freeze_manifest.json", manifest)
 
     checksum_targets = sorted(
-        path for path in destination.rglob("*") if path.is_file() and path.name != "SHA256SUMS"
+        path
+        for path in destination.rglob("*")
+        if path.is_file() and path != destination / "SHA256SUMS"
     )
     lines = [
         f"{_sha256_file(path)}  {path.relative_to(destination).as_posix()}"
@@ -130,7 +131,9 @@ def verify_korthals_source_freeze_artifacts(output_dir: str | Path) -> bool:
 
         source = _read_json(root / "intake" / "source_manifest.json")
         intake_manifest = _read_json(root / "intake" / "artifact_manifest.json")
-        context = _validated_execution_context(_read_json(root / "execution_context.json"), root / "intake")
+        context = _validated_execution_context(
+            _read_json(root / "execution_context.json"), root / "intake"
+        )
         environment_text = (root / "pip_freeze.txt").read_text(encoding="utf-8")
         if not environment_text.strip():
             return False
@@ -168,7 +171,7 @@ def verify_korthals_source_freeze_artifacts(output_dir: str | Path) -> bool:
         expected_checksum_paths = {
             path.relative_to(root).as_posix()
             for path in root.rglob("*")
-            if path.is_file() and path != root / "SHA256SUMS" and path.name != "SHA256SUMS"
+            if path.is_file() and path != root / "SHA256SUMS"
         }
         if set(checksums) != expected_checksum_paths:
             return False
@@ -177,7 +180,11 @@ def verify_korthals_source_freeze_artifacts(output_dir: str | Path) -> bool:
 
         searchable = "\n".join(
             canonical_json(value)
-            for value in (context, manifest, _read_json(root / "intake" / "intake_summary.json"))
+            for value in (
+                context,
+                manifest,
+                _read_json(root / "intake" / "intake_summary.json"),
+            )
         ).lower()
         if any(token in searchable for token in _FORBIDDEN_SCIENTIFIC_TOKENS):
             return False
@@ -231,7 +238,7 @@ def _validated_execution_context(
         raise ValueError("source fingerprint differs from the archived intake")
     try:
         installed_version = version("gazeaudit")
-    except PackageNotFoundError as exc:  # pragma: no cover - package is installed in supported runs
+    except PackageNotFoundError as exc:  # pragma: no cover
         raise ValueError("gazeaudit package metadata is unavailable") from exc
     if normalized["package_version"] != installed_version:
         raise ValueError("execution package version differs from installed GazeAudit")
@@ -248,7 +255,6 @@ def _records_for_freeze_payload(root: Path) -> list[dict[str, Any]]:
         if path.is_file()
         and path != root / "freeze_manifest.json"
         and path != root / "SHA256SUMS"
-        and not (path.parent == root / "intake" and path.name == "SHA256SUMS")
     )
     return [_file_record(path, root) for path in paths]
 
