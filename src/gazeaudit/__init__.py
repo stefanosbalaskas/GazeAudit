@@ -126,7 +126,12 @@ from .task_contrast import (
     fixed_reference_cohort,
     participant_task_fixation_summary,
 )
-from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
+from .uncertainty import (
+    GaussianGazeErrorModel,
+    GazeErrorModel,
+    GroupedGaussianGazeErrorModel,
+    aoi_probabilities,
+)
 
 __all__ = [
     "AOIEffectUncertaintyAudit",
@@ -149,8 +154,10 @@ __all__ = [
     "GazeBaseDetectorPartition",
     "GazeBaseExecution",
     "GazeBaseExecutionContext",
+    "GazeErrorModel",
     "GazeStudy",
     "GaussianGazeErrorModel",
+    "GroupedGaussianGazeErrorModel",
     "PARTITION_SCHEMA",
     "PeyesDetectorAdapter",
     "PipelineSpace",
@@ -233,4 +240,4 @@ __all__ = [
     "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev14"
+__version__ = "0.1.0.dev15"

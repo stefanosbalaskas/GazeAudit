@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gazeaudit"
-version = "0.1.0.dev14"
+version = "0.1.0.dev15"
 description = "Measurement uncertainty and inferential robustness for eye-tracking research"
 readme = "README.md"
 requires-python = ">=3.10"

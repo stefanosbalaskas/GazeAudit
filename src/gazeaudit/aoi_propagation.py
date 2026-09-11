@@ -1,9 +1,9 @@
 """Propagate spatial gaze uncertainty into scientific AOI effect estimates.
 
-This module moves GazeAudit beyond marginal AOI-membership probabilities.  It
+This module moves GazeAudit beyond marginal AOI-membership probabilities. It
 samples complete latent gaze realizations from a declared spatial-error model,
 recomputes AOI membership for every realization, and passes those memberships
-to a user-supplied scientific endpoint.  The resulting distribution therefore
+to a user-supplied scientific endpoint. The resulting distribution therefore
 quantifies *measurement-model uncertainty in the endpoint* conditional on the
 observed data and supplied error model.
 
@@ -15,14 +15,20 @@ the fitted gaze-error model.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 import pandas as pd
 
 from .aoi import AOI
-from .uncertainty import GaussianGazeErrorModel
+from .uncertainty import (
+    GaussianGazeErrorModel,
+    GazeErrorModel,
+    GroupedGaussianGazeErrorModel,
+    sample_grouped_errors_draw_major,
+)
 
 AOIEffectEndpoint = Callable[[pd.DataFrame, np.ndarray], float]
 
@@ -56,11 +62,12 @@ class AOIEffectUncertaintyAudit:
 def audit_aoi_effect_uncertainty(
     data: pd.DataFrame,
     aoi: AOI,
-    error_model: GaussianGazeErrorModel,
+    error_model: GazeErrorModel,
     endpoint: AOIEffectEndpoint,
     *,
     observed_x: str = "observed_x",
     observed_y: str = "observed_y",
+    error_group: str | Sequence[Any] | None = None,
     draws: int = 2000,
     batch_size: int = 200,
     interval: float = 0.95,
@@ -70,10 +77,16 @@ def audit_aoi_effect_uncertainty(
     """Propagate gaze-position measurement uncertainty into an AOI endpoint.
 
     For each Monte Carlo draw, one latent true position is sampled for every
-    observation under ``error_model``.  AOI membership is recomputed from that
+    observation under ``error_model``. AOI membership is recomputed from that
     complete latent realization and supplied to ``endpoint(data, membership)``.
     This preserves across-observation endpoint structure within each draw (for
     example participant-level treatment-minus-control aggregation).
+
+    A :class:`GroupedGaussianGazeErrorModel` can be paired with ``error_group`` to
+    use participant-, session-, device-, or calibration-block-specific measurement
+    models. ``error_group`` may be the name of a column in ``data`` or an explicit
+    sequence with one group key per row. Every group must be declared; no pooled
+    fallback is used.
 
     ``expected_membership_effect`` in the returned summary evaluates the
     endpoint once using each observation's marginal AOI-membership probability.
@@ -83,14 +96,16 @@ def audit_aoi_effect_uncertainty(
     Notes
     -----
     The reported interval is a Monte Carlo interval induced by the declared
-    gaze measurement-error model.  It is not a population confidence interval
+    gaze measurement-error model. It is not a population confidence interval
     and must not be interpreted as incorporating sampling uncertainty.
     """
 
     if not isinstance(data, pd.DataFrame):
         raise TypeError("data must be a pandas DataFrame")
-    if not isinstance(error_model, GaussianGazeErrorModel):
-        raise TypeError("error_model must be a GaussianGazeErrorModel")
+    if not isinstance(error_model, (GaussianGazeErrorModel, GroupedGaussianGazeErrorModel)):
+        raise TypeError(
+            "error_model must be GaussianGazeErrorModel or GroupedGaussianGazeErrorModel"
+        )
     if not callable(endpoint):
         raise TypeError("endpoint must be callable")
     if draws < 2:
@@ -114,6 +129,8 @@ def audit_aoi_effect_uncertainty(
     if np.any(~np.isfinite(points)):
         raise ValueError("observed gaze coordinates must be finite and complete")
 
+    groups = _resolve_error_groups(data, error_model, error_group)
+
     hard_membership = np.asarray(aoi.contains_points(points), dtype=float)
     _validate_membership(hard_membership, len(data), label="hard AOI membership")
     hard_effect = _endpoint_value(endpoint, data, hard_membership)
@@ -127,12 +144,22 @@ def audit_aoi_effect_uncertainty(
         current = min(batch_size, draws - completed)
         # Draw-major layout keeps every scientific endpoint evaluation tied to
         # one complete latent realization of the study.
-        error_draws = generator.multivariate_normal(
-            mean=error_model.mean_error,
-            cov=error_model.covariance,
-            size=(current, len(data)),
-            check_valid="raise",
-        )
+        if isinstance(error_model, GaussianGazeErrorModel):
+            error_draws = generator.multivariate_normal(
+                mean=error_model.mean_error,
+                cov=error_model.covariance,
+                size=(current, len(data)),
+                check_valid="raise",
+            )
+        else:
+            assert groups is not None
+            error_draws = sample_grouped_errors_draw_major(
+                error_model,
+                groups,
+                n_observations=len(data),
+                draws=current,
+                rng=generator,
+            )
         latent = points[None, :, :] - error_draws
 
         for offset in range(current):
@@ -188,6 +215,24 @@ def audit_aoi_effect_uncertainty(
         membership_probabilities=membership_probabilities,
         summary=summary,
     )
+
+
+def _resolve_error_groups(
+    data: pd.DataFrame,
+    error_model: GazeErrorModel,
+    error_group: str | Sequence[Any] | None,
+) -> np.ndarray | None:
+    if isinstance(error_model, GaussianGazeErrorModel):
+        return None
+    if error_group is None:
+        raise ValueError("error_group is required for a grouped error model")
+    if isinstance(error_group, str):
+        if error_group not in data.columns:
+            raise ValueError(f"error_group column {error_group!r} is not present in data")
+        groups: Sequence[Any] = data[error_group].tolist()
+    else:
+        groups = error_group
+    return error_model.validate_groups(groups, n_observations=len(data))
 
 
 def _endpoint_value(
