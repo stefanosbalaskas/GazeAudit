@@ -105,6 +105,7 @@ def test_summarize_aoi_risk_reports_high_risk_fraction():
     with pytest.raises(ValueError, match="required columns"):
         summarize_aoi_risk(pd.DataFrame({"aoi": ["a"]}))
     bad = comparison.copy()
+    bad["flip_probability"] = bad["flip_probability"].astype(object)
     bad.loc[0, "flip_probability"] = "bad"
     with pytest.raises(ValueError, match="numeric and complete"):
         summarize_aoi_risk(bad)
