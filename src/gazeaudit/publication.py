@@ -27,9 +27,9 @@ from .provenance import canonical_json, fingerprint, software_environment
 class PublicationAuditBundle:
     """Deterministic publication artifact for one conclusion-robustness audit.
 
-    DataFrames are copied when the bundle is built. The manifest fingerprints
-    bind the declared rule, reference effect, specification table, recovery
-    table, summary, source description, and optional researcher metadata.
+    DataFrames are copied when the bundle is built. The scientific fingerprint
+    binds substantive scientific inputs and outputs, while the bundle fingerprint
+    additionally binds presentation metadata and the recorded software environment.
     """
 
     title: str
@@ -47,13 +47,13 @@ class PublicationAuditBundle:
 
     @property
     def scientific_fingerprint(self) -> str:
-        """Stable identity of the scientific inputs and recovery outputs."""
+        """Stable identity of the substantive scientific inputs and outputs."""
 
         return str(self.manifest["scientific_fingerprint"])
 
     @property
     def bundle_fingerprint(self) -> str:
-        """Stable identity of the complete manifest including software provenance."""
+        """Stable identity of the complete publication bundle manifest."""
 
         return str(self.manifest["bundle_fingerprint"])
 
@@ -291,6 +291,19 @@ def _build_manifest(
     software: Mapping[str, Any],
 ) -> dict[str, Any]:
     scientific_core: dict[str, Any] = {
+        "schema": "gazeaudit-scientific-audit-v1",
+        "endpoint": endpoint,
+        "source_description": source_description,
+        "reference_effect": float(reference_effect),
+        "rule": _rule_mapping(rule),
+        "estimate_column": str(estimate_col),
+        "metadata": _safe_mapping(metadata),
+        "specifications": _table_descriptor(specifications),
+        "recovery": _table_descriptor(recovery),
+        "summary": _summary_mapping(summary),
+    }
+    scientific_fingerprint = fingerprint(scientific_core)
+    manifest: dict[str, Any] = {
         "schema": "gazeaudit-publication-audit-v1",
         "title": title,
         "endpoint": endpoint,
@@ -302,12 +315,10 @@ def _build_manifest(
         "specifications": _table_descriptor(specifications),
         "recovery": _table_descriptor(recovery),
         "summary": _summary_mapping(summary),
+        "scientific_fingerprint": scientific_fingerprint,
         "methods_text_fingerprint": fingerprint(methods_text),
+        "software": _safe_mapping(software),
     }
-    scientific_fingerprint = fingerprint(scientific_core)
-    manifest = dict(scientific_core)
-    manifest["scientific_fingerprint"] = scientific_fingerprint
-    manifest["software"] = _safe_mapping(software)
     manifest["bundle_fingerprint"] = fingerprint(manifest)
     return manifest
 
