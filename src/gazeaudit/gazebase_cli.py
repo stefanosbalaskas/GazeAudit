@@ -63,8 +63,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         import pymovements as pm
     except ImportError as exc:
         raise SystemExit(
-            "The real-data runner requires the interoperability dependencies. "
-            "Install GazeAudit with the 'interop' extra."
+            "The real-data runner requires the frozen case-study dependencies. "
+            "Install GazeAudit with the 'gazebase' extra."
         ) from exc
 
     dataset = pm.Dataset("GazeBase", path=args.dataset_root)
