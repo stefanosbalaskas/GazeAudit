@@ -136,13 +136,13 @@ def pairwise_interaction_sensitivity(
 
         deviations: list[float] = []
         weighted_ss = 0.0
-        for row in cells.itertuples(index=False):
-            level_a = getattr(row, factor_a)
-            level_b = getattr(row, factor_b)
+        for _, cell in cells.iterrows():
+            level_a = cell[factor_a]
+            level_b = cell[factor_b]
             additive = float(mean_a.loc[level_a] + mean_b.loc[level_b] - grand_mean)
-            deviation = float(row.mean - additive)
+            deviation = float(cell["mean"] - additive)
             deviations.append(deviation)
-            weighted_ss += float(row.count) * deviation**2
+            weighted_ss += float(cell["count"]) * deviation**2
 
         ratio = weighted_ss / total_ss if total_ss > 0 else 0.0
         rows.append(
