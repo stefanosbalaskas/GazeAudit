@@ -215,8 +215,8 @@ def verify_publication_audit_bundle(bundle: PublicationAuditBundle) -> bool:
 
     Verification recomputes recovery and fingerprints from the current bundle
     fields while preserving the software environment recorded at build time. A
-    mutated specification table, rule, summary, methods paragraph, or report
-    therefore fails verification rather than silently retaining a stale identity.
+    mutated specification table, recovery table, summary, rule, methods paragraph,
+    or report therefore fails verification rather than retaining a stale identity.
     """
 
     if not isinstance(bundle, PublicationAuditBundle):
@@ -229,6 +229,10 @@ def verify_publication_audit_bundle(bundle: PublicationAuditBundle) -> bool:
             estimate_col=str(bundle.manifest["estimate_column"]),
         )
         summary = summarize_conclusion_recovery(recovered, bundle.rule)
+        if _table_descriptor(recovered) != _table_descriptor(bundle.recovery):
+            return False
+        if _summary_mapping(summary) != _summary_mapping(bundle.summary):
+            return False
         methods_text = render_publication_methods(
             summary,
             bundle.rule,
