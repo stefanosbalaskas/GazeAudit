@@ -8,12 +8,22 @@ from .adapters import (
     run_detector_backend,
 )
 from .aoi import CircleAOI, RectangleAOI
+from .aoi_artifacts import (
+    AOI_UNCERTAINTY_ARTIFACT_SCHEMA,
+    verify_aoi_uncertainty_artifacts,
+    write_aoi_uncertainty_artifacts,
+)
 from .aoi_audit import (
     compare_hard_probabilistic,
     hard_aoi_membership,
     summarize_aoi_risk,
 )
 from .aoi_propagation import AOIEffectUncertaintyAudit, audit_aoi_effect_uncertainty
+from .aoi_protocol import (
+    AOI_UNCERTAINTY_PROTOCOL_SCHEMA,
+    build_aoi_uncertainty_protocol,
+    verify_aoi_uncertainty_protocol,
+)
 from .benchmark import (
     evaluate_aoi_recovery,
     fit_error_model_from_known_truth,
@@ -120,6 +130,8 @@ from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
     "AOIEffectUncertaintyAudit",
+    "AOI_UNCERTAINTY_ARTIFACT_SCHEMA",
+    "AOI_UNCERTAINTY_PROTOCOL_SCHEMA",
     "ARTIFACT_SCHEMA",
     "BIDSEyeTrackingAdapter",
     "BIDSEyeTrackingRecord",
@@ -154,6 +166,7 @@ __all__ = [
     "audit_aoi_effect_uncertainty",
     "audit_detector_robustness",
     "benchmark_known_aoi_effect",
+    "build_aoi_uncertainty_protocol",
     "build_conclusion_audit_bundle",
     "canonical_json",
     "compare_hard_probabilistic",
@@ -209,12 +222,15 @@ __all__ = [
     "summarize_aoi_risk",
     "summarize_conclusion_recovery",
     "summarize_missingness",
+    "verify_aoi_uncertainty_artifacts",
+    "verify_aoi_uncertainty_protocol",
     "verify_gazebase_execution_artifacts",
     "verify_gazebase_protocol",
     "verify_gazebase_software_versions",
     "verify_publication_audit_bundle",
+    "write_aoi_uncertainty_artifacts",
     "write_gazebase_detector_partition",
     "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev13"
+__version__ = "0.1.0.dev14"
