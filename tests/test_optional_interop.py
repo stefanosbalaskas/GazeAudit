@@ -1,6 +1,7 @@
 """Live-contract tests for optional upstream interoperability dependencies."""
 
 import numpy as np
+import pandas as pd
 import pytest
 
 from gazeaudit import (
@@ -41,12 +42,16 @@ def test_live_peyes_02_detector_contract():
     assert tuple(int(part) for part in peyes.__version__.split(".")[:2]) >= (0, 2)
 
     n = 30
-    study = GazeStudy.from_arrays(
-        x=np.linspace(500.0, 502.0, n),
-        y=np.linspace(400.0, 402.0, n),
-        timestamp=np.arange(n, dtype=float) * 10.0,
-        participant=np.array(["p-live"] * n),
-        trial=np.ones(n, dtype=int),
+    study = GazeStudy(
+        pd.DataFrame(
+            {
+                "x": np.linspace(500.0, 502.0, n),
+                "y": np.linspace(400.0, 402.0, n),
+                "timestamp": np.arange(n, dtype=float) * 10.0,
+                "participant": ["p-live"] * n,
+                "trial": np.ones(n, dtype=int),
+            }
+        )
     )
     detector = make_peyes_detector(
         "ivt",
