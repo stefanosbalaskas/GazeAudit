@@ -243,7 +243,8 @@ def write_gazebase_detector_partition(
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + ".tmp")
-    temporary.write_text(canonical_json(detector_partition_document(partition)) + "\n", encoding="utf-8")
+    payload = canonical_json(detector_partition_document(partition)) + "\n"
+    temporary.write_text(payload, encoding="utf-8")
     temporary.replace(target)
     return target
 
