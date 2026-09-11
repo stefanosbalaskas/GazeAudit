@@ -47,8 +47,10 @@ The repository is in **pre-alpha** development. The current scientific MVP line 
 - declarative `PipelineSpace` specification grids and specification curves;
 - marginal and pairwise interaction sensitivity diagnostics;
 - known-truth AOI and scientific-endpoint recovery benchmarks;
+- a predeclared robust-vs-fragile conclusion-recovery benchmark that does not use p-values as its decision rule;
 - spatial-error, sampling-rate, and structured missingness sensitivity analyses;
 - deterministic specification/results provenance fingerprints;
+- deterministic publication audit bundles with scientific and execution fingerprints, reusable methods wording, and Markdown reports;
 - generic user adapter protocols for external study and detector backends;
 - direct Eye-Tracking-BIDS `physio.tsv[.gz]` ingestion;
 - pymovements `Gaze`/`Dataset` ingestion;
@@ -98,6 +100,48 @@ expected_claim_dwell = expected_dwell(
 ```
 
 A fixation at an AOI boundary is therefore represented as uncertain membership rather than being forced immediately into one deterministic label.
+
+## Conclusion recovery and publication audit bundles
+
+A robustness analysis can be evaluated against a **predeclared scientific recovery rule**. The rule uses effect-error tolerances, optional direction recovery, and a minimum across-specification recovery fraction; it does not use statistical-significance optimization to decide which specifications count.
+
+```python
+import pandas as pd
+
+from gazeaudit import ConclusionRule, build_conclusion_audit_bundle
+
+results = pd.DataFrame(
+    {
+        "method": ["hard", "probabilistic", "probabilistic"],
+        "error_scale": [None, 0.5, 1.5],
+        "estimate": [9.5, 10.2, 8.7],
+    }
+)
+
+rule = ConclusionRule(
+    relative_tolerance=0.20,
+    require_sign=True,
+    minimum_recovery_fraction=0.90,
+)
+
+bundle = build_conclusion_audit_bundle(
+    results,
+    reference_effect=10.0,
+    rule=rule,
+    title="Example conclusion-robustness audit",
+    endpoint="treatment-minus-control dwell",
+    source_description="Synthetic known-truth validation fixture",
+)
+
+print(bundle.summary["classification"])
+print(bundle.scientific_fingerprint)
+print(bundle.manifest_json())
+print(bundle.markdown)
+```
+
+The publication bundle binds the declared rule, reference effect, specification table, recovery table, summary, source description, optional researcher metadata, and software provenance. It exposes two identities: a **scientific fingerprint** for the scientific inputs/outputs and a **bundle fingerprint** that additionally binds the recorded execution environment. `verify_publication_audit_bundle()` can detect later mutation of the specification, recovery, summary, methods text, report, or manifest.
+
+For real-data analyses, `reference_effect` is not inferred by GazeAudit. The researcher must define and justify what the reference effect represents before inspecting the robustness outputs.
 
 ## Interoperability
 
@@ -164,41 +208,45 @@ The normalized result keeps sample labels separate from per-trial detector metad
 
 Third-party integrations can implement the runtime-checkable `StudyAdapter` or `DetectorBackend` protocols. Detector backends return `DetectionResult`, which gives multiverse analyses one auditable output contract without forcing external packages into GazeAudit's internal implementation.
 
-## Initial scientific roadmap
+## Scientific roadmap
 
 ### Phase 1 — foundation
 
-- canonical study representation;
-- validation-derived spatial uncertainty;
-- probabilistic AOIs;
-- declarative pipeline spaces;
-- common scalar endpoints;
-- specification curves and audit reports.
+- canonical study representation — complete;
+- validation-derived spatial uncertainty — complete;
+- probabilistic AOIs — complete;
+- declarative pipeline spaces — complete;
+- common scalar endpoints — complete;
+- specification curves and audit reports — complete.
 
 ### Phase 2 — inferential robustness
 
-- adapters for alternative event detectors;
-- interpolation and exclusion-rule variants;
-- QC-threshold multiverses;
-- AOI-boundary perturbation;
-- sampling-rate perturbation;
-- richer robustness surfaces and interaction diagnostics.
+- external detector/backend contracts — complete;
+- AOI-boundary perturbation — complete;
+- sampling-rate perturbation — complete;
+- missingness sensitivity — complete;
+- interaction-aware robustness diagnostics — complete;
+- predeclared conclusion-recovery benchmark — complete;
+- richer interpolation, exclusion-rule, and QC-threshold multiverses — planned.
 
 ### Phase 3 — uncertainty propagation
 
-- spatially varying and anisotropic error models;
-- participant/session-specific measurement models;
-- richer missingness mechanisms and multiple-imputation support;
-- uncertainty-aware TTFF, revisits, and transitions;
-- dynamic-AOI uncertainty;
-- cross-device portability analyses.
+- spatially varying and anisotropic error models — planned;
+- participant/session-specific measurement models — planned;
+- richer missingness mechanisms and multiple-imputation support — planned;
+- uncertainty-aware TTFF, revisits, and transitions — planned;
+- dynamic-AOI uncertainty — planned;
+- cross-device portability analyses — planned.
 
-### Phase 4 — interoperability and validation
+### Phase 4 — interoperability and publication validation
 
-- Eye-Tracking-BIDS import complete; export remains planned;
-- pymovements and pEYES adapters;
-- benchmark datasets with known scientific ground truth;
-- publication-ready provenance and methods reporting.
+- Eye-Tracking-BIDS import — complete; export remains planned;
+- pymovements and pEYES interoperability — complete;
+- known-truth scientific recovery benchmarks — complete;
+- deterministic publication audit bundle and methods wording — complete;
+- multi-detector real-data inferential-robustness case study — next;
+- real-data probabilistic-AOI and sampling/missingness demonstrations — planned;
+- paired examples with high and materially fragile robustness — planned.
 
 ## Explicit non-goals
 
