@@ -1,5 +1,12 @@
 """GazeAudit: uncertainty-aware robustness analysis for eye-tracking research."""
 
+from .adapters import (
+    DetectionResult,
+    DetectorBackend,
+    StudyAdapter,
+    adapt_study,
+    run_detector_backend,
+)
 from .aoi import CircleAOI, RectangleAOI
 from .aoi_audit import (
     compare_hard_probabilistic,
@@ -19,12 +26,18 @@ from .missingness import (
     summarize_missingness,
 )
 from .multiverse import PipelineSpace, run_specs
+from .peyes_adapter import PeyesDetectorAdapter, make_peyes_detector, run_peyes_detector
 from .provenance import (
     canonical_json,
     fingerprint,
     results_manifest,
     software_environment,
     specification_manifest,
+)
+from .pymovements_adapter import (
+    PymovementsGazeAdapter,
+    from_pymovements_dataset,
+    from_pymovements_gaze,
 )
 from .robustness import (
     effect_stability,
@@ -44,10 +57,16 @@ from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
     "CircleAOI",
-    "RectangleAOI",
+    "DetectionResult",
+    "DetectorBackend",
     "GazeStudy",
     "GaussianGazeErrorModel",
+    "PeyesDetectorAdapter",
     "PipelineSpace",
+    "PymovementsGazeAdapter",
+    "RectangleAOI",
+    "StudyAdapter",
+    "adapt_study",
     "aoi_probabilities",
     "benchmark_known_aoi_effect",
     "canonical_json",
@@ -60,13 +79,18 @@ __all__ = [
     "expected_fixation_count",
     "fingerprint",
     "fit_error_model_from_known_truth",
+    "from_pymovements_dataset",
+    "from_pymovements_gaze",
     "hard_aoi_membership",
     "inject_missingness",
+    "make_peyes_detector",
     "marginal_sensitivity",
     "missingness_mask",
     "missingness_sensitivity_curve",
     "pairwise_interaction_sensitivity",
     "results_manifest",
+    "run_detector_backend",
+    "run_peyes_detector",
     "run_specs",
     "sampling_sensitivity_curve",
     "scale_error_model",
@@ -80,4 +104,4 @@ __all__ = [
     "summarize_missingness",
 ]
 
-__version__ = "0.1.0.dev3"
+__version__ = "0.1.0.dev4"

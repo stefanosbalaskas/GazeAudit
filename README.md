@@ -13,7 +13,7 @@ The project combines two methodological pillars in one framework:
 
 ## Scientific scope
 
-GazeAudit is intended to sit **above** existing eye-tracking preprocessing and event-detection tools, not replace them. The package will provide adapters to established ecosystems where possible and focus its own methodological contribution on uncertainty propagation, specification-space analysis, robustness diagnostics, benchmarking, and reproducible audit reports.
+GazeAudit sits **above** existing eye-tracking preprocessing and event-detection tools rather than replacing them. Its methodological contribution is uncertainty propagation, specification-space analysis, robustness diagnostics, benchmarking, and reproducible audit reports, with explicit interoperability contracts for external scientific software.
 
 ```text
 raw / processed gaze
@@ -36,21 +36,26 @@ robustness + uncertainty audit
 
 ## Development status
 
-The repository is in **pre-alpha** development. The first foundation tranche currently implements:
+The repository is in **pre-alpha** development. The current scientific MVP line implements:
 
 - a canonical vendor-neutral `GazeStudy` object;
 - rectangle and circle AOI primitives;
 - a transparent bivariate Gaussian gaze-error model fitted from validation targets;
 - Monte Carlo probabilistic AOI membership;
+- hard-vs-probabilistic AOI comparison, flip probabilities, and boundary-risk summaries;
 - uncertainty-weighted dwell time and fixation counts;
-- declarative `PipelineSpace` specification grids;
-- generic specification execution through `run_specs()`;
-- effect-direction and specification-range summaries;
-- marginal factor-sensitivity diagnostics;
+- declarative `PipelineSpace` specification grids and specification curves;
+- marginal and pairwise interaction sensitivity diagnostics;
+- known-truth AOI and scientific-endpoint recovery benchmarks;
+- spatial-error, sampling-rate, and structured missingness sensitivity analyses;
+- deterministic specification/results provenance fingerprints;
+- generic user adapter protocols for external study and detector backends;
+- pymovements `Gaze`/`Dataset` ingestion;
+- pEYES detector execution through a normalized `DetectionResult` contract;
 - deterministic Markdown robustness reports;
 - automated tests across supported Python versions.
 
-The model is deliberately conservative: the first error model is global and Gaussian so that assumptions are explicit and testable. Spatially varying, participant-specific, robust, dynamic-AOI, missingness, and sampling-rate uncertainty are planned extensions rather than hidden claims in the first implementation.
+The first measurement-error model remains deliberately conservative and global Gaussian so that its assumptions are explicit and testable. GazeAudit does not claim that this baseline describes every tracker, participant, session, or screen region.
 
 ## Quick example
 
@@ -93,6 +98,54 @@ expected_claim_dwell = expected_dwell(
 
 A fixation at an AOI boundary is therefore represented as uncertain membership rather than being forced immediately into one deterministic label.
 
+## Interoperability
+
+GazeAudit's interoperability layer is intentionally narrow: external packages retain responsibility for their own parsing and detection semantics, while GazeAudit normalizes only the information required for robustness analysis.
+
+### pymovements
+
+Install the optional dependency with `pip install "gazeaudit[pymovements]"`.
+
+```python
+from gazeaudit import from_pymovements_gaze
+
+study = from_pymovements_gaze(
+    gaze,
+    coordinate="pixel",
+    component="auto",
+    participant_id="p01",
+)
+```
+
+`component="auto"` accepts only two-component coordinates. Binocular four- or six-component vectors require an explicit `left`, `right`, or `cyclopian` choice so GazeAudit never silently chooses or averages an eye.
+
+### pEYES
+
+pEYES 0.2.x currently requires Python 3.12+. Install with `pip install "gazeaudit[peyes]"` and create the detector through pEYES or GazeAudit's lazy factory.
+
+```python
+from gazeaudit import make_peyes_detector, run_peyes_detector
+
+ivt = make_peyes_detector(
+    "ivt",
+    min_event_duration=40,
+    saccade_velocity_threshold=30,
+)
+
+result = run_peyes_detector(
+    study,
+    ivt,
+    viewer_distance_cm=60,
+    pixel_size_cm=0.027,
+)
+```
+
+The normalized result keeps sample labels separate from per-trial detector metadata. GazeAudit currently requires pixel coordinates for pEYES because the pEYES public detector API interprets `x` and `y` as pixels and converts them using viewer distance and pixel size.
+
+### User-defined adapters
+
+Third-party integrations can implement the runtime-checkable `StudyAdapter` or `DetectorBackend` protocols. Detector backends return `DetectionResult`, which gives multiverse analyses one auditable output contract without forcing external packages into GazeAudit's internal implementation.
+
 ## Initial scientific roadmap
 
 ### Phase 1 — foundation
@@ -117,7 +170,7 @@ A fixation at an AOI boundary is therefore represented as uncertain membership r
 
 - spatially varying and anisotropic error models;
 - participant/session-specific measurement models;
-- missingness sensitivity and multiple-imputation support;
+- richer missingness mechanisms and multiple-imputation support;
 - uncertainty-aware TTFF, revisits, and transitions;
 - dynamic-AOI uncertainty;
 - cross-device portability analyses.
@@ -131,7 +184,7 @@ A fixation at an AOI boundary is therefore represented as uncertain membership r
 
 ## Explicit non-goals
 
-GazeAudit will **not** begin as another generic preprocessing library, eye-tracker driver layer, fixation-detector collection, pupillometry package, heatmap GUI, BIDS-only converter, or LLM assistant. Those capabilities should be delegated to existing scientific tools when possible.
+GazeAudit will **not** become another generic preprocessing library, eye-tracker driver layer, fixation-detector collection, pupillometry package, heatmap GUI, BIDS-only converter, or LLM assistant. Those capabilities should be delegated to existing scientific tools when possible.
 
 ## Scientific principle
 
