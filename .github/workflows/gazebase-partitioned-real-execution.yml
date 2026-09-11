@@ -13,7 +13,7 @@ env:
 
 concurrency:
   group: gazebase-partitioned-real-execution-v1
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   detector:
