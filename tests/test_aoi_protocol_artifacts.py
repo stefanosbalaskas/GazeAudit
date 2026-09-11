@@ -229,7 +229,7 @@ def test_artifact_verifier_detects_result_and_protocol_tampering(tmp_path: Path)
 
     draw_path = root / "draw_effects.csv"
     original = draw_path.read_text(encoding="utf-8")
-    draw_path.write_text(original.replace("150", "151", 1), encoding="utf-8")
+    draw_path.write_text(original + "# tampered\n", encoding="utf-8")
     assert not verify_aoi_uncertainty_artifacts(root)
 
     write_aoi_uncertainty_artifacts(audit, protocol, root, overwrite=True)
