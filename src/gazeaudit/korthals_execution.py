@@ -132,10 +132,13 @@ def prepare_korthals_aligned_data(
     target type, actual target speed (or normalized ``target_speed``), and trajectory.
     ``validations`` must concatenate ``Participant.validation_check()`` outputs.
 
-    The operation order is frozen: author exclusion -> target-type filter -> validation
-    mapping -> 50-Hz nearest-row sampling with earlier-sample tie breaking -> removal of
-    non-finite gaze. Missing mappings and retained trials with zero finite scheduled
-    samples fail closed.
+    Full moving/jumping pairing is checked before the declared author exclusion so
+    unrelated missing trials cannot masquerade as exclusion-induced gaps. The frozen
+    operation order is then author exclusion -> target-type filter -> validation mapping
+    -> 50-Hz nearest-row sampling with earlier-sample tie breaking -> removal of
+    non-finite gaze -> removal of matched cells made incomplete by the declared
+    exclusion. Missing mappings and retained trials with zero finite scheduled samples
+    fail closed.
     """
 
     protocol = verify_korthals_protocol(protocol_document)
@@ -148,6 +151,19 @@ def prepare_korthals_aligned_data(
 
     data = _normalize_aligned_data(aligned_data)
     validation_table = _normalize_validations(validations)
+
+    # This is a guardrail, not an analysis transformation: verify that the canonical
+    # source has complete pairs before the one frozen exclusion is applied.
+    pre_exclusion = data[data["target_type"].isin(KORTHALS_TARGET_TYPES)].copy()
+    if pre_exclusion.empty:
+        raise ValueError("no frozen moving/jumping-circle rows are present")
+    if set(pre_exclusion["target_type"].unique()) != set(KORTHALS_TARGET_TYPES):
+        raise ValueError("source data must contain both frozen target types")
+    pre_exclusion["repetition"] = np.where(
+        pre_exclusion["trial_number"] <= 72, 1, 2
+    ).astype(int)
+    _require_complete_trial_pairing(pre_exclusion)
+
     exclusion = protocol["dataset"]["author_directed_exclusion"]
     excluded = (
         (data["participant_id"] == str(exclusion["participant_id"]))
@@ -203,6 +219,7 @@ def prepare_korthals_aligned_data(
     sampled["error_group"] = list(
         zip(sampled["participant_id"], sampled["validation_nr"].astype(int), strict=True)
     )
+    sampled = _retain_complete_matched_cells(sampled)
     sampled = sampled.sort_values(
         ["participant_id", "trial_number", "scheduled_trial_time", "trial_time"],
         kind="stable",
@@ -650,34 +667,79 @@ def _downsample_trial_50hz(trial: pd.DataFrame) -> pd.DataFrame:
     return sampled
 
 
-def _endpoint_weights(data: pd.DataFrame) -> np.ndarray:
-    required = {
+def _trial_metadata(data: pd.DataFrame) -> pd.DataFrame:
+    columns = [
         "participant_id",
         "trial_number",
         "repetition",
         "target_speed",
         "target_trajectory",
         "target_type",
-    }
-    missing = sorted(required.difference(data.columns))
+    ]
+    missing = sorted(set(columns).difference(data.columns))
     if missing:
         raise ValueError(f"Korthals endpoint data is missing columns: {missing}")
-    if data.empty:
-        raise ValueError("Korthals endpoint data must not be empty")
-
-    frame = data.reset_index(drop=True)
-    trial_meta = frame[list(required)].drop_duplicates()
+    trial_meta = data[columns].drop_duplicates()
     if trial_meta.duplicated(["participant_id", "trial_number"]).any():
         raise ValueError("each participant trial must have one frozen metadata identity")
+    return trial_meta
 
-    cell_keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
-    cells: dict[str, list[tuple[np.ndarray, np.ndarray]]] = {}
-    for key, cell in trial_meta.groupby(cell_keys, sort=True, dropna=False):
+
+def _require_complete_trial_pairing(data: pd.DataFrame) -> None:
+    trial_meta = _trial_metadata(data)
+    keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
+    for key, cell in trial_meta.groupby(keys, sort=True, dropna=False):
+        counts = cell["target_type"].value_counts()
+        if any(int(counts.get(kind, 0)) != 1 for kind in KORTHALS_TARGET_TYPES):
+            raise ValueError(
+                "canonical source contains incomplete or duplicated frozen matched cell: "
+                f"{key!r}"
+            )
+
+
+def _retain_complete_matched_cells(data: pd.DataFrame) -> pd.DataFrame:
+    trial_meta = _trial_metadata(data)
+    keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
+    complete_trial_keys: set[tuple[str, int]] = set()
+    for _, cell in trial_meta.groupby(keys, sort=True, dropna=False):
         counts = cell["target_type"].value_counts()
         if any(int(counts.get(kind, 0)) > 1 for kind in KORTHALS_TARGET_TYPES):
             raise ValueError("matched cells may contain at most one trial per frozen target type")
-        if not all(int(counts.get(kind, 0)) == 1 for kind in KORTHALS_TARGET_TYPES):
-            continue
+        if all(int(counts.get(kind, 0)) == 1 for kind in KORTHALS_TARGET_TYPES):
+            complete_trial_keys.update(
+                (str(row.participant_id), int(row.trial_number))
+                for row in cell.itertuples(index=False)
+            )
+    keep = np.fromiter(
+        (
+            (str(participant), int(trial)) in complete_trial_keys
+            for participant, trial in zip(
+                data["participant_id"], data["trial_number"], strict=True
+            )
+        ),
+        dtype=bool,
+        count=len(data),
+    )
+    retained = data.loc[keep].copy()
+    if retained.empty:
+        raise ValueError("author exclusion leaves no complete frozen matched cells")
+    return retained
+
+
+def _endpoint_weights(data: pd.DataFrame) -> np.ndarray:
+    if data.empty:
+        raise ValueError("Korthals endpoint data must not be empty")
+    frame = data.reset_index(drop=True)
+    trial_meta = _trial_metadata(frame)
+    keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
+    cells: dict[str, list[tuple[np.ndarray, np.ndarray]]] = {}
+    participant_values = frame["participant_id"].astype(str).to_numpy()
+    trial_values = frame["trial_number"].to_numpy(dtype=int)
+
+    for key, cell in trial_meta.groupby(keys, sort=True, dropna=False):
+        counts = cell["target_type"].value_counts()
+        if any(int(counts.get(kind, 0)) != 1 for kind in KORTHALS_TARGET_TYPES):
+            raise ValueError(f"endpoint requires a complete frozen matched cell: {key!r}")
         participant = str(key[0])
         moving_trial = int(
             cell.loc[cell["target_type"] == "moving_circle", "trial_number"].iloc[0]
@@ -685,8 +747,6 @@ def _endpoint_weights(data: pd.DataFrame) -> np.ndarray:
         jumping_trial = int(
             cell.loc[cell["target_type"] == "jumping_circle", "trial_number"].iloc[0]
         )
-        participant_values = frame["participant_id"].astype(str).to_numpy()
-        trial_values = frame["trial_number"].to_numpy(dtype=int)
         moving_rows = np.flatnonzero(
             (participant_values == participant) & (trial_values == moving_trial)
         )
