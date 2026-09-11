@@ -13,6 +13,7 @@ from .aoi_audit import (
     hard_aoi_membership,
     summarize_aoi_risk,
 )
+from .aoi_propagation import AOIEffectUncertaintyAudit, audit_aoi_effect_uncertainty
 from .benchmark import (
     evaluate_aoi_recovery,
     fit_error_model_from_known_truth,
@@ -118,6 +119,7 @@ from .task_contrast import (
 from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
+    "AOIEffectUncertaintyAudit",
     "ARTIFACT_SCHEMA",
     "BIDSEyeTrackingAdapter",
     "BIDSEyeTrackingRecord",
@@ -149,6 +151,7 @@ __all__ = [
     "aoi_conclusion_specifications",
     "aoi_probabilities",
     "assemble_gazebase_partitioned_execution",
+    "audit_aoi_effect_uncertainty",
     "audit_detector_robustness",
     "benchmark_known_aoi_effect",
     "build_conclusion_audit_bundle",
@@ -214,4 +217,4 @@ __all__ = [
     "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev12"
+__version__ = "0.1.0.dev13"
