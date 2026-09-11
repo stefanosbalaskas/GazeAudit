@@ -50,6 +50,13 @@ from .provenance import (
     software_environment,
     specification_manifest,
 )
+from .publication import (
+    PublicationAuditBundle,
+    build_conclusion_audit_bundle,
+    render_publication_markdown,
+    render_publication_methods,
+    verify_publication_audit_bundle,
+)
 from .pymovements_adapter import (
     PymovementsGazeAdapter,
     from_pymovements_dataset,
@@ -83,6 +90,7 @@ __all__ = [
     "GaussianGazeErrorModel",
     "PeyesDetectorAdapter",
     "PipelineSpace",
+    "PublicationAuditBundle",
     "PymovementsGazeAdapter",
     "RectangleAOI",
     "StudyAdapter",
@@ -90,6 +98,7 @@ __all__ = [
     "aoi_conclusion_specifications",
     "aoi_probabilities",
     "benchmark_known_aoi_effect",
+    "build_conclusion_audit_bundle",
     "canonical_json",
     "compare_hard_probabilistic",
     "conclusion_recovery_table",
@@ -113,6 +122,8 @@ __all__ = [
     "parse_bids_entities",
     "read_bids_eyetrack",
     "read_bids_eyetrack_many",
+    "render_publication_markdown",
+    "render_publication_methods",
     "results_manifest",
     "run_canonical_conclusion_benchmark",
     "run_detector_backend",
@@ -130,6 +141,7 @@ __all__ = [
     "summarize_aoi_risk",
     "summarize_conclusion_recovery",
     "summarize_missingness",
+    "verify_publication_audit_bundle",
 ]
 
-__version__ = "0.1.0.dev6"
+__version__ = "0.1.0.dev7"
