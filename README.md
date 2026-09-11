@@ -50,6 +50,7 @@ The repository is in **pre-alpha** development. The current scientific MVP line 
 - spatial-error, sampling-rate, and structured missingness sensitivity analyses;
 - deterministic specification/results provenance fingerprints;
 - generic user adapter protocols for external study and detector backends;
+- direct Eye-Tracking-BIDS `physio.tsv[.gz]` ingestion;
 - pymovements `Gaze`/`Dataset` ingestion;
 - pEYES detector execution through a normalized `DetectionResult` contract;
 - deterministic Markdown robustness reports;
@@ -101,6 +102,23 @@ A fixation at an AOI boundary is therefore represented as uncertain membership r
 ## Interoperability
 
 GazeAudit's interoperability layer is intentionally narrow: external packages retain responsibility for their own parsing and detection semantics, while GazeAudit normalizes only the information required for robustness analysis.
+
+### Eye-Tracking-BIDS
+
+GazeAudit can ingest the current BIDS eye-tracking `physio.tsv` or `physio.tsv.gz` representation directly:
+
+```python
+from gazeaudit import read_bids_eyetrack
+
+record = read_bids_eyetrack(
+    "sub-01_task-search_recording-eye1_physio.tsv.gz"
+)
+study = record.study
+```
+
+The reader follows the current eye-tracking-specific BIDS requirements needed for canonical ingestion: `PhysioType="eyetrack"`, `recording-<label>`, the initial `timestamp`, `x_coordinate`, and `y_coordinate` columns, `RecordedEye`, `SampleCoordinateSystem`, and coordinate/time unit metadata. Timestamps are normalized to milliseconds while the original BIDS timestamp and eye metadata can be retained alongside the canonical columns.
+
+Separate eye files remain separate participant-by-trial streams by default, preventing left/right/cyclopean recordings from being accidentally interleaved. This reader is deliberately not presented as a replacement for the official BIDS Validator.
 
 ### pymovements
 
@@ -177,7 +195,7 @@ Third-party integrations can implement the runtime-checkable `StudyAdapter` or `
 
 ### Phase 4 — interoperability and validation
 
-- Eye-Tracking-BIDS import/export;
+- Eye-Tracking-BIDS import complete; export remains planned;
 - pymovements and pEYES adapters;
 - benchmark datasets with known scientific ground truth;
 - publication-ready provenance and methods reporting.
