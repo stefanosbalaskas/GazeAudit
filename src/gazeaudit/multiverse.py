@@ -28,7 +28,7 @@ class PipelineSpace:
 
     choices: dict[str, tuple[Any, ...]] = field(default_factory=dict)
 
-    def add_choice(self, name: str, values: Iterable[Any]) -> "PipelineSpace":
+    def add_choice(self, name: str, values: Iterable[Any]) -> PipelineSpace:
         values_tuple = tuple(values)
         if not name:
             raise ValueError("choice name must be non-empty")
