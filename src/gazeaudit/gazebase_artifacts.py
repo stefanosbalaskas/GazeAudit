@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -77,9 +78,7 @@ def write_gazebase_execution_artifacts(
         _write_text(destination / "publication_report.md", bundle.markdown)
         _write_text(destination / "publication_methods.txt", bundle.methods_text + "\n")
 
-    scientific_files = sorted(
-        path for path in destination.iterdir() if path.is_file()
-    )
+    scientific_files = sorted(path for path in destination.iterdir() if path.is_file())
     file_records = [_file_record(path) for path in scientific_files]
     artifact_manifest: dict[str, Any] = {
         "schema": ARTIFACT_SCHEMA,
@@ -96,12 +95,8 @@ def write_gazebase_execution_artifacts(
     artifact_manifest["artifact_manifest_fingerprint"] = fingerprint(artifact_manifest)
     _write_json(destination / "artifact_manifest.json", artifact_manifest)
 
-    checksum_targets = sorted(
-        path for path in destination.iterdir() if path.is_file()
-    )
-    checksum_lines = [
-        f"{_sha256_file(path)}  {path.name}" for path in checksum_targets
-    ]
+    checksum_targets = sorted(path for path in destination.iterdir() if path.is_file())
+    checksum_lines = [f"{_sha256_file(path)}  {path.name}" for path in checksum_targets]
     _write_text(destination / "SHA256SUMS", "\n".join(checksum_lines) + "\n")
 
     if not verify_gazebase_execution_artifacts(destination):
@@ -232,8 +227,10 @@ def _series_mapping(series: pd.Series) -> dict[str, Any]:
 
 
 def _json_scalar(value: Any) -> Any:
-    if value is None or isinstance(value, (str, bool, int, float)):
+    if value is None or isinstance(value, (str, bool, int)):
         return value
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
     item = getattr(value, "item", None)
     if callable(item):
         return _json_scalar(item())
