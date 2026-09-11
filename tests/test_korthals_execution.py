@@ -36,6 +36,10 @@ def _aligned_fixture(*, participants=("p1", "p2")) -> pd.DataFrame:
                     gaze_x = 99.0  # would expose wrong tie-breaking at the 20-ms grid point
                 if trial_time == 0.04:
                     gaze_x = np.nan  # selected on-grid, then removed after downsampling
+                # Keep actual_speed deliberately different across target types. If the
+                # adapter ever aliases it to the frozen target_speed design factor,
+                # moving/jumping pairing will fail and these fixtures expose the drift.
+                actual_speed = speed + (0.01 if target_type == "moving_circle" else 0.02)
                 rows.append(
                     {
                         "participant_id": participant,
@@ -46,7 +50,8 @@ def _aligned_fixture(*, participants=("p1", "p2")) -> pd.DataFrame:
                         "target_x": 0.0,
                         "target_y": 0.0,
                         "target_type": target_type,
-                        "actual_speed": speed,
+                        "target_speed": speed,
+                        "actual_speed": actual_speed,
                         "target_trajectory": trajectory,
                     }
                 )
@@ -105,6 +110,8 @@ def test_prepare_applies_frozen_grid_tie_break_validation_mapping_and_gaze_order
         0.019
     }
     assert 99.0 not in set(prepared.data["gaze_x"])
+    assert set(prepared.data["target_speed"]) == {4.0, 6.0}
+    assert set(prepared.data["actual_speed"]) == {4.01, 4.02, 6.01, 6.02}
 
     first = prepared.data[prepared.data["trial_number"].isin([1, 2])]
     second = prepared.data[prepared.data["trial_number"].isin([73, 74])]
@@ -114,6 +121,15 @@ def test_prepare_applies_frozen_grid_tie_break_validation_mapping_and_gaze_order
     assert set(second["repetition"]) == {2}
     assert set(prepared.validation_groups["n_validation"]) == {9}
     assert prepared.source_identity["protocol_fingerprint"] == KORTHALS_PROTOCOL_FINGERPRINT
+
+
+def test_prepare_requires_frozen_target_speed_even_when_actual_speed_exists():
+    aligned = _aligned_fixture(participants=("p1",)).drop(columns="target_speed")
+    with pytest.raises(ValueError, match="target_speed"):
+        prepare_korthals_aligned_data(
+            aligned,
+            _validation_fixture(participants=("p1",)),
+        )
 
 
 def test_prepare_drops_only_cell_made_incomplete_by_author_directed_exclusion():
