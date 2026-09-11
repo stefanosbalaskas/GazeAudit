@@ -104,7 +104,6 @@ def read_bids_eyetrack(
         source,
         sep="\t",
         header=None,
-        names=list(columns),
         na_values=["n/a", "N/A"],
         compression="infer",
     )
@@ -112,6 +111,7 @@ def read_bids_eyetrack(
         raise ValueError(
             f"physio data has {frame.shape[1]} columns but sidecar declares {len(columns)}"
         )
+    frame.columns = list(columns)
     if frame.empty:
         raise ValueError("eye-tracking physio file must contain at least one row")
 
@@ -131,6 +131,11 @@ def read_bids_eyetrack(
     timestamp_ms = timestamp * _time_factor_to_ms(timestamp_unit)
 
     entities = parse_bids_entities(source.name)
+    if "recording" not in entities:
+        raise ValueError(
+            "Eye-Tracking-BIDS requires a recording-<label> entity for each eye recording"
+        )
+
     participant = participant_id
     if participant is None:
         subject = entities.get("sub")
@@ -155,7 +160,7 @@ def read_bids_eyetrack(
         output["bids_timestamp"] = timestamp
         output["recorded_eye"] = str(metadata["RecordedEye"])
         output["sample_coordinate_system"] = str(metadata["SampleCoordinateSystem"])
-        output["bids_recording"] = entities.get("recording", "")
+        output["bids_recording"] = entities["recording"]
         for column in frame.columns:
             if column in _REQUIRED_INITIAL_COLUMNS:
                 continue
