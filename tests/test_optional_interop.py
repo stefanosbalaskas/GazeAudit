@@ -5,10 +5,12 @@ import pandas as pd
 import pytest
 
 from gazeaudit import (
+    GAZEBASE_DETECTORS,
     GazeStudy,
     from_pymovements_gaze,
     make_peyes_detector,
     run_peyes_detector,
+    verify_gazebase_software_versions,
 )
 
 
@@ -70,3 +72,28 @@ def test_live_peyes_02_detector_contract():
     assert result.samples["event_label"].notna().all()
     assert len(result.metadata) == 1
     assert result.metadata.loc[0, "algorithm"] == "ivt"
+
+
+def test_live_gazebase_frozen_detector_contract():
+    pytest.importorskip("pymovements")
+    pytest.importorskip("peyes")
+
+    versions = verify_gazebase_software_versions()
+    assert versions["pymovements"] == "0.28.0"
+    assert versions["peyes"] == "0.2.2"
+
+    resolved = {}
+    for algorithm in GAZEBASE_DETECTORS:
+        detector = make_peyes_detector(
+            algorithm,
+            missing_value=np.nan,
+            min_event_duration=40.0,
+            pad_blinks_time=0.0,
+            name=algorithm,
+        )
+        defaults = detector.get_default_params()
+        assert isinstance(defaults, dict)
+        resolved[algorithm] = defaults
+
+    assert tuple(resolved) == GAZEBASE_DETECTORS
+    assert all(isinstance(parameters, dict) for parameters in resolved.values())
