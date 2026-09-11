@@ -14,8 +14,6 @@ concurrency:
 
 env:
   SCIENTIFIC_COMMIT: c8ad44eb0431852d82c7ceffc5d07641a554dc17
-  FROZEN_RUN_ROOT: ${{ runner.temp }}/gazebase-frozen-run-v1
-  DATASET_ROOT: ${{ runner.temp }}/GazeBase
 
 jobs:
   execute:
@@ -23,6 +21,13 @@ jobs:
     timeout-minutes: 240
 
     steps:
+      - name: Initialize frozen execution paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "FROZEN_RUN_ROOT=$RUNNER_TEMP/gazebase-frozen-run-v1" >> "$GITHUB_ENV"
+          echo "DATASET_ROOT=$RUNNER_TEMP/GazeBase" >> "$GITHUB_ENV"
+
       - name: Checkout exact certified scientific commit
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -116,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gazebase-first-frozen-real-execution-c8ad44eb
-          path: ${{ env.FROZEN_RUN_ROOT }}
+          path: ${{ runner.temp }}/gazebase-frozen-run-v1
           if-no-files-found: error
           retention-days: 90
           compression-level: 6
