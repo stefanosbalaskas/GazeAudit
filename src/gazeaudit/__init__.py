@@ -35,6 +35,20 @@ from .conclusion import (
     summarize_conclusion_recovery,
 )
 from .endpoints import expected_dwell, expected_fixation_count
+from .gazebase_execution import (
+    GAZEBASE_ARCHIVE_MD5,
+    GAZEBASE_CASE_STUDY_ID,
+    GAZEBASE_DETECTORS,
+    GAZEBASE_PROTOCOL_FINGERPRINT,
+    GAZEBASE_TASKS,
+    GazeBaseExecution,
+    PreparedGazeBaseData,
+    load_gazebase_protocol,
+    prepare_gazebase_pymovements_dataset,
+    run_gazebase_multidetector_execution,
+    verify_gazebase_protocol,
+    verify_gazebase_software_versions,
+)
 from .missingness import (
     inject_missingness,
     missingness_mask,
@@ -95,10 +109,17 @@ __all__ = [
     "DetectionResult",
     "DetectorBackend",
     "DetectorRobustnessAudit",
+    "GAZEBASE_ARCHIVE_MD5",
+    "GAZEBASE_CASE_STUDY_ID",
+    "GAZEBASE_DETECTORS",
+    "GAZEBASE_PROTOCOL_FINGERPRINT",
+    "GAZEBASE_TASKS",
+    "GazeBaseExecution",
     "GazeStudy",
     "GaussianGazeErrorModel",
     "PeyesDetectorAdapter",
     "PipelineSpace",
+    "PreparedGazeBaseData",
     "PublicationAuditBundle",
     "PymovementsGazeAdapter",
     "RectangleAOI",
@@ -127,6 +148,7 @@ __all__ = [
     "from_pymovements_gaze",
     "hard_aoi_membership",
     "inject_missingness",
+    "load_gazebase_protocol",
     "make_peyes_detector",
     "marginal_sensitivity",
     "missingness_mask",
@@ -134,6 +156,7 @@ __all__ = [
     "pairwise_interaction_sensitivity",
     "parse_bids_entities",
     "participant_task_fixation_summary",
+    "prepare_gazebase_pymovements_dataset",
     "read_bids_eyetrack",
     "read_bids_eyetrack_many",
     "render_publication_markdown",
@@ -141,6 +164,7 @@ __all__ = [
     "results_manifest",
     "run_canonical_conclusion_benchmark",
     "run_detector_backend",
+    "run_gazebase_multidetector_execution",
     "run_paired_conclusion_benchmark",
     "run_peyes_detector",
     "run_specs",
@@ -155,7 +179,9 @@ __all__ = [
     "summarize_aoi_risk",
     "summarize_conclusion_recovery",
     "summarize_missingness",
+    "verify_gazebase_protocol",
+    "verify_gazebase_software_versions",
     "verify_publication_audit_bundle",
 ]
 
-__version__ = "0.1.0.dev8"
+__version__ = "0.1.0.dev9"
