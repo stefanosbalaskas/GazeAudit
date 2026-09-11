@@ -61,13 +61,16 @@ class PeyesDetectorAdapter:
         grouped = output.groupby([study.participant, study.trial], sort=False, dropna=False)
         for key, frame in grouped:
             participant_value, trial_value = _group_key(key)
-            timestamps = pd.to_numeric(frame[study.timestamp], errors="coerce").to_numpy(dtype=float)
+            timestamps = pd.to_numeric(
+                frame[study.timestamp], errors="coerce"
+            ).to_numpy(dtype=float)
             if np.any(~np.isfinite(timestamps)):
                 raise ValueError("pEYES detector timestamps must be finite")
             timestamps_ms = timestamps * _time_factor(self.timestamp_unit)
             if timestamps_ms.size > 1 and np.any(np.diff(timestamps_ms) <= 0):
                 raise ValueError(
-                    "pEYES requires strictly increasing timestamps within each participant-by-trial stream"
+                    "pEYES requires strictly increasing timestamps within each "
+                    "participant-by-trial stream"
                 )
 
             x = pd.to_numeric(frame[study.x], errors="coerce").to_numpy(dtype=float)
@@ -82,7 +85,8 @@ class PeyesDetectorAdapter:
             labels = list(labels)
             if len(labels) != len(frame):
                 raise ValueError(
-                    "pEYES detector returned a label sequence whose length does not match the input stream"
+                    "pEYES detector returned a label sequence whose length does not "
+                    "match the input stream"
                 )
 
             normalized_labels = [_label_name(label) for label in labels]
