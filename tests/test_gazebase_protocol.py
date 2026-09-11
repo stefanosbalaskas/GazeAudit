@@ -1,12 +1,10 @@
 import hashlib
 import json
-import pathlib
-
-import pytest
+from pathlib import Path
 
 
 PROTOCOL_PATH = (
-    pathlib.Path(__file__).resolve().parents[1]
+    Path(__file__).resolve().parents[1]
     / "docs"
     / "case_studies"
     / "gazebase_multidetector_protocol.json"
@@ -76,7 +74,7 @@ def test_protocol_freezes_fail_closed_completeness_and_recovery_rules():
     assert rule["relative_tolerance"] == 0.20
     assert rule["absolute_tolerance"] is None
     assert rule["require_sign"] is True
-    assert rule["minimum_recovery_fraction"] == pytest.approx(6 / 7)
+    assert rule["minimum_recovery_fraction"] == 6 / 7
     assert rule["minimum_recovered_detectors"] == 6
     assert rule["n_predeclared_detectors"] == 7
     assert rule["uses_p_values"] is False
