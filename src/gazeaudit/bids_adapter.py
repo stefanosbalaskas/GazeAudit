@@ -9,11 +9,11 @@ GazeAudit ingestion; it is not a replacement for the official BIDS Validator.
 
 from __future__ import annotations
 
-import json
-import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+import json
 from pathlib import Path
+import re
 from typing import Any
 
 import numpy as np
@@ -105,18 +105,13 @@ def read_bids_eyetrack(
             "timestamp, x_coordinate, y_coordinate"
         )
 
-    try:
-        frame = pd.read_csv(
-            source,
-            sep="\t",
-            header=None,
-            na_values=["n/a", "N/A"],
-            compression="infer",
-        )
-    except pd.errors.EmptyDataError as exc:
-        raise ValueError(
-            "eye-tracking physio file must contain at least one row"
-        ) from exc
+    frame = pd.read_csv(
+        source,
+        sep="\t",
+        header=None,
+        na_values=["n/a", "N/A"],
+        compression="infer",
+    )
     if frame.shape[1] != len(columns):
         raise ValueError(
             f"physio data has {frame.shape[1]} columns but sidecar declares "
