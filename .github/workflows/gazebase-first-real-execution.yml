@@ -1,0 +1,158 @@
+name: GazeBase first frozen real-data execution
+
+on:
+  push:
+    branches:
+      - validation/gazebase-first-real-execution-v1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gazebase-first-real-execution-v1
+  cancel-in-progress: false
+
+env:
+  SCIENTIFIC_COMMIT: c8ad44eb0431852d82c7ceffc5d07641a554dc17
+  FROZEN_RUN_ROOT: ${{ runner.temp }}/gazebase-frozen-run-v1
+  DATASET_ROOT: ${{ runner.temp }}/GazeBase
+
+jobs:
+  execute:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout exact certified scientific commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: c8ad44eb0431852d82c7ceffc5d07641a554dc17
+          fetch-depth: 1
+
+      - name: Verify exact scientific commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$SCIENTIFIC_COMMIT"
+          printf '%s\n' "$actual" > "$RUNNER_TEMP/scientific-commit.txt"
+
+      - name: Set up exact Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Install frozen case-study dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade 'pip==26.2.1'
+          python -m pip install -e '.[gazebase]'
+
+      - name: Capture pre-execution environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$FROZEN_RUN_ROOT/execution-envelope"
+          cp "$RUNNER_TEMP/scientific-commit.txt" "$FROZEN_RUN_ROOT/execution-envelope/scientific-commit.txt"
+          python -VV > "$FROZEN_RUN_ROOT/execution-envelope/python-version.txt" 2>&1
+          python -m pip freeze --all > "$FROZEN_RUN_ROOT/execution-envelope/pip-freeze.txt"
+          uname -a > "$FROZEN_RUN_ROOT/execution-envelope/uname.txt"
+          cat /etc/os-release > "$FROZEN_RUN_ROOT/execution-envelope/os-release.txt"
+          df -h > "$FROZEN_RUN_ROOT/execution-envelope/disk-before.txt"
+
+      - name: Execute frozen protocol without exposing outcomes
+        id: frozen_execution
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$FROZEN_RUN_ROOT/scientific-artifacts"
+          set +e
+          gazeaudit-gazebase-run \
+            --dataset-root "$DATASET_ROOT" \
+            --output-dir "$FROZEN_RUN_ROOT/scientific-artifacts" \
+            --gazeaudit-commit "$SCIENTIFIC_COMMIT" \
+            --download \
+            > "$FROZEN_RUN_ROOT/execution-envelope/runner-summary.json" \
+            2> "$FROZEN_RUN_ROOT/execution-envelope/runner-stderr.log"
+          status=$?
+          set -e
+          printf '%s\n' "$status" > "$FROZEN_RUN_ROOT/execution-envelope/runner-exit-status.txt"
+          df -h > "$FROZEN_RUN_ROOT/execution-envelope/disk-after.txt"
+          if [ "$status" -eq 0 ]; then
+            python - <<'PY' > "$FROZEN_RUN_ROOT/execution-envelope/verification.txt" 2>&1
+          from gazeaudit import verify_gazebase_execution_artifacts
+          from pathlib import Path
+          import os
+
+          root = Path(os.environ['FROZEN_RUN_ROOT']) / 'scientific-artifacts'
+          ok = verify_gazebase_execution_artifacts(root)
+          print(f'verified={str(ok).lower()}')
+          raise SystemExit(0 if ok else 2)
+          PY
+            verification_status=$?
+            if [ "$verification_status" -ne 0 ]; then
+              printf '%s\n' "$verification_status" > "$FROZEN_RUN_ROOT/execution-envelope/verification-exit-status.txt"
+              printf '%s\n' '2' > "$FROZEN_RUN_ROOT/execution-envelope/final-exit-status.txt"
+              exit 0
+            fi
+          fi
+          printf '%s\n' "$status" > "$FROZEN_RUN_ROOT/execution-envelope/final-exit-status.txt"
+
+      - name: Checksum complete execution envelope
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$FROZEN_RUN_ROOT"
+          find execution-envelope -type f -print0 \
+            | sort -z \
+            | xargs -0 sha256sum \
+            > EXECUTION_ENVELOPE_SHA256SUMS
+
+      - name: Archive before interpretation
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gazebase-first-frozen-real-execution-c8ad44eb
+          path: ${{ env.FROZEN_RUN_ROOT }}
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
+
+      - name: Reveal archived execution summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'The execution envelope has already been uploaded as a GitHub Actions artifact.'
+          if [ -f "$FROZEN_RUN_ROOT/execution-envelope/runner-summary.json" ]; then
+            echo '--- runner-summary.json ---'
+            cat "$FROZEN_RUN_ROOT/execution-envelope/runner-summary.json"
+          fi
+          if [ -f "$FROZEN_RUN_ROOT/scientific-artifacts/summary.json" ]; then
+            echo '--- scientific-artifacts/summary.json ---'
+            cat "$FROZEN_RUN_ROOT/scientific-artifacts/summary.json"
+          fi
+          if [ -f "$FROZEN_RUN_ROOT/scientific-artifacts/artifact_manifest.json" ]; then
+            echo '--- scientific-artifacts/artifact_manifest.json ---'
+            cat "$FROZEN_RUN_ROOT/scientific-artifacts/artifact_manifest.json"
+          fi
+          echo '--- runner-exit-status.txt ---'
+          cat "$FROZEN_RUN_ROOT/execution-envelope/runner-exit-status.txt" || true
+          echo '--- verification.txt ---'
+          cat "$FROZEN_RUN_ROOT/execution-envelope/verification.txt" || true
+          echo '--- runner-stderr.log (tail) ---'
+          tail -n 80 "$FROZEN_RUN_ROOT/execution-envelope/runner-stderr.log" || true
+
+      - name: Fail closed after archival if execution failed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          status="$(cat "$FROZEN_RUN_ROOT/execution-envelope/final-exit-status.txt" 2>/dev/null || printf '99')"
+          if [ "$status" != '0' ]; then
+            echo "Frozen execution failed with archived status $status" >&2
+            exit "$status"
+          fi
