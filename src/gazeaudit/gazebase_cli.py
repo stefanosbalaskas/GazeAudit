@@ -8,10 +8,8 @@ from pathlib import Path
 from typing import Sequence
 
 from .gazebase_artifacts import write_gazebase_execution_artifacts
-from .gazebase_execution import (
-    prepare_gazebase_pymovements_dataset,
-    run_gazebase_multidetector_execution,
-)
+from .gazebase_execution import run_gazebase_multidetector_execution
+from .gazebase_pymovements import prepare_gazebase_pymovements_dataset
 from .provenance import canonical_json
 
 
