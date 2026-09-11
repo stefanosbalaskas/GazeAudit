@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gazeaudit"
-version = "0.1.0.dev9"
+version = "0.1.0.dev10"
 description = "Measurement uncertainty and inferential robustness for eye-tracking research"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -58,6 +58,13 @@ interop = [
   "pymovements>=0.28,<0.29",
   "peyes>=0.2.2,<0.3; python_version >= '3.12'"
 ]
+gazebase = [
+  "pymovements==0.28.0",
+  "peyes==0.2.2; python_version >= '3.12'"
+]
+
+[project.scripts]
+gazeaudit-gazebase-run = "gazeaudit.gazebase_cli:main"
 
 [project.urls]
 Homepage = "https://github.com/stefanosbalaskas/GazeAudit"
