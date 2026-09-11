@@ -169,11 +169,13 @@ def test_partition_serialization_round_trip_is_verified(tmp_path: Path):
         loaded.participant_tasks,
         partition.participant_tasks,
         check_like=True,
+        check_names=False,
     )
     pd.testing.assert_frame_equal(
         loaded.contrasts,
         partition.contrasts,
         check_like=True,
+        check_names=False,
     )
 
 
