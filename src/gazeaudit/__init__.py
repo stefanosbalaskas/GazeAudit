@@ -19,6 +19,12 @@ from .robustness import (
     pairwise_interaction_sensitivity,
     specification_curve,
 )
+from .sampling import downsample_gaze, sampling_sensitivity_curve
+from .scientific_benchmark import (
+    benchmark_known_aoi_effect,
+    condition_dwell_effect,
+    simulate_known_aoi_effect,
+)
 from .sensitivity import scale_error_model, spatial_sensitivity_curve
 from .study import GazeStudy
 from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
@@ -30,7 +36,10 @@ __all__ = [
     "GaussianGazeErrorModel",
     "PipelineSpace",
     "aoi_probabilities",
+    "benchmark_known_aoi_effect",
     "compare_hard_probabilistic",
+    "condition_dwell_effect",
+    "downsample_gaze",
     "effect_stability",
     "evaluate_aoi_recovery",
     "expected_dwell",
@@ -40,11 +49,13 @@ __all__ = [
     "marginal_sensitivity",
     "pairwise_interaction_sensitivity",
     "run_specs",
+    "sampling_sensitivity_curve",
     "scale_error_model",
     "simulate_boundary_data",
+    "simulate_known_aoi_effect",
     "spatial_sensitivity_curve",
     "specification_curve",
     "summarize_aoi_risk",
 ]
 
-__version__ = "0.1.0.dev1"
+__version__ = "0.1.0.dev2"
