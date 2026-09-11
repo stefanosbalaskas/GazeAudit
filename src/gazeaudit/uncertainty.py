@@ -203,8 +203,8 @@ class GroupedGaussianGazeErrorModel:
 
         ``n_validation`` and ``bias`` may be common to every group or supplied as
         mappings keyed identically to ``mean_radial_errors``. The same Rayleigh-to-
-        Gaussian assumption documented by :meth:`GaussianGazeErrorModel.from_mean_radial_error`
-        applies independently to every group.
+        Gaussian assumption documented by ``GaussianGazeErrorModel`` applies
+        independently to every group.
         """
 
         if not isinstance(mean_radial_errors, Mapping) or not mean_radial_errors:
@@ -237,8 +237,10 @@ class GroupedGaussianGazeErrorModel:
     def validate_groups(self, groups: Sequence[Any], *, n_observations: int) -> np.ndarray:
         """Validate and return one object-valued group key per observation."""
 
-        values = np.asarray(list(groups), dtype=object)
-        if values.ndim != 1 or len(values) != n_observations:
+        raw = list(groups)
+        values = np.empty(len(raw), dtype=object)
+        values[:] = raw
+        if len(values) != n_observations:
             raise ValueError("groups must be one-dimensional and match observations")
         for value in values:
             self.model_for(value)
@@ -289,7 +291,9 @@ def aoi_probabilities(
             rng=rng,
         )
     else:
-        raise TypeError("error_model must be GaussianGazeErrorModel or GroupedGaussianGazeErrorModel")
+        raise TypeError(
+            "error_model must be GaussianGazeErrorModel or GroupedGaussianGazeErrorModel"
+        )
 
     n_observations = latent.shape[0]
     flattened = latent.reshape(-1, 2)
