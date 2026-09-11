@@ -1,20 +1,21 @@
 """Frozen-protocol execution support for the Korthals et al. AOI case study.
 
-The adapter intentionally starts *after* the companion repository's canonical
-``OriginalPreprocessor`` gaze/target preprocessing and alignment.  It binds those
-aligned tables to the predeclared 50-Hz representation, validation-block mapping,
-balanced paired endpoint, grouped measurement-error model, and interpretation rule.
+The adapter starts after the companion repository's canonical ``OriginalPreprocessor``
+gaze/target preprocessing and alignment. It binds aligned tables to the predeclared
+50-Hz representation, validation-block mapping, paired endpoint, grouped measurement
+error model, and interpretation rule.
 
-No public-data download or endpoint execution happens at import time.  This keeps
-protocol implementation testable on synthetic fixtures before any target scientific
-result is inspected.
+No public-data download or endpoint execution happens at import time. The protocol
+implementation can therefore be certified on synthetic fixtures before any target
+scientific result is inspected.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass
 from importlib import resources
 from pathlib import Path
@@ -91,14 +92,19 @@ def verify_korthals_protocol(
     checks = {
         "fingerprint": protocol.get("protocol_fingerprint") == KORTHALS_PROTOCOL_FINGERPRINT,
         "case_study": protocol.get("case_study_id") == KORTHALS_CASE_STUDY_ID,
-        "companion_commit": protocol["dataset"].get("companion_commit")
-        == KORTHALS_COMPANION_COMMIT,
-        "target_types": tuple(protocol["dataset"].get("trial_types", ()))
-        == KORTHALS_TARGET_TYPES,
-        "sampling_hz": float(protocol["dataset"]["sampling"].get("target_hz", -1.0))
-        == 50.0,
-        "validation_group": tuple(protocol["validation"].get("grouping", ()))
-        == ("participant_id", "validation_nr"),
+        "companion_commit": (
+            protocol["dataset"].get("companion_commit") == KORTHALS_COMPANION_COMMIT
+        ),
+        "target_types": (
+            tuple(protocol["dataset"].get("trial_types", ())) == KORTHALS_TARGET_TYPES
+        ),
+        "sampling_hz": (
+            float(protocol["dataset"]["sampling"].get("target_hz", -1.0)) == 50.0
+        ),
+        "validation_group": (
+            tuple(protocol["validation"].get("grouping", ()))
+            == ("participant_id", "validation_nr")
+        ),
         "validation_metric": protocol["validation"].get("metric") == "error_avg",
         "aoi_geometry": protocol["aoi"].get("geometry") == "circle",
         "aoi_radius": float(protocol["aoi"].get("radius", -1.0)) == 1.0,
@@ -121,23 +127,15 @@ def prepare_korthals_aligned_data(
 ) -> PreparedKorthalsData:
     """Bind canonical companion-preprocessed gaze/target data to protocol v1.
 
-    Parameters
-    ----------
-    aligned_data:
-        Canonically preprocessed and gaze-target aligned rows. Required columns are
-        ``participant_id``, ``trial_number``, ``trial_time``, ``gaze_x``, ``gaze_y``,
-        ``target_x``, ``target_y``, ``target_type``, ``actual_speed`` (or the already
-        normalized ``target_speed``), and ``target_trajectory``.
-    validations:
-        Concatenated outputs of ``Participant.validation_check()``.  The adapter uses
-        ``participant_id``, ``validation_nr``, ``error_avg``, ``first_trial`` and
-        ``last_trial`` exactly as declared by the frozen protocol.
+    ``aligned_data`` must contain canonical target-aligned companion output with
+    participant/trial identifiers, trial-relative time, gaze and target coordinates,
+    target type, actual target speed (or normalized ``target_speed``), and trajectory.
+    ``validations`` must concatenate ``Participant.validation_check()`` outputs.
 
-    The function applies the author-directed exclusion, selects the two frozen target
-    types, maps trials to validation blocks, samples a deterministic 50-Hz nearest-row
-    grid with earlier-sample tie breaking, *then* drops non-finite gaze rows.  Missing
-    validation mappings and retained trials with zero finite scheduled samples fail
-    closed.
+    The operation order is frozen: author exclusion -> target-type filter -> validation
+    mapping -> 50-Hz nearest-row sampling with earlier-sample tie breaking -> removal of
+    non-finite gaze. Missing mappings and retained trials with zero finite scheduled
+    samples fail closed.
     """
 
     protocol = verify_korthals_protocol(protocol_document)
@@ -150,7 +148,6 @@ def prepare_korthals_aligned_data(
 
     data = _normalize_aligned_data(aligned_data)
     validation_table = _normalize_validations(validations)
-
     exclusion = protocol["dataset"]["author_directed_exclusion"]
     excluded = (
         (data["participant_id"] == str(exclusion["participant_id"]))
@@ -168,30 +165,22 @@ def prepare_korthals_aligned_data(
         raise ValueError("prepared data must contain both frozen target types")
 
     trial_mapping = _validation_trial_mapping(data, validation_table)
-    data["validation_nr"] = [
-        trial_mapping[(participant, int(trial))][0]
-        for participant, trial in zip(
-            data["participant_id"], data["trial_number"], strict=True
-        )
-    ]
-    data["error_avg"] = [
-        trial_mapping[(participant, int(trial))][1]
-        for participant, trial in zip(
-            data["participant_id"], data["trial_number"], strict=True
-        )
-    ]
+    keys = zip(data["participant_id"], data["trial_number"], strict=True)
+    mapped = [trial_mapping[(participant, int(trial))] for participant, trial in keys]
+    data["validation_nr"] = [value[0] for value in mapped]
+    data["error_avg"] = [value[1] for value in mapped]
 
-    sampled_parts: list[pd.DataFrame] = []
-    for _, trial in data.groupby(["participant_id", "trial_number"], sort=True):
-        sampled_parts.append(_downsample_trial_50hz(trial))
+    sampled_parts = [
+        _downsample_trial_50hz(trial)
+        for _, trial in data.groupby(["participant_id", "trial_number"], sort=True)
+    ]
     sampled = pd.concat(sampled_parts, ignore_index=True)
-
     target_points = sampled[["target_x", "target_y"]].to_numpy(dtype=float)
     if np.any(~np.isfinite(target_points)):
         raise ValueError("target coordinates must remain finite on the scheduled grid")
 
-    finite_gaze = np.isfinite(sampled[["gaze_x", "gaze_y"]].to_numpy(dtype=float)).all(axis=1)
-    sampled = sampled.loc[finite_gaze].copy()
+    gaze = sampled[["gaze_x", "gaze_y"]].to_numpy(dtype=float)
+    sampled = sampled.loc[np.isfinite(gaze).all(axis=1)].copy()
     if sampled.empty:
         raise ValueError("no finite gaze rows remain after frozen 50-Hz sampling")
 
@@ -218,8 +207,7 @@ def prepare_korthals_aligned_data(
         ["participant_id", "trial_number", "scheduled_trial_time", "trial_time"],
         kind="stable",
     ).reset_index(drop=True)
-
-    _validate_balanced_endpoint_structure(sampled)
+    _endpoint_weights(sampled)
 
     used_groups = set(sampled["error_group"])
     validation_groups = validation_table.copy()
@@ -240,7 +228,10 @@ def prepare_korthals_aligned_data(
     validation_groups["n_validation"] = int(protocol["validation"]["n_validation_points"])
     validation_groups = validation_groups[
         ["participant_id", "validation_nr", "error_avg", "n_validation", "error_group"]
-    ].sort_values(["participant_id", "validation_nr"], kind="stable").reset_index(drop=True)
+    ]
+    validation_groups = validation_groups.sort_values(
+        ["participant_id", "validation_nr"], kind="stable"
+    ).reset_index(drop=True)
 
     participant_ids = sorted(sampled["participant_id"].unique().tolist())
     retained_trials = (
@@ -249,10 +240,12 @@ def prepare_korthals_aligned_data(
         .sort_values(["participant_id", "trial_number"], kind="stable")
         .to_dict(orient="records")
     )
-    supplied_identity = {} if source_identity is None else json.loads(canonical_json(source_identity))
+    supplied_identity = (
+        {} if source_identity is None else json.loads(canonical_json(source_identity))
+    )
     if not isinstance(supplied_identity, dict):
         raise TypeError("source_identity must normalize to an object")
-    forbidden = {
+    protected = {
         "case_study_id",
         "companion_commit",
         "protocol_fingerprint",
@@ -260,9 +253,13 @@ def prepare_korthals_aligned_data(
         "participant_fingerprint",
         "retained_trial_count",
         "retained_trial_fingerprint",
-    }.intersection(supplied_identity)
+    }
+    forbidden = protected.intersection(supplied_identity)
     if forbidden:
-        raise ValueError(f"source_identity may not override frozen identity fields: {sorted(forbidden)}")
+        names = sorted(forbidden)
+        raise ValueError(
+            f"source_identity may not override frozen identity fields: {names}"
+        )
     identity = {
         **supplied_identity,
         "case_study_id": KORTHALS_CASE_STUDY_ID,
@@ -273,79 +270,14 @@ def prepare_korthals_aligned_data(
         "retained_trial_count": len(retained_trials),
         "retained_trial_fingerprint": fingerprint(retained_trials),
     }
-    return PreparedKorthalsData(
-        data=sampled,
-        validation_groups=validation_groups,
-        source_identity=identity,
-    )
+    return PreparedKorthalsData(sampled, validation_groups, identity)
 
 
 def korthals_paired_occupancy_effect(data: pd.DataFrame, membership: np.ndarray) -> float:
     """Frozen unweighted jumping-minus-moving occupancy estimand."""
 
-    values = np.asarray(membership, dtype=float)
-    if values.ndim != 1 or len(values) != len(data):
-        raise ValueError("membership must be one-dimensional and match data rows")
-    if np.any(~np.isfinite(values)) or np.any((values < 0.0) | (values > 1.0)):
-        raise ValueError("membership must contain finite values between 0 and 1")
-
-    frame = data[
-        [
-            "participant_id",
-            "trial_number",
-            "repetition",
-            "target_speed",
-            "target_trajectory",
-            "target_type",
-        ]
-    ].copy()
-    frame["membership"] = values
-    trial = (
-        frame.groupby(
-            [
-                "participant_id",
-                "trial_number",
-                "repetition",
-                "target_speed",
-                "target_trajectory",
-                "target_type",
-            ],
-            sort=True,
-            dropna=False,
-        )["membership"]
-        .mean()
-        .reset_index(name="occupancy")
-    )
-
-    cell_keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
-    contrasts: list[dict[str, Any]] = []
-    for key, cell in trial.groupby(cell_keys, sort=True, dropna=False):
-        counts = cell["target_type"].value_counts()
-        if any(int(counts.get(kind, 0)) > 1 for kind in KORTHALS_TARGET_TYPES):
-            raise ValueError("matched cells may contain at most one trial per frozen target type")
-        if not all(int(counts.get(kind, 0)) == 1 for kind in KORTHALS_TARGET_TYPES):
-            continue
-        moving = float(cell.loc[cell["target_type"] == "moving_circle", "occupancy"].iloc[0])
-        jumping = float(cell.loc[cell["target_type"] == "jumping_circle", "occupancy"].iloc[0])
-        participant = key[0] if isinstance(key, tuple) else key
-        contrasts.append(
-            {
-                "participant_id": participant,
-                "contrast": jumping - moving,
-            }
-        )
-    if not contrasts:
-        raise ValueError("no complete frozen matched cells are available")
-    contrast_frame = pd.DataFrame(contrasts)
-    participant_effects = contrast_frame.groupby("participant_id", sort=True)["contrast"].mean()
-    expected_participants = set(frame["participant_id"])
-    if set(participant_effects.index) != expected_participants:
-        missing = sorted(expected_participants.difference(participant_effects.index))
-        raise ValueError(f"participants without complete matched cells fail closed: {missing}")
-    result = float(participant_effects.mean())
-    if not np.isfinite(result):
-        raise ValueError("frozen Korthals endpoint must be finite")
-    return result
+    values = _validate_membership(membership, len(data))
+    return float(np.dot(_endpoint_weights(data), values))
 
 
 def run_korthals_aoi_execution(
@@ -379,12 +311,18 @@ def run_korthals_aoi_execution(
         float(protocol["aoi"]["cy"]),
         float(protocol["aoi"]["radius"]),
     )
+    weights = _endpoint_weights(prepared.data)
+
+    def frozen_endpoint(_data: pd.DataFrame, membership: np.ndarray) -> float:
+        values = _validate_membership(membership, len(weights))
+        return float(np.dot(weights, values))
+
     monte_carlo = protocol["monte_carlo"]
     audit = audit_aoi_effect_uncertainty(
         prepared.data,
         aoi,
         model,
-        korthals_paired_occupancy_effect,
+        frozen_endpoint,
         observed_x="observed_x",
         observed_y="observed_y",
         error_group=prepared.data["error_group"].tolist(),
@@ -421,7 +359,7 @@ def write_korthals_execution_artifacts(
     *,
     overwrite: bool = False,
 ) -> dict[str, Any]:
-    """Write and verify a checksummed outer envelope around the generic AOI audit."""
+    """Write and verify a checksummed envelope around the generic AOI audit."""
 
     if not isinstance(execution, KorthalsAOIExecution):
         raise TypeError("execution must be KorthalsAOIExecution")
@@ -430,7 +368,9 @@ def write_korthals_execution_artifacts(
         raise ValueError("output_dir must be a directory path")
     if destination.exists() and any(destination.iterdir()):
         if not overwrite:
-            raise FileExistsError("output_dir is not empty; pass overwrite=True to replace artifacts")
+            raise FileExistsError(
+                "output_dir is not empty; pass overwrite=True to replace artifacts"
+            )
         shutil.rmtree(destination)
     destination.mkdir(parents=True, exist_ok=True)
 
@@ -442,7 +382,6 @@ def write_korthals_execution_artifacts(
     _write_json(destination / "source_identity.json", execution.prepared.source_identity)
     _write_json(destination / "execution_manifest.json", execution.execution_manifest)
 
-    files = _recursive_file_records(destination)
     manifest_core = {
         "schema": KORTHALS_ARTIFACT_SCHEMA,
         "case_study_id": KORTHALS_CASE_STUDY_ID,
@@ -450,20 +389,25 @@ def write_korthals_execution_artifacts(
         "execution_fingerprint": execution.execution_fingerprint,
         "classification": execution.classification,
         "audit_scientific_fingerprint": audit_manifest["scientific_fingerprint"],
-        "files": files,
+        "files": _recursive_file_records(destination),
     }
     manifest = dict(manifest_core)
     manifest["artifact_manifest_fingerprint"] = fingerprint(manifest_core)
     _write_json(destination / "artifact_manifest.json", manifest)
 
     checksum_targets = sorted(
-        path for path in destination.rglob("*") if path.is_file() and path.name != "SHA256SUMS"
+        path
+        for path in destination.rglob("*")
+        if path.is_file() and path.relative_to(destination).as_posix() != "SHA256SUMS"
     )
     lines = [
         f"{_sha256_file(path)}  {path.relative_to(destination).as_posix()}"
         for path in checksum_targets
     ]
-    (destination / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (destination / "SHA256SUMS").write_text(
+        "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
     if not verify_korthals_execution_artifacts(destination):
         raise RuntimeError("newly written Korthals artifact set failed verification")
     return manifest
@@ -517,18 +461,18 @@ def verify_korthals_execution_artifacts(output_dir: str | Path) -> bool:
         declared = manifest.get("files")
         if not isinstance(declared, list):
             return False
-        actual_records = _recursive_file_records(
+        actual = _recursive_file_records(
             destination,
             exclude={"artifact_manifest.json", "SHA256SUMS"},
         )
-        if declared != actual_records:
+        if declared != actual:
             return False
 
         checksum_map = _parse_checksums(checksums_path)
         expected_paths = {
             path.relative_to(destination).as_posix()
             for path in destination.rglob("*")
-            if path.is_file() and path.name != "SHA256SUMS"
+            if path.is_file() and path.relative_to(destination).as_posix() != "SHA256SUMS"
         }
         if set(checksum_map) != expected_paths:
             return False
@@ -563,7 +507,15 @@ def _normalize_aligned_data(data: pd.DataFrame) -> pd.DataFrame:
     frame["participant_id"] = frame["participant_id"].astype(str)
     if frame["participant_id"].str.strip().eq("").any():
         raise ValueError("participant_id must be non-empty")
-    numeric = ["trial_number", "trial_time", "gaze_x", "gaze_y", "target_x", "target_y", speed_column]
+    numeric = [
+        "trial_number",
+        "trial_time",
+        "gaze_x",
+        "gaze_y",
+        "target_x",
+        "target_y",
+        speed_column,
+    ]
     for column in numeric:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     if frame["trial_number"].isna().any() or frame["trial_time"].isna().any():
@@ -578,28 +530,35 @@ def _normalize_aligned_data(data: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("trial_time must be finite")
     if (frame["trial_time"] < 0.0).any():
         raise ValueError("canonical trial_time must be non-negative")
-    if np.any(~np.isfinite(frame[["target_x", "target_y", speed_column]].to_numpy(dtype=float))):
+    target_numeric = frame[["target_x", "target_y", speed_column]].to_numpy(dtype=float)
+    if np.any(~np.isfinite(target_numeric)):
         raise ValueError("target coordinates and speed must be finite")
     frame["target_type"] = frame["target_type"].astype(str)
     frame["target_trajectory"] = frame["target_trajectory"].astype(str)
     frame["target_speed"] = frame[speed_column].astype(float)
 
-    meta = ["participant_id", "trial_number"]
+    keys = ["participant_id", "trial_number"]
     for column in ["target_type", "target_speed", "target_trajectory"]:
-        counts = frame.groupby(meta, sort=False)[column].nunique(dropna=False)
+        counts = frame.groupby(keys, sort=False)[column].nunique(dropna=False)
         if (counts != 1).any():
             raise ValueError(f"{column} must be constant within participant trial")
     return frame
 
 
 def _normalize_validations(validations: pd.DataFrame) -> pd.DataFrame:
-    required = {"participant_id", "validation_nr", "error_avg", "first_trial", "last_trial"}
-    missing = sorted(required.difference(validations.columns))
+    columns = [
+        "participant_id",
+        "validation_nr",
+        "error_avg",
+        "first_trial",
+        "last_trial",
+    ]
+    missing = sorted(set(columns).difference(validations.columns))
     if missing:
         raise ValueError(f"validations is missing required columns: {missing}")
-    frame = validations[list(required)].copy()
+    frame = validations[columns].copy()
     frame["participant_id"] = frame["participant_id"].astype(str)
-    for column in ["validation_nr", "error_avg", "first_trial", "last_trial"]:
+    for column in columns[1:]:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
 
     one_bound_missing = frame["first_trial"].isna() ^ frame["last_trial"].isna()
@@ -621,7 +580,9 @@ def _normalize_validations(validations: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("validation first_trial must not exceed last_trial")
     if frame.duplicated(["participant_id", "validation_nr"]).any():
         raise ValueError("participant validation_nr values must be unique")
-    return frame.sort_values(["participant_id", "validation_nr"], kind="stable").reset_index(drop=True)
+    return frame.sort_values(
+        ["participant_id", "validation_nr"], kind="stable"
+    ).reset_index(drop=True)
 
 
 def _validation_trial_mapping(
@@ -630,14 +591,14 @@ def _validation_trial_mapping(
 ) -> dict[tuple[str, int], tuple[int, float]]:
     mapping: dict[tuple[str, int], tuple[int, float]] = {}
     unique_trials = data[["participant_id", "trial_number"]].drop_duplicates()
-    validation_by_participant = {
+    grouped = {
         participant: group
         for participant, group in validations.groupby("participant_id", sort=False)
     }
     for row in unique_trials.itertuples(index=False):
         participant = str(row.participant_id)
         trial = int(row.trial_number)
-        candidate = validation_by_participant.get(participant)
+        candidate = grouped.get(participant)
         if candidate is None:
             raise ValueError(f"participant {participant!r} has no validation summaries")
         matches = candidate[
@@ -662,7 +623,8 @@ def _downsample_trial_50hz(trial: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("canonical aligned trial_time must be strictly increasing within trial")
     step = 1.0 / 50.0
     max_time = float(times[-1])
-    scheduled = np.arange(0.0, np.floor(max_time / step + 1e-12) * step + step / 2.0, step)
+    final = np.floor(max_time / step + 1e-12) * step
+    scheduled = np.arange(0.0, final + step / 2.0, step)
     if scheduled.size == 0:
         scheduled = np.array([0.0])
 
@@ -680,46 +642,97 @@ def _downsample_trial_50hz(trial: pd.DataFrame) -> pd.DataFrame:
             index = left if left_distance <= right_distance else right
         chosen.append(index)
     if len(set(chosen)) != len(chosen):
-        raise ValueError("50-Hz grid selected duplicate source samples; aligned sampling is too sparse")
+        raise ValueError(
+            "50-Hz grid selected duplicate source samples; aligned sampling is too sparse"
+        )
     sampled = ordered.iloc[chosen].copy().reset_index(drop=True)
     sampled["scheduled_trial_time"] = scheduled
     return sampled
 
 
-def _validate_balanced_endpoint_structure(data: pd.DataFrame) -> None:
-    trial_meta = data[
-        [
-            "participant_id",
-            "trial_number",
-            "repetition",
-            "target_speed",
-            "target_trajectory",
-            "target_type",
-        ]
-    ].drop_duplicates()
+def _endpoint_weights(data: pd.DataFrame) -> np.ndarray:
+    required = {
+        "participant_id",
+        "trial_number",
+        "repetition",
+        "target_speed",
+        "target_trajectory",
+        "target_type",
+    }
+    missing = sorted(required.difference(data.columns))
+    if missing:
+        raise ValueError(f"Korthals endpoint data is missing columns: {missing}")
+    if data.empty:
+        raise ValueError("Korthals endpoint data must not be empty")
+
+    frame = data.reset_index(drop=True)
+    trial_meta = frame[list(required)].drop_duplicates()
     if trial_meta.duplicated(["participant_id", "trial_number"]).any():
         raise ValueError("each participant trial must have one frozen metadata identity")
+
     cell_keys = ["participant_id", "repetition", "target_speed", "target_trajectory"]
-    complete_participants: set[str] = set()
+    cells: dict[str, list[tuple[np.ndarray, np.ndarray]]] = {}
     for key, cell in trial_meta.groupby(cell_keys, sort=True, dropna=False):
         counts = cell["target_type"].value_counts()
         if any(int(counts.get(kind, 0)) > 1 for kind in KORTHALS_TARGET_TYPES):
             raise ValueError("matched cells may contain at most one trial per frozen target type")
-        if all(int(counts.get(kind, 0)) == 1 for kind in KORTHALS_TARGET_TYPES):
-            complete_participants.add(str(key[0]))
-    participants = set(data["participant_id"].astype(str))
-    if complete_participants != participants:
-        missing = sorted(participants.difference(complete_participants))
-        raise ValueError(f"participants without complete matched cells fail closed: {missing}")
+        if not all(int(counts.get(kind, 0)) == 1 for kind in KORTHALS_TARGET_TYPES):
+            continue
+        participant = str(key[0])
+        moving_trial = int(
+            cell.loc[cell["target_type"] == "moving_circle", "trial_number"].iloc[0]
+        )
+        jumping_trial = int(
+            cell.loc[cell["target_type"] == "jumping_circle", "trial_number"].iloc[0]
+        )
+        participant_values = frame["participant_id"].astype(str).to_numpy()
+        trial_values = frame["trial_number"].to_numpy(dtype=int)
+        moving_rows = np.flatnonzero(
+            (participant_values == participant) & (trial_values == moving_trial)
+        )
+        jumping_rows = np.flatnonzero(
+            (participant_values == participant) & (trial_values == jumping_trial)
+        )
+        if len(moving_rows) == 0 or len(jumping_rows) == 0:
+            raise ValueError("complete matched-cell trials must contain retained samples")
+        cells.setdefault(participant, []).append((moving_rows, jumping_rows))
+
+    participants = sorted(set(frame["participant_id"].astype(str)))
+    if set(cells) != set(participants):
+        missing_participants = sorted(set(participants).difference(cells))
+        raise ValueError(
+            "participants without complete matched cells fail closed: "
+            f"{missing_participants}"
+        )
+
+    weights = np.zeros(len(frame), dtype=float)
+    study_scale = 1.0 / len(participants)
+    for participant in participants:
+        pairs = cells[participant]
+        cell_scale = study_scale / len(pairs)
+        for moving_rows, jumping_rows in pairs:
+            weights[moving_rows] -= cell_scale / len(moving_rows)
+            weights[jumping_rows] += cell_scale / len(jumping_rows)
+    return weights
+
+
+def _validate_membership(membership: np.ndarray, n_rows: int) -> np.ndarray:
+    values = np.asarray(membership, dtype=float)
+    if values.ndim != 1 or len(values) != n_rows:
+        raise ValueError("membership must be one-dimensional and match data rows")
+    if np.any(~np.isfinite(values)) or np.any((values < 0.0) | (values > 1.0)):
+        raise ValueError("membership must contain finite values between 0 and 1")
+    return values
 
 
 def _validate_prepared_identity(
     prepared: PreparedKorthalsData,
     protocol: Mapping[str, Any],
 ) -> None:
-    if prepared.source_identity.get("protocol_fingerprint") != KORTHALS_PROTOCOL_FINGERPRINT:
+    identity = prepared.source_identity
+    if identity.get("protocol_fingerprint") != KORTHALS_PROTOCOL_FINGERPRINT:
         raise ValueError("prepared source identity does not match the frozen protocol")
-    if prepared.source_identity.get("companion_commit") != KORTHALS_COMPANION_COMMIT:
+    if identity.get("companion_commit") != KORTHALS_COMPANION_COMMIT:
         raise ValueError("prepared source identity does not match the frozen companion commit")
     required = {
         "participant_id",
@@ -739,7 +752,7 @@ def _validate_prepared_identity(
         raise ValueError("prepared Korthals data has unexpected target types")
     if int(protocol["validation"]["n_validation_points"]) != 9:
         raise ValueError("frozen Korthals validation model requires nine points")
-    _validate_balanced_endpoint_structure(prepared.data)
+    _endpoint_weights(prepared.data)
 
 
 def _classify_korthals_result(summary: pd.Series) -> str:
@@ -762,7 +775,7 @@ def _recursive_file_records(
     records: list[dict[str, Any]] = []
     for path in sorted(path for path in destination.rglob("*") if path.is_file()):
         relative = path.relative_to(destination).as_posix()
-        if relative in excluded or path.name in excluded:
+        if relative in excluded:
             continue
         records.append(
             {
@@ -779,8 +792,6 @@ def _write_json(path: Path, value: Any) -> None:
 
 
 def _sha256_file(path: Path) -> str:
-    import hashlib
-
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
