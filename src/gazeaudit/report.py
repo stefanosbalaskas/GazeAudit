@@ -6,7 +6,11 @@ from collections.abc import Sequence
 
 import pandas as pd
 
-from .robustness import effect_stability, marginal_sensitivity
+from .robustness import (
+    effect_stability,
+    marginal_sensitivity,
+    pairwise_interaction_sensitivity,
+)
 
 
 def render_markdown_audit(
@@ -34,8 +38,11 @@ def render_markdown_audit(
         f"- Sign stability: {stability['sign_stability']:.1%}",
     ]
 
-    if factors:
-        sensitivity = marginal_sensitivity(results, list(factors), estimate_col=estimate_col)
+    factor_list = list(factors)
+    if factor_list:
+        sensitivity = marginal_sensitivity(
+            results, factor_list, estimate_col=estimate_col
+        )
         lines.extend(
             [
                 "",
@@ -59,6 +66,34 @@ def render_markdown_audit(
             ]
         )
 
+    if len(factor_list) >= 2:
+        interactions = pairwise_interaction_sensitivity(
+            results,
+            factor_list,
+            estimate_col=estimate_col,
+        )
+        lines.extend(
+            [
+                "",
+                "## Pairwise interaction sensitivity",
+                "",
+                "| Factor A | Factor B | Cells | Interaction ratio | Max absolute interaction |",
+                "|---|---|---:|---:|---:|",
+            ]
+        )
+        for row in interactions.itertuples(index=False):
+            lines.append(
+                f"| {row.factor_a} | {row.factor_b} | {row.n_cells} | "
+                f"{row.interaction_ratio:.4f} | {row.max_abs_interaction:.6g} |"
+            )
+        lines.extend(
+            [
+                "",
+                "> Interaction ratios are descriptive diagnostics of non-additive "
+                "specification dependence. They need not sum to one and are not causal effects.",
+            ]
+        )
+
     lines.extend(
         [
             "",
@@ -66,7 +101,7 @@ def render_markdown_audit(
             "",
             "This report characterizes robustness across the specifications supplied by "
             "the researcher. It does not establish that every specification is scientifically "
-            "defensible. It does not automate substantive interpretation.",
+            "defensible and does not automate substantive interpretation.",
             "",
         ]
     )
