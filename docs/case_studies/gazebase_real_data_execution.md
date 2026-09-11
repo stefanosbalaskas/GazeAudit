@@ -30,10 +30,17 @@ gazeaudit-gazebase-run \
   --gazeaudit-commit "$(git rev-parse HEAD)"
 ```
 
-The command loads only Round 1 / Session 1 / `FXS` + `TEX`, converts the source DVA
+The command loads only Round 1 / Session 1 / `FXS` + `TEX`, accepts the native
+pymovements 0.28 `dataset.fileinfo['gaze']` contract, converts the source DVA
 coordinates to pixels through pymovements when needed, preserves the distributed
 EyeLink parser labels as the external reference, constructs the reference-defined
 fixed cohort, and only then executes the seven predeclared pEYES detectors.
+
+Before detector execution, every selected source CSV is read from
+`dataset.paths.raw` and SHA-256 hashed. A deterministic aggregate fingerprint of the
+selected relative file paths, byte sizes, and content hashes is added to the source
+identity. Changing the bytes of any selected GazeBase recording therefore changes the
+execution and publication identities even when filenames remain unchanged.
 
 To let pymovements download and extract the catalog resource first, add `--download`.
 This uses the cataloged `GazeBase_v2_0.zip` resource whose MD5 is frozen in the
@@ -43,10 +50,11 @@ GazeAudit artifact bundle.
 ## Fail-closed behavior
 
 The command stops without a robustness classification if any frozen prerequisite is
-violated. This includes protocol-fingerprint drift, source-identity drift, dependency
-version drift, an invalid GazeAudit commit SHA, an exactly zero EyeLink-reference
-effect, a changed detector set, or failure of the 95% finite-participant coverage gate.
-A detector that fails coverage is not silently removed.
+violated. This includes protocol-fingerprint drift, missing or unreadable selected
+source files, source-identity drift, dependency version drift, an invalid GazeAudit
+commit SHA, an exactly zero EyeLink-reference effect, a changed detector set, or
+failure of the 95% finite-participant coverage gate. A detector that fails coverage is
+not silently removed.
 
 The CLI exposes no detector-threshold, endpoint, cohort, task, tolerance, coverage, or
 recovery-rule options. Changing one of those quantities requires a new protocol version
@@ -80,6 +88,6 @@ Any changed, deleted, or unbound file causes verification to fail.
 
 The first controlled execution should be archived before outcome-driven code or
 protocol changes are considered. A `robust` or `fragile` label applies only to the
-predeclared GazeBase dataset, reference-defined cohort, R1/S1 task contrast, seven
-pEYES detector specifications, endpoint, completeness rule, software versions, and
-conclusion rule encoded by the frozen protocol fingerprint.
+predeclared GazeBase dataset and selected source bytes, reference-defined cohort,
+R1/S1 task contrast, seven pEYES detector specifications, endpoint, completeness rule,
+software versions, and conclusion rule encoded by the frozen protocol fingerprint.
