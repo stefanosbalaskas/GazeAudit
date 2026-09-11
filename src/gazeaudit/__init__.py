@@ -35,6 +35,11 @@ from .conclusion import (
     summarize_conclusion_recovery,
 )
 from .endpoints import expected_dwell, expected_fixation_count
+from .gazebase_artifacts import (
+    ARTIFACT_SCHEMA,
+    verify_gazebase_execution_artifacts,
+    write_gazebase_execution_artifacts,
+)
 from .gazebase_execution import (
     GAZEBASE_ARCHIVE_MD5,
     GAZEBASE_CASE_STUDY_ID,
@@ -101,6 +106,7 @@ from .task_contrast import (
 from .uncertainty import GaussianGazeErrorModel, aoi_probabilities
 
 __all__ = [
+    "ARTIFACT_SCHEMA",
     "BIDSEyeTrackingAdapter",
     "BIDSEyeTrackingRecord",
     "CircleAOI",
@@ -179,9 +185,11 @@ __all__ = [
     "summarize_aoi_risk",
     "summarize_conclusion_recovery",
     "summarize_missingness",
+    "verify_gazebase_execution_artifacts",
     "verify_gazebase_protocol",
     "verify_gazebase_software_versions",
     "verify_publication_audit_bundle",
+    "write_gazebase_execution_artifacts",
 ]
 
-__version__ = "0.1.0.dev9"
+__version__ = "0.1.0.dev10"
