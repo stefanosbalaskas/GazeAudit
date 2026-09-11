@@ -229,9 +229,9 @@ def _resolve_error_groups(
     if isinstance(error_group, str):
         if error_group not in data.columns:
             raise ValueError(f"error_group column {error_group!r} is not present in data")
-        groups = data[error_group].to_numpy(dtype=object)
+        groups: Sequence[Any] = data[error_group].tolist()
     else:
-        groups = np.asarray(list(error_group), dtype=object)
+        groups = error_group
     return error_model.validate_groups(groups, n_observations=len(data))
 
 
