@@ -8,8 +8,9 @@ GazeAudit never requires pymovements to be installed.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -203,7 +204,10 @@ def _extract_coordinate_components(
     if not widths:
         raise ValueError("coordinate column contains no usable coordinate vectors")
     if len(widths) != 1:
-        raise ValueError(f"coordinate vector width is inconsistent across samples: {sorted(widths)}")
+        raise ValueError(
+            "coordinate vector width is inconsistent across samples: "
+            f"{sorted(widths)}"
+        )
     width = next(iter(widths))
 
     component_key = component.lower().strip()
