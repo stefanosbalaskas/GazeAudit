@@ -3,12 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-import pytest
 
 from gazeaudit.korthals_execution import KORTHALS_PROTOCOL_FINGERPRINT
 from gazeaudit.korthals_source import (
     KORTHALS_COMPANION_COMMIT,
     KORTHALS_SOURCE_SCHEMA,
+    _align_companion_preprocessed_participant,
     build_korthals_source_manifest,
     discover_korthals_participants,
     prepare_korthals_from_companion,
@@ -97,7 +97,6 @@ def _preprocessed_tables(participant_id: str) -> dict[str, pd.DataFrame]:
 
 class _FakeParticipant:
     tables_by_participant: dict[str, dict[str, pd.DataFrame]] = {}
-    misalign_participant: str | None = None
 
     def __init__(self, id: str, preprocessor):
         self.id = id
@@ -116,11 +115,6 @@ class _FakeParticipant:
         self.preprocessed_data = {
             name: frame.copy() for name, frame in self.clean_data.items()
         }
-        if self.id == self.misalign_participant:
-            targets = self.preprocessed_data["targets"]
-            self.preprocessed_data["targets"] = targets[
-                ~((targets["trial_number"] == 2) & (targets["trial_time"] == 0.02))
-            ].copy()
 
     def validation_check(self, raw_data_path: str) -> pd.DataFrame:
         assert raw_data_path == "data/raw"
@@ -144,7 +138,6 @@ def _configure_fakes() -> None:
         "p1": _preprocessed_tables("p1"),
         "p2": _preprocessed_tables("p2"),
     }
-    _FakeParticipant.misalign_participant = None
 
 
 def test_source_manifest_is_deterministic_and_bound_to_public_identity(tmp_path):
@@ -198,19 +191,45 @@ def test_companion_intake_runs_full_cohort_without_endpoint(tmp_path):
     assert len(intake.prepared.validation_groups) == 4
 
 
-def test_companion_intake_fails_closed_on_nonexact_target_alignment(tmp_path):
-    root = _make_source_tree(tmp_path)
-    _configure_fakes()
-    _FakeParticipant.misalign_participant = "p2"
-    try:
-        with pytest.raises(ValueError, match="without exact canonical target alignment"):
-            prepare_korthals_from_companion(
-                root,
-                participant_factory=_FakeParticipant,
-                preprocessor_factory=_FakePreprocessor,
-            )
-    finally:
-        _FakeParticipant.misalign_participant = None
+def test_companion_alignment_uses_preprocessed_target_timeline_as_master():
+    tables = _preprocessed_tables("p1")
+    target_only = pd.DataFrame(
+        [
+            {
+                "participant_id": "p1",
+                "trial_number": 1,
+                "trial_time": 0.06,
+                "target_x": 0.25,
+                "target_y": -0.25,
+            }
+        ]
+    )
+    gaze_only = pd.DataFrame(
+        [
+            {
+                "participant_id": "p1",
+                "trial_number": 1,
+                "trial_time": 0.01,
+                "gaze_x": 99.0,
+                "gaze_y": 99.0,
+                "velocity": 0.0,
+                "blink": False,
+            }
+        ]
+    )
+    tables["targets"] = pd.concat([tables["targets"], target_only], ignore_index=True)
+    tables["gaze"] = pd.concat([tables["gaze"], gaze_only], ignore_index=True)
+
+    aligned = _align_companion_preprocessed_participant("p1", tables)
+    trial_one = aligned[aligned["trial_number"] == 1].sort_values("trial_time")
+
+    assert 0.06 in trial_one["trial_time"].tolist()
+    assert 0.01 not in trial_one["trial_time"].tolist()
+    target_only_row = trial_one.loc[trial_one["trial_time"] == 0.06].iloc[0]
+    assert target_only_row["target_x"] == 0.25
+    assert target_only_row["target_y"] == -0.25
+    assert pd.isna(target_only_row["gaze_x"])
+    assert pd.isna(target_only_row["gaze_y"])
 
 
 def test_source_intake_artifact_contains_no_scientific_effect_and_detects_tampering(tmp_path):
