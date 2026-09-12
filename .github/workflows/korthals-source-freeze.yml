@@ -63,6 +63,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Frozen companion selection remains exactly:
+          # raw_clean="both", train_test="both", participants="all", overwrite=False.
           python - <<'PY'
           from gazeaudit.korthals_osf import fetch_korthals_osf_resumable
 
