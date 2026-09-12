@@ -64,13 +64,17 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          from eyemovement_data.utils import download_osf_data
+          from gazeaudit.korthals_osf import fetch_korthals_osf_resumable
 
-          download_osf_data(
-              raw_clean="both",
-              train_test="both",
-              participants="all",
-              overwrite=False,
+          summary = fetch_korthals_osf_resumable(
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+          )
+          print(
+              "verified endpoint-blind OSF transfer: "
+              f"files={summary['file_count']} attempts={summary['attempts']} "
+              f"retained={summary['retained_verified_files']} "
+              f"removed_partials={summary['removed_partial_files']}"
           )
           PY
 
