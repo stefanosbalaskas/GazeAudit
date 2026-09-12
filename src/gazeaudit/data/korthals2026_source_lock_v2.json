@@ -1,0 +1,89 @@
+{
+  "case_study_id": "korthals2026-target-tracking-aoi-v2",
+  "companion": {
+    "commit": "1d7ebec23e3fe20f6db952eefda1a0dd58ae09da",
+    "repository": "lukekorthals/pursuing-smooth-pursuits-data"
+  },
+  "environment": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "python": "3.12.14",
+    "scipy": "1.18.1"
+  },
+  "intake": {
+    "missingness_policy": "drop_entire_zero-finite_matched_cell_without_replacement",
+    "participant_split_fingerprint": "ebd3721064e434e6c948d8696b72761604ddf2f92949639ed680c688d8e7580b",
+    "prepared_row_count": 448336,
+    "retained_trial_count": 914,
+    "sampling_incomplete_matched_cell_count": 1,
+    "sampling_incomplete_matched_cells": [
+      {
+        "participant_id": "88878fe6",
+        "repetition": 1,
+        "target_speed": 3.0,
+        "target_trajectory": "northeast",
+        "trial_numbers": [
+          27,
+          34
+        ]
+      }
+    ],
+    "target_types": [
+      "jumping_circle",
+      "moving_circle"
+    ],
+    "validation_group_count": 12,
+    "zero_finite_scheduled_trial_count": 1,
+    "zero_finite_scheduled_trials": [
+      {
+        "participant_id": "88878fe6",
+        "trial_number": 27
+      }
+    ]
+  },
+  "lock_fingerprint": "8bcd9e1dfc8d6ca07c6222a20f563bf8b3bd67aed0de0d3b0e97628799de3a08",
+  "osf": {
+    "doi": "10.17605/OSF.IO/ZX7HC",
+    "download_contract": {
+      "participants": "all",
+      "raw_clean": "both",
+      "train_test": "both"
+    },
+    "project": "zx7hc"
+  },
+  "protocol_fingerprint": "1cd4150c9341db145b8f6aee544f9634c67c46116e61e7e675ae3c50282d2d55",
+  "schema": "gazeaudit-korthals-source-lock-v2",
+  "scientific_endpoint_executed_before_lock": false,
+  "source": {
+    "file_count": 110,
+    "participant_count": 10,
+    "participants": [
+      "06b8d2d3",
+      "21db28aa",
+      "68471e16",
+      "6cde27b5",
+      "7d248f8f",
+      "88878fe6",
+      "cf910821",
+      "d2c0afa4",
+      "eb8c52e6",
+      "f7bb2338"
+    ],
+    "source_manifest_file_sha256": "d1fd93035e1714be07d70a166a90b69141fb3f3a23afcd959747f977aa4b8921",
+    "source_manifest_fingerprint": "04dd531fb5e0eaa8aa77cb3743d7dadfd4c218895f7edf8186cc3ff9362b7541"
+  },
+  "source_freeze": {
+    "artifact_id": 10305414874,
+    "artifact_name": "korthals-source-freeze-v2-50ca8239006cdf8d0771b7209dc85acf366ade31",
+    "artifact_size_bytes": 23657,
+    "artifact_zip_sha256": "ae68ad62e148cf101730e7b73923fe694694f6616cae3432c8c15a164d21adcb",
+    "execution_commit": "50ca8239006cdf8d0771b7209dc85acf366ade31",
+    "execution_context_sha256": "446f8cedda4d52cd34de4c9dc086ca793825f8f74df064f10ce57da134ff44b3",
+    "freeze_manifest_fingerprint": "fe6930010d31c0c4f920818a3ac31020b97c2f739aea8e00ebcaee5352355cb8",
+    "github_artifact_digest": "sha256:ae68ad62e148cf101730e7b73923fe694694f6616cae3432c8c15a164d21adcb",
+    "intake_artifact_manifest_fingerprint": "ed4d99db1f977dacf671dac129980ded5f071ab0ed7e4420316c59e4bd61e359",
+    "job_id": 103622387211,
+    "pip_freeze_sha256": "991b5346cf279dd84593887ba01ead1db931735bc9ecfddffc1200a45e08a33b",
+    "run_id": 34719412734
+  }
+}
