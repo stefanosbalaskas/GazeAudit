@@ -210,6 +210,8 @@ def test_source_freeze_workflow_is_manual_archive_before_reveal_and_has_no_endpo
     workflow = Path(".github/workflows/korthals-source-freeze.yml").read_text(encoding="utf-8")
     assert "workflow_dispatch" in workflow
     assert KORTHALS_COMPANION_COMMIT in workflow
+    assert 'python -m pip install "pandas==2.3.3"' in workflow
+    assert 'pd.__version__ != "2.3.3"' in workflow
     assert 'raw_clean="both"' in workflow
     assert 'train_test="both"' in workflow
     assert 'participants="all"' in workflow

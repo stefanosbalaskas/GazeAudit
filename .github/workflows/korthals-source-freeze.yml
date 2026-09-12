@@ -46,8 +46,18 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
+          # The frozen companion relies on pandas 2.x DataFrameGroupBy.apply retaining
+          # the grouping column. pandas 3.x drops it by default, which removes
+          # trial_number before the companion's blink-masking step.
+          python -m pip install "pandas==2.3.3"
           python -m pip install -e .
           python -m pip install ./companion
+          python - <<'PY'
+          import pandas as pd
+
+          if pd.__version__ != "2.3.3":
+              raise SystemExit(f"unexpected pandas version: {pd.__version__}")
+          PY
 
       - name: Download complete published OSF source
         shell: bash
