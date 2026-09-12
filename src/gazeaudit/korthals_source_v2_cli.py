@@ -6,10 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
-from .korthals_v2 import (
-    prepare_korthals_from_companion_v2,
-    write_korthals_source_intake_artifacts_v2,
-)
+from .korthals_streaming import prepare_korthals_from_companion_v2_streaming
+from .korthals_v2 import write_korthals_source_intake_artifacts_v2
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -36,7 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    intake = prepare_korthals_from_companion_v2(Path(args.data_root))
+    intake = prepare_korthals_from_companion_v2_streaming(Path(args.data_root))
     manifest = write_korthals_source_intake_artifacts_v2(
         intake,
         Path(args.output_dir),
