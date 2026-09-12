@@ -128,19 +128,19 @@ jobs:
             --runner-os "$RUNNER_OS" \
             --runner-arch "$RUNNER_ARCH"
 
-      - name: Verify scientific archive before upload
+      - name: Verify locked scientific archive before upload
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          from gazeaudit.korthals_execution_v2 import (
-              verify_korthals_execution_artifacts_v2,
+          from gazeaudit.korthals_execution_archive_v2 import (
+              verify_korthals_locked_execution_artifacts_v2,
           )
 
-          if not verify_korthals_execution_artifacts_v2(
+          if not verify_korthals_locked_execution_artifacts_v2(
               "korthals-scientific-execution"
           ):
-              raise SystemExit("Korthals protocol-v2 scientific archive verification failed")
+              raise SystemExit("locked Korthals protocol-v2 archive verification failed")
           PY
 
       - name: Archive scientific execution before reveal
