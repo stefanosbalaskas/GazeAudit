@@ -8,10 +8,10 @@ from importlib.metadata import version
 from pathlib import Path
 
 from .korthals_execution import KORTHALS_COMPANION_COMMIT
+from .korthals_execution_archive_v2 import write_korthals_locked_execution_artifacts_v2
 from .korthals_execution_v2 import (
     KORTHALS_V2_EXECUTION_WORKFLOW,
     run_korthals_locked_aoi_execution_v2,
-    write_korthals_execution_artifacts_v2,
 )
 from .korthals_freeze import KORTHALS_COMPANION_REPOSITORY
 from .korthals_source_lock import (
@@ -72,7 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         "runner_os": str(args.runner_os),
         "runner_arch": str(args.runner_arch),
     }
-    write_korthals_execution_artifacts_v2(
+    write_korthals_locked_execution_artifacts_v2(
         execution,
         Path(args.output_dir),
         execution_context=context,
