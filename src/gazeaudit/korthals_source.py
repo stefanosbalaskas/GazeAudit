@@ -16,9 +16,11 @@ import hashlib
 import importlib
 import json
 import os
+import re
 from collections.abc import Callable, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +39,8 @@ KORTHALS_SOURCE_SCHEMA = "gazeaudit-korthals-source-manifest-v1"
 KORTHALS_SOURCE_INTAKE_SCHEMA = "gazeaudit-korthals-source-intake-artifacts-v1"
 KORTHALS_OSF_PROJECT = "zx7hc"
 KORTHALS_OSF_DOI = "10.17605/OSF.IO/ZX7HC"
+_SCIENTIFIC_NOTATION_PARTICIPANT_ID = re.compile(r"^[0-9]+[eE][+-]?[0-9]+$")
+_DECIMAL_LITERAL = re.compile(r"^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$")
 
 
 @dataclass(frozen=True)
@@ -461,30 +465,65 @@ def _require_clean_tables(participant_id: str, clean_data: Mapping[str, Any]) ->
             raise ValueError(f"participant {participant_id!r} clean table {name!r} is empty")
 
 
+def _participant_identity_value_matches(participant_id: str, value: Any) -> bool:
+    """Match exact IDs, plus the companion R pipeline's narrow numeric-coercion case."""
+
+    observed = str(value)
+    if observed == participant_id:
+        return True
+    if _SCIENTIFIC_NOTATION_PARTICIPANT_ID.fullmatch(participant_id) is None:
+        return False
+    if _DECIMAL_LITERAL.fullmatch(observed) is None:
+        return False
+    try:
+        expected_decimal = Decimal(participant_id)
+        observed_decimal = Decimal(observed)
+    except InvalidOperation:
+        return False
+    return (
+        expected_decimal.is_finite()
+        and observed_decimal.is_finite()
+        and observed_decimal == expected_decimal
+    )
+
+
 def _canonicalize_companion_participant_identity(
     clean_root: str | Path,
     participant_id: str,
     clean_data: Mapping[str, Any],
 ) -> None:
-    """Preserve lexical participant IDs across companion ``read_csv`` inference.
+    """Preserve path-authoritative participant IDs across source dtype coercion.
 
-    The published identifier ``68471e16`` is a valid scientific-notation token. The
-    frozen companion loads CSV files with plain ``pandas.read_csv()``, so pandas may
-    infer that identifier numerically and turn it into a floating-point representation.
-    Before correcting the in-memory identity metadata, verify the original published
-    CSV bytes lexically by re-reading every matching ``participant_id`` column as a
-    string. Any genuine source mismatch still fails closed.
+    The companion repository defines participants from directory/filename prefixes and
+    its R cleaner uses ordinary ``read.csv()`` for auxiliary CSVs. Therefore a token
+    such as ``68471e16`` can be parsed numerically and re-exported as ``6.8471e+20`` in
+    some published clean tables even though the path/filename retains ``68471e16``.
+
+    Canonical identity remains the published directory/filename token. Before any
+    in-memory correction, every source and companion-loaded ``participant_id`` value
+    must be either an exact lexical match or, only when the canonical token itself has
+    scientific-notation syntax, exactly Decimal-equivalent. Raw published bytes are
+    never modified. Any other mismatch fails closed.
     """
 
     root = Path(clean_root)
     source_paths = sorted(
         path
         for path in root.rglob(f"{participant_id}_*.csv")
-        if path.is_file()
+        if (
+            path.is_file()
+            and path.parent.name == participant_id
+            and path.parent.parent.name in {"train", "test"}
+        )
     )
     if not source_paths:
         raise ValueError(
             f"participant {participant_id!r} has no matching published clean CSV files"
+        )
+    source_splits = {path.parent.parent.name for path in source_paths}
+    if len(source_splits) != 1:
+        raise ValueError(
+            f"participant {participant_id!r} is represented in multiple clean-data splits"
         )
 
     identity_paths: list[Path] = []
@@ -503,21 +542,34 @@ def _canonicalize_companion_participant_identity(
                 f"published clean CSV {path.as_posix()!r} has an empty participant_id column"
             )
         values = set(lexical["participant_id"].astype(str).unique())
-        if values != {participant_id}:
+        if not values or not all(
+            _participant_identity_value_matches(participant_id, value) for value in values
+        ):
             raise ValueError(
                 f"published clean CSV {path.as_posix()!r} has participant_id values "
-                f"{sorted(values)!r}, expected exactly {participant_id!r}"
+                f"{sorted(values)!r} incompatible with path identity {participant_id!r}"
             )
         identity_paths.append(path)
 
     if not identity_paths:
         raise ValueError(
-            f"participant {participant_id!r} has no lexical participant_id source column"
+            f"participant {participant_id!r} has no participant_id source column"
         )
 
-    for value in clean_data.values():
-        if isinstance(value, pd.DataFrame) and "participant_id" in value.columns:
-            value["participant_id"] = participant_id
+    for label, value in clean_data.items():
+        if not isinstance(value, pd.DataFrame) or "participant_id" not in value.columns:
+            continue
+        observed_values = {str(item) for item in value["participant_id"].unique()}
+        if not observed_values or not all(
+            _participant_identity_value_matches(participant_id, item)
+            for item in observed_values
+        ):
+            raise ValueError(
+                f"companion clean table {label!r} has participant_id values "
+                f"{sorted(observed_values)!r} incompatible with path identity "
+                f"{participant_id!r}"
+            )
+        value["participant_id"] = participant_id
 
 
 def _participant_frame(value: Any, participant_id: str, label: str) -> pd.DataFrame:
