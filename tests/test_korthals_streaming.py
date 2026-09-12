@@ -199,8 +199,22 @@ def test_streamed_companion_intake_matches_monolithic_preparation(tmp_path):
         "participant_split_fingerprint": fingerprint(split_records),
         "participant_splits": split_records,
     }
+    canonical_aligned = _aligned_fixture()[
+        [
+            "participant_id",
+            "trial_number",
+            "trial_time",
+            "target_x",
+            "target_y",
+            "gaze_x",
+            "gaze_y",
+            "target_type",
+            "target_speed",
+            "target_trajectory",
+        ]
+    ].copy()
     monolithic = prepare_korthals_aligned_data_v2(
-        _aligned_fixture(),
+        canonical_aligned,
         _validation_fixture(),
         source_identity=source_identity,
     )
