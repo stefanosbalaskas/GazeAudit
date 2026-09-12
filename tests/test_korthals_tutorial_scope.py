@@ -4,7 +4,14 @@ import pytest
 from gazeaudit.korthals_source import _scope_authoritative_task_trials
 
 
-def _rows(*, tutorial_number=0, tutorial_name="Tutorial", tutorial_type="moving_circle", tutorial_speed=2.0, tutorial_trajectory="east"):
+def _rows(
+    *,
+    tutorial_number=0,
+    tutorial_name="Tutorial",
+    tutorial_type="moving_circle",
+    tutorial_speed=2.0,
+    tutorial_trajectory="east",
+):
     return pd.DataFrame(
         [
             {
@@ -96,5 +103,5 @@ def test_mixed_tutorial_and_other_out_of_range_trial_fails_closed():
         ignore_index=True,
     )
 
-    with pytest.raises(ValueError, match="\[0, 145\]"):
+    with pytest.raises(ValueError, match=r"\[0, 145\]"):
         _scope_authoritative_task_trials(source)
