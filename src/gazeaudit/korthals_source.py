@@ -386,6 +386,17 @@ def _align_companion_preprocessed_participant(
     participant_id: str,
     preprocessed: Mapping[str, Any],
 ) -> pd.DataFrame:
+    """Align exact-key gaze onto the companion's canonical 1000-Hz target timeline.
+
+    The frozen protocol defines the fully preprocessed target series as the canonical
+    timeline: gaze and target are aligned first, that full timeline is downsampled to
+    50 Hz, and only then are retained rows with non-finite gaze removed. Therefore the
+    target table, not the gaze table, must be the left/master side of this exact-key
+    merge. Gaze samples outside the canonical target timeline are intentionally not
+    introduced into the scientific representation, while target rows without an exact
+    gaze sample are preserved as missing gaze until the frozen post-downsample filter.
+    """
+
     required = {"gaze", "targets", "trials"}
     missing = sorted(required.difference(preprocessed))
     if missing:
@@ -404,16 +415,13 @@ def _align_companion_preprocessed_participant(
     if targets.duplicated(key).any():
         raise ValueError(f"participant {participant_id!r} target alignment keys are duplicated")
 
-    aligned = gaze.merge(
-        targets[key + ["target_x", "target_y"]],
+    gaze_payload = [column for column in gaze.columns if column not in key]
+    aligned = targets[key + ["target_x", "target_y"]].merge(
+        gaze[key + gaze_payload],
         on=key,
         how="left",
         validate="one_to_one",
     )
-    if aligned[["target_x", "target_y"]].isna().any().any():
-        raise ValueError(
-            f"participant {participant_id!r} has gaze rows without exact canonical target alignment"
-        )
 
     trial_columns = [
         "participant_id",
@@ -434,7 +442,7 @@ def _align_companion_preprocessed_participant(
         validate="many_to_one",
     )
     if aligned[["target_type", "target_speed", "target_trajectory"]].isna().any().any():
-        raise ValueError(f"participant {participant_id!r} has gaze rows without trial metadata")
+        raise ValueError(f"participant {participant_id!r} has target rows without trial metadata")
     return aligned
 
 
