@@ -242,6 +242,7 @@ def prepare_korthals_from_companion(
             splits.append((participant_id, split))
 
     aligned = pd.concat(aligned_parts, ignore_index=True)
+    aligned = _scope_authoritative_task_trials(aligned)
     validations = pd.concat(validation_parts, ignore_index=True)
     ordered_splits = tuple(sorted(splits))
     split_records = [
@@ -439,7 +440,9 @@ def _align_companion_preprocessed_participant(
         "target_speed",
         "target_trajectory",
     ]
-    optional = [column for column in ["actual_speed"] if column in trials.columns]
+    optional = [
+        column for column in ["trial_name", "actual_speed"] if column in trials.columns
+    ]
     _require_columns(trials, trial_columns, "preprocessed trials")
     trial_meta = trials[trial_columns + optional].drop_duplicates()
     if trial_meta.duplicated(["participant_id", "trial_number"]).any():
@@ -453,6 +456,58 @@ def _align_companion_preprocessed_participant(
     if aligned[["target_type", "target_speed", "target_trajectory"]].isna().any().any():
         raise ValueError(f"participant {participant_id!r} has target rows without trial metadata")
     return aligned
+
+
+def _scope_authoritative_task_trials(aligned: pd.DataFrame) -> pd.DataFrame:
+    """Remove only the authors' explicit non-task tutorial trial.
+
+    The experiment code numbers the tutorial as trial 0 and the scientific task battery
+    as trials 1..144. The frozen GazeAudit repetition rule likewise covers only 1..144.
+    Intake therefore drops trial 0 only when every out-of-range row matches the
+    authoritative tutorial signature; any other out-of-range trial fails closed.
+    """
+
+    if not isinstance(aligned, pd.DataFrame) or aligned.empty:
+        raise ValueError("aligned Korthals source data must be a non-empty DataFrame")
+    _require_columns(aligned, ["participant_id", "trial_number"], "aligned Korthals source")
+
+    frame = aligned.copy()
+    trial_number = pd.to_numeric(frame["trial_number"], errors="coerce")
+    if trial_number.isna().any() or (trial_number != trial_number.astype(int)).any():
+        raise ValueError("Korthals source trial_number must be finite and integer-valued")
+    in_task = trial_number.between(1, 144, inclusive="both")
+    if in_task.all():
+        return frame
+
+    tutorial = frame.loc[~in_task].copy()
+    outside_numbers = sorted(set(trial_number.loc[~in_task].astype(int).tolist()))
+    if outside_numbers != [0]:
+        raise ValueError(
+            "Korthals source contains out-of-range trials other than the authoritative "
+            f"tutorial trial 0: {outside_numbers!r}"
+        )
+
+    signature_columns = ["trial_name", "target_type", "target_speed", "target_trajectory"]
+    _require_columns(tutorial, signature_columns, "Korthals tutorial rows")
+    names = set(tutorial["trial_name"].astype(str).unique())
+    target_types = set(tutorial["target_type"].astype(str).unique())
+    trajectories = set(tutorial["target_trajectory"].astype(str).unique())
+    speeds = pd.to_numeric(tutorial["target_speed"], errors="coerce")
+    if names != {"Tutorial"}:
+        raise ValueError(f"trial 0 does not match authoritative tutorial name: {sorted(names)!r}")
+    if target_types != {"moving_circle"}:
+        raise ValueError(
+            "trial 0 does not match authoritative tutorial target type: "
+            f"{sorted(target_types)!r}"
+        )
+    if speeds.isna().any() or not speeds.eq(2.0).all():
+        raise ValueError("trial 0 does not match authoritative tutorial target speed 2")
+    if trajectories != {"east"}:
+        raise ValueError(
+            "trial 0 does not match authoritative tutorial trajectory east: "
+            f"{sorted(trajectories)!r}"
+        )
+    return frame.loc[in_task].copy()
 
 
 def _require_clean_tables(participant_id: str, clean_data: Mapping[str, Any]) -> None:
