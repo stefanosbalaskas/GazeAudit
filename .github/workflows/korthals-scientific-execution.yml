@@ -1,0 +1,160 @@
+name: korthals-scientific-execution
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: korthals-scientific-execution-v2
+  cancel-in-progress: false
+
+jobs:
+  scientific-execution:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Checkout exact GazeAudit commit
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python 3.12.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Verify exact main execution identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Checkout frozen companion implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/lukekorthals/pursuing-smooth-pursuits-data companion
+          git -C companion checkout 1d7ebec23e3fe20f6db952eefda1a0dd58ae09da
+          test "$(git -C companion rev-parse HEAD)" = \
+            "1d7ebec23e3fe20f6db952eefda1a0dd58ae09da"
+
+      - name: Install source-freeze-matched critical execution stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "numpy==2.5.3" \
+            "pandas==2.3.3" \
+            "scipy==1.18.1"
+          python -m pip install -e .
+          python -m pip install ./companion
+          python - <<'PY'
+          import platform
+          import numpy as np
+          import pandas as pd
+          import scipy
+
+          expected = {
+              "python": "3.12.14",
+              "numpy": "2.5.3",
+              "pandas": "2.3.3",
+              "scipy": "1.18.1",
+          }
+          observed = {
+              "python": platform.python_version(),
+              "numpy": np.__version__,
+              "pandas": pd.__version__,
+              "scipy": scipy.__version__,
+          }
+          if observed != expected:
+              raise SystemExit(f"execution environment differs from source freeze: {observed}")
+          PY
+
+      - name: Download complete published OSF source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.korthals_osf import fetch_korthals_osf_resumable
+
+          summary = fetch_korthals_osf_resumable(
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+          )
+          print(
+              "verified endpoint-blind OSF transfer: "
+              f"files={summary['file_count']} attempts={summary['attempts']} "
+              f"retained={summary['retained_verified_files']} "
+              f"removed_partials={summary['removed_partial_files']}"
+          )
+          PY
+
+      - name: Verify locked public-source bytes before preprocessing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.korthals_source_lock import verify_korthals_locked_source_manifest
+          from gazeaudit.korthals_v2 import build_korthals_source_manifest_v2
+
+          manifest = build_korthals_source_manifest_v2("data")
+          verify_korthals_locked_source_manifest(manifest)
+          PY
+
+      - name: Capture exact dependency environment before scientific execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip freeze | LC_ALL=C sort > pip-freeze.txt
+          test -s pip-freeze.txt
+          grep -Fx 'numpy==2.5.3' pip-freeze.txt
+          grep -Fx 'pandas==2.3.3' pip-freeze.txt
+          grep -Fx 'scipy==1.18.1' pip-freeze.txt
+
+      - name: Execute locked protocol v2 without revealing scientific results
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m gazeaudit.korthals_execution_v2_cli \
+            --data-root data \
+            --output-dir korthals-scientific-execution \
+            --environment-file pip-freeze.txt \
+            --execution-commit "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --runner-os "$RUNNER_OS" \
+            --runner-arch "$RUNNER_ARCH"
+
+      - name: Verify scientific archive before upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.korthals_execution_v2 import (
+              verify_korthals_execution_artifacts_v2,
+          )
+
+          if not verify_korthals_execution_artifacts_v2(
+              "korthals-scientific-execution"
+          ):
+              raise SystemExit("Korthals protocol-v2 scientific archive verification failed")
+          PY
+
+      - name: Archive scientific execution before reveal
+        uses: actions/upload-artifact@v4
+        with:
+          name: korthals-scientific-v2-${{ github.sha }}
+          path: korthals-scientific-execution/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Reveal archived scientific result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m gazeaudit.korthals_reveal_v2_cli \
+            --artifact-dir korthals-scientific-execution
