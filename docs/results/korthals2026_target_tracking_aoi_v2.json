@@ -1,0 +1,129 @@
+{
+  "schema": "gazeaudit-korthals-first-scientific-result-v2",
+  "case_study_id": "korthals2026-target-tracking-aoi-v2",
+  "status": "authoritative_first_scientific_execution",
+  "scientific_freeze": {
+    "protocol_fingerprint": "1cd4150c9341db145b8f6aee544f9634c67c46116e61e7e675ae3c50282d2d55",
+    "source_lock_fingerprint": "8bcd9e1dfc8d6ca07c6222a20f563bf8b3bd67aed0de0d3b0e97628799de3a08",
+    "source_manifest_fingerprint": "04dd531fb5e0eaa8aa77cb3743d7dadfd4c218895f7edf8186cc3ff9362b7541",
+    "companion_commit": "1d7ebec23e3fe20f6db952eefda1a0dd58ae09da",
+    "post_outcome_scientific_changes_permitted": false
+  },
+  "execution": {
+    "workflow": ".github/workflows/korthals-scientific-execution.yml",
+    "workflow_run_number": 1,
+    "github_run_id": "34721629856",
+    "github_job_id": "103628488961",
+    "execution_commit": "3312423cb43b1d9da3877914455dd471aba81174",
+    "execution_tree": "06d5d5f9adf6114464208fd428e3f572579a44a1",
+    "package_version": "0.1.0.dev19",
+    "python_version": "3.12.14",
+    "numpy_version": "2.5.3",
+    "pandas_version": "2.3.3",
+    "scipy_version": "1.18.1",
+    "runner_os": "Linux",
+    "runner_arch": "X64"
+  },
+  "archive": {
+    "artifact_id": "10306308440",
+    "artifact_name": "korthals-scientific-v2-3312423cb43b1d9da3877914455dd471aba81174",
+    "artifact_size_bytes": 10370491,
+    "github_artifact_sha256": "2eaab8171d9d5f70e138eb929554648cb6bed10b21646ab0acd7cfae4d607d11",
+    "independently_recomputed_zip_sha256": "2eaab8171d9d5f70e138eb929554648cb6bed10b21646ab0acd7cfae4d607d11",
+    "execution_fingerprint": "2db2b92fea136ba516f38a87a3c218cf90c9a2a69c55e8ea37b63cad8febb51b",
+    "audit_scientific_fingerprint": "aa4c04af9c011fe997ef107c8250b20d6a20824b180abdeb16871b5b5a2fc768",
+    "artifact_manifest_fingerprint": "c55dbeb476197196a36d1c1af857bd6424e2db6fb1c7c5e5bdc94169bd380de0",
+    "outer_sha256sums_verified": true,
+    "nested_audit_sha256sums_verified": true,
+    "archive_completed_before_reveal": true
+  },
+  "source_readiness": {
+    "participant_count": 15,
+    "source_file_count": 112,
+    "prepared_row_count": 448336,
+    "retained_trial_count": 999,
+    "zero_finite_scheduled_trial_count": 1,
+    "zero_finite_scheduled_trials": [
+      {
+        "participant_id": "5c363694",
+        "trial_number": 59
+      }
+    ],
+    "sampling_incomplete_matched_cell_count": 1,
+    "sampling_incomplete_matched_cells": [
+      {
+        "participant_id": "5c363694",
+        "repetition": 1,
+        "target_speed": 16.0,
+        "target_trajectory": "west",
+        "trial_numbers": [59, 68]
+      }
+    ],
+    "missingness_policy": "drop_entire_zero-finite_matched_cell_without_replacement"
+  },
+  "estimand": {
+    "aoi": "target_center_1dva",
+    "contrast_direction": "jumping_circle occupancy minus moving_circle occupancy",
+    "cell_aggregation": "unweighted complete matched-cell contrast",
+    "participant_aggregation": "unweighted mean of complete-cell contrasts",
+    "study_aggregation": "unweighted mean of participant estimates",
+    "reference": 0.0
+  },
+  "measurement_error_model": {
+    "family": "grouped isotropic Gaussian",
+    "validation_metric": "error_avg",
+    "sigma_rule": "error_avg / sqrt(pi / 2)",
+    "bias": [0.0, 0.0],
+    "draws": 2000,
+    "batch_size": 8,
+    "rng_seed": 20260316,
+    "interval_level": 0.95
+  },
+  "result": {
+    "classification": "robust_negative",
+    "n_observations": 448336,
+    "n_draws": 2000,
+    "hard_effect": -0.09864087564504398,
+    "expected_membership_effect": -0.07400756743578296,
+    "monte_carlo_mean": -0.0740075674357833,
+    "monte_carlo_median": -0.07397267112249165,
+    "monte_carlo_sd": 0.0013013516924452913,
+    "measurement_model_interval": [
+      -0.07652491273093086,
+      -0.07146159624178107
+    ],
+    "probability_below_reference": 1.0,
+    "probability_above_reference": 0.0,
+    "probability_equal_reference": 0.0
+  },
+  "interpretation": {
+    "substantive": "Under the frozen paired estimand, target-centred 1-dva occupancy is lower for jumping circles than for moving circles.",
+    "classification_basis": "The hard effect is negative and at least 95% of the prespecified measurement-error Monte Carlo draws are below the zero reference; in this execution all 2000 draws are below zero.",
+    "interval_scope": "The reported 95% interval is induced by the prespecified measurement-error model. It is not a population confidence interval or Bayesian posterior interval.",
+    "population_p_value_claim": false,
+    "causal_claim": false
+  },
+  "post_outcome_boundary": {
+    "authoritative_result": true,
+    "prohibited_outcome_responsive_changes": [
+      "protocol",
+      "AOI geometry or radius",
+      "endpoint definition or contrast direction",
+      "source cohort or author-directed exclusion",
+      "missingness rule",
+      "validation mapping or metric",
+      "Monte Carlo draw count, batch size, or seed",
+      "measurement-error model or bias",
+      "cell, participant, or study weighting",
+      "classification thresholds or labels",
+      "scientific interpretation rule"
+    ],
+    "permitted_follow_up": [
+      "independent artifact verification",
+      "reproducibility checking without selection among outcomes",
+      "archival and provenance documentation",
+      "publication reporting",
+      "non-scientific infrastructure maintenance"
+    ]
+  }
+}
