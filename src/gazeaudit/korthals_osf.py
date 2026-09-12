@@ -1,7 +1,7 @@
 """Resilient, endpoint-blind download of the frozen Korthals OSF source.
 
 The companion repository writes directly to final paths and skips every existing
-path when ``overwrite=False``.  If a remote transfer fails after opening a file,
+path when ``overwrite=False``. If a remote transfer fails after opening a file,
 a partial file can therefore survive and be skipped by a naive in-process retry.
 This module preserves the companion's exact public-source selection and path
 contract while making retries safe: already-complete files are retained only
@@ -13,9 +13,10 @@ from __future__ import annotations
 
 import hashlib
 import time
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any
 
 KORTHALS_OSF_PROJECT_ID = "zx7hc"
 KORTHALS_DATA_ROOT = Path("data")
@@ -54,6 +55,8 @@ def _companion_destination(remote_file: Any) -> Path:
         raise ValueError(f"invalid OSF file identity: path={remote_path!r}, name={name!r}")
     file_dir = "/".join(remote_path.split("/")[:-1])
     destination = Path(f"data{file_dir}") / name
+    if ".." in destination.parts:
+        raise ValueError(f"OSF destination contains parent traversal: {destination}")
     try:
         destination.relative_to(KORTHALS_DATA_ROOT)
     except ValueError as exc:
@@ -191,16 +194,21 @@ def fetch_korthals_osf_resumable(
 ) -> dict[str, int]:
     """Download the frozen public source with safe checksum-verified retries.
 
-    Only transport failures (``RuntimeError``/``OSError``) are retried.  Scientific
-    or identity validation failures remain fail-closed.  The companion's exact
-    source selection is invoked on every attempt; verified completed files are
-    retained so ``overwrite=False`` can resume without accepting partial files.
+    Only the companion's transport ``RuntimeError`` is retried. Scientific,
+    identity, filesystem, and checksum failures remain fail-closed. The
+    companion's exact source selection is invoked on every attempt; verified
+    completed files are retained so ``overwrite=False`` can resume without
+    accepting partial files.
     """
 
-    if isinstance(max_attempts, bool) or max_attempts < 1:
+    if isinstance(max_attempts, bool) or not isinstance(max_attempts, int) or max_attempts < 1:
         raise ValueError("max_attempts must be a positive integer")
+    if isinstance(initial_backoff_seconds, bool) or not isinstance(
+        initial_backoff_seconds, (int, float)
+    ):
+        raise ValueError("initial_backoff_seconds must be a non-negative number")
     if initial_backoff_seconds < 0:
-        raise ValueError("initial_backoff_seconds must be non-negative")
+        raise ValueError("initial_backoff_seconds must be a non-negative number")
 
     inventory_loader = inventory_fn or _default_remote_inventory
     downloader = download_fn or _default_companion_download
@@ -214,17 +222,17 @@ def fetch_korthals_osf_resumable(
     for attempt in range(1, max_attempts + 1):
         try:
             downloader()
-        except (RuntimeError, OSError) as exc:
+        except RuntimeError as exc:
             if attempt == max_attempts:
                 raise RuntimeError(
                     f"Korthals OSF download failed after {max_attempts} attempts"
                 ) from exc
             current = tuple(inventory_loader())
             _require_unchanged_inventory(baseline, current)
-            _retained, removed = _scrub_unverified_local_files(baseline)
-            retained = max(retained, _retained)
+            retry_retained, removed = _scrub_unverified_local_files(baseline)
+            retained = max(retained, retry_retained)
             total_removed += removed
-            sleep_fn(initial_backoff_seconds * (2 ** (attempt - 1)))
+            sleep_fn(float(initial_backoff_seconds) * (2 ** (attempt - 1)))
             continue
 
         final_inventory = tuple(inventory_loader())
