@@ -209,6 +209,11 @@ def prepare_korthals_from_companion(
             )
             participant.set_clean_data(str(relative_root / "clean"))
             _require_clean_tables(participant_id, participant.clean_data)
+            _canonicalize_companion_participant_identity(
+                relative_root / "clean",
+                participant_id,
+                participant.clean_data,
+            )
             participant.preprocess_clean_data(
                 blink_offset=(50, 50),
                 rolling_mean_window=1,
@@ -454,6 +459,65 @@ def _require_clean_tables(participant_id: str, clean_data: Mapping[str, Any]) ->
     for name in required:
         if not isinstance(clean_data[name], pd.DataFrame) or clean_data[name].empty:
             raise ValueError(f"participant {participant_id!r} clean table {name!r} is empty")
+
+
+def _canonicalize_companion_participant_identity(
+    clean_root: str | Path,
+    participant_id: str,
+    clean_data: Mapping[str, Any],
+) -> None:
+    """Preserve lexical participant IDs across companion ``read_csv`` inference.
+
+    The published identifier ``68471e16`` is a valid scientific-notation token. The
+    frozen companion loads CSV files with plain ``pandas.read_csv()``, so pandas may
+    infer that identifier numerically and turn it into a floating-point representation.
+    Before correcting the in-memory identity metadata, verify the original published
+    CSV bytes lexically by re-reading every matching ``participant_id`` column as a
+    string. Any genuine source mismatch still fails closed.
+    """
+
+    root = Path(clean_root)
+    source_paths = sorted(
+        path
+        for path in root.rglob(f"{participant_id}_*.csv")
+        if path.is_file()
+    )
+    if not source_paths:
+        raise ValueError(
+            f"participant {participant_id!r} has no matching published clean CSV files"
+        )
+
+    identity_paths: list[Path] = []
+    for path in source_paths:
+        header = pd.read_csv(path, nrows=0)
+        if "participant_id" not in header.columns:
+            continue
+        lexical = pd.read_csv(
+            path,
+            usecols=["participant_id"],
+            dtype={"participant_id": "string"},
+            keep_default_na=False,
+        )
+        if lexical.empty:
+            raise ValueError(
+                f"published clean CSV {path.as_posix()!r} has an empty participant_id column"
+            )
+        values = set(lexical["participant_id"].astype(str).unique())
+        if values != {participant_id}:
+            raise ValueError(
+                f"published clean CSV {path.as_posix()!r} has participant_id values "
+                f"{sorted(values)!r}, expected exactly {participant_id!r}"
+            )
+        identity_paths.append(path)
+
+    if not identity_paths:
+        raise ValueError(
+            f"participant {participant_id!r} has no lexical participant_id source column"
+        )
+
+    for value in clean_data.values():
+        if isinstance(value, pd.DataFrame) and "participant_id" in value.columns:
+            value["participant_id"] = participant_id
 
 
 def _participant_frame(value: Any, participant_id: str, label: str) -> pd.DataFrame:
