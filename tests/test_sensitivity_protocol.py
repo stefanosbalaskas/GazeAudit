@@ -10,7 +10,6 @@ from gazeaudit.sensitivity_protocol import (
     verify_sampling_missingness_protocol,
 )
 
-
 PEDROTTI_FINGERPRINT = "efb194ad2c492768962320198d281c98574eb2dc22291279bfd176a15606a0d5"
 
 
