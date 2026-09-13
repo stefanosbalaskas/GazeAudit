@@ -1,7 +1,7 @@
 """Endpoint-blind source intake for the Pedrotti/de Chambrier case study.
 
 The intake verifies the exact Zenodo v1 files and only inspects source structure needed
-by the frozen protocol.  It deliberately does not compute gaze-path endpoints,
+by the frozen protocol. It deliberately does not compute gaze-path endpoints,
 perturbation estimates, recovery fractions, or robustness classifications.
 """
 
@@ -44,6 +44,8 @@ def load_pedrotti_protocol() -> dict[str, Any]:
 
     path = Path(__file__).resolve().parent / "data" / _PROTOCOL_FILE
     document = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(document, dict):
+        raise ValueError("packaged Pedrotti protocol must contain a JSON object")
     if document.get("protocol_fingerprint") != PEDROTTI_PROTOCOL_FINGERPRINT:
         raise ValueError("packaged Pedrotti protocol fingerprint is not the frozen identity")
     return document
@@ -56,7 +58,13 @@ def expected_pedrotti_md5() -> dict[str, str]:
     values = protocol["dataset"]["source_files"]["expected_md5"]
     if not isinstance(values, dict):
         raise ValueError("frozen Pedrotti expected_md5 contract must be an object")
-    return {str(name): str(digest).lower() for name, digest in values.items()}
+    expected = {str(name): str(digest).lower() for name, digest in values.items()}
+    participant_names = [f"{participant:02d}.txt" for participant in range(1, 37)]
+    if sorted(expected) != sorted([*participant_names, "readme.txt"]):
+        raise ValueError("frozen Pedrotti expected_md5 contract has an unexpected file set")
+    if not all(_hex_digest(digest, 32) for digest in expected.values()):
+        raise ValueError("frozen Pedrotti expected_md5 contract contains an invalid digest")
+    return expected
 
 
 def build_pedrotti_source_manifest(source_dir: str | Path) -> dict[str, Any]:
@@ -101,12 +109,7 @@ def build_pedrotti_source_manifest(source_dir: str | Path) -> dict[str, Any]:
         "zenodo_doi": PEDROTTI_ZENODO_DOI,
         "zenodo_record": PEDROTTI_ZENODO_RECORD,
         "zenodo_version": PEDROTTI_ZENODO_VERSION,
-        "download_contract": {
-            "participants": "all",
-            "participant_files": [f"{participant:02d}.txt" for participant in range(1, 37)],
-            "readme": "readme.txt",
-            "bytes": "published_unchanged",
-        },
+        "download_contract": _expected_download_contract(),
         "files": files,
         "file_count": len(files),
     }
@@ -120,6 +123,22 @@ def verify_pedrotti_source_manifest(document: dict[str, Any]) -> bool:
 
     try:
         normalized = json.loads(canonical_json(document))
+        if not isinstance(normalized, dict):
+            return False
+        expected_keys = {
+            "schema",
+            "case_study_id",
+            "protocol_fingerprint",
+            "zenodo_doi",
+            "zenodo_record",
+            "zenodo_version",
+            "download_contract",
+            "files",
+            "file_count",
+            "source_manifest_fingerprint",
+        }
+        if set(normalized) != expected_keys:
+            return False
         if normalized.get("schema") != PEDROTTI_SOURCE_SCHEMA:
             return False
         if normalized.get("case_study_id") != PEDROTTI_CASE_STUDY_ID:
@@ -132,14 +151,16 @@ def verify_pedrotti_source_manifest(document: dict[str, Any]) -> bool:
             return False
         if normalized.get("zenodo_version") != PEDROTTI_ZENODO_VERSION:
             return False
-        stored = normalized.pop("source_manifest_fingerprint", None)
+        if normalized.get("download_contract") != _expected_download_contract():
+            return False
+        stored = normalized.pop("source_manifest_fingerprint")
         if stored != fingerprint(normalized):
             return False
         expected = expected_pedrotti_md5()
         files = normalized.get("files")
         if not isinstance(files, list) or len(files) != len(expected):
             return False
-        if int(normalized.get("file_count", -1)) != len(expected):
+        if normalized.get("file_count") != len(expected):
             return False
         observed: dict[str, str] = {}
         for record in files:
@@ -151,9 +172,10 @@ def verify_pedrotti_source_manifest(document: dict[str, Any]) -> bool:
             }:
                 return False
             name = record["path"]
-            if name in observed or name not in expected:
+            if not isinstance(name, str) or name in observed or name not in expected:
                 return False
-            if int(record["size_bytes"]) < 0:
+            size_bytes = record["size_bytes"]
+            if not isinstance(size_bytes, int) or isinstance(size_bytes, bool) or size_bytes < 0:
                 return False
             if record["md5"] != expected[name]:
                 return False
@@ -179,7 +201,9 @@ def inspect_pedrotti_source(source_dir: str | Path) -> PedrottiSourceIntake:
     for participant in range(1, 37):
         participant_id = f"{participant:02d}"
         participant_records.append(
-            _inspect_participant_file(root / f"{participant_id}.txt", participant_id, required_columns)
+            _inspect_participant_file(
+                root / f"{participant_id}.txt", participant_id, required_columns
+            )
         )
 
     total_rows = sum(record["row_count"] for record in participant_records)
@@ -205,6 +229,7 @@ def inspect_pedrotti_source(source_dir: str | Path) -> PedrottiSourceIntake:
         "participants": participant_records,
         "scientific_endpoint_evaluated": False,
     }
+    _validate_intake_summary(summary, manifest)
     return PedrottiSourceIntake(source_manifest=manifest, intake_summary=summary)
 
 
@@ -220,6 +245,7 @@ def write_pedrotti_source_intake_artifacts(
         raise TypeError("intake must be PedrottiSourceIntake")
     if not verify_pedrotti_source_manifest(intake.source_manifest):
         raise ValueError("intake source manifest is invalid")
+    _validate_intake_summary(intake.intake_summary, intake.source_manifest)
     destination = _prepare_flat_destination(Path(output_dir), overwrite=overwrite)
     _write_json(destination / "source_manifest.json", intake.source_manifest)
     _write_json(destination / "intake_summary.json", intake.intake_summary)
@@ -266,14 +292,25 @@ def verify_pedrotti_source_intake_artifacts(output_dir: str | Path) -> bool:
         artifact = _read_json(root / "artifact_manifest.json")
         if not verify_pedrotti_source_manifest(source):
             return False
-        if summary.get("scientific_endpoint_evaluated") is not False:
+        _validate_intake_summary(summary, source)
+        expected_artifact_keys = {
+            "schema",
+            "case_study_id",
+            "protocol_fingerprint",
+            "source_manifest_fingerprint",
+            "files",
+            "artifact_manifest_fingerprint",
+        }
+        if set(artifact) != expected_artifact_keys:
             return False
-        if summary.get("source_manifest_fingerprint") != source["source_manifest_fingerprint"]:
-            return False
-        stored = artifact.pop("artifact_manifest_fingerprint", None)
+        stored = artifact.pop("artifact_manifest_fingerprint")
         if stored != fingerprint(artifact):
             return False
         if artifact.get("schema") != PEDROTTI_SOURCE_INTAKE_SCHEMA:
+            return False
+        if artifact.get("case_study_id") != PEDROTTI_CASE_STUDY_ID:
+            return False
+        if artifact.get("protocol_fingerprint") != PEDROTTI_PROTOCOL_FINGERPRINT:
             return False
         if artifact.get("source_manifest_fingerprint") != source["source_manifest_fingerprint"]:
             return False
@@ -290,9 +327,106 @@ def verify_pedrotti_source_intake_artifacts(output_dir: str | Path) -> bool:
             "source_manifest.json",
         }:
             return False
-        return all(_digest_file(root / name, "sha256") == digest for name, digest in checksums.items())
+        return all(
+            _digest_file(root / name, "sha256") == digest for name, digest in checksums.items()
+        )
     except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
         return False
+
+
+def _validate_intake_summary(summary: dict[str, Any], source: dict[str, Any]) -> None:
+    expected_keys = {
+        "schema",
+        "case_study_id",
+        "protocol_fingerprint",
+        "source_manifest_fingerprint",
+        "participant_count",
+        "source_file_count",
+        "total_row_count",
+        "total_trial_count",
+        "short_numeric_trial_count",
+        "long_numeric_trial_count",
+        "eye_counts",
+        "participants",
+        "scientific_endpoint_evaluated",
+    }
+    if set(summary) != expected_keys:
+        raise ValueError("Pedrotti intake summary does not have the exact required field set")
+    if summary["schema"] != PEDROTTI_SOURCE_INTAKE_SCHEMA:
+        raise ValueError("unexpected Pedrotti intake summary schema")
+    if summary["case_study_id"] != PEDROTTI_CASE_STUDY_ID:
+        raise ValueError("unexpected Pedrotti case-study identity")
+    if summary["protocol_fingerprint"] != PEDROTTI_PROTOCOL_FINGERPRINT:
+        raise ValueError("unexpected Pedrotti protocol fingerprint")
+    if summary["source_manifest_fingerprint"] != source["source_manifest_fingerprint"]:
+        raise ValueError("Pedrotti intake/source fingerprint mismatch")
+    if summary["scientific_endpoint_evaluated"] is not False:
+        raise ValueError("Pedrotti source intake must remain endpoint-blind")
+    if summary["participant_count"] != 36:
+        raise ValueError("Pedrotti intake must contain exactly 36 participants")
+    if summary["source_file_count"] != 37 or summary["source_file_count"] != source["file_count"]:
+        raise ValueError("Pedrotti intake must contain exactly 37 frozen source files")
+    if not _positive_int(summary["total_row_count"]):
+        raise ValueError("Pedrotti intake total_row_count must be a positive integer")
+    if summary["total_trial_count"] != 36 * 96:
+        raise ValueError("Pedrotti intake must contain exactly 96 trials per participant")
+
+    participants = summary["participants"]
+    if not isinstance(participants, list) or len(participants) != 36:
+        raise ValueError("Pedrotti intake participants must contain exactly 36 records")
+    expected_ids = [f"{participant:02d}" for participant in range(1, 37)]
+    participant_fields = {
+        "participant_id",
+        "row_count",
+        "trial_count",
+        "eye",
+        "short_numeric_trial_count",
+        "long_numeric_trial_count",
+        "numeric_trial_count",
+    }
+    seen_ids: list[str] = []
+    row_sum = 0
+    trial_sum = 0
+    short_sum = 0
+    long_sum = 0
+    computed_eye_counts = {"left": 0, "right": 0}
+    for record in participants:
+        if not isinstance(record, dict) or set(record) != participant_fields:
+            raise ValueError("Pedrotti participant record has an unexpected field set")
+        participant_id = record["participant_id"]
+        if not isinstance(participant_id, str):
+            raise ValueError("Pedrotti participant_id must be a string")
+        seen_ids.append(participant_id)
+        if not _positive_int(record["row_count"]):
+            raise ValueError("Pedrotti participant row_count must be positive")
+        if record["trial_count"] != 96:
+            raise ValueError("Pedrotti participant must contain exactly 96 trials")
+        if record["eye"] not in computed_eye_counts:
+            raise ValueError("Pedrotti participant eye must be left or right")
+        short_count = record["short_numeric_trial_count"]
+        long_count = record["long_numeric_trial_count"]
+        numeric_count = record["numeric_trial_count"]
+        if not _positive_int(short_count) or not _positive_int(long_count):
+            raise ValueError("Pedrotti participant must retain both numeric length conditions")
+        if numeric_count != short_count + long_count or numeric_count > 96:
+            raise ValueError("Pedrotti participant numeric-trial counts do not reconcile")
+        row_sum += record["row_count"]
+        trial_sum += record["trial_count"]
+        short_sum += short_count
+        long_sum += long_count
+        computed_eye_counts[record["eye"]] += 1
+    if seen_ids != expected_ids:
+        raise ValueError("Pedrotti participant identities/order differ from 01 through 36")
+    if row_sum != summary["total_row_count"]:
+        raise ValueError("Pedrotti row totals do not reconcile")
+    if trial_sum != summary["total_trial_count"]:
+        raise ValueError("Pedrotti trial totals do not reconcile")
+    if short_sum != summary["short_numeric_trial_count"]:
+        raise ValueError("Pedrotti short-numeric totals do not reconcile")
+    if long_sum != summary["long_numeric_trial_count"]:
+        raise ValueError("Pedrotti long-numeric totals do not reconcile")
+    if summary["eye_counts"] != computed_eye_counts:
+        raise ValueError("Pedrotti eye counts do not reconcile")
 
 
 def _inspect_participant_file(
@@ -323,9 +457,10 @@ def _inspect_participant_file(
     observed_trials = sorted(frame["TRIAL_INDEX"].unique().tolist())
     if observed_trials != list(range(1, 97)):
         raise ValueError(f"participant {participant_id} does not contain exactly trials 1..96")
-    if not frame.groupby("TRIAL_INDEX", sort=False)["TIMESTAMP"].apply(
+    increasing = frame.groupby("TRIAL_INDEX", sort=False)["TIMESTAMP"].apply(
         lambda values: values.diff().dropna().gt(0).all()
-    ).all():
+    )
+    if not increasing.all():
         raise ValueError(f"participant {participant_id} timestamps are not strictly increasing")
     if frame["TrialTextShown"].isna().any():
         raise ValueError(f"participant {participant_id} has missing TrialTextShown")
@@ -335,7 +470,9 @@ def _inspect_participant_file(
     left_finite = _finite_xy(frame, "LEFT_GAZE_X", "LEFT_GAZE_Y")
     right_finite = _finite_xy(frame, "RIGHT_GAZE_X", "RIGHT_GAZE_Y")
     if bool(left_finite.any()) == bool(right_finite.any()):
-        raise ValueError(f"participant {participant_id} does not expose exactly one finite eye side")
+        raise ValueError(
+            f"participant {participant_id} does not expose exactly one finite eye side"
+        )
     eye = "left" if left_finite.any() else "right"
 
     stimuli = frame.groupby("TRIAL_INDEX", sort=True)["TrialTextShown"].first()
@@ -352,6 +489,15 @@ def _inspect_participant_file(
         "short_numeric_trial_count": short_count,
         "long_numeric_trial_count": long_count,
         "numeric_trial_count": short_count + long_count,
+    }
+
+
+def _expected_download_contract() -> dict[str, Any]:
+    return {
+        "participants": "all",
+        "participant_files": [f"{participant:02d}.txt" for participant in range(1, 37)],
+        "readme": "readme.txt",
+        "bytes": "published_unchanged",
     }
 
 
@@ -372,6 +518,10 @@ def _finite_xy(frame: pd.DataFrame, x_column: str, y_column: str) -> pd.Series:
     x = pd.to_numeric(frame[x_column], errors="coerce").to_numpy(dtype=float)
     y = pd.to_numeric(frame[y_column], errors="coerce").to_numpy(dtype=float)
     return pd.Series(np.isfinite(x) & np.isfinite(y), index=frame.index)
+
+
+def _positive_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value > 0
 
 
 def _prepare_flat_destination(destination: Path, *, overwrite: bool) -> Path:
