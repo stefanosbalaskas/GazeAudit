@@ -1,0 +1,95 @@
+{
+  "case_study_id": "pedrotti2023-reading-numerals-sampling-missingness-v1",
+  "environment": {
+    "numpy": "2.5.3",
+    "package_version": "0.1.0.dev19",
+    "pandas": "2.3.3",
+    "python": "3.12.14"
+  },
+  "intake": {
+    "eye_counts": {
+      "left": 20,
+      "right": 16
+    },
+    "intake_summary_file_sha256": "9831164f202e5903cb33fd95c6c045d5c7f6749fb1c79c19e72e7f9e5a9baa69",
+    "intake_summary_fingerprint": "24ecbf9b267b56d1e3750e9ed562af972bbec3093196f2ad2cd2a0b567fc48a1",
+    "long_numeric_trial_count": 864,
+    "participant_count": 36,
+    "short_numeric_trial_count": 864,
+    "total_row_count": 13149347,
+    "total_trial_count": 3456
+  },
+  "lock_fingerprint": "d71949f035ecdf14b9e225b8ca441d291625767dc4a07fa4854882ff2dcae898",
+  "protocol_fingerprint": "efb194ad2c492768962320198d281c98574eb2dc22291279bfd176a15606a0d5",
+  "schema": "gazeaudit-pedrotti-source-lock-v1",
+  "scientific_endpoint_executed_before_lock": false,
+  "source": {
+    "file_count": 37,
+    "participant_file_count": 36,
+    "source_manifest_file_sha256": "1fc48a31aa24cc75061032253a80c5d5aa427b973bd4152625fd99f4b7571635",
+    "source_manifest_fingerprint": "ca676426a01c1d57dda93b62709d4e9040369e4193c0b44353be78d644a33b1f",
+    "source_total_bytes": 638488099
+  },
+  "source_freeze": {
+    "artifact_id": 10326523152,
+    "artifact_name": "pedrotti-source-freeze-v1-63c4dabc47d716d8616f0df422a4d6115d19cb77",
+    "artifact_size_bytes": 18010,
+    "artifact_zip_sha256": "e90a7e196df951cbd9c4b2a544beed69cbf2c289a2fd945c3755762dc1c6c667",
+    "execution_commit": "63c4dabc47d716d8616f0df422a4d6115d19cb77",
+    "execution_context_sha256": "19a3a2d38a6038c0d61f7753d75c7f2594e611bde31bbfd5f2db0078278e460e",
+    "freeze_manifest_fingerprint": "4cb588672e65fc618244f59d4a865ab499c70347afb6c8b628268a3170e0668d",
+    "github_artifact_digest": "sha256:e90a7e196df951cbd9c4b2a544beed69cbf2c289a2fd945c3755762dc1c6c667",
+    "intake_artifact_manifest_fingerprint": "e3be66448f43937ad3e530c0abbae28b30b74196f1d3751afa337d9183830d14",
+    "job_id": 103803177169,
+    "pip_freeze_sha256": "d8b74dd23a3b3f82d0c18d129f5ae343b1a4cc223826930f8a75a55826bce756",
+    "run_id": 34786624831
+  },
+  "zenodo": {
+    "doi": "10.5281/zenodo.7962917",
+    "download_contract": {
+      "bytes": "published_unchanged",
+      "participant_files": [
+        "01.txt",
+        "02.txt",
+        "03.txt",
+        "04.txt",
+        "05.txt",
+        "06.txt",
+        "07.txt",
+        "08.txt",
+        "09.txt",
+        "10.txt",
+        "11.txt",
+        "12.txt",
+        "13.txt",
+        "14.txt",
+        "15.txt",
+        "16.txt",
+        "17.txt",
+        "18.txt",
+        "19.txt",
+        "20.txt",
+        "21.txt",
+        "22.txt",
+        "23.txt",
+        "24.txt",
+        "25.txt",
+        "26.txt",
+        "27.txt",
+        "28.txt",
+        "29.txt",
+        "30.txt",
+        "31.txt",
+        "32.txt",
+        "33.txt",
+        "34.txt",
+        "35.txt",
+        "36.txt"
+      ],
+      "participants": "all",
+      "readme": "readme.txt"
+    },
+    "record": 7962917,
+    "version": "v1"
+  }
+}
