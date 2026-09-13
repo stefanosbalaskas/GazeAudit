@@ -27,7 +27,6 @@ from gazeaudit.pedrotti_source import (
 )
 from gazeaudit.provenance import canonical_json, fingerprint
 
-
 _COLUMNS = [
     "TRIAL_INDEX",
     "LEFT_GAZE_X",
