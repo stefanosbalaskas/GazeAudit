@@ -56,6 +56,23 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from gazeaudit.pedrotti_fetch import fetch_pedrotti_zenodo_source
+          from gazeaudit.pedrotti_prefetch import prefetch_pedrotti_source_bytes
+
+          prefetch = prefetch_pedrotti_source_bytes(
+              "pedrotti-source",
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+              timeout_seconds=180.0,
+          )
+          print(
+              "checksum-locked redundant byte prefetch: "
+              f"files={prefetch['file_count']} "
+              f"request_attempts={prefetch['request_attempts']} "
+              f"api_content_attempts={prefetch['route_attempts']['api_content']} "
+              f"public_record_attempts={prefetch['route_attempts']['public_record']} "
+              f"retained={prefetch['retained_verified_files']} "
+              f"removed_mismatches={prefetch['removed_mismatched_files']}"
+          )
 
           summary = fetch_pedrotti_zenodo_source(
               "pedrotti-source",
