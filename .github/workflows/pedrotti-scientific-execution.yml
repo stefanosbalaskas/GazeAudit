@@ -1,0 +1,159 @@
+name: pedrotti-scientific-execution
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pedrotti-scientific-execution-v1
+  cancel-in-progress: false
+
+jobs:
+  scientific-execution:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Checkout exact GazeAudit commit
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Verify exact main execution identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Install frozen scientific stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install "numpy==2.5.3" "pandas==2.3.3"
+          python -m pip install -e .
+          python - <<'PY'
+          import platform
+          import numpy as np
+          import pandas as pd
+
+          if platform.python_version() != "3.12.14":
+              raise SystemExit(f"unexpected Python version: {platform.python_version()}")
+          if np.__version__ != "2.5.3":
+              raise SystemExit(f"unexpected NumPy version: {np.__version__}")
+          if pd.__version__ != "2.3.3":
+              raise SystemExit(f"unexpected pandas version: {pd.__version__}")
+          PY
+
+      - name: Download exact checksum-locked Zenodo source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.pedrotti_fetch import fetch_pedrotti_zenodo_source
+          from gazeaudit.pedrotti_prefetch import prefetch_pedrotti_source_bytes
+
+          prefetch = prefetch_pedrotti_source_bytes(
+              "pedrotti-source",
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+              timeout_seconds=180.0,
+          )
+          print(
+              "checksum-locked redundant byte prefetch: "
+              f"files={prefetch['file_count']} "
+              f"request_attempts={prefetch['request_attempts']} "
+              f"retained={prefetch['retained_verified_files']} "
+              f"removed_mismatches={prefetch['removed_mismatched_files']}"
+          )
+          summary = fetch_pedrotti_zenodo_source(
+              "pedrotti-source",
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+              timeout_seconds=180.0,
+              metadata_max_attempts=2,
+              metadata_timeout_seconds=30.0,
+          )
+          print(
+              "verified endpoint-blind Zenodo transfer: "
+              f"files={summary['file_count']} "
+              f"metadata_source={summary['metadata_source']} "
+              f"retained={summary['retained_verified_files']} "
+              f"removed_mismatches={summary['removed_mismatched_files']}"
+          )
+          PY
+
+      - name: Verify locked endpoint-blind intake before scientific execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.pedrotti_source import inspect_pedrotti_source
+          from gazeaudit.pedrotti_source_lock import (
+              verify_pedrotti_locked_intake,
+              verify_pedrotti_source_lock,
+          )
+
+          verify_pedrotti_source_lock()
+          intake = inspect_pedrotti_source("pedrotti-source")
+          verify_pedrotti_locked_intake(intake)
+          print("Pedrotti endpoint-blind source lock: verified")
+          PY
+
+      - name: Capture frozen dependency environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip freeze | LC_ALL=C sort > pip-freeze.txt
+          test -s pip-freeze.txt
+
+      - name: Execute frozen protocol and build hidden scientific archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m gazeaudit.pedrotti_execution_cli \
+            --source-dir pedrotti-source \
+            --output-dir pedrotti-scientific-archive \
+            --environment-file pip-freeze.txt \
+            --execution-commit "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --runner-os "$RUNNER_OS" \
+            --runner-arch "$RUNNER_ARCH"
+
+      - name: Verify scientific archive before upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.pedrotti_execution import (
+              verify_pedrotti_locked_execution_artifacts,
+          )
+
+          if not verify_pedrotti_locked_execution_artifacts(
+              "pedrotti-scientific-archive"
+          ):
+              raise SystemExit("Pedrotti scientific archive verification failed")
+          PY
+
+      - name: Archive scientific result before reveal
+        uses: actions/upload-artifact@v7
+        with:
+          name: pedrotti-scientific-execution-v1-${{ github.sha }}
+          path: pedrotti-scientific-archive/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Reveal archived scientific result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m gazeaudit.pedrotti_reveal_cli \
+            --archive-dir pedrotti-scientific-archive
