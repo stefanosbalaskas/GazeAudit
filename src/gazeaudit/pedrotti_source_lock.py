@@ -64,7 +64,10 @@ def verify_pedrotti_source_lock(
 ) -> dict[str, Any]:
     """Verify the immutable lock fingerprint and archive/source guardrails."""
 
-    lock = load_pedrotti_source_lock() if document is None else json.loads(canonical_json(document))
+    if document is None:
+        lock = load_pedrotti_source_lock()
+    else:
+        lock = json.loads(canonical_json(document))
     if not isinstance(lock, dict):
         raise TypeError("Pedrotti source lock must normalize to an object")
 
@@ -147,7 +150,9 @@ def verify_pedrotti_locked_source_manifest(
         "zenodo_doi": manifest.get("zenodo_doi") == lock["zenodo"]["doi"],
         "zenodo_record": manifest.get("zenodo_record") == lock["zenodo"]["record"],
         "zenodo_version": manifest.get("zenodo_version") == lock["zenodo"]["version"],
-        "download_contract": manifest.get("download_contract") == lock["zenodo"]["download_contract"],
+        "download_contract": (
+            manifest.get("download_contract") == lock["zenodo"]["download_contract"]
+        ),
     }
     failed = [name for name, passed in checks.items() if not passed]
     if failed:
@@ -177,20 +182,30 @@ def verify_pedrotti_locked_intake(
             == lock["source"]["source_manifest_fingerprint"]
         ),
         "endpoint_blind": summary.get("scientific_endpoint_evaluated") is False,
-        "participant_count": int(summary.get("participant_count", -1))
-        == expected["participant_count"],
-        "source_file_count": int(summary.get("source_file_count", -1))
-        == lock["source"]["file_count"],
-        "total_row_count": int(summary.get("total_row_count", -1))
-        == expected["total_row_count"],
-        "total_trial_count": int(summary.get("total_trial_count", -1))
-        == expected["total_trial_count"],
-        "short_numeric_trials": int(summary.get("short_numeric_trial_count", -1))
-        == expected["short_numeric_trial_count"],
-        "long_numeric_trials": int(summary.get("long_numeric_trial_count", -1))
-        == expected["long_numeric_trial_count"],
+        "participant_count": (
+            int(summary.get("participant_count", -1)) == expected["participant_count"]
+        ),
+        "source_file_count": (
+            int(summary.get("source_file_count", -1)) == lock["source"]["file_count"]
+        ),
+        "total_row_count": (
+            int(summary.get("total_row_count", -1)) == expected["total_row_count"]
+        ),
+        "total_trial_count": (
+            int(summary.get("total_trial_count", -1)) == expected["total_trial_count"]
+        ),
+        "short_numeric_trials": (
+            int(summary.get("short_numeric_trial_count", -1))
+            == expected["short_numeric_trial_count"]
+        ),
+        "long_numeric_trials": (
+            int(summary.get("long_numeric_trial_count", -1))
+            == expected["long_numeric_trial_count"]
+        ),
         "eye_counts": summary.get("eye_counts") == expected["eye_counts"],
-        "summary_fingerprint": fingerprint(summary) == expected["intake_summary_fingerprint"],
+        "summary_fingerprint": (
+            fingerprint(summary) == expected["intake_summary_fingerprint"]
+        ),
     }
     failed = [name for name, passed in checks.items() if not passed]
     if failed:
