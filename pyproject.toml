@@ -69,6 +69,8 @@ gazeaudit-korthals-source-intake = "gazeaudit.korthals_source_cli:main"
 gazeaudit-korthals-source-freeze = "gazeaudit.korthals_freeze_cli:main"
 gazeaudit-korthals-source-intake-v2 = "gazeaudit.korthals_source_v2_cli:main"
 gazeaudit-korthals-source-freeze-v2 = "gazeaudit.korthals_freeze_v2_cli:main"
+gazeaudit-pedrotti-source-intake = "gazeaudit.pedrotti_source_cli:main"
+gazeaudit-pedrotti-source-freeze = "gazeaudit.pedrotti_freeze_cli:main"
 
 [project.urls]
 Homepage = "https://github.com/stefanosbalaskas/GazeAudit"
