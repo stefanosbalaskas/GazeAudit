@@ -66,6 +66,7 @@ jobs:
           print(
               "verified endpoint-blind Zenodo transfer: "
               f"files={summary['file_count']} "
+              f"metadata_source={summary['metadata_source']} "
               f"metadata_attempts={summary['metadata_attempts']} "
               f"download_attempts={summary['download_attempts']} "
               f"retained={summary['retained_verified_files']} "

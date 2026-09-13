@@ -186,6 +186,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
         timeout_seconds=1.0,
     )
     assert first["file_count"] == 2
+    assert first["metadata_source"] == "api"
     assert first["download_attempts"] == 2
     assert first["retained_verified_files"] == 0
     assert first["removed_mismatched_files"] == 0
@@ -199,6 +200,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
         initial_backoff_seconds=0.0,
         timeout_seconds=1.0,
     )
+    assert second["metadata_source"] == "api"
     assert second["retained_verified_files"] == 2
     assert second["download_attempts"] == 0
     assert content_calls == []
@@ -210,6 +212,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
         initial_backoff_seconds=0.0,
         timeout_seconds=1.0,
     )
+    assert third["metadata_source"] == "api"
     assert third["retained_verified_files"] == 1
     assert third["removed_mismatched_files"] == 1
     assert third["download_attempts"] == 1
@@ -218,25 +221,30 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
 
 
 def test_fetch_metadata_retry_and_validation_fail_closed(monkeypatch):
-    attempts = 0
+    calls = 0
     metadata = {
         "id": PEDROTTI_ZENODO_RECORD,
         "files": [],
     }
 
     def flaky_urlopen(request, timeout):
-        nonlocal attempts
-        attempts += 1
-        if attempts == 1:
-            raise URLError("synthetic transient failure")
+        nonlocal calls
+        assert timeout > 0
+        calls += 1
+        if calls == 1:
+            raise URLError("synthetic transient API failure")
+        if calls == 2:
+            raise URLError("synthetic transient record-page failure")
         return _Response(json.dumps(metadata).encode("utf-8"))
 
     monkeypatch.setattr("gazeaudit.pedrotti_fetch.urlopen", flaky_urlopen)
     monkeypatch.setattr("gazeaudit.pedrotti_fetch.time.sleep", lambda seconds: None)
-    document, used_attempts = _fetch_record_metadata(
+    document, used_attempts, metadata_source = _fetch_record_metadata(
         max_attempts=2,
         initial_backoff_seconds=0.01,
         timeout_seconds=1.0,
     )
+    assert calls == 3
     assert used_attempts == 2
+    assert metadata_source == "api"
     assert document["id"] == PEDROTTI_ZENODO_RECORD
