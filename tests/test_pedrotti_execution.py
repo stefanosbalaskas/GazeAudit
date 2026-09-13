@@ -8,6 +8,8 @@ import numpy as np
 import pytest
 
 import gazeaudit.pedrotti_execution as execution_module
+import gazeaudit.pedrotti_execution_cli as execution_cli
+import gazeaudit.pedrotti_reveal_cli as reveal_cli
 from gazeaudit.pedrotti_execution import (
     PEDROTTI_EXECUTION_WORKFLOW,
     PreparedPedrottiData,
@@ -202,7 +204,11 @@ def test_reference_zero_uses_predeclared_indeterminate_rule() -> None:
     for participant in ids:
         trials.append(_trial(participant, 1, "short", scale=1.0))
         trials.append(_trial(participant, 2, "long", scale=1.0))
-    prepared = PreparedPedrottiData({}, tuple(trials), ids)
+    prepared = PreparedPedrottiData(
+        {"source_manifest_fingerprint": "synthetic-reference-zero"},
+        tuple(trials),
+        ids,
+    )
 
     execution = run_pedrotti_scientific_execution(prepared)
 
@@ -302,3 +308,108 @@ def test_execution_context_builder_rejects_nonfrozen_python(
             runner_os="Linux",
             runner_arch="X64",
         )
+
+
+def test_execution_context_builder_accepts_frozen_python(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(execution_module.platform, "python_version", lambda: "3.12.14")
+    context = execution_context(
+        execution_commit="b" * 40,
+        github_run_id=2,
+        runner_os="Linux",
+        runner_arch="X64",
+    )
+    assert context["python"] == "3.12.14"
+    assert context["workflow_ref"] == PEDROTTI_EXECUTION_WORKFLOW
+
+
+def test_hidden_execution_cli_writes_archive_without_printing_results(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    environment = tmp_path / "pip-freeze.txt"
+    environment.write_text("numpy==2.5.3\npandas==2.3.3\n", encoding="utf-8")
+    prepared = object()
+    scientific_execution = object()
+    context = {"context": "synthetic"}
+    calls: dict[str, object] = {}
+
+    monkeypatch.setattr(
+        execution_cli,
+        "prepare_pedrotti_locked_execution_data",
+        lambda source_dir: prepared,
+    )
+    monkeypatch.setattr(
+        execution_cli,
+        "run_pedrotti_locked_scientific_execution",
+        lambda value: scientific_execution if value is prepared else None,
+    )
+    monkeypatch.setattr(
+        execution_cli,
+        "execution_context",
+        lambda **kwargs: context,
+    )
+
+    def fake_write(value, output_dir, *, execution_context, environment_text):
+        calls["value"] = value
+        calls["output_dir"] = output_dir
+        calls["execution_context"] = execution_context
+        calls["environment_text"] = environment_text
+
+    monkeypatch.setattr(
+        execution_cli,
+        "write_pedrotti_locked_execution_artifacts",
+        fake_write,
+    )
+
+    result = execution_cli.main(
+        [
+            "--source-dir",
+            "source",
+            "--output-dir",
+            "archive",
+            "--environment-file",
+            str(environment),
+            "--execution-commit",
+            "a" * 40,
+            "--run-id",
+            "123",
+            "--runner-os",
+            "Linux",
+            "--runner-arch",
+            "X64",
+        ]
+    )
+    assert result == 0
+    assert calls["value"] is scientific_execution
+    assert calls["execution_context"] is context
+    assert calls["environment_text"] == "numpy==2.5.3\npandas==2.3.3\n"
+    assert capsys.readouterr().out == ""
+
+
+def test_reveal_cli_prints_only_verified_archive_summary(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setattr(
+        reveal_cli,
+        "reveal_pedrotti_locked_execution",
+        lambda _: {
+            "status": "archived_scientific_result",
+            "reference": {"study_estimate": 1.25},
+            "sampling_results": [{"target_hz": 500.0}],
+            "missingness_results": [{"estimate": 1.2}],
+            "family_recovery": [{"family": "sampling"}],
+            "execution_manifest": {
+                "classification": "robust",
+                "execution_fingerprint": "c" * 64,
+            },
+        },
+    )
+    assert reveal_cli.main(["--archive-dir", "archive"]) == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output["classification"] == "robust"
+    assert output["execution_fingerprint"] == "c" * 64
+    assert "missingness_results" not in output
