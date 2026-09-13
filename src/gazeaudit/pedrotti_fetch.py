@@ -15,7 +15,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.parse import parse_qs, unquote, urljoin, urlparse
+from urllib.parse import parse_qs, quote, unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
 
 from .pedrotti_source import (
@@ -81,7 +81,8 @@ def fetch_pedrotti_zenodo_source(
     The canonical Zenodo REST record endpoint is the primary metadata source. If that
     endpoint fails with a transport-level error, the public record page is an allowed
     fallback only when its file table independently reproduces the exact frozen record,
-    filename, MD5, and trusted download-link contract.
+    filename, and MD5 contract. Download URLs are reconstructed deterministically from
+    the frozen record identity rather than trusting mutable metadata link representations.
     """
 
     if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
@@ -206,7 +207,7 @@ def _fetch_record_page_metadata_once(timeout_seconds: float) -> dict[str, Any]:
 
 
 def _metadata_from_record_html(payload: bytes) -> dict[str, Any]:
-    """Build a REST-compatible file contract from the public record file table."""
+    """Build a REST-compatible file contract from the public Zenodo record file table."""
 
     text = payload.decode("utf-8")
     if PEDROTTI_ZENODO_DOI not in text:
@@ -269,6 +270,15 @@ def _pedrotti_record_download_name(url: str) -> str | None:
     return name
 
 
+def _canonical_pedrotti_download_url(name: str) -> str:
+    """Construct the immutable record-specific public download URL for a filename."""
+
+    if not name or "/" in name or "\\" in name or name in {".", ".."}:
+        raise ValueError(f"unsafe Zenodo filename in metadata: {name!r}")
+    encoded = quote(name, safe="")
+    return f"{PEDROTTI_ZENODO_RECORD_PAGE}/files/{encoded}?download=1"
+
+
 def _verified_remote_contract(
     metadata: dict[str, Any],
     expected: dict[str, str],
@@ -283,22 +293,14 @@ def _verified_remote_contract(
             raise ValueError("Zenodo file metadata must contain objects")
         name = record.get("key")
         checksum = record.get("checksum")
-        links = record.get("links")
-        if (
-            not isinstance(name, str)
-            or not isinstance(checksum, str)
-            or not isinstance(links, dict)
-        ):
+        if not isinstance(name, str) or not isinstance(checksum, str):
             raise ValueError("Zenodo file metadata is structurally incomplete")
         if name in remote:
             raise ValueError(f"duplicate Zenodo filename in metadata: {name!r}")
         if not checksum.startswith("md5:"):
             raise ValueError(f"Zenodo checksum for {name!r} is not MD5")
         digest = checksum[4:].lower()
-        url = links.get("content")
-        if not isinstance(url, str) or not _trusted_pedrotti_file_url(url, name):
-            raise ValueError(f"Zenodo content link for {name!r} is not trusted")
-        remote[name] = url
+        remote[name] = _canonical_pedrotti_download_url(name)
         observed_md5[name] = digest
     if set(remote) != set(expected):
         missing = sorted(set(expected).difference(remote))
@@ -311,21 +313,6 @@ def _verified_remote_contract(
         mismatched = sorted(name for name in expected if observed_md5.get(name) != expected[name])
         raise ValueError(f"Zenodo record MD5 metadata differs from frozen contract: {mismatched!r}")
     return remote
-
-
-def _trusted_pedrotti_file_url(url: str, name: str) -> bool:
-    if not _trusted_zenodo_url(url):
-        return False
-    parsed = urlparse(url)
-    decoded_path = unquote(parsed.path)
-    api_path = f"/api/records/{PEDROTTI_ZENODO_RECORD}/files/{name}/content"
-    public_path = f"/records/{PEDROTTI_ZENODO_RECORD}/files/{name}"
-    if decoded_path == api_path:
-        return not parsed.query
-    if decoded_path == public_path:
-        query = parse_qs(parsed.query, keep_blank_values=True)
-        return query.get("download") == ["1"] and set(query) == {"download"}
-    return False
 
 
 def _download_verified_file(
