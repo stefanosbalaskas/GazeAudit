@@ -112,24 +112,25 @@ def test_record_html_must_bind_frozen_doi_and_exact_md5():
         pedrotti_fetch._verified_remote_contract(metadata, expected)
 
 
-def test_record_specific_file_url_validation_is_fail_closed():
-    assert pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://zenodo.org/api/records/7962917/files/01.txt/content", "01.txt"
+def test_record_specific_download_boundary_is_fail_closed():
+    assert (
+        pedrotti_fetch._pedrotti_record_download_name(
+            "https://zenodo.org/records/7962917/files/01.txt?download=1"
+        )
+        == "01.txt"
     )
-    assert pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://zenodo.org/records/7962917/files/01.txt?download=1", "01.txt"
-    )
-    assert not pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://zenodo.org/records/1/files/01.txt?download=1", "01.txt"
-    )
-    assert not pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://zenodo.org/records/7962917/files/02.txt?download=1", "01.txt"
-    )
-    assert not pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://zenodo.org/records/7962917/files/01.txt?download=1&other=1", "01.txt"
-    )
-    assert not pedrotti_fetch._trusted_pedrotti_file_url(
-        "https://example.com/records/7962917/files/01.txt?download=1", "01.txt"
+    assert pedrotti_fetch._pedrotti_record_download_name(
+        "https://zenodo.org/records/1/files/01.txt?download=1"
+    ) is None
+    assert pedrotti_fetch._pedrotti_record_download_name(
+        "https://zenodo.org/records/7962917/files/01.txt"
+    ) is None
+    assert pedrotti_fetch._pedrotti_record_download_name(
+        "https://example.com/records/7962917/files/01.txt?download=1"
+    ) is None
+    assert (
+        pedrotti_fetch._canonical_pedrotti_download_url("01.txt")
+        == "https://zenodo.org/records/7962917/files/01.txt?download=1"
     )
 
 
