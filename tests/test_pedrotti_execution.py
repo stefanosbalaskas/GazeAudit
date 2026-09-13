@@ -10,7 +10,6 @@ import pytest
 import gazeaudit.pedrotti_execution as execution_module
 from gazeaudit.pedrotti_execution import (
     PEDROTTI_EXECUTION_WORKFLOW,
-    PedrottiScientificExecution,
     PreparedPedrottiData,
     _added_missingness_positions,
     _child_seed,
