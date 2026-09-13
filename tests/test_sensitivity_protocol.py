@@ -1,5 +1,5 @@
+import importlib.resources
 import json
-from importlib import resources
 from pathlib import Path
 
 import pytest
@@ -123,7 +123,7 @@ def test_frozen_pedrotti_protocol_is_packaged_identically_and_verified():
     docs_path = root / "docs" / "protocols" / "pedrotti2023_sampling_missingness_v1.json"
     docs = json.loads(docs_path.read_text(encoding="utf-8"))
     packaged_text = (
-        resources.files("gazeaudit.data")
+        importlib.resources.files("gazeaudit.data")
         .joinpath("pedrotti2023_sampling_missingness_v1.json")
         .read_text(encoding="utf-8")
     )
