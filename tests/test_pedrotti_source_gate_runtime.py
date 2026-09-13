@@ -21,7 +21,6 @@ from gazeaudit.pedrotti_source import (
 )
 from gazeaudit.pedrotti_source_cli import main as source_cli_main
 
-
 _COLUMNS = [
     "TRIAL_INDEX",
     "LEFT_GAZE_X",
