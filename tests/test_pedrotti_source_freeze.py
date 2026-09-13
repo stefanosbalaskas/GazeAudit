@@ -8,7 +8,6 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-import gazeaudit.pedrotti_source as source_module
 from gazeaudit.pedrotti_freeze import (
     PEDROTTI_FREEZE_WORKFLOW,
     PEDROTTI_SOURCE_FREEZE_SCHEMA,
@@ -83,7 +82,10 @@ def _write_synthetic_source(root: Path) -> dict[str, str]:
 def synthetic_intake(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     source_dir = tmp_path / "source"
     expected = _write_synthetic_source(source_dir)
-    monkeypatch.setattr(source_module, "expected_pedrotti_md5", lambda: dict(expected))
+    monkeypatch.setattr(
+        "gazeaudit.pedrotti_source.expected_pedrotti_md5",
+        lambda: dict(expected),
+    )
     intake = inspect_pedrotti_source(source_dir)
     output = tmp_path / "intake"
     write_pedrotti_source_intake_artifacts(intake, output)
