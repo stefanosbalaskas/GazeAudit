@@ -64,7 +64,9 @@ def test_packaged_pedrotti_source_lock_is_immutable_and_endpoint_blind() -> None
     assert lock["source_freeze"]["run_id"] == PEDROTTI_SOURCE_FREEZE_RUN_ID
     assert lock["source_freeze"]["artifact_id"] == PEDROTTI_SOURCE_FREEZE_ARTIFACT_ID
     assert lock["source_freeze"]["execution_commit"] == PEDROTTI_SOURCE_FREEZE_COMMIT
-    assert lock["source_freeze"]["artifact_zip_sha256"] == PEDROTTI_SOURCE_FREEZE_ZIP_SHA256
+    assert lock["source_freeze"]["artifact_zip_sha256"] == (
+        PEDROTTI_SOURCE_FREEZE_ZIP_SHA256
+    )
     assert lock["source"]["source_manifest_fingerprint"] == (
         PEDROTTI_LOCKED_SOURCE_MANIFEST_FINGERPRINT
     )
@@ -89,7 +91,9 @@ def test_locked_source_manifest_requires_exact_archived_fingerprint(
     manifest = _synthetic_locked_manifest()
 
     verified = verify_pedrotti_locked_source_manifest(manifest)
-    assert verified["source_manifest_fingerprint"] == PEDROTTI_LOCKED_SOURCE_MANIFEST_FINGERPRINT
+    assert verified["source_manifest_fingerprint"] == (
+        PEDROTTI_LOCKED_SOURCE_MANIFEST_FINGERPRINT
+    )
 
     changed = dict(manifest)
     changed["source_manifest_fingerprint"] = "0" * 64
