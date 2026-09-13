@@ -29,6 +29,11 @@ PEDROTTI_ZENODO_API = f"https://zenodo.org/api/records/{PEDROTTI_ZENODO_RECORD}"
 PEDROTTI_ZENODO_RECORD_PAGE = f"https://zenodo.org/records/{PEDROTTI_ZENODO_RECORD}"
 _USER_AGENT = "GazeAudit/0.1 Pedrotti source-freeze transport"
 _MD5_RE = re.compile(r"\bmd5:([0-9a-fA-F]{32})\b")
+_MD5_HEX_RE = re.compile(r"^[0-9a-f]{32}$")
+
+
+class _ZenodoMetadataUnavailable(RuntimeError):
+    """Signal a transport-only outage after all metadata paths are exhausted."""
 
 
 class _ZenodoFileTableParser(HTMLParser):
@@ -72,6 +77,8 @@ def fetch_pedrotti_zenodo_source(
     max_attempts: int = 5,
     initial_backoff_seconds: float = 2.0,
     timeout_seconds: float = 120.0,
+    metadata_max_attempts: int = 2,
+    metadata_timeout_seconds: float = 30.0,
 ) -> dict[str, Any]:
     """Download and verify the exact frozen Pedrotti Zenodo v1 source set.
 
@@ -80,9 +87,12 @@ def fetch_pedrotti_zenodo_source(
 
     The canonical Zenodo REST record endpoint is the primary metadata source. If that
     endpoint fails with a transport-level error, the public record page is an allowed
-    fallback only when its file table independently reproduces the exact frozen record,
-    filename, and MD5 contract. Download URLs are reconstructed deterministically from
-    the frozen record identity rather than trusting mutable metadata link representations.
+    metadata fallback. If both metadata surfaces remain unavailable after bounded
+    retries, acquisition may continue from the pre-frozen record/file/MD5 contract,
+    because every downloaded byte must still match that contract before source intake.
+    Any metadata response that is received but fails structural or identity validation
+    remains a hard failure. Download URLs are reconstructed deterministically from the
+    frozen record identity rather than trusting mutable metadata link representations.
     """
 
     if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
@@ -91,6 +101,14 @@ def fetch_pedrotti_zenodo_source(
         raise ValueError("initial_backoff_seconds must be non-negative")
     if timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
+    if (
+        not isinstance(metadata_max_attempts, int)
+        or isinstance(metadata_max_attempts, bool)
+        or metadata_max_attempts < 1
+    ):
+        raise ValueError("metadata_max_attempts must be a positive integer")
+    if metadata_timeout_seconds <= 0:
+        raise ValueError("metadata_timeout_seconds must be positive")
 
     root = Path(output_dir)
     if root.exists() and not root.is_dir():
@@ -107,12 +125,18 @@ def fetch_pedrotti_zenodo_source(
     if unexpected:
         raise ValueError(f"Pedrotti download directory contains unexpected entries: {unexpected!r}")
 
-    metadata, metadata_attempts, metadata_source = _fetch_record_metadata(
-        max_attempts=max_attempts,
-        initial_backoff_seconds=initial_backoff_seconds,
-        timeout_seconds=timeout_seconds,
-    )
-    remote = _verified_remote_contract(metadata, expected)
+    try:
+        metadata, metadata_attempts, metadata_source = _fetch_record_metadata(
+            max_attempts=metadata_max_attempts,
+            initial_backoff_seconds=initial_backoff_seconds,
+            timeout_seconds=metadata_timeout_seconds,
+        )
+    except _ZenodoMetadataUnavailable:
+        metadata_attempts = metadata_max_attempts
+        metadata_source = "frozen_contract_after_metadata_outage"
+        remote = _remote_contract_from_frozen_contract(expected)
+    else:
+        remote = _verified_remote_contract(metadata, expected)
 
     retained = 0
     removed_mismatches = 0
@@ -155,7 +179,7 @@ def _fetch_record_metadata(
     initial_backoff_seconds: float,
     timeout_seconds: float,
 ) -> tuple[dict[str, Any], int, str]:
-    """Retrieve and validate record metadata with a fail-closed HTML fallback."""
+    """Retrieve metadata; distinguish transport outage from identity failure."""
 
     error: Exception | None = None
     for attempt in range(1, max_attempts + 1):
@@ -171,14 +195,16 @@ def _fetch_record_metadata(
         except (HTTPError, URLError, TimeoutError, OSError) as exc:
             error = exc
         except (UnicodeDecodeError, ValueError) as exc:
-            raise RuntimeError(
+            raise ValueError(
                 "Zenodo API was unavailable and public record-page metadata failed validation"
             ) from exc
 
         if attempt != max_attempts:
             time.sleep(initial_backoff_seconds * (2 ** (attempt - 1)))
 
-    raise RuntimeError("failed to retrieve frozen Pedrotti Zenodo metadata") from error
+    raise _ZenodoMetadataUnavailable(
+        "failed to retrieve frozen Pedrotti Zenodo metadata from live transport surfaces"
+    ) from error
 
 
 def _fetch_json_record_once(timeout_seconds: float) -> dict[str, Any]:
@@ -277,6 +303,21 @@ def _canonical_pedrotti_download_url(name: str) -> str:
         raise ValueError(f"unsafe Zenodo filename in metadata: {name!r}")
     encoded = quote(name, safe="")
     return f"{PEDROTTI_ZENODO_RECORD_PAGE}/files/{encoded}?download=1"
+
+
+def _remote_contract_from_frozen_contract(expected: dict[str, str]) -> dict[str, str]:
+    """Construct download URLs only from the pre-frozen filename/MD5 contract."""
+
+    remote: dict[str, str] = {}
+    for name, digest in expected.items():
+        if not isinstance(name, str) or not isinstance(digest, str):
+            raise ValueError("frozen Pedrotti file contract is structurally invalid")
+        if _MD5_HEX_RE.fullmatch(digest) is None:
+            raise ValueError(f"frozen Pedrotti MD5 is invalid for {name!r}")
+        remote[name] = _canonical_pedrotti_download_url(name)
+    if not remote:
+        raise ValueError("frozen Pedrotti file contract is empty")
+    return remote
 
 
 def _verified_remote_contract(

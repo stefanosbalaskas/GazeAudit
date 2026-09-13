@@ -49,25 +49,43 @@ sensitivity, or an overall robustness classification.
 
 ## Resumable Zenodo transport
 
-`pedrotti_fetch.py` uses the canonical Zenodo REST record endpoint as its primary
-metadata source and requires its filename and MD5 set to equal the frozen protocol
-before downloading any source file. Existing files are retained only when their MD5
-already matches. Mismatched or partial files are removed before retry, downloads are
-written to temporary `.part` paths, and a file is atomically promoted only after its
-MD5 matches the frozen identity.
+`pedrotti_fetch.py` uses the canonical Zenodo REST record endpoint as its primary live
+metadata attestation and requires any metadata it receives to reproduce the frozen
+record/file/MD5 identity. Existing files are retained only when their MD5 already
+matches. Mismatched or partial files are removed before retry, downloads are written
+to temporary `.part` paths, and a file is atomically promoted only after its MD5
+matches the frozen identity.
 
-If the REST record endpoint fails with a transport-level error, acquisition may fall
-back to the public Zenodo record page for the **same frozen record only**. The fallback
-parses the published file table and is accepted only when it independently binds the
+If the REST record endpoint fails with a transport-level error, acquisition first
+falls back to the public Zenodo record page for the **same frozen record only**. A
+successfully retrieved public page is accepted only when it independently binds the
 frozen DOI, exact record-specific download paths, complete filename set, and every
-published MD5 value. Structural or identity failures from a successful REST response
-do not fall back. The resulting source bytes remain subject to the same frozen MD5
-contract and deterministic source-manifest verification.
+published MD5 value. Structural or identity failures from a successfully retrieved
+REST response or public page remain hard failures and never degrade to another source
+identity.
 
-Only HTTPS URLs hosted by `zenodo.org` or `www.zenodo.org` are accepted, and content
-links must match one of the two record-specific Zenodo file URL shapes used by the REST
-API or public record page. The transport reports which metadata path was used and does
-not call a scientific endpoint.
+If **both** live metadata surfaces remain unavailable after bounded transport retries,
+the transfer may continue from the pre-frozen record/file/MD5 contract already bound by
+the protocol. This is an availability fallback, not an identity fallback: URLs are
+constructed deterministically as record-specific Zenodo download URLs, and every
+retrieved source file must still match its pre-frozen published MD5 before it can enter
+the source manifest. The frozen contract itself is validated for safe filenames and
+32-character lowercase MD5 syntax before this path is permitted. A live metadata
+response that disagrees with the frozen identity therefore still fails closed.
+
+Metadata retries are deliberately shorter and separately bounded from the large-file
+download retries. The controlled workflow permits two metadata attempts with a
+30-second per-request timeout, while retaining six attempts and a 180-second timeout
+for checksum-locked file downloads. This prevents Zenodo metadata uptime from consuming
+a substantial fraction of the controlled execution window while preserving robust
+large-file transfer behavior.
+
+Only HTTPS URLs hosted by `zenodo.org` or `www.zenodo.org` are accepted for parsed
+record-page links. Actual file download URLs are reconstructed locally from the frozen
+record identity and filename rather than trusting mutable metadata `links.content`
+values. The transport reports whether metadata identity came from `api`,
+`record_html`, or `frozen_contract_after_metadata_outage`, and it does not call a
+scientific endpoint.
 
 ## Source-freeze envelope
 
@@ -92,7 +110,9 @@ execute only from `main`. It recreates the pinned Python 3.12.14 / NumPy 2.5.3 /
 pandas 2.3.3 intake environment, downloads and verifies the exact public source,
 builds the structural intake, captures the dependency environment, builds and
 verifies the outer freeze, and uploads the immutable archive. The transfer log records
-whether verified metadata came from `api` or the fail-closed `record_html` fallback.
+whether live metadata came from `api` or `record_html`, or whether both live metadata
+surfaces were unavailable and the transfer proceeded under the pre-frozen checksum
+contract.
 
 The workflow follows **archive before reveal**: the source-freeze artifact is uploaded
 successfully before the workflow prints the source/freeze fingerprints. The workflow
@@ -101,9 +121,11 @@ contains no scientific sensitivity execution step.
 ## Qualification boundary
 
 CI uses synthetic source fixtures to test the intake/freeze semantics, checksum
-binding, semantic tamper resistance, REST-to-record-page metadata fallback, exact
-record-specific URL constraints, trusted-link rules, and archive-before-reveal workflow
-order. CI does not download or analyze the real Pedrotti/de Chambrier dataset.
+binding, semantic tamper resistance, REST-to-record-page metadata fallback, bounded
+transport-outage fallback to the pre-frozen checksum contract, hard failure on received
+metadata identity/structure changes, exact record-specific URL constraints, trusted-link
+rules, and archive-before-reveal workflow order. CI does not download or analyze the
+real Pedrotti/de Chambrier dataset.
 
 At merge time, no real-data endpoint, perturbation estimate, recovery fraction, or
 robustness classification has been evaluated by this tranche. After exact-main
