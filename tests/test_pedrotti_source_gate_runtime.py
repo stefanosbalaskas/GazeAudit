@@ -5,6 +5,7 @@ import io
 import json
 from pathlib import Path
 from urllib.error import URLError
+from urllib.parse import parse_qs, unquote, urlparse
 
 import pandas as pd
 
@@ -161,7 +162,14 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
         url = request.full_url
         if url == PEDROTTI_ZENODO_API:
             return _Response(metadata_bytes)
-        name = url.rsplit("/", 2)[-2]
+        parsed = urlparse(url)
+        assert parsed.scheme == "https"
+        assert parsed.netloc == "zenodo.org"
+        prefix = f"/records/{PEDROTTI_ZENODO_RECORD}/files/"
+        assert parsed.path.startswith(prefix)
+        name = unquote(parsed.path[len(prefix) :])
+        assert "/" not in name and "\\" not in name
+        assert parse_qs(parsed.query) == {"download": ["1"]}
         content_calls.append(name)
         return _Response(payloads[name])
 
