@@ -173,7 +173,9 @@ def _download_verified_file_redundant(
                 break
             time.sleep(initial_backoff_seconds * (2 ** (attempt - 1)))
 
-    raise RuntimeError(f"failed to download frozen Pedrotti file {name!r} via all routes") from error
+    raise RuntimeError(
+        f"failed to download frozen Pedrotti file {name!r} via all routes"
+    ) from error
 
 
 def _md5_file(path: Path) -> str:
