@@ -8,10 +8,17 @@ from urllib.error import URLError
 
 import pandas as pd
 
-from gazeaudit import pedrotti_fetch as fetch_module
-from gazeaudit import pedrotti_source as source_module
+from gazeaudit.pedrotti_fetch import (
+    PEDROTTI_ZENODO_API,
+    PEDROTTI_ZENODO_RECORD,
+    _fetch_record_metadata,
+    fetch_pedrotti_zenodo_source,
+)
 from gazeaudit.pedrotti_freeze_cli import main as freeze_cli_main
-from gazeaudit.pedrotti_source import inspect_pedrotti_source, write_pedrotti_source_intake_artifacts
+from gazeaudit.pedrotti_source import (
+    inspect_pedrotti_source,
+    write_pedrotti_source_intake_artifacts,
+)
 from gazeaudit.pedrotti_source_cli import main as source_cli_main
 
 
@@ -51,7 +58,12 @@ def _write_synthetic_source(root: Path) -> dict[str, str]:
     for participant in range(1, 37):
         rows = []
         for trial in range(1, 97):
-            stimulus = "1,234" if trial == 1 else "12,345,678" if trial == 2 else f"word-{trial}"
+            if trial == 1:
+                stimulus = "1,234"
+            elif trial == 2:
+                stimulus = "12,345,678"
+            else:
+                stimulus = f"word-{trial}"
             rows.append(
                 {
                     "TRIAL_INDEX": trial,
@@ -77,7 +89,10 @@ def _write_synthetic_source(root: Path) -> dict[str, str]:
 def test_source_and_freeze_clis_execute_endpoint_blind(tmp_path, monkeypatch, capsys):
     source_dir = tmp_path / "source"
     expected = _write_synthetic_source(source_dir)
-    monkeypatch.setattr(source_module, "expected_pedrotti_md5", lambda: dict(expected))
+    monkeypatch.setattr(
+        "gazeaudit.pedrotti_source.expected_pedrotti_md5",
+        lambda: dict(expected),
+    )
 
     cli_intake = tmp_path / "cli-intake"
     assert source_cli_main(
@@ -125,7 +140,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
     }
     expected = {name: _md5_bytes(payload) for name, payload in payloads.items()}
     metadata = {
-        "id": fetch_module.PEDROTTI_ZENODO_RECORD,
+        "id": PEDROTTI_ZENODO_RECORD,
         "files": [
             {
                 "key": name,
@@ -145,17 +160,19 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
     def fake_urlopen(request, timeout):
         assert timeout > 0
         url = request.full_url
-        if url == fetch_module.PEDROTTI_ZENODO_API:
+        if url == PEDROTTI_ZENODO_API:
             return _Response(metadata_bytes)
         name = url.rsplit("/", 2)[-2]
         content_calls.append(name)
         return _Response(payloads[name])
 
-    monkeypatch.setattr(fetch_module, "urlopen", fake_urlopen)
-    monkeypatch.setattr(fetch_module, "expected_pedrotti_md5", lambda: dict(expected))
+    monkeypatch.setattr("gazeaudit.pedrotti_fetch.urlopen", fake_urlopen)
     monkeypatch.setattr(
-        fetch_module,
-        "build_pedrotti_source_manifest",
+        "gazeaudit.pedrotti_fetch.expected_pedrotti_md5",
+        lambda: dict(expected),
+    )
+    monkeypatch.setattr(
+        "gazeaudit.pedrotti_fetch.build_pedrotti_source_manifest",
         lambda root: {
             "file_count": len(expected),
             "source_manifest_fingerprint": "f" * 64,
@@ -163,7 +180,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
     )
 
     root = tmp_path / "download"
-    first = fetch_module.fetch_pedrotti_zenodo_source(
+    first = fetch_pedrotti_zenodo_source(
         root,
         max_attempts=2,
         initial_backoff_seconds=0.0,
@@ -177,7 +194,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
     assert sorted(content_calls) == ["01.txt", "readme.txt"]
 
     content_calls.clear()
-    second = fetch_module.fetch_pedrotti_zenodo_source(
+    second = fetch_pedrotti_zenodo_source(
         root,
         max_attempts=2,
         initial_backoff_seconds=0.0,
@@ -188,7 +205,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
     assert content_calls == []
 
     (root / "01.txt").write_bytes(b"corrupt\n")
-    third = fetch_module.fetch_pedrotti_zenodo_source(
+    third = fetch_pedrotti_zenodo_source(
         root,
         max_attempts=2,
         initial_backoff_seconds=0.0,
@@ -204,7 +221,7 @@ def test_fetch_transport_downloads_retains_and_repairs_files(tmp_path, monkeypat
 def test_fetch_metadata_retry_and_validation_fail_closed(monkeypatch):
     attempts = 0
     metadata = {
-        "id": fetch_module.PEDROTTI_ZENODO_RECORD,
+        "id": PEDROTTI_ZENODO_RECORD,
         "files": [],
     }
 
@@ -215,12 +232,12 @@ def test_fetch_metadata_retry_and_validation_fail_closed(monkeypatch):
             raise URLError("synthetic transient failure")
         return _Response(json.dumps(metadata).encode("utf-8"))
 
-    monkeypatch.setattr(fetch_module, "urlopen", flaky_urlopen)
-    monkeypatch.setattr(fetch_module.time, "sleep", lambda seconds: None)
-    document, used_attempts = fetch_module._fetch_record_metadata(
+    monkeypatch.setattr("gazeaudit.pedrotti_fetch.urlopen", flaky_urlopen)
+    monkeypatch.setattr("gazeaudit.pedrotti_fetch.time.sleep", lambda seconds: None)
+    document, used_attempts = _fetch_record_metadata(
         max_attempts=2,
         initial_backoff_seconds=0.01,
         timeout_seconds=1.0,
     )
     assert used_attempts == 2
-    assert document["id"] == fetch_module.PEDROTTI_ZENODO_RECORD
+    assert document["id"] == PEDROTTI_ZENODO_RECORD
