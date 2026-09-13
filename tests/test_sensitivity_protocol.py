@@ -1,4 +1,3 @@
-import importlib.resources
 import json
 from pathlib import Path
 
@@ -121,13 +120,11 @@ def test_protocol_rejects_overlapping_robust_and_fragile_thresholds():
 def test_frozen_pedrotti_protocol_is_packaged_identically_and_verified():
     root = Path(__file__).resolve().parents[1]
     docs_path = root / "docs" / "protocols" / "pedrotti2023_sampling_missingness_v1.json"
-    docs = json.loads(docs_path.read_text(encoding="utf-8"))
-    packaged_text = (
-        importlib.resources.files("gazeaudit.data")
-        .joinpath("pedrotti2023_sampling_missingness_v1.json")
-        .read_text(encoding="utf-8")
+    package_path = (
+        root / "src" / "gazeaudit" / "data" / "pedrotti2023_sampling_missingness_v1.json"
     )
-    packaged = json.loads(packaged_text)
+    docs = json.loads(docs_path.read_text(encoding="utf-8"))
+    packaged = json.loads(package_path.read_text(encoding="utf-8"))
 
     assert docs == packaged
     assert verify_sampling_missingness_protocol(docs)
