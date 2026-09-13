@@ -1,0 +1,130 @@
+name: pedrotti-source-freeze
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pedrotti-source-freeze-v1
+  cancel-in-progress: false
+
+jobs:
+  source-freeze:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout exact GazeAudit commit
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Verify exact main execution identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          printf '%s\n' "$GITHUB_SHA" > execution-commit.txt
+
+      - name: Install frozen source-intake stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install "numpy==2.5.3" "pandas==2.3.3"
+          python -m pip install -e .
+          python - <<'PY'
+          import numpy as np
+          import pandas as pd
+
+          if np.__version__ != "2.5.3":
+              raise SystemExit(f"unexpected NumPy version: {np.__version__}")
+          if pd.__version__ != "2.3.3":
+              raise SystemExit(f"unexpected pandas version: {pd.__version__}")
+          PY
+
+      - name: Download exact published Zenodo source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.pedrotti_fetch import fetch_pedrotti_zenodo_source
+
+          summary = fetch_pedrotti_zenodo_source(
+              "pedrotti-source",
+              max_attempts=6,
+              initial_backoff_seconds=15.0,
+              timeout_seconds=180.0,
+          )
+          print(
+              "verified endpoint-blind Zenodo transfer: "
+              f"files={summary['file_count']} "
+              f"metadata_attempts={summary['metadata_attempts']} "
+              f"download_attempts={summary['download_attempts']} "
+              f"retained={summary['retained_verified_files']} "
+              f"removed_mismatches={summary['removed_mismatched_files']}"
+          )
+          PY
+
+      - name: Build endpoint-blind source intake
+        shell: bash
+        run: |
+          set -euo pipefail
+          gazeaudit-pedrotti-source-intake \
+            --source-dir pedrotti-source \
+            --output-dir source-intake \
+            > source-intake-status.json
+
+      - name: Capture dependency environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip freeze | LC_ALL=C sort > pip-freeze.txt
+          test -s pip-freeze.txt
+
+      - name: Build source-freeze envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          gazeaudit-pedrotti-source-freeze \
+            --intake-dir source-intake \
+            --output-dir pedrotti-source-freeze \
+            --environment-file pip-freeze.txt \
+            --execution-commit "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --runner-os "$RUNNER_OS" \
+            --runner-arch "$RUNNER_ARCH" \
+            > source-freeze-status.json
+
+      - name: Verify frozen source envelope before archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from gazeaudit.pedrotti_freeze import verify_pedrotti_source_freeze_artifacts
+
+          if not verify_pedrotti_source_freeze_artifacts("pedrotti-source-freeze"):
+              raise SystemExit("Pedrotti source-freeze verification failed")
+          PY
+
+      - name: Archive source freeze before reveal
+        uses: actions/upload-artifact@v7
+        with:
+          name: pedrotti-source-freeze-v1-${{ github.sha }}
+          path: pedrotti-source-freeze/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Reveal archived source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat source-freeze-status.json
