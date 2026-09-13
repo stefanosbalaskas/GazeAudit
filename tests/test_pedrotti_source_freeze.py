@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from gazeaudit import pedrotti_source as source_module
+import gazeaudit.pedrotti_source as source_module
 from gazeaudit.pedrotti_freeze import (
     PEDROTTI_FREEZE_WORKFLOW,
     PEDROTTI_SOURCE_FREEZE_SCHEMA,
