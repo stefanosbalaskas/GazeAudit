@@ -9,21 +9,61 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import time
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
 
 from .pedrotti_source import (
+    PEDROTTI_ZENODO_DOI,
     PEDROTTI_ZENODO_RECORD,
     build_pedrotti_source_manifest,
     expected_pedrotti_md5,
 )
 
 PEDROTTI_ZENODO_API = f"https://zenodo.org/api/records/{PEDROTTI_ZENODO_RECORD}"
+PEDROTTI_ZENODO_RECORD_PAGE = f"https://zenodo.org/records/{PEDROTTI_ZENODO_RECORD}"
 _USER_AGENT = "GazeAudit/0.1 Pedrotti source-freeze transport"
+_MD5_RE = re.compile(r"\bmd5:([0-9a-fA-F]{32})\b")
+
+
+class _ZenodoFileTableParser(HTMLParser):
+    """Collect table-row text and links from the public Zenodo record page."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._row_depth = 0
+        self._text: list[str] = []
+        self._links: list[str] = []
+        self.rows: list[tuple[str, tuple[str, ...]]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "tr":
+            if self._row_depth == 0:
+                self._text = []
+                self._links = []
+            self._row_depth += 1
+            return
+        if tag == "a" and self._row_depth > 0:
+            href = dict(attrs).get("href")
+            if isinstance(href, str):
+                self._links.append(href)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag != "tr" or self._row_depth == 0:
+            return
+        self._row_depth -= 1
+        if self._row_depth == 0:
+            text = " ".join(part.strip() for part in self._text if part.strip())
+            self.rows.append((text, tuple(self._links)))
+
+    def handle_data(self, data: str) -> None:
+        if self._row_depth > 0:
+            self._text.append(data)
 
 
 def fetch_pedrotti_zenodo_source(
@@ -37,6 +77,11 @@ def fetch_pedrotti_zenodo_source(
 
     Existing files are retained only when their MD5 digest already matches the frozen
     contract. Mismatched files are removed before retry. No source byte is modified.
+
+    The canonical Zenodo REST record endpoint is the primary metadata source. If that
+    endpoint fails with a transport-level error, the public record page is an allowed
+    fallback only when its file table independently reproduces the exact frozen record,
+    filename, MD5, and trusted download-link contract.
     """
 
     if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
@@ -61,7 +106,7 @@ def fetch_pedrotti_zenodo_source(
     if unexpected:
         raise ValueError(f"Pedrotti download directory contains unexpected entries: {unexpected!r}")
 
-    metadata, metadata_attempts = _fetch_record_metadata(
+    metadata, metadata_attempts, metadata_source = _fetch_record_metadata(
         max_attempts=max_attempts,
         initial_backoff_seconds=initial_backoff_seconds,
         timeout_seconds=timeout_seconds,
@@ -95,6 +140,7 @@ def fetch_pedrotti_zenodo_source(
         "file_count": manifest["file_count"],
         "source_manifest_fingerprint": manifest["source_manifest_fingerprint"],
         "metadata_attempts": metadata_attempts,
+        "metadata_source": metadata_source,
         "download_attempts": download_attempts,
         "retained_verified_files": retained,
         "removed_mismatched_files": removed_mismatches,
@@ -107,32 +153,120 @@ def _fetch_record_metadata(
     max_attempts: int,
     initial_backoff_seconds: float,
     timeout_seconds: float,
-) -> tuple[dict[str, Any], int]:
+) -> tuple[dict[str, Any], int, str]:
+    """Retrieve and validate record metadata with a fail-closed HTML fallback."""
+
     error: Exception | None = None
     for attempt in range(1, max_attempts + 1):
         try:
-            request = Request(PEDROTTI_ZENODO_API, headers={"User-Agent": _USER_AGENT})
-            with urlopen(request, timeout=timeout_seconds) as response:
-                payload = response.read()
-            document = json.loads(payload.decode("utf-8"))
-            if not isinstance(document, dict):
-                raise ValueError("Zenodo record metadata must be a JSON object")
-            if document.get("id") != PEDROTTI_ZENODO_RECORD:
-                raise ValueError("Zenodo record metadata returned an unexpected record identity")
-            return document, attempt
-        except (
-            HTTPError,
-            URLError,
-            TimeoutError,
-            OSError,
-            UnicodeDecodeError,
-            json.JSONDecodeError,
-        ) as exc:
+            document = _fetch_json_record_once(timeout_seconds)
+            return document, attempt, "api"
+        except (HTTPError, URLError, TimeoutError, OSError) as exc:
             error = exc
-            if attempt == max_attempts:
-                break
+
+        try:
+            document = _fetch_record_page_metadata_once(timeout_seconds)
+            return document, attempt, "record_html"
+        except (HTTPError, URLError, TimeoutError, OSError) as exc:
+            error = exc
+        except (UnicodeDecodeError, ValueError) as exc:
+            raise RuntimeError(
+                "Zenodo API was unavailable and public record-page metadata failed validation"
+            ) from exc
+
+        if attempt != max_attempts:
             time.sleep(initial_backoff_seconds * (2 ** (attempt - 1)))
+
     raise RuntimeError("failed to retrieve frozen Pedrotti Zenodo metadata") from error
+
+
+def _fetch_json_record_once(timeout_seconds: float) -> dict[str, Any]:
+    request = Request(
+        PEDROTTI_ZENODO_API,
+        headers={"User-Agent": _USER_AGENT, "Accept": "application/json"},
+    )
+    with urlopen(request, timeout=timeout_seconds) as response:
+        payload = response.read()
+    document = json.loads(payload.decode("utf-8"))
+    if not isinstance(document, dict):
+        raise ValueError("Zenodo record metadata must be a JSON object")
+    if document.get("id") != PEDROTTI_ZENODO_RECORD:
+        raise ValueError("Zenodo record metadata returned an unexpected record identity")
+    return document
+
+
+def _fetch_record_page_metadata_once(timeout_seconds: float) -> dict[str, Any]:
+    request = Request(
+        PEDROTTI_ZENODO_RECORD_PAGE,
+        headers={"User-Agent": _USER_AGENT, "Accept": "text/html"},
+    )
+    with urlopen(request, timeout=timeout_seconds) as response:
+        payload = response.read()
+    return _metadata_from_record_html(payload)
+
+
+def _metadata_from_record_html(payload: bytes) -> dict[str, Any]:
+    """Build a REST-compatible file contract from the public record file table."""
+
+    text = payload.decode("utf-8")
+    if PEDROTTI_ZENODO_DOI not in text:
+        raise ValueError("Zenodo record page does not contain the frozen DOI identity")
+
+    parser = _ZenodoFileTableParser()
+    parser.feed(text)
+    files: list[dict[str, Any]] = []
+    observed: set[str] = set()
+    for row_text, links in parser.rows:
+        checksum_match = _MD5_RE.search(row_text)
+        if checksum_match is None:
+            continue
+        candidate_links: list[tuple[str, str]] = []
+        for href in links:
+            absolute = urljoin(PEDROTTI_ZENODO_RECORD_PAGE, href)
+            name = _pedrotti_record_download_name(absolute)
+            if name is not None:
+                candidate_links.append((name, absolute))
+        if not candidate_links:
+            continue
+        unique = {(name, url) for name, url in candidate_links}
+        if len(unique) != 1:
+            raise ValueError("Zenodo record page file row has ambiguous download links")
+        name, url = unique.pop()
+        if name in observed:
+            raise ValueError(f"duplicate Zenodo filename in record page: {name!r}")
+        observed.add(name)
+        files.append(
+            {
+                "key": name,
+                "checksum": f"md5:{checksum_match.group(1).lower()}",
+                "links": {"content": url},
+            }
+        )
+
+    if not files:
+        raise ValueError("Zenodo record page does not expose a verifiable file table")
+    return {"id": PEDROTTI_ZENODO_RECORD, "files": files}
+
+
+def _pedrotti_record_download_name(url: str) -> str | None:
+    """Return the filename only for the exact public-record download URL shape."""
+
+    if not _trusted_zenodo_url(url):
+        return None
+    parsed = urlparse(url)
+    prefix = f"/records/{PEDROTTI_ZENODO_RECORD}/files/"
+    if not parsed.path.startswith(prefix):
+        return None
+    encoded_name = parsed.path[len(prefix) :]
+    if not encoded_name or "/" in encoded_name:
+        return None
+    name = unquote(encoded_name)
+    if not name or "/" in name or "\\" in name:
+        return None
+    query = parse_qs(parsed.query, keep_blank_values=True)
+    if query.get("download") != ["1"]:
+        return None
+    return name
 
 
 def _verified_remote_contract(
@@ -162,7 +296,7 @@ def _verified_remote_contract(
             raise ValueError(f"Zenodo checksum for {name!r} is not MD5")
         digest = checksum[4:].lower()
         url = links.get("content")
-        if not isinstance(url, str) or not _trusted_zenodo_url(url):
+        if not isinstance(url, str) or not _trusted_pedrotti_file_url(url, name):
             raise ValueError(f"Zenodo content link for {name!r} is not trusted")
         remote[name] = url
         observed_md5[name] = digest
@@ -177,6 +311,21 @@ def _verified_remote_contract(
         mismatched = sorted(name for name in expected if observed_md5.get(name) != expected[name])
         raise ValueError(f"Zenodo record MD5 metadata differs from frozen contract: {mismatched!r}")
     return remote
+
+
+def _trusted_pedrotti_file_url(url: str, name: str) -> bool:
+    if not _trusted_zenodo_url(url):
+        return False
+    parsed = urlparse(url)
+    decoded_path = unquote(parsed.path)
+    api_path = f"/api/records/{PEDROTTI_ZENODO_RECORD}/files/{name}/content"
+    public_path = f"/records/{PEDROTTI_ZENODO_RECORD}/files/{name}"
+    if decoded_path == api_path:
+        return not parsed.query
+    if decoded_path == public_path:
+        query = parse_qs(parsed.query, keep_blank_values=True)
+        return query.get("download") == ["1"] and set(query) == {"download"}
+    return False
 
 
 def _download_verified_file(
