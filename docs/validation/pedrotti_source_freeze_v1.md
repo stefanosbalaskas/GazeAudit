@@ -73,6 +73,18 @@ the source manifest. The frozen contract itself is validated for safe filenames 
 32-character lowercase MD5 syntax before this path is permitted. A live metadata
 response that disagrees with the frozen identity therefore still fails closed.
 
+Because Zenodo can expose different availability characteristics for its public record
+file route and its REST file-content route, `pedrotti_prefetch.py` provides a second,
+endpoint-blind transport layer before source intake. For each frozen filename it derives
+both routes locally from record `7962917`: the REST
+`/api/records/7962917/files/<name>/content` route and the public
+`/records/7962917/files/<name>?download=1` route. Bounded attempts alternate between
+those routes. No response is accepted because a route merely returned successfully:
+the complete byte stream must match the pre-frozen published MD5 before atomic
+promotion. The existing `pedrotti_fetch.py` layer then independently re-checks and
+retains only checksum-valid files, so the redundant route is an availability mechanism
+rather than a source-identity relaxation.
+
 Metadata retries are deliberately shorter and separately bounded from the large-file
 download retries. The controlled workflow permits two metadata attempts with a
 30-second per-request timeout, while retaining six attempts and a 180-second timeout
@@ -80,11 +92,12 @@ for checksum-locked file downloads. This prevents Zenodo metadata uptime from co
 a substantial fraction of the controlled execution window while preserving robust
 large-file transfer behavior.
 
-Only HTTPS URLs hosted by `zenodo.org` or `www.zenodo.org` are accepted for parsed
-record-page links. Actual file download URLs are reconstructed locally from the frozen
-record identity and filename rather than trusting mutable metadata `links.content`
-values. The transport reports whether metadata identity came from `api`,
-`record_html`, or `frozen_contract_after_metadata_outage`, and it does not call a
+Only HTTPS Zenodo routes derived from the frozen record identity and filename are used
+for byte transfer. Parsed record-page links remain restricted to `zenodo.org` or
+`www.zenodo.org`. Mutable metadata `links.content` values are not trusted as source
+identity. The transport reports whether metadata identity came from `api`,
+`record_html`, or `frozen_contract_after_metadata_outage`, and the redundant prefetch
+reports which deterministic byte routes were attempted. Neither layer calls a
 scientific endpoint.
 
 ## Source-freeze envelope
@@ -107,12 +120,13 @@ rejects scientific-result fields, preserving the endpoint-blind boundary.
 
 `.github/workflows/pedrotti-source-freeze.yml` is manual (`workflow_dispatch`) and can
 execute only from `main`. It recreates the pinned Python 3.12.14 / NumPy 2.5.3 /
-pandas 2.3.3 intake environment, downloads and verifies the exact public source,
+pandas 2.3.3 intake environment, acquires the exact published bytes through the
+checksum-locked redundant transport, independently re-verifies the exact public source,
 builds the structural intake, captures the dependency environment, builds and
 verifies the outer freeze, and uploads the immutable archive. The transfer log records
-whether live metadata came from `api` or `record_html`, or whether both live metadata
-surfaces were unavailable and the transfer proceeded under the pre-frozen checksum
-contract.
+both redundant byte-route attempts and whether live metadata came from `api` or
+`record_html`, or whether both live metadata surfaces were unavailable and the transfer
+proceeded under the pre-frozen checksum contract.
 
 The workflow follows **archive before reveal**: the source-freeze artifact is uploaded
 successfully before the workflow prints the source/freeze fingerprints. The workflow
@@ -122,10 +136,11 @@ contains no scientific sensitivity execution step.
 
 CI uses synthetic source fixtures to test the intake/freeze semantics, checksum
 binding, semantic tamper resistance, REST-to-record-page metadata fallback, bounded
-transport-outage fallback to the pre-frozen checksum contract, hard failure on received
-metadata identity/structure changes, exact record-specific URL constraints, trusted-link
-rules, and archive-before-reveal workflow order. CI does not download or analyze the
-real Pedrotti/de Chambrier dataset.
+transport-outage fallback to the pre-frozen checksum contract, redundant REST/public
+byte-route fallback, byte-level MD5 enforcement on every route, hard failure on
+received metadata identity/structure changes, exact record-specific URL constraints,
+trusted-link rules, and archive-before-reveal workflow order. CI does not download or
+analyze the real Pedrotti/de Chambrier dataset.
 
 At merge time, no real-data endpoint, perturbation estimate, recovery fraction, or
 robustness classification has been evaluated by this tranche. After exact-main
