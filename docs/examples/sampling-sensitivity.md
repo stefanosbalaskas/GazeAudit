@@ -122,4 +122,4 @@ For formal robustness work:
 5. keep sampling perturbation conceptually separate from measurement-error and missingness assumptions;
 6. archive the complete curve, not only the most reassuring rate.
 
-The frozen Pedrotti/de Chambrier case study provides an example where sampling and missingness sensitivity produced the canonical outcome `materially_fragile`; see the [validation matrix](../VALIDATION_MATRIX.html) for the provenance boundary.
+The frozen Pedrotti/de Chambrier case study provides an example where sampling and missingness sensitivity produced the canonical outcome `materially_fragile`; see the [validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }}) for the provenance boundary.
