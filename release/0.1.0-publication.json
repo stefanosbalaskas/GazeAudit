@@ -1,0 +1,51 @@
+{
+  "schema": "gazeaudit-publication-manifest-v1",
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "tag_object_sha": "51e9739e305b14c9cb97392b1cf8bdc28a01b132",
+  "source_commit": "fdade23c12b3c2a2f26a1ca8398034b6f8d0213f",
+  "source_tree": "938007cda6051d50243fff27a892870f7128d407",
+  "release_notes": "docs/RELEASE_NOTES_0.1.0.md",
+  "distributions": {
+    "wheel": {
+      "filename": "gazeaudit-0.1.0-py3-none-any.whl",
+      "sha256": "51fa1f0a0388dfe337fad0d6564df802ae8464f01d5ce666cc96ce2e144271a1",
+      "size_bytes": 192027
+    },
+    "sdist": {
+      "filename": "gazeaudit-0.1.0.tar.gz",
+      "sha256": "8c449e2fc469c2b91f1c2471b674b5d6b16b6e6aa883289069ffb0a679517173",
+      "size_bytes": 242029
+    }
+  },
+  "qualification": {
+    "exact_main": {
+      "tests_run_id": 34833750992,
+      "interoperability_run_id": 34833751020,
+      "distribution_run_id": 34833751047,
+      "pages_run_id": 34833750129,
+      "distribution_artifact_id": 10342678657,
+      "distribution_archive_sha256": "6beebf9c2eeb2a62e63a29139d96a7d0c21b5da2b927910139e04bbda8b59960"
+    },
+    "pre_tag": {
+      "run_id": 34835220715,
+      "artifact_id": 10342874403,
+      "archive_sha256": "feaa553fd97a7a4e5bfb279a14ff6ea956bdab6ac2bb1f18675bfe1daa41226c"
+    },
+    "tag_bound": {
+      "run_id": 34836251771,
+      "artifact_id": 10344351593,
+      "archive_sha256": "104fdfdcdf3bd6eeddb85e3a5389a39ca26c894b04dfec48a9f3448adaf0fd3c"
+    }
+  },
+  "scientific_record": {
+    "gazebase": "incomplete",
+    "korthals": "robust_negative",
+    "pedrotti": "materially_fragile"
+  },
+  "publication_scope": {
+    "github_release": true,
+    "pypi": false,
+    "doi_or_archival_registry": false
+  }
+}

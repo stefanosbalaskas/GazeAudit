@@ -1,0 +1,155 @@
+name: publish-github-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: Exact stable version to publish
+        required: true
+        default: '0.1.0'
+        type: string
+      expected_tag:
+        description: Exact existing qualified tag to publish
+        required: true
+        default: 'v0.1.0'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-github-release-${{ inputs.expected_tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_VERSION: ${{ inputs.expected_version }}
+      EXPECTED_TAG: ${{ inputs.expected_tag }}
+      MANIFEST: release/0.1.0-publication.json
+    steps:
+      - name: Checkout publication control plane
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Verify publication identity and tag binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          python tools/publication_gate.py \
+            --manifest "$MANIFEST" \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit"
+          git fetch origin "refs/tags/$EXPECTED_TAG:refs/tags/$EXPECTED_TAG"
+          test "$(git rev-parse "refs/tags/$EXPECTED_TAG^{commit}")" = "$expected_commit"
+          if gh release view "$EXPECTED_TAG" >/dev/null 2>&1; then
+            echo "release $EXPECTED_TAG already exists; refusing to overwrite"
+            exit 1
+          fi
+
+      - name: Checkout exact qualified tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.expected_tag }}
+          path: tagged-source
+          fetch-depth: 0
+
+      - name: Install build validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Rebuild and verify exact tagged distributions
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          test "$(git -C tagged-source rev-parse HEAD)" = "$expected_commit"
+          rm -rf tagged-source/build tagged-source/dist
+          python -m build tagged-source
+          python -m twine check tagged-source/dist/*
+          python tagged-source/tools/verify_distribution.py tagged-source/dist
+          python tools/publication_gate.py \
+            --manifest "$MANIFEST" \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir tagged-source/dist
+
+      - name: Archive exact pre-publication payload
+        uses: actions/upload-artifact@v7
+        with:
+          name: gazeaudit-github-release-payload-${{ inputs.expected_tag }}-${{ github.run_id }}
+          path: tagged-source/dist/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Create draft GitHub Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$EXPECTED_TAG" \
+            tagged-source/dist/*.whl \
+            tagged-source/dist/*.tar.gz \
+            --verify-tag \
+            --draft \
+            --title "GazeAudit $EXPECTED_VERSION" \
+            --notes-file docs/RELEASE_NOTES_0.1.0.md
+
+      - name: Download and verify draft release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh release view "$EXPECTED_TAG" --json isDraft --jq '.isDraft')" = "true"
+          rm -rf release-verify
+          mkdir release-verify
+          gh release download "$EXPECTED_TAG" --dir release-verify
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          python tools/publication_gate.py \
+            --manifest "$MANIFEST" \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir release-verify
+
+      - name: Publish verified GitHub Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release edit "$EXPECTED_TAG" --draft=false
+          test "$(gh release view "$EXPECTED_TAG" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$EXPECTED_TAG" --json isPrerelease --jq '.isPrerelease')" = "false"
+          gh release view "$EXPECTED_TAG" --json name,tagName,url,assets
