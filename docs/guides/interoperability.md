@@ -118,4 +118,4 @@ For formal validation or publication work, pin the versions of external packages
 
 ## Next
 
-Use the [API map](../reference/api-map/) to find adapter functions or incorporate an external detector choice into the [robustness workflow](../workflows/robustness-audit/).
+Use the [API map]({{ '/docs/reference/api-map/' | relative_url }}) to find adapter functions or incorporate an external detector choice into the [robustness workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}).
