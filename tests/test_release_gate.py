@@ -18,16 +18,28 @@ def _run_gate(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_current_development_metadata_is_internally_consistent() -> None:
-    result = _run_gate()
+def test_current_stable_metadata_is_release_eligible() -> None:
+    result = _run_gate(
+        "--expected-version",
+        "0.1.0",
+        "--require-stable",
+        "--require-changelog-entry",
+    )
     assert result.returncode == 0, result.stderr
-    assert "0.1.0.dev20" in result.stdout
+    assert "eligible metadata for 0.1.0" in result.stdout
 
 
-def test_current_development_version_is_not_stable_release_eligible() -> None:
-    result = _run_gate("--require-stable", "--require-changelog-entry")
-    assert result.returncode != 0
-    assert "not a stable X.Y.Z release" in result.stderr
+def test_current_stable_metadata_matches_v010_tag_contract() -> None:
+    result = _run_gate(
+        "--expected-version",
+        "0.1.0",
+        "--tag",
+        "v0.1.0",
+        "--require-stable",
+        "--require-changelog-entry",
+    )
+    assert result.returncode == 0, result.stderr
+    assert "eligible metadata for 0.1.0" in result.stdout
 
 
 def test_stable_release_fixture_passes_exact_version_tag_and_changelog_gate(
