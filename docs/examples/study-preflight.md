@@ -1,6 +1,6 @@
 ---
 title: Study preflight example
-description: Run the structural QC API on a deterministic synthetic GazeStudy and interpret review flags without automatic exclusion.
+description: Run structural QC, inspect row/group diagnostics, record decisions, and preserve deterministic provenance.
 kicker: Example · Data QC
 permalink: /docs/examples/study-preflight/
 ---
@@ -27,12 +27,12 @@ Neither condition is converted automatically into a participant/trial exclusion.
 python examples/study_preflight.py
 ```
 
-The script constructs the canonical study with explicit semantic column mapping:
+The script constructs the canonical study with explicit semantic column mapping and then builds a provenance-aware `StudyQCAudit`.
 
 ```python
 import pandas as pd
 
-from gazeaudit import GazeStudy, audit_study_qc
+from gazeaudit import GazeStudy
 
 frame = pd.DataFrame(
     {
@@ -52,13 +52,11 @@ study = GazeStudy(
     participant="participant_id",
     trial="trial_id",
 )
-
-report = audit_study_qc(study)
 ```
 
-## Expected result
+## Expected structural result
 
-The example returns a machine-readable payload. The important fields are:
+The important summary fields remain:
 
 ```text
 status: review
@@ -69,45 +67,119 @@ duplicate_timestamp_rows: 2
 
 The duplicate count is **two rows**, not one duplicate event: both rows participating in the repeated participant × trial × timestamp key are reported.
 
-## Export a compact QC table
-
-`StudyQCReport.to_frame()` converts the report into a two-column table suitable for inspection or export:
+## Inspect the diagnostics before deciding
 
 ```python
-qc_table = report.to_frame()
-print(qc_table)
+from gazeaudit import study_qc_diagnostics
+
+diagnostics = study_qc_diagnostics(study)
+print(diagnostics[["diagnostic_id", "issue_code", "detail_code", "row_position"]])
 ```
 
-The table contains the primitive counts plus `status` and `has_structural_issues`. `issue_codes` remains available on the report and in `to_dict()`.
+For this fixture the deterministic diagnostics are:
 
-## Use issue codes for transparent branching
+| Diagnostic | Issue | Detail | Scope |
+|---|---|---|---|
+| `D000001` | `timestamp_duplicate` | `timestamp_duplicate` | row |
+| `D000002` | `coordinate_nonfinite` | `x_missing` | row |
+| `D000003` | `timestamp_duplicate` | `timestamp_duplicate` | row |
 
-A pipeline can react to declared structural conditions without hiding the decision:
+The ID is a stable reference **within the deterministic study representation being audited**. If mapped data or row order changes, rerun the audit rather than carrying old IDs forward.
+
+## Record what you decided
+
+The repository example records two explicit decisions:
 
 ```python
-if "coordinate_nonfinite" in report.issue_codes:
-    print("Document how non-finite coordinates are handled before AOI analysis.")
+from gazeaudit import StudyQCDecision, build_study_qc_audit
 
-if "timestamp_duplicate" in report.issue_codes:
-    print("Inspect whether duplicate timestamps represent valid simultaneous records.")
+decisions = (
+    StudyQCDecision(
+        issue_code="coordinate_nonfinite",
+        action="retain for explicit downstream missingness handling",
+        rationale=(
+            "The missing coordinate is retained so its handling remains visible "
+            "to the downstream sensitivity analysis."
+        ),
+        diagnostic_ids=("D000002",),
+    ),
+    StudyQCDecision(
+        issue_code="timestamp_duplicate",
+        action="retain after representation review",
+        rationale=(
+            "The repeated timestamp is documented rather than silently deduplicated."
+        ),
+        diagnostic_ids=("D000001", "D000003"),
+    ),
+)
+
+audit = build_study_qc_audit(study, decisions=decisions)
 ```
 
-This is deliberately different from silently dropping affected rows.
+These actions are illustrative, not recommended defaults. A real dataset may justify repair, exclusion, channel combination, reordering, retention, or another documented treatment.
+
+## Read the provenance fingerprints
+
+```python
+print(audit.study_fingerprint)
+print(audit.audit_fingerprint)
+print(audit.manifest_fingerprint)
+```
+
+The three levels answer different questions:
+
+- `study_fingerprint` — are the five mapped structural-QC columns and their row order the same?
+- `audit_fingerprint` — are the study identity, structural findings, and researcher decisions the same?
+- `manifest_fingerprint` — is that audit record also bound to the same recorded software environment?
+
+The study fingerprint deliberately excludes unrelated columns that structural QC did not inspect.
+
+## Export evidence
+
+```python
+from gazeaudit import write_study_qc_artifacts, verify_study_qc_artifacts
+
+write_study_qc_artifacts(audit, "qc-evidence")
+assert verify_study_qc_artifacts("qc-evidence")
+```
+
+This writes deterministic report/diagnostic/decision data plus an audit manifest and a byte-level artifact manifest. Editing one exported payload causes verification to fail.
+
+## Bind the QC record into a publication audit
+
+```python
+from gazeaudit import study_qc_publication_metadata
+
+qc_metadata = study_qc_publication_metadata(audit)
+
+bundle = build_conclusion_audit_bundle(
+    results,
+    reference_effect=reference_effect,
+    rule=rule,
+    title="Primary robustness audit",
+    endpoint="primary endpoint",
+    source_description="Analysis dataset",
+    metadata={"study_qc": qc_metadata},
+)
+```
+
+The compact QC descriptor becomes part of the publication bundle's existing scientific fingerprint. The publication schema itself does not change.
 
 ## What a clean report means
 
 When no implemented structural condition is present:
 
 ```python
-assert report.status == "pass"
-assert report.issue_codes == ()
+assert audit.report.status == "pass"
+assert audit.report.issue_codes == ()
 ```
 
 A `pass` means only that this structural preflight found no implemented issue. It does **not** establish calibration quality, detector validity, absence of informative missingness, correct AOI design, or robustness of the substantive conclusion.
 
 ## Continue the workflow
 
-- [Data onboarding and structural preflight]({{ '/docs/guides/data-onboarding/' | relative_url }}) — full interpretation contract.
+- [Data onboarding and structural preflight]({{ '/docs/guides/data-onboarding/' | relative_url }}) — full interpretation and provenance contract.
+- [Publication audit guide]({{ '/docs/guides/publication-audits/' | relative_url }}) — bind QC identity into robustness evidence.
 - [AOI uncertainty]({{ '/docs/guides/aoi-uncertainty/' | relative_url }}) — model spatial measurement uncertainty.
 - [Interoperability]({{ '/docs/guides/interoperability/' | relative_url }}) — ingest supported BIDS/pymovements structures.
 - [End-to-end robustness audit]({{ '/docs/examples/end-to-end-robustness/' | relative_url }}) — move from one canonical study to a declared specification space.
