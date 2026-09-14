@@ -36,21 +36,31 @@ robustness + uncertainty audit
 
 ## Development status
 
-The repository is in **pre-alpha** development. The current scientific MVP line implements:
+GazeAudit is now in **alpha / post-MVP pre-release development**. The scientific MVP has been exercised with known-truth simulations and three deliberately different real-data validation outcomes:
+
+| Case study | Scientific question | Canonical outcome |
+|---|---|---|
+| GazeBase multi-detector audit | Does the frozen detector specification space satisfy the predeclared completeness gate? | `incomplete` |
+| Korthals target-tracking AOI | Does the negative paired AOI effect survive the frozen measurement-error propagation model? | `robust_negative` |
+| Pedrotti/de Chambrier sampling + missingness | Does the frozen gaze-path-rate contrast recover across downsampling and added missingness? | `materially_fragile` |
+
+These outcomes are not post-hoc labels. Each case used a frozen protocol, controlled source identity, deterministic provenance, checksummed scientific artifacts, and archive-before-reveal execution. See [`docs/VALIDATION_MATRIX.md`](docs/VALIDATION_MATRIX.md) for the authoritative provenance index.
+
+The current scientific MVP includes:
 
 - a canonical vendor-neutral `GazeStudy` object;
 - rectangle and circle AOI primitives;
-- a transparent bivariate Gaussian gaze-error model fitted from validation targets;
-- Monte Carlo probabilistic AOI membership;
+- transparent Gaussian gaze-error models fitted from validation information;
+- Monte Carlo probabilistic AOI membership and endpoint propagation;
 - hard-vs-probabilistic AOI comparison, flip probabilities, and boundary-risk summaries;
 - uncertainty-weighted dwell time and fixation counts;
 - declarative `PipelineSpace` specification grids and specification curves;
 - marginal and pairwise interaction sensitivity diagnostics;
 - known-truth AOI and scientific-endpoint recovery benchmarks;
-- a predeclared robust-vs-fragile conclusion-recovery benchmark that does not use p-values as its decision rule;
+- predeclared conclusion-recovery rules that do not optimize statistical significance;
 - spatial-error, sampling-rate, and structured missingness sensitivity analyses;
 - deterministic specification/results provenance fingerprints;
-- deterministic publication audit bundles with scientific and execution fingerprints, reusable methods wording, and Markdown reports;
+- deterministic publication audit bundles with scientific and execution fingerprints;
 - generic user adapter protocols for external study and detector backends;
 - direct Eye-Tracking-BIDS `physio.tsv[.gz]` ingestion;
 - pymovements `Gaze`/`Dataset` ingestion;
@@ -58,7 +68,7 @@ The repository is in **pre-alpha** development. The current scientific MVP line 
 - deterministic Markdown robustness reports;
 - automated tests across supported Python versions.
 
-The first measurement-error model remains deliberately conservative and global Gaussian so that its assumptions are explicit and testable. GazeAudit does not claim that this baseline describes every tracker, participant, session, or screen region.
+The first measurement-error models remain deliberately transparent and assumption-bound. GazeAudit does not claim that one error model describes every tracker, participant, session, screen region, or study design.
 
 ## Quick example
 
@@ -139,17 +149,15 @@ print(bundle.manifest_json())
 print(bundle.markdown)
 ```
 
-The publication bundle binds the declared rule, reference effect, specification table, recovery table, summary, source description, optional researcher metadata, and software provenance. It exposes two identities: a **scientific fingerprint** for the scientific inputs/outputs and a **bundle fingerprint** that additionally binds the recorded execution environment. `verify_publication_audit_bundle()` can detect later mutation of the specification, recovery, summary, methods text, report, or manifest.
+The publication bundle binds the declared rule, reference effect, specification table, recovery table, summary, source description, optional researcher metadata, and software provenance. It exposes a **scientific fingerprint** for scientific inputs/outputs and a **bundle fingerprint** that additionally binds the recorded execution environment. `verify_publication_audit_bundle()` detects later mutation of the specification, recovery, summary, methods text, report, or manifest.
 
-For real-data analyses, `reference_effect` is not inferred by GazeAudit. The researcher must define and justify what the reference effect represents before inspecting the robustness outputs.
+For real-data analyses, `reference_effect` is not inferred by GazeAudit. The researcher must define and justify what the reference effect represents before inspecting robustness outputs.
 
 ## Interoperability
 
 GazeAudit's interoperability layer is intentionally narrow: external packages retain responsibility for their own parsing and detection semantics, while GazeAudit normalizes only the information required for robustness analysis.
 
 ### Eye-Tracking-BIDS
-
-GazeAudit can ingest the current BIDS eye-tracking `physio.tsv` or `physio.tsv.gz` representation directly:
 
 ```python
 from gazeaudit import read_bids_eyetrack
@@ -160,13 +168,11 @@ record = read_bids_eyetrack(
 study = record.study
 ```
 
-The reader follows the current eye-tracking-specific BIDS requirements needed for canonical ingestion: `PhysioType="eyetrack"`, `recording-<label>`, the initial `timestamp`, `x_coordinate`, and `y_coordinate` columns, `RecordedEye`, `SampleCoordinateSystem`, and coordinate/time unit metadata. Timestamps are normalized to milliseconds while the original BIDS timestamp and eye metadata can be retained alongside the canonical columns.
-
-Separate eye files remain separate participant-by-trial streams by default, preventing left/right/cyclopean recordings from being accidentally interleaved. This reader is deliberately not presented as a replacement for the official BIDS Validator.
+The reader requires the eye-tracking-specific metadata needed for canonical ingestion and normalizes timestamps to milliseconds while retaining relevant source metadata. Separate eye files remain separate participant-by-trial streams by default. GazeAudit is not presented as a replacement for the official BIDS Validator.
 
 ### pymovements
 
-Install the optional dependency with `pip install "gazeaudit[pymovements]"`.
+Install with `pip install "gazeaudit[pymovements]"`.
 
 ```python
 from gazeaudit import from_pymovements_gaze
@@ -183,7 +189,7 @@ study = from_pymovements_gaze(
 
 ### pEYES
 
-pEYES 0.2.x currently requires Python 3.12+. Install with `pip install "gazeaudit[peyes]"` and create the detector through pEYES or GazeAudit's lazy factory.
+pEYES 0.2.x currently requires Python 3.12+. Install with `pip install "gazeaudit[peyes]"`.
 
 ```python
 from gazeaudit import make_peyes_detector, run_peyes_detector
@@ -202,51 +208,26 @@ result = run_peyes_detector(
 )
 ```
 
-The normalized result keeps sample labels separate from per-trial detector metadata. GazeAudit currently requires pixel coordinates for pEYES because the pEYES public detector API interprets `x` and `y` as pixels and converts them using viewer distance and pixel size.
+The normalized result keeps sample labels separate from per-trial detector metadata.
 
 ### User-defined adapters
 
-Third-party integrations can implement the runtime-checkable `StudyAdapter` or `DetectorBackend` protocols. Detector backends return `DetectionResult`, which gives multiverse analyses one auditable output contract without forcing external packages into GazeAudit's internal implementation.
+Third-party integrations can implement the runtime-checkable `StudyAdapter` or `DetectorBackend` protocols. Detector backends return `DetectionResult`, giving multiverse analyses one auditable output contract without forcing external packages into GazeAudit internals.
 
-## Scientific roadmap
+## Validation and roadmap
 
-### Phase 1 — foundation
+The **scientific MVP validation programme is complete** for its predeclared baseline:
 
-- canonical study representation — complete;
-- validation-derived spatial uncertainty — complete;
-- probabilistic AOIs — complete;
-- declarative pipeline spaces — complete;
-- common scalar endpoints — complete;
-- specification curves and audit reports — complete.
-
-### Phase 2 — inferential robustness
-
-- external detector/backend contracts — complete;
-- AOI-boundary perturbation — complete;
-- sampling-rate perturbation — complete;
-- missingness sensitivity — complete;
-- interaction-aware robustness diagnostics — complete;
-- predeclared conclusion-recovery benchmark — complete;
-- richer interpolation, exclusion-rule, and QC-threshold multiverses — planned.
-
-### Phase 3 — uncertainty propagation
-
-- spatially varying and anisotropic error models — planned;
-- participant/session-specific measurement models — planned;
-- richer missingness mechanisms and multiple-imputation support — planned;
-- uncertainty-aware TTFF, revisits, and transitions — planned;
-- dynamic-AOI uncertainty — planned;
-- cross-device portability analyses — planned.
-
-### Phase 4 — interoperability and publication validation
-
-- Eye-Tracking-BIDS import — complete; export remains planned;
-- pymovements and pEYES interoperability — complete;
 - known-truth scientific recovery benchmarks — complete;
-- deterministic publication audit bundle and methods wording — complete;
-- multi-detector real-data inferential-robustness case study — next;
-- real-data probabilistic-AOI and sampling/missingness demonstrations — planned;
-- paired examples with high and materially fragile robustness — planned.
+- multi-detector GazeBase real-data audit — complete, canonical result `incomplete`;
+- probabilistic-AOI measurement-error Korthals case study — complete, canonical result `robust_negative`;
+- sampling/missingness Pedrotti case study — complete, canonical result `materially_fragile`;
+- paired high-robustness and material-fragility demonstrations — complete;
+- deterministic publication audit bundle and methods wording — complete.
+
+Post-MVP development is intentionally separated from those frozen results. Planned methodological expansion includes richer interpolation/QC multiverses, spatially varying error models, uncertainty-aware TTFF/revisits/transitions, dynamic-AOI uncertainty, richer missingness models, cross-device portability analyses, and Eye-Tracking-BIDS export. None of those planned additions alter the canonical validation outcomes above.
+
+Release/publication hardening is tracked separately in [Issue #43](https://github.com/stefanosbalaskas/GazeAudit/issues/43).
 
 ## Explicit non-goals
 
@@ -255,6 +236,10 @@ GazeAudit will **not** become another generic preprocessing library, eye-tracker
 ## Scientific principle
 
 GazeAudit does not search for the pipeline that produces the most attractive result. Researchers define the set of **scientifically defensible** specifications first; GazeAudit then quantifies how the conclusion changes across that declared decision space.
+
+## Citation
+
+Citation metadata are provided in [`CITATION.cff`](CITATION.cff). Until the first formal tagged release is created, cite the repository together with the exact commit used for the analysis.
 
 ## License
 

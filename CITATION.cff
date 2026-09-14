@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use GazeAudit, please cite the software and record the exact version or commit used."
+title: "GazeAudit: Measurement uncertainty and inferential robustness for eye-tracking research"
+type: software
+authors:
+  - family-names: Balaskas
+    given-names: Stefanos
+version: "0.1.0.dev20"
+date-released: "2026-09-14"
+repository-code: "https://github.com/stefanosbalaskas/GazeAudit"
+url: "https://github.com/stefanosbalaskas/GazeAudit"
+license: MIT
+keywords:
+  - eye tracking
+  - gaze
+  - measurement uncertainty
+  - inferential robustness
+  - multiverse analysis
+  - area of interest

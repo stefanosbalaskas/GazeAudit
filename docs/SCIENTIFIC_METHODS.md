@@ -1,190 +1,153 @@
-# GazeAudit scientific methods plan
+# GazeAudit scientific methods and validation programme
 
-GazeAudit is being developed as a **methods project first and a software project second**. New functionality should be admitted only when its scientific assumptions can be stated, tested, and benchmarked.
+GazeAudit is developed as a **methods project first and a software project second**.
+Functionality belongs in the project only when its scientific assumptions can be stated,
+tested, benchmarked, and preserved through reproducible provenance.
 
 ## 1. Core scientific question
 
 GazeAudit asks:
 
-> How much does an eye-tracking scientific conclusion depend on uncertainty in the measurement and on reasonable, defensible analytical choices?
+> How much does an eye-tracking scientific conclusion depend on uncertainty in the
+> measurement and on reasonable, defensible analytical choices?
 
-Two distinct uncertainty sources are represented explicitly:
+Two uncertainty sources are represented explicitly:
 
-- **measurement uncertainty**: the observed gaze coordinate is an error-prone measurement of latent true gaze;
-- **analytical-choice uncertainty**: several preprocessing, QC, event, AOI, missing-data, and sampling decisions may all be scientifically defensible.
+- **measurement uncertainty**: an observed gaze coordinate is an error-prone
+  measurement of latent true gaze;
+- **analytical-choice uncertainty**: multiple preprocessing, QC, event, AOI,
+  missing-data, sampling, and modeling choices may all be scientifically defensible.
 
-The package does not assume that these uncertainty sources are additive or independent. Their interaction is part of the research problem.
+The package does not assume these sources are additive or independent.
 
-## 2. Phase-1 measurement model
+## 2. Measurement-error models
 
-The first implementation uses a deliberately transparent global bivariate Gaussian model.
+The baseline implementation uses transparent Gaussian error models derived from
+validation information. The original global bivariate Gaussian model remains useful as
+a falsifiable baseline; grouped participant/session/recalibration models are also
+supported where the source design supplies the required mapping.
 
-For validation observation `i`:
-
-```text
-e_i = observed_i - target_i
-```
-
-with
-
-```text
-e_i ~ N(mu_error, Sigma_error)
-```
-
-For a new observed gaze position `g_obs`, GazeAudit samples plausible latent true positions as:
-
-```text
-g_true = g_obs - e
-```
-
-where `e` is sampled from the fitted validation-error distribution.
-
-This model is not intended as a universal description of eye-tracker error. It provides a falsifiable baseline against which spatially varying, participant-specific, robust, mixture, and time-varying models can be compared.
+GazeAudit does not treat any one model as universally correct. A model must fail closed
+when the required validation mapping is absent rather than silently falling back to a
+pooled error distribution.
 
 ## 3. Probabilistic AOI membership
 
-Conventional AOI analysis commonly maps one coordinate to one deterministic label. GazeAudit instead estimates marginal membership probabilities:
+Conventional AOI analysis maps a coordinate to a deterministic label. GazeAudit can
+instead propagate a declared gaze-error model into marginal AOI-membership probability
+and then into scientific endpoints.
 
-```text
-P(AOI_j | observed gaze, fitted error model)
-```
-
-For static AOIs in the first implementation, these probabilities are estimated by Monte Carlo draws of latent true gaze followed by geometric membership tests.
-
-Important limitation: overlapping AOIs are permitted. Their marginal probabilities therefore need not sum to one. The `outside` probability represents membership in none of the supplied AOIs.
+Overlapping AOIs are permitted. Their marginal probabilities need not sum to one.
+`outside` represents membership in none of the supplied AOIs.
 
 ## 4. Uncertainty-aware endpoints
 
-The first implemented endpoints are intentionally simple:
-
-- expected dwell time;
-- expected fixation/event count.
-
-For AOI `A` and event durations `d_i`, expected dwell is:
-
-```text
-E[dwell_A] = sum_i P(A_i) * d_i
-```
-
-Future endpoints such as TTFF, revisits, transitions, scanpath quantities, and model coefficients require explicit treatment of joint event uncertainty and should not be added as naive probability-weighted formulas.
+Implemented baseline endpoints include expected dwell/fixation quantities and controlled
+case-study-specific scientific estimands. More complex endpoints such as TTFF, revisits,
+transitions, scanpaths, and model coefficients require an explicit treatment of joint
+event uncertainty and must not be added as naive probability-weighted formulas.
 
 ## 5. Analytical specification space
 
-A specification is a declared set of defensible analytical choices. Examples include:
+A specification is a declared set of defensible analytical choices. Examples include
+event detector, parameterization, interpolation rule, missing-data handling,
+data-quality threshold, participant/trial exclusion rule, binocular combination rule,
+AOI definition, sampling-rate representation, and measurement-error model.
 
-- event detector;
-- detector parameterization;
-- interpolation rule;
-- missing-data handling;
-- data-quality threshold;
-- participant/trial exclusion rule;
-- binocular combination rule;
-- AOI definition or boundary perturbation;
-- sampling-rate representation;
-- measurement-error model.
-
-GazeAudit must never construct a specification space by searching for choices that maximize statistical significance. The admissible decision space should be declared from methodological justification before the robustness result is inspected.
+GazeAudit must never construct a specification space by searching for choices that
+maximize statistical significance. The admissible decision space is justified before
+robustness outputs are inspected.
 
 ## 6. Robustness outputs
 
-The current descriptive layer includes:
+The package supports specification curves, sign summaries, central/full endpoint
+ranges, conclusion-recovery rules, factor-sensitivity summaries, pairwise interaction
+diagnostics, deterministic provenance, and publication-facing audit bundles.
 
-- number of evaluated specifications;
-- median and mean endpoint estimates;
-- full and central specification ranges;
-- fraction of positive, negative, or null estimates;
-- sign stability;
-- ordered specification curves;
-- marginal factor-sensitivity diagnostics.
-
-Marginal sensitivity currently uses between-level sum of squares divided by total endpoint sum of squares. Because specification factors can be dependent and interact, these values are **not** an additive or causal variance decomposition.
-
-A later methods tranche will compare interaction-aware alternatives such as hierarchical variance components, functional ANOVA, Shapley-style attribution, and surrogate-model sensitivity analysis.
+Sensitivity diagnostics are descriptive properties of the declared specification
+space; they are not automatically causal variance decompositions.
 
 ## 7. Validation programme
 
-The package should not be considered scientifically validated merely because unit tests pass. The methods programme will include at least four validation families.
+The scientific MVP validation programme is now complete for its baseline methods.
 
-### 7.1 Known-truth simulation
+### 7.1 Known-truth simulation — complete
 
-Generate studies with known:
+Known-truth generators and recovery benchmarks test endpoint recovery and deliberately
+robust versus deliberately fragile scenarios under controlled perturbations.
 
-- experimental effects;
-- participant and stimulus variance;
-- gaze-event structure;
-- spatial measurement error;
-- drift;
-- missingness;
-- sampling-rate degradation.
+### 7.2 Event-classifier multiverse — complete baseline
 
-Primary criterion: recovery of the scientific effect and correct identification of deliberately robust versus deliberately fragile scenarios.
+The authoritative GazeBase audit preserves seven predeclared detector specifications.
+Its canonical result is `incomplete` because the frozen 95% completeness gate failed.
+Failed detector specifications were retained as incomplete rather than removed after
+outcome inspection.
 
-### 7.2 Event-classifier multiverse
+### 7.3 AOI measurement-error benchmark — complete baseline
 
-Run multiple established event detectors on the same recordings and distinguish:
+The authoritative Korthals target-tracking case propagates the frozen measurement-error
+model through a paired AOI endpoint. Its canonical classification is
+`robust_negative`: the hard effect is negative and all 2,000 prespecified
+measurement-error draws remain below zero.
 
-- event-level disagreement that does not alter the scientific endpoint;
-- event-level disagreement that materially changes the conclusion.
+The resulting interval is measurement-model-induced. It is not a population confidence
+interval or Bayesian posterior interval.
 
-The package should consume established detector implementations through adapters rather than claiming novelty from reimplementing them.
+### 7.4 Sampling and missingness benchmark — complete baseline
 
-### 7.3 AOI uncertainty benchmark
+The authoritative Pedrotti/de Chambrier case applies five frozen downsampling targets
+and two controlled added-missingness mechanisms across four fractions and 20
+deterministic replicates per family. Its canonical classification is
+`materially_fragile`: several perturbation families fail the prespecified
+magnitude-and-direction recovery criterion.
 
-Use known validation targets and deliberately small/adjacent AOIs. Compare:
-
-- hard AOI assignment;
-- bias-corrected hard assignment;
-- probabilistic AOI assignment;
-- Monte Carlo propagated endpoints.
-
-Evaluate probability calibration, endpoint bias, interval coverage, and effect recovery as spatial error increases.
-
-### 7.4 Sampling and missingness benchmark
-
-Systematically downsample high-rate data and impose controlled missingness mechanisms. Evaluate whether the same substantive endpoint survives alternative acquisition/cleaning regimes.
+The three authoritative real-data outcomes are indexed in
+`docs/VALIDATION_MATRIX.md`.
 
 ## 8. Software-validation requirements
 
-Every scientific engine should eventually have:
+Scientific engines require deterministic seeded tests where stochastic algorithms are
+used, numerical invariants, simulation-based recovery tests, regression fixtures,
+explicit invalid-input failures, and provenance sufficient to reproduce every evaluated
+specification.
 
-- deterministic seeded tests where stochastic algorithms are used;
-- numerical invariants;
-- simulation-based recovery tests;
-- regression fixtures;
-- explicit failure modes for invalid inputs;
-- provenance sufficient to reproduce every evaluated specification.
+Real-data validation additionally uses protocol/source freezing, exact-code execution,
+checksummed artifacts, and archive-before-reveal workflows.
 
 ## 9. Interoperability principle
 
-GazeAudit should orchestrate rather than replace mature tools. Planned adapters include:
+GazeAudit orchestrates rather than replaces mature tools. Current interoperability
+covers Eye-Tracking-BIDS ingestion, pymovements, pEYES, and user-defined study/detector
+adapters.
 
-- pymovements;
-- pEYES;
-- Eye-Tracking-BIDS;
-- user-defined event detectors and preprocessing functions.
-
-Adapters must preserve the backend, backend version, parameters, input fingerprint, and transformation metadata whenever this information is available.
+Adapters should preserve backend identity, backend version, parameters, input
+fingerprints, and transformation metadata whenever those quantities are available.
 
 ## 10. Scope guardrails
 
-The project should reject feature requests whose main value is one of the following unless they directly serve the uncertainty/robustness research question:
-
-- another generic fixation/saccade detector;
-- generic pupil preprocessing;
-- generic gaze plotting or heatmaps;
-- eye-tracker device drivers;
-- GUI-only convenience features;
-- BIDS conversion without an analytical/provenance contribution;
-- LLM/chat interfaces;
-- unvalidated AI classification presented as ground truth.
+The project should reject feature requests whose main value is another generic
+fixation/saccade detector, generic pupil preprocessing, generic heatmap tooling, device
+drivers, GUI-only convenience features, BIDS conversion without an
+analytical/provenance contribution, LLM/chat interfaces, or unvalidated AI
+classification presented as ground truth.
 
 ## 11. Publication criterion
 
-A feature belongs in the flagship methods paper only if it contributes to at least one of:
+A feature belongs in the flagship methods programme only if it contributes to at least
+one of:
 
 1. a new or validated representation of eye-tracking measurement uncertainty;
-2. a new or validated way to propagate that uncertainty into a scientific endpoint;
-3. a new or validated measure of inferential robustness across defensible eye-tracking pipelines;
-4. a benchmark demonstrating when conventional deterministic/single-pipeline analysis is adequate and when it is not.
+2. a new or validated way to propagate uncertainty into a scientific endpoint;
+3. a new or validated measure of inferential robustness across defensible pipelines;
+4. a benchmark showing when deterministic/single-pipeline analysis is adequate and
+   when it is not.
 
-The target is therefore not a large function count. The target is a small set of methods whose assumptions and scientific consequences are exceptionally well validated.
+The target is not a large function count. The target is a compact set of methods whose
+assumptions and scientific consequences are unusually well validated.
+
+## 12. Post-outcome boundary
+
+The GazeBase, Korthals, and Pedrotti case studies are now post-outcome frozen.
+Scientific choices in those cases may not be changed in response to their observed
+results. Permitted follow-up is limited to independent verification, reproducibility,
+archival, publication reporting, and non-scientific infrastructure/release work.
