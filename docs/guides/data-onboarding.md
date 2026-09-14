@@ -41,7 +41,7 @@ The five mapped columns must exist. Coordinates and timestamps must be numeric, 
 Use `audit_study_qc()` before building an uncertainty model or specification space:
 
 ```python
-from gazeaudit.study_qc import audit_study_qc
+from gazeaudit import audit_study_qc
 
 report = audit_study_qc(study)
 
