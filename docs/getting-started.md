@@ -134,18 +134,26 @@ The same measurement-error model can then be scaled or grouped in a sensitivity 
 
 ## 6. Compare hard and probabilistic assignments
 
-For an audit rather than a single estimate, use the AOI audit helpers:
+`compare_hard_probabilistic()` takes the observed points, AOIs, and fitted error model and returns one row per observation × AOI, including hard membership, probabilistic membership, flip probability, and boundary risk.
 
 ```python
-from gazeaudit import compare_hard_probabilistic, hard_aoi_membership
+from gazeaudit import compare_hard_probabilistic, summarize_aoi_risk
 
-hard = hard_aoi_membership(fixations, aois)
-comparison = compare_hard_probabilistic(hard, probabilities)
+comparison = compare_hard_probabilistic(
+    fixations,
+    aois,
+    error_model,
+    draws=4000,
+    rng=42,
+)
+
+risk = summarize_aoi_risk(comparison)
 
 print(comparison)
+print(risk)
 ```
 
-The comparison is useful for identifying observations whose substantive contribution changes when spatial uncertainty is acknowledged.
+The comparison is useful for identifying observations whose substantive contribution changes when spatial uncertainty is acknowledged. The `high_risk_threshold` used by `summarize_aoi_risk()` is a descriptive reporting threshold, not a universal exclusion rule.
 
 ## 7. Move from one pipeline to a decision space
 
