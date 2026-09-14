@@ -6,7 +6,7 @@ kicker: Documentation
 
 # Documentation hub
 
-GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, then move into measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, and reproducible publication.
+GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, and reproducible publication.
 
 <div class="callout info">
 <strong>Current release</strong>
@@ -20,6 +20,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Goal | Recommended page |
 |---|---|
 | Install and run the smallest example | [Getting started](getting-started/) |
+| Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
 | Run one complete robustness audit | [End-to-end robustness example](examples/end-to-end-robustness/) |
 | Understand uncertainty at AOI boundaries | [AOI uncertainty guide](guides/aoi-uncertainty/) |
 | Build a multiverse/specification analysis | [Specification-space guide](guides/specification-space/) |
@@ -29,10 +30,15 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
 | Find the right public function | [API map](reference/api-map/) |
 
+## Data onboarding
+
+Before applying measurement or robustness methods to a new table, map its semantic columns explicitly with `GazeStudy` and run the structural preflight. The [data onboarding guide](guides/data-onboarding/) explains how `audit_study_qc()` reports non-finite coordinates/timestamps, missing identifiers, duplicate within-trial timestamps, and decreasing time order without turning those diagnostics into universal exclusion rules.
+
 ## Runnable examples
 
 The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps the examples runnable without private participant data while separating demonstration values from empirical claims.
 
+- `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
 - [AOI boundary uncertainty](examples/aoi-boundary/) — fit a gaze-error model and convert a hard boundary decision into probabilistic membership.
 - [Specification curve](examples/specification-curve/) — summarise an explicit analytical decision space.
