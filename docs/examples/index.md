@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic examples for GazeAudit measurement uncertainty, specification spaces, complete robustness audits, and sensitivity analysis.
+description: Runnable synthetic examples for GazeAudit data preflight, measurement uncertainty, specification spaces, complete robustness audits, and sensitivity analysis.
 kicker: Examples
 ---
 
@@ -9,9 +9,15 @@ kicker: Examples
 These examples are intentionally small and use **synthetic data** unless stated otherwise. Their purpose is to make GazeAudit's contracts runnable without private eye-tracking files.
 
 <div class="callout info">
-<strong>Want one complete workflow?</strong>
-Start with the <a href="end-to-end-robustness/">end-to-end robustness audit</a>. It constructs a canonical study, declares a decision space, executes all specifications, and produces stability plus sensitivity diagnostics in one deterministic script.
+<strong>Starting with your own data?</strong>
+Run the <a href="study-preflight/">study preflight example</a> first to see how a vendor-neutral table is mapped and structurally inspected. For a complete robustness workflow after ingestion, continue with the <a href="end-to-end-robustness/">end-to-end robustness audit</a>.
 </div>
+
+## [Study preflight](study-preflight/)
+
+Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue codes, and export a compact QC table. The synthetic example deliberately contains one missing coordinate and a repeated timestamp.
+
+**Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
 
 ## [End-to-end robustness audit](end-to-end-robustness/)
 
@@ -39,10 +45,11 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 
 ## Suggested learning path
 
-1. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is new to you.
-2. Run the [end-to-end robustness audit](end-to-end-robustness/) to see a full specification workflow.
-3. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-4. Move to the [research workflows](../workflows/) when adapting these pieces to a real study.
+1. Run the [study preflight](study-preflight/) when onboarding a table from a vendor export or preprocessing pipeline.
+2. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is new to you.
+3. Run the [end-to-end robustness audit](end-to-end-robustness/) to see a full specification workflow.
+4. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+5. Move to the [research workflows](../workflows/) when adapting these pieces to a real study.
 
 ## Visual convention
 
