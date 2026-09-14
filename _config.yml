@@ -8,7 +8,6 @@ markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
-permalink: pretty
 
 plugins:
   - jekyll-github-metadata
@@ -31,6 +30,70 @@ defaults:
       path: ""
     values:
       layout: default
+  - scope:
+      path: "docs/getting-started.md"
+    values:
+      permalink: /docs/getting-started/
+  - scope:
+      path: "docs/faq.md"
+    values:
+      permalink: /docs/faq/
+  - scope:
+      path: "docs/reference/api-map.md"
+    values:
+      permalink: /docs/reference/api-map/
+  - scope:
+      path: "docs/guides/aoi-uncertainty.md"
+    values:
+      permalink: /docs/guides/aoi-uncertainty/
+  - scope:
+      path: "docs/guides/specification-space.md"
+    values:
+      permalink: /docs/guides/specification-space/
+  - scope:
+      path: "docs/guides/publication-audits.md"
+    values:
+      permalink: /docs/guides/publication-audits/
+  - scope:
+      path: "docs/guides/interoperability.md"
+    values:
+      permalink: /docs/guides/interoperability/
+  - scope:
+      path: "docs/examples/aoi-boundary.md"
+    values:
+      permalink: /docs/examples/aoi-boundary/
+  - scope:
+      path: "docs/examples/specification-curve.md"
+    values:
+      permalink: /docs/examples/specification-curve/
+  - scope:
+      path: "docs/examples/sampling-sensitivity.md"
+    values:
+      permalink: /docs/examples/sampling-sensitivity/
+  - scope:
+      path: "docs/workflows/measurement-audit.md"
+    values:
+      permalink: /docs/workflows/measurement-audit/
+  - scope:
+      path: "docs/workflows/robustness-audit.md"
+    values:
+      permalink: /docs/workflows/robustness-audit/
+  - scope:
+      path: "docs/workflows/reproducible-publication.md"
+    values:
+      permalink: /docs/workflows/reproducible-publication/
+  - scope:
+      path: "docs/articles/measurement-uncertainty-is-a-modeling-problem.md"
+    values:
+      permalink: /docs/articles/measurement-uncertainty-is-a-modeling-problem/
+  - scope:
+      path: "docs/articles/from-one-pipeline-to-a-robustness-audit.md"
+    values:
+      permalink: /docs/articles/from-one-pipeline-to-a-robustness-audit/
+  - scope:
+      path: "docs/articles/how-to-read-a-fragile-result.md"
+    values:
+      permalink: /docs/articles/how-to-read-a-fragile-result/
 
 exclude:
   - .github
