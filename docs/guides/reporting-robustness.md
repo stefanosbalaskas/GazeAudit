@@ -95,7 +95,7 @@ A defensible description is:
 
 > The strongest non-additive specification sensitivity involved detector choice and AOI definition, indicating that the effect of one analytical choice depended descriptively on the level of the other.
 
-Do not call the ratio an inferential interaction effect or substitute it for a fitted factorial model.
+The pairwise diagnostic is **not a replacement for a fitted factorial model**. Do not call its ratio an inferential interaction effect or substitute it for a fitted factorial analysis.
 
 ## Separate robustness from measurement uncertainty
 
