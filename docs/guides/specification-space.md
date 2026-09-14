@@ -160,4 +160,4 @@ When a known-truth or otherwise prejustified reference effect exists, a `Conclus
 
 The reference effect is **not inferred by GazeAudit** for real-data analyses. It must be defined and justified independently before robustness outputs are inspected.
 
-Continue with [publication audits](publication-audits/) or run the [specification-curve example](../examples/specification-curve/).
+Continue with [publication audits]({{ '/docs/guides/publication-audits/' | relative_url }}) or run the [specification-curve example]({{ '/docs/examples/specification-curve/' | relative_url }}).
