@@ -190,7 +190,10 @@ def test_data_onboarding_guide_preserves_preflight_boundaries() -> None:
         "Structural QC is not scientific validity",
         "does **not** mean “bad dataset”",
         "does **not** mean “validated dataset”",
-        "does not convert these counts into a universal quality score or automatic exclusion decision",
+        (
+            "does not convert these counts into a universal quality score or "
+            "automatic exclusion decision"
+        ),
         "duplicate timestamps are a review flag, not an automatic failure",
     ):
         assert contract in guide
