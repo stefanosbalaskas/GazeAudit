@@ -169,4 +169,4 @@ If a known-truth or independently justified reference effect exists, add a `Conc
 
 ## Next
 
-Bind the complete robustness record with the [reproducible publication workflow](reproducible-publication/) or review the [specification-space guide](../guides/specification-space/) for function-level detail.
+Bind the complete robustness record with the [reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) or review the [specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) for function-level detail.
