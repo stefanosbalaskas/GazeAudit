@@ -1,0 +1,104 @@
+name: release-candidate
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: Stable X.Y.Z version to qualify without publishing
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: github.event_name == 'push' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Install build validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Verify release identity
+        shell: bash
+        env:
+          MANUAL_EXPECTED_VERSION: ${{ inputs.expected_version }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            git fetch origin main --depth=1
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+            expected="${GITHUB_REF_NAME#v}"
+            python tools/release_gate.py \
+              --expected-version "$expected" \
+              --tag "$GITHUB_REF_NAME" \
+              --require-stable \
+              --require-changelog-entry
+          else
+            test "$GITHUB_REF" = "refs/heads/main"
+            python tools/release_gate.py \
+              --expected-version "$MANUAL_EXPECTED_VERSION" \
+              --require-stable \
+              --require-changelog-entry
+          fi
+
+      - name: Build clean candidate distributions
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf build dist
+          python -m build
+          python -m twine check dist/*
+          python tools/verify_distribution.py dist
+
+      - name: Install candidate wheel in fresh environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          wheel="$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+          test -n "$wheel"
+          python -m venv .release-smoke
+          .release-smoke/bin/python -m pip install --upgrade pip
+          .release-smoke/bin/python -m pip install "$wheel"
+          .release-smoke/bin/python - <<'PY'
+          from importlib import metadata, resources
+
+          import gazeaudit
+
+          installed = metadata.version("gazeaudit")
+          if not installed or not hasattr(gazeaudit, "GazeStudy"):
+              raise SystemExit("candidate wheel smoke test failed")
+          if not resources.files("gazeaudit.data").joinpath(
+              "gazebase_multidetector_protocol.json"
+          ).is_file():
+              raise SystemExit("candidate wheel lacks frozen scientific package data")
+          print(f"release-candidate wheel smoke: gazeaudit {installed}")
+          PY
+
+      - name: Archive release-candidate distributions
+        uses: actions/upload-artifact@v7
+        with:
+          name: gazeaudit-release-candidate-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0

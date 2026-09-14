@@ -1,0 +1,84 @@
+name: distribution
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Install build validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Build clean sdist and wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf build dist
+          python -m build
+          test "$(find dist -maxdepth 1 -type f | wc -l)" -eq 2
+
+      - name: Validate package metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m twine check dist/*
+          python tools/verify_distribution.py dist
+
+      - name: Install wheel in fresh environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          wheel="$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+          test -n "$wheel"
+          python -m venv .wheel-smoke
+          .wheel-smoke/bin/python -m pip install --upgrade pip
+          .wheel-smoke/bin/python -m pip install "$wheel"
+          .wheel-smoke/bin/python - <<'PY'
+          import tomllib
+          from importlib import metadata, resources
+          from pathlib import Path
+
+          import gazeaudit
+
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          expected = project["project"]["version"]
+          if metadata.version("gazeaudit") != expected:
+              raise SystemExit("installed wheel version differs from pyproject.toml")
+          if not hasattr(gazeaudit, "GazeStudy"):
+              raise SystemExit("installed wheel does not expose GazeStudy")
+          resource = resources.files("gazeaudit.data").joinpath(
+              "pedrotti2023_sampling_missingness_v1.json"
+          )
+          if not resource.is_file():
+              raise SystemExit("installed wheel is missing frozen scientific package data")
+          PY
+
+      - name: Archive qualified distributions
+        uses: actions/upload-artifact@v7
+        with:
+          name: gazeaudit-distribution-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
