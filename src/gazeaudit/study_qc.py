@@ -93,6 +93,10 @@ class StudyQCReport:
         )
 
 
+def _float_values(series: pd.Series) -> np.ndarray:
+    return series.to_numpy(dtype=float, na_value=np.nan)
+
+
 def _count_decreasing_time_groups(study: GazeStudy) -> int:
     grouped = study.data.groupby(
         [study.participant, study.trial],
@@ -101,7 +105,7 @@ def _count_decreasing_time_groups(study: GazeStudy) -> int:
     )
     count = 0
     for _, frame in grouped:
-        values = frame[study.timestamp].to_numpy(dtype=float)
+        values = _float_values(frame[study.timestamp])
         finite = values[np.isfinite(values)]
         if finite.size > 1 and np.any(np.diff(finite) < 0):
             count += 1
@@ -127,9 +131,9 @@ def audit_study_qc(study: GazeStudy) -> StudyQCReport:
     y = data[study.y]
     timestamp = data[study.timestamp]
 
-    x_values = x.to_numpy(dtype=float)
-    y_values = y.to_numpy(dtype=float)
-    timestamp_values = timestamp.to_numpy(dtype=float)
+    x_values = _float_values(x)
+    y_values = _float_values(y)
+    timestamp_values = _float_values(timestamp)
 
     missing_x = x.isna().to_numpy()
     missing_y = y.isna().to_numpy()
