@@ -131,4 +131,4 @@ The endpoint and processor are intentionally study-specific. GazeAudit provides 
 
 ## Next
 
-Use the [specification-space guide](../guides/specification-space/) to design the decision space or the [robustness audit workflow](../workflows/robustness-audit/) to structure the full analysis.
+Use the [specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) to design the decision space or the [robustness audit workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}) to structure the full analysis.
