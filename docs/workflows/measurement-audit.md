@@ -150,4 +150,4 @@ If the scientific endpoint changes definition when the error model changes, meas
 
 ## Next
 
-If multiple analytical choices exist beyond the measurement model, continue to the [robustness audit workflow](robustness-audit/). For publication-grade provenance, finish with the [reproducible publication workflow](reproducible-publication/).
+If multiple analytical choices exist beyond the measurement model, continue to the [robustness audit workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}). For publication-grade provenance, finish with the [reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}).
