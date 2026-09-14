@@ -159,7 +159,7 @@ The comparison is useful for identifying observations whose substantive contribu
 
 A single uncertainty-aware analysis is still only one analytical specification. When multiple scientifically defensible choices exist, define them explicitly with `PipelineSpace` and evaluate a common endpoint across all valid combinations.
 
-Continue with the [specification-space guide](guides/specification-space/) or jump directly to the [specification-curve example](examples/specification-curve/).
+Continue with the [specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) or jump directly to the [specification-curve example]({{ '/docs/examples/specification-curve/' | relative_url }}).
 
 ## Recommended learning path
 
