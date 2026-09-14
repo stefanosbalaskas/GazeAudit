@@ -1,15 +1,24 @@
 from __future__ import annotations
 
 import hashlib
-import json
+import importlib.util
 from pathlib import Path
 
 import pytest
 
-from tools.publication_gate import load_manifest, validate_manifest, verify_distributions
-
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "release" / "0.1.0-publication.json"
+
+_SPEC = importlib.util.spec_from_file_location(
+    "gazeaudit_publication_gate", ROOT / "tools" / "publication_gate.py"
+)
+if _SPEC is None or _SPEC.loader is None:
+    raise RuntimeError("could not load publication_gate.py")
+_GATE = importlib.util.module_from_spec(_SPEC)
+_SPEC.loader.exec_module(_GATE)
+load_manifest = _GATE.load_manifest
+validate_manifest = _GATE.validate_manifest
+verify_distributions = _GATE.verify_distributions
 
 
 def test_publication_manifest_binds_canonical_release() -> None:
