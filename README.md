@@ -11,6 +11,14 @@ The project combines two methodological pillars in one framework:
 1. **Measurement uncertainty** — represent calibration/validation error, spatial uncertainty, and uncertain AOI membership instead of treating every observed gaze coordinate as exact.
 2. **Analytical robustness** — evaluate defensible alternative preprocessing, QC, event-detection, AOI, missing-data, and sampling choices and quantify how much the scientific endpoint changes.
 
+## Installation
+
+The current public release is `0.1.0`:
+
+```bash
+pip install gazeaudit==0.1.0
+```
+
 ## Scientific scope
 
 GazeAudit sits **above** existing eye-tracking preprocessing and event-detection tools rather than replacing them. Its methodological contribution is uncertainty propagation, specification-space analysis, robustness diagnostics, benchmarking, and reproducible audit reports, with explicit interoperability contracts for external scientific software.
@@ -36,7 +44,7 @@ robustness + uncertainty audit
 
 ## Development status
 
-GazeAudit is now in **alpha / post-MVP pre-release development**. The scientific MVP has been exercised with known-truth simulations and three deliberately different real-data validation outcomes:
+GazeAudit `0.1.0` is the first public alpha release. The scientific MVP has been exercised with known-truth simulations and three deliberately different real-data validation outcomes:
 
 | Case study | Scientific question | Canonical outcome |
 |---|---|---|
@@ -239,7 +247,11 @@ GazeAudit does not search for the pipeline that produces the most attractive res
 
 ## Citation
 
-Citation metadata are provided in [`CITATION.cff`](CITATION.cff). Until the first formal tagged release is created, cite the repository together with the exact commit used for the analysis.
+Citation metadata are provided in [`CITATION.cff`](CITATION.cff).
+
+For analyses using release `0.1.0`, cite the version-specific Zenodo DOI **10.5281/zenodo.22757340** and record the exact software version or commit used. The concept DOI **10.5281/zenodo.22757339** represents all Zenodo versions and resolves to the latest archived version.
+
+External publication provenance is recorded in [`release/0.1.0-external-publication-verification.json`](release/0.1.0-external-publication-verification.json).
 
 ## License
 
