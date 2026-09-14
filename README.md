@@ -2,7 +2,7 @@
 
 **Measurement uncertainty and inferential robustness for eye-tracking research.**
 
-[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
+[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
 
 GazeAudit is a scientific Python package built around one question:
 
@@ -43,10 +43,11 @@ The website is organised by research task rather than only by modules:
 | build a defensible analysis multiverse | [Specification-space guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/specification-space/) |
 | stress-test sampling rate | [Sampling sensitivity example](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/sampling-sensitivity/) |
 | design a complete uncertainty/robustness analysis | [Research workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) |
+| inspect the three frozen validation cases visually | [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) |
 | build deterministic publication evidence | [Publication audit guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/publication-audits/) |
 | connect BIDS, pymovements, pEYES, or custom backends | [Interoperability guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/interoperability/) |
 | find the right public function | [API map](https://stefanosbalaskas.github.io/GazeAudit/docs/reference/api-map/) |
-| inspect frozen validation evidence | [Validation matrix](docs/VALIDATION_MATRIX.md) |
+| inspect authoritative frozen validation evidence | [Validation matrix](docs/VALIDATION_MATRIX.md) |
 
 ![GazeAudit workflow](assets/images/workflow-overview.svg)
 
@@ -150,7 +151,7 @@ The scientific MVP deliberately preserves three different real-data outcomes:
 | Korthals target-tracking AOI | Does the negative paired AOI effect survive the frozen measurement-error propagation model? | `robust_negative` |
 | Pedrotti/de Chambrier sampling + missingness | Does the frozen gaze-path-rate contrast recover across downsampling and added missingness? | `materially_fragile` |
 
-These labels are protocol-bound scientific records, not generic judgments about the source datasets. Each case preserves frozen protocol/source identity, deterministic provenance, checksummed evidence, and explicit scientific decision rules. See [`docs/VALIDATION_MATRIX.md`](docs/VALIDATION_MATRIX.md) for the authoritative provenance index.
+These labels are protocol-bound scientific records, not generic judgments about the source datasets. Each case preserves frozen protocol/source identity, deterministic provenance, checksummed evidence, and explicit scientific decision rules. See the [visual case-study walkthroughs](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) for accessible explanatory plots and [`docs/VALIDATION_MATRIX.md`](docs/VALIDATION_MATRIX.md) for the authoritative provenance index.
 
 ## Interoperability
 
