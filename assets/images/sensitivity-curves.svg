@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrative robustness sensitivity curves</title>
+  <desc id="desc">Synthetic endpoint estimates under changing spatial error, sampling rate, and added missingness, showing one stable and two less stable perturbation families.</desc>
+  <style>
+    :root{color-scheme:light dark}.bg{fill:#fff}.panel{fill:#f7f9fc;stroke:#d9e0eb}.axis{stroke:#aeb8c8}.grid{stroke:#e5eaf2}.txt{fill:#22304a;font-family:Inter,system-ui,sans-serif}.muted{fill:#6d7a90}.a{stroke:#3a67dc}.b{stroke:#7b5ad7}.c{stroke:#c07824}.line{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.dot{stroke:#fff;stroke-width:2}.ref{stroke:#8090a9;stroke-width:2;stroke-dasharray:6 6}
+    @media(prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#31415c}.axis{stroke:#61708a}.grid{stroke:#26344b}.txt{fill:#edf3ff}.muted{fill:#a5b3c9}.a{stroke:#7da2ff}.b{stroke:#b59cff}.c{stroke:#f0be66}.dot{stroke:#111a2a}.ref{stroke:#76849b}}
+  </style>
+  <rect class="bg" width="960" height="560" rx="26"/>
+  <text class="txt" x="46" y="55" font-size="26" font-weight="750">Sensitivity curves</text>
+  <text class="muted" x="46" y="82" font-size="15">Synthetic illustration: controlled perturbations reveal where an endpoint is stable or fragile.</text>
+  <rect class="panel" x="46" y="116" width="868" height="355" rx="18"/>
+  <path class="grid" d="M100 166H866M100 226H866M100 286H866M100 346H866M100 406H866"/>
+  <path class="axis" d="M100 145V425M100 425H866"/>
+  <line class="ref" x1="100" y1="286" x2="866" y2="286"/>
+  <text class="muted" x="88" y="169" text-anchor="end" font-size="12">+0.2</text>
+  <text class="muted" x="88" y="229" text-anchor="end" font-size="12">+0.1</text>
+  <text class="muted" x="88" y="290" text-anchor="end" font-size="12">0</text>
+  <text class="muted" x="88" y="349" text-anchor="end" font-size="12">−0.1</text>
+  <text class="muted" x="88" y="409" text-anchor="end" font-size="12">−0.2</text>
+
+  <polyline class="line a" points="140,337 280,333 420,329 560,326 700,323 840,319"/>
+  <polyline class="line b" points="140,344 280,331 420,309 560,281 700,254 840,229"/>
+  <polyline class="line c" points="140,338 280,343 420,356 560,375 700,397 840,416"/>
+
+  <g fill="#3a67dc"><circle class="dot" cx="140" cy="337" r="6"/><circle class="dot" cx="280" cy="333" r="6"/><circle class="dot" cx="420" cy="329" r="6"/><circle class="dot" cx="560" cy="326" r="6"/><circle class="dot" cx="700" cy="323" r="6"/><circle class="dot" cx="840" cy="319" r="6"/></g>
+  <g fill="#7b5ad7"><circle class="dot" cx="140" cy="344" r="6"/><circle class="dot" cx="280" cy="331" r="6"/><circle class="dot" cx="420" cy="309" r="6"/><circle class="dot" cx="560" cy="281" r="6"/><circle class="dot" cx="700" cy="254" r="6"/><circle class="dot" cx="840" cy="229" r="6"/></g>
+  <g fill="#c07824"><circle class="dot" cx="140" cy="338" r="6"/><circle class="dot" cx="280" cy="343" r="6"/><circle class="dot" cx="420" cy="356" r="6"/><circle class="dot" cx="560" cy="375" r="6"/><circle class="dot" cx="700" cy="397" r="6"/><circle class="dot" cx="840" cy="416" r="6"/></g>
+
+  <text class="muted" x="140" y="449" text-anchor="middle" font-size="12">low</text>
+  <text class="muted" x="840" y="449" text-anchor="middle" font-size="12">high perturbation</text>
+
+  <line class="a" x1="586" y1="500" x2="616" y2="500" stroke-width="4"/><text class="txt" x="625" y="505" font-size="13">stable example</text>
+  <line class="b" x1="710" y1="500" x2="740" y2="500" stroke-width="4"/><text class="txt" x="749" y="505" font-size="13">direction change</text>
+  <line class="c" x1="586" y1="528" x2="616" y2="528" stroke-width="4"/><text class="txt" x="625" y="533" font-size="13">magnitude drift</text>
+  <text class="muted" x="46" y="533" font-size="12">Illustrative data only</text>
+</svg>
