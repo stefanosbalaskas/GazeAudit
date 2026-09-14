@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from gazeaudit import GazeStudy
-from gazeaudit.study_qc import audit_study_qc
+from gazeaudit import GazeStudy, audit_study_qc
 
 
 def build_demo_study() -> GazeStudy:
