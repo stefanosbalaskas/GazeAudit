@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="360" viewBox="0 0 820 360" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic end-to-end robustness audit</title>
+  <desc id="desc">Twelve synthetic specification estimates for treatment minus control AOI occupancy. Estimates for AOI radius 0.16 are positive, estimates for radius 0.20 are negative, and estimates for radius 0.24 are exactly zero. The figure is an explanatory synthetic example, not empirical evidence.</desc>
+  <rect width="820" height="360" rx="18" fill="#f8fafc"/>
+  <text x="42" y="36" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Synthetic robustness audit · 12 declared specifications</text>
+  <text x="42" y="58" font-family="system-ui, sans-serif" font-size="12" fill="#64748b">Treatment − control AOI occupancy · explanatory example only</text>
+
+  <line x1="62" y1="75" x2="62" y2="270" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="62" y1="125" x2="760" y2="125" stroke="#334155" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <line x1="62" y1="250" x2="760" y2="250" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="62" y1="75" x2="760" y2="75" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="18" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">+.03</text>
+  <text x="29" y="129" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">0</text>
+  <text x="18" y="254" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">−.05</text>
+
+  <g fill="#0f766e" stroke="#ffffff" stroke-width="2">
+    <circle cx="90" cy="104" r="7"/>
+    <circle cx="255" cy="106" r="7"/>
+    <circle cx="420" cy="92" r="7"/>
+    <circle cx="585" cy="73" r="7"/>
+  </g>
+  <g fill="#c2410c" stroke="#ffffff" stroke-width="2">
+    <circle cx="145" cy="206" r="7"/>
+    <circle cx="310" cy="216" r="7"/>
+    <circle cx="475" cy="210" r="7"/>
+    <circle cx="640" cy="226" r="7"/>
+  </g>
+  <g fill="#64748b" stroke="#ffffff" stroke-width="2">
+    <circle cx="200" cy="125" r="7"/>
+    <circle cx="365" cy="125" r="7"/>
+    <circle cx="530" cy="125" r="7"/>
+    <circle cx="695" cy="125" r="7"/>
+  </g>
+
+  <g font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">
+    <text x="90" y="286">1</text><text x="145" y="286">2</text><text x="200" y="286">3</text>
+    <text x="255" y="286">4</text><text x="310" y="286">5</text><text x="365" y="286">6</text>
+    <text x="420" y="286">7</text><text x="475" y="286">8</text><text x="530" y="286">9</text>
+    <text x="585" y="286">10</text><text x="640" y="286">11</text><text x="695" y="286">12</text>
+    <text x="390" y="307" font-size="11">deterministic specification ID</text>
+  </g>
+
+  <g font-family="system-ui, sans-serif" font-size="11" fill="#475569">
+    <circle cx="100" cy="332" r="5" fill="#0f766e"/><text x="112" y="336">AOI radius 0.16 · positive</text>
+    <circle cx="330" cy="332" r="5" fill="#c2410c"/><text x="342" y="336">AOI radius 0.20 · negative</text>
+    <circle cx="560" cy="332" r="5" fill="#64748b"/><text x="572" y="336">AOI radius 0.24 · exact zero</text>
+  </g>
+</svg>

@@ -20,8 +20,10 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Goal | Recommended page |
 |---|---|
 | Install and run the smallest example | [Getting started](getting-started/) |
+| Run one complete robustness audit | [End-to-end robustness example](examples/end-to-end-robustness/) |
 | Understand uncertainty at AOI boundaries | [AOI uncertainty guide](guides/aoi-uncertainty/) |
 | Build a multiverse/specification analysis | [Specification-space guide](guides/specification-space/) |
+| Report robustness precisely | [Reporting robustness](guides/reporting-robustness/) |
 | Inspect real validation outcomes | [Case studies](case-studies/) |
 | Create deterministic publication evidence | [Publication audits](guides/publication-audits/) |
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
@@ -31,6 +33,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 
 The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps the examples runnable without private participant data while separating demonstration values from empirical claims.
 
+- [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
 - [AOI boundary uncertainty](examples/aoi-boundary/) — fit a gaze-error model and convert a hard boundary decision into probabilistic membership.
 - [Specification curve](examples/specification-curve/) — summarise an explicit analytical decision space.
 - [Sampling sensitivity](examples/sampling-sensitivity/) — perturb sampling rate and inspect endpoint stability.
@@ -76,6 +79,10 @@ The articles explain why the package is structured the way it is and where its s
 - [Measurement uncertainty is a modelling problem](articles/measurement-uncertainty-is-a-modeling-problem/)
 - [From one pipeline to a robustness audit](articles/from-one-pipeline-to-a-robustness-audit/)
 - [How to read a fragile result](articles/how-to-read-a-fragile-result/)
+
+## Reporting layer
+
+After running an audit, use [Reporting robustness without overclaiming](guides/reporting-robustness/) to distinguish descriptive specification quantiles from confidence intervals, sign fractions from probabilities, and sensitivity screening from causal variance decomposition.
 
 ## Frozen validation evidence
 

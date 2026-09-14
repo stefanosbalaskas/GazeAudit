@@ -14,6 +14,16 @@
   background: linear-gradient(90deg, var(--brand), var(--brand-2));
 }
 
+:where(a, button, input, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.doc-article :is(h2, h3),
+:where(a, button, input, summary, [tabindex]):focus-visible {
+  scroll-margin-top: 92px;
+}
+
 .search-trigger {
   display: inline-flex;
   align-items: center;
@@ -255,6 +265,21 @@
   .search-result-category { grid-row: auto; min-width: 0; }
 }
 
+@media (forced-colors: active) {
+  :where(a, button, input, summary, [tabindex]):focus-visible {
+    outline: 2px solid CanvasText;
+  }
+  .reading-progress span,
+  .evidence-card::before,
+  .evidence-state::before { forced-color-adjust: auto; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
   .page-nav-card:hover { transform: none; }
 }

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,12 +33,16 @@ def test_site_shell_exposes_navigation_search_and_accessibility_controls() -> No
         "data-breadcrumbs",
         "data-page-pagination",
         "data-reading-progress",
+        'role="status"',
+        'aria-describedby="site-search-help"',
         "/assets/css/site.css",
         "/assets/css/enhancements.css",
         "/assets/js/site.js",
         "/assets/search-index.json",
         "/docs/guides/",
+        "/docs/guides/reporting-robustness/",
         "/docs/examples/",
+        "/docs/examples/end-to-end-robustness/",
         "/docs/workflows/",
         "/docs/case-studies/",
         "/docs/articles/",
@@ -54,12 +59,15 @@ def test_required_documentation_pages_exist() -> None:
         "docs/guides/index.md",
         "docs/guides/aoi-uncertainty.md",
         "docs/guides/specification-space.md",
+        "docs/guides/reporting-robustness.md",
         "docs/guides/publication-audits.md",
         "docs/guides/interoperability.md",
         "docs/examples/index.md",
+        "docs/examples/end-to-end-robustness.md",
         "docs/examples/aoi-boundary.md",
         "docs/examples/specification-curve.md",
         "docs/examples/sampling-sensitivity.md",
+        "examples/end_to_end_robustness.py",
         "docs/workflows/index.md",
         "docs/workflows/measurement-audit.md",
         "docs/workflows/robustness-audit.md",
@@ -84,6 +92,7 @@ def test_explanatory_visuals_are_present_and_labelled_as_illustrative() -> None:
         "assets/images/specification-curve.svg",
         "assets/images/sensitivity-curves.svg",
         "assets/images/workflow-overview.svg",
+        "assets/images/end-to-end-robustness.svg",
     ]
     for path in visual_paths:
         text = _text(path)
@@ -94,6 +103,7 @@ def test_explanatory_visuals_are_present_and_labelled_as_illustrative() -> None:
     assert "Synthetic" in _text("assets/images/aoi-boundary-uncertainty.svg")
     assert "Synthetic" in _text("assets/images/specification-curve.svg")
     assert "Synthetic" in _text("assets/images/sensitivity-curves.svg")
+    assert "Synthetic" in _text("assets/images/end-to-end-robustness.svg")
 
 
 def test_observed_evidence_visuals_are_bound_to_frozen_case_values() -> None:
@@ -139,10 +149,58 @@ def test_case_studies_preserve_authoritative_interpretation_boundaries() -> None
     assert "−75.3781404722" in pedrotti
 
 
+def test_end_to_end_example_executes_full_public_robustness_path() -> None:
+    namespace = runpy.run_path(str(ROOT / "examples/end_to_end_robustness.py"))
+    audit = namespace["run_demo"]()
+
+    results = audit["results"]
+    assert audit["space"].size == 12
+    assert len(results) == 12
+    assert list(results.columns) == [
+        "spec_id",
+        "min_quality",
+        "sample_stride",
+        "aoi_radius",
+        "estimate",
+    ]
+    assert results["estimate"].notna().all()
+    assert (results["estimate"] > 0).any()
+    assert (results["estimate"] < 0).any()
+    assert (results["estimate"] == 0).any()
+    assert len(audit["curve"]) == 12
+    assert int(audit["stability"]["n_specifications"]) == 12
+    assert set(audit["marginal"]["factor"]) == {
+        "min_quality",
+        "sample_stride",
+        "aoi_radius",
+    }
+    assert len(audit["pairwise"]) == 3
+
+
+def test_reporting_guide_preserves_descriptive_boundaries() -> None:
+    guide = _text("docs/guides/reporting-robustness.md")
+    for contract in (
+        "empirical specification quantiles",
+        "not confidence intervals",
+        "not causal",
+        "not a replacement for a fitted factorial model",
+        "protocol-bound",
+    ):
+        assert contract in guide
+
+
+def test_accessibility_enhancements_cover_focus_and_motion_preferences() -> None:
+    css = _text("assets/css/enhancements.css")
+    assert ":focus-visible" in css
+    assert "scroll-margin-top" in css
+    assert "prefers-reduced-motion: reduce" in css
+    assert "forced-colors: active" in css
+
+
 def test_search_index_is_structured_and_points_to_core_documentation() -> None:
     index = json.loads(_text("assets/search-index.json"))
     assert isinstance(index, list)
-    assert len(index) >= 20
+    assert len(index) >= 27
     urls = {item["url"] for item in index}
     for item in index:
         assert {"title", "category", "url", "description", "keywords"} <= item.keys()
@@ -150,6 +208,8 @@ def test_search_index_is_structured_and_points_to_core_documentation() -> None:
         assert item["url"].startswith("/docs/")
     for url in (
         "/docs/getting-started/",
+        "/docs/examples/end-to-end-robustness/",
+        "/docs/guides/reporting-robustness/",
         "/docs/case-studies/",
         "/docs/case-studies/gazebase-incomplete/",
         "/docs/case-studies/korthals-target-tracking/",

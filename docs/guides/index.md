@@ -1,12 +1,12 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for uncertainty, robustness, publication, and interoperability.
+description: Task-oriented GazeAudit guides for uncertainty, robustness design and reporting, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
-The guides explain **how to design and interpret** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+The guides explain **how to design, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
 ## Measurement uncertainty
 
@@ -19,6 +19,10 @@ Fit global or grouped gaze-error models, propagate spatial uncertainty into AOI 
 ### [Specification spaces](specification-space/)
 
 Turn defensible analytical decisions into an explicit `PipelineSpace`, reject invalid combinations before execution, and summarise endpoint stability without selecting a preferred specification after the fact.
+
+### [Reporting robustness](reporting-robustness/)
+
+Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
 
 ## Reproducibility
 

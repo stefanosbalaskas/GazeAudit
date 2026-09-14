@@ -43,7 +43,7 @@
       </nav>
 
       <div class="header-actions">
-        <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-label="Search documentation">
+        <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K" aria-label="Search documentation">
           <span>Search</span><kbd>Ctrl K</kbd>
         </button>
         <span class="version-badge">v0.1.0</span>
@@ -88,10 +88,12 @@
             <p class="nav-label">Guides</p>
             <a href="{{ '/docs/guides/aoi-uncertainty/' | relative_url }}">AOI uncertainty</a>
             <a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification spaces</a>
+            <a href="{{ '/docs/guides/reporting-robustness/' | relative_url }}">Reporting robustness</a>
             <a href="{{ '/docs/guides/publication-audits/' | relative_url }}">Publication audits</a>
             <a href="{{ '/docs/guides/interoperability/' | relative_url }}">Interoperability</a>
 
             <p class="nav-label">Examples</p>
+            <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
             <a href="{{ '/docs/examples/aoi-boundary/' | relative_url }}">AOI boundary example</a>
             <a href="{{ '/docs/examples/specification-curve/' | relative_url }}">Specification curve</a>
             <a href="{{ '/docs/examples/sampling-sensitivity/' | relative_url }}">Sampling sensitivity</a>
@@ -141,7 +143,7 @@
     </div>
   {% endif %}
 
-  <dialog class="search-dialog" data-search-dialog aria-labelledby="site-search-title">
+  <dialog class="search-dialog" data-search-dialog aria-labelledby="site-search-title" aria-describedby="site-search-help">
     <div class="search-dialog-inner">
       <div class="search-dialog-head">
         <div>
@@ -151,9 +153,9 @@
         <button class="search-close" type="button" data-search-close aria-label="Close search">×</button>
       </div>
       <label class="sr-only" for="site-search-input">Search documentation</label>
-      <input id="site-search-input" class="site-search-input" type="search" placeholder="Try “missingness”, “AOI”, or “publication”…" autocomplete="off" data-site-search>
-      <div class="search-hint"><span>↑↓ navigate</span><span>Enter open</span><span>Esc close</span></div>
-      <div class="search-results" data-search-results aria-live="polite"></div>
+      <input id="site-search-input" class="site-search-input" type="search" placeholder="Try “missingness”, “AOI”, or “publication”…" autocomplete="off" data-site-search aria-controls="site-search-results">
+      <div id="site-search-help" class="search-hint"><span>↑↓ navigate</span><span>Enter open</span><span>Esc close</span></div>
+      <div id="site-search-results" class="search-results" data-search-results aria-live="polite" role="status"></div>
     </div>
   </dialog>
 
