@@ -118,4 +118,4 @@ A serious robustness publication should preserve, directly or by stable referenc
 
 GazeAudit's own frozen case studies use stricter protocol/source/artifact controls than a generic user needs for every exploratory analysis. The general principle is still useful: where a result is intended to function as formal validation evidence, freeze source identity and scientific decision rules before revealing the final classification.
 
-For implementation patterns, continue to the [reproducible publication workflow](../workflows/reproducible-publication/) and the package's [citation and reuse record](../CITATION_AND_REUSE.html).
+For implementation patterns, continue to the [reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) and the package's [citation and reuse record]({{ '/docs/CITATION_AND_REUSE.html' | relative_url }}).
