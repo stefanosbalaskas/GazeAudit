@@ -1,12 +1,18 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for uncertainty, robustness design and reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
 The guides explain **how to design, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+
+## Data onboarding
+
+### [Data onboarding and structural preflight](data-onboarding/)
+
+Map vendor or analysis tables into `GazeStudy`, inspect structural QC, and separate import/ordering problems from scientific quality decisions before running uncertainty or robustness analyses.
 
 ## Measurement uncertainty
 
