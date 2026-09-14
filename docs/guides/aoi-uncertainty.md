@@ -101,21 +101,22 @@ probabilities = aoi_probabilities(
 A useful audit is not merely to replace one metric with another but to quantify where the interpretation changes.
 
 ```python
-from gazeaudit import (
-    compare_hard_probabilistic,
-    hard_aoi_membership,
-    summarize_aoi_risk,
-)
+from gazeaudit import compare_hard_probabilistic, summarize_aoi_risk
 
-hard = hard_aoi_membership(points, aois)
-comparison = compare_hard_probabilistic(hard, probabilities)
+comparison = compare_hard_probabilistic(
+    points,
+    aois,
+    model,
+    draws=5000,
+    rng=42,
+)
 risk = summarize_aoi_risk(comparison)
 ```
 
 Use this comparison to ask questions such as:
 
 - Which observations are near an AOI decision boundary?
-- How often does the hard assignment disagree with the most probable AOI?
+- How often does the hard assignment disagree with the model-conditional membership probability?
 - Are the scientifically important trials disproportionately boundary-sensitive?
 - Does a substantive endpoint change when probability weights replace binary labels?
 
@@ -174,4 +175,4 @@ Use probabilistic membership to expose sensitivity to plausible measurement erro
 
 ## Next
 
-Run the [AOI boundary example](../examples/aoi-boundary/) or combine AOI uncertainty with a declared analytical multiverse in the [specification-space guide](specification-space/).
+Run the [AOI boundary example]({{ '/docs/examples/aoi-boundary/' | relative_url }}) or combine AOI uncertainty with a declared analytical multiverse in the [specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}).
