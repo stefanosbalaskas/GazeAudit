@@ -40,8 +40,10 @@ def test_site_shell_exposes_navigation_search_and_accessibility_controls() -> No
         "/assets/js/site.js",
         "/assets/search-index.json",
         "/docs/guides/",
+        "/docs/guides/data-onboarding/",
         "/docs/guides/reporting-robustness/",
         "/docs/examples/",
+        "/docs/examples/study-preflight/",
         "/docs/examples/end-to-end-robustness/",
         "/docs/workflows/",
         "/docs/case-studies/",
@@ -57,16 +59,19 @@ def test_required_documentation_pages_exist() -> None:
         "docs/getting-started.md",
         "docs/faq.md",
         "docs/guides/index.md",
+        "docs/guides/data-onboarding.md",
         "docs/guides/aoi-uncertainty.md",
         "docs/guides/specification-space.md",
         "docs/guides/reporting-robustness.md",
         "docs/guides/publication-audits.md",
         "docs/guides/interoperability.md",
         "docs/examples/index.md",
+        "docs/examples/study-preflight.md",
         "docs/examples/end-to-end-robustness.md",
         "docs/examples/aoi-boundary.md",
         "docs/examples/specification-curve.md",
         "docs/examples/sampling-sensitivity.md",
+        "examples/study_preflight.py",
         "examples/end_to_end_robustness.py",
         "docs/workflows/index.md",
         "docs/workflows/measurement-audit.md",
@@ -93,6 +98,7 @@ def test_explanatory_visuals_are_present_and_labelled_as_illustrative() -> None:
         "assets/images/sensitivity-curves.svg",
         "assets/images/workflow-overview.svg",
         "assets/images/end-to-end-robustness.svg",
+        "assets/images/study-preflight.svg",
     ]
     for path in visual_paths:
         text = _text(path)
@@ -104,6 +110,7 @@ def test_explanatory_visuals_are_present_and_labelled_as_illustrative() -> None:
     assert "Synthetic" in _text("assets/images/specification-curve.svg")
     assert "Synthetic" in _text("assets/images/sensitivity-curves.svg")
     assert "Synthetic" in _text("assets/images/end-to-end-robustness.svg")
+    assert "Synthetic" in _text("assets/images/study-preflight.svg")
 
 
 def test_observed_evidence_visuals_are_bound_to_frozen_case_values() -> None:
@@ -177,6 +184,18 @@ def test_end_to_end_example_executes_full_public_robustness_path() -> None:
     assert len(audit["pairwise"]) == 3
 
 
+def test_data_onboarding_guide_preserves_preflight_boundaries() -> None:
+    guide = _text("docs/guides/data-onboarding.md")
+    for contract in (
+        "Structural QC is not scientific validity",
+        "does **not** mean “bad dataset”",
+        "does **not** mean “validated dataset”",
+        "does not convert these counts into a universal quality score or automatic exclusion decision",
+        "duplicate timestamps are a review flag, not an automatic failure",
+    ):
+        assert contract in guide
+
+
 def test_reporting_guide_preserves_descriptive_boundaries() -> None:
     guide = _text("docs/guides/reporting-robustness.md")
     for contract in (
@@ -200,7 +219,7 @@ def test_accessibility_enhancements_cover_focus_and_motion_preferences() -> None
 def test_search_index_is_structured_and_points_to_core_documentation() -> None:
     index = json.loads(_text("assets/search-index.json"))
     assert isinstance(index, list)
-    assert len(index) >= 27
+    assert len(index) >= 29
     urls = {item["url"] for item in index}
     for item in index:
         assert {"title", "category", "url", "description", "keywords"} <= item.keys()
@@ -208,6 +227,8 @@ def test_search_index_is_structured_and_points_to_core_documentation() -> None:
         assert item["url"].startswith("/docs/")
     for url in (
         "/docs/getting-started/",
+        "/docs/guides/data-onboarding/",
+        "/docs/examples/study-preflight/",
         "/docs/examples/end-to-end-robustness/",
         "/docs/guides/reporting-robustness/",
         "/docs/case-studies/",
