@@ -10,8 +10,8 @@
   <text class="label" x="78" y="75">Sampling-rate sensitivity of the frozen gaze-path-rate contrast</text>
   <text class="small" x="78" y="101">Long − short, pixels/second · recovery requires same sign and ≤20% relative deviation</text>
 
-  <rect class="band" x="120" y="147" width="680" height="103" rx="8"/>
-  <text class="small" x="132" y="165">Frozen ±20% recovery band around reference</text>
+  <rect class="band" x="120" y="139" width="680" height="81" rx="8"/>
+  <text class="small" x="132" y="158">Frozen ±20% recovery band around reference</text>
 
   <line class="grid" x1="120" y1="140" x2="800" y2="140"/>
   <line class="grid" x1="120" y1="194" x2="800" y2="194"/>
