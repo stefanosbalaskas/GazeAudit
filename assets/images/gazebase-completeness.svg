@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title desc">
+  <title id="title">GazeBase detector completeness gate</title>
+  <desc id="desc">IVT, IVVT, IDT, IDVT, and Engbert produced finite participant estimates for all 322 participants. NH and REMoDNaV produced zero finite participant estimates under the frozen no-interpolation policy. The predeclared completeness gate was 95 percent.</desc>
+  <style>
+    .bg{fill:#fff}.panel{fill:#f7f9fd;stroke:#d8dfeb;stroke-width:1.5}.grid{stroke:#e2e7f0;stroke-width:1}.axis{stroke:#6b778c;stroke-width:1.5}.bar{fill:#2157d5}.fail{fill:#b53d50}.gate{stroke:#9b6412;stroke-width:2;stroke-dasharray:7 6}.tick{fill:#667085;font:14px system-ui,sans-serif}.label{fill:#172033;font:600 16px system-ui,sans-serif}.small{fill:#60708a;font:14px system-ui,sans-serif}.value{fill:#172033;font:700 13px system-ui,sans-serif}.note{fill:#9b6412;font:700 15px system-ui,sans-serif}
+    @media (prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#32415a}.grid{stroke:#26364f}.axis{stroke:#a5b3c9}.bar{fill:#7da2ff}.fail{fill:#ff8ca0}.gate{stroke:#f0be66}.tick,.small{fill:#a5b3c9}.label,.value{fill:#edf3ff}.note{fill:#f0be66}}
+  </style>
+  <rect class="bg" width="900" height="520" rx="24"/>
+  <rect class="panel" x="42" y="34" width="816" height="430" rx="20"/>
+  <text class="label" x="78" y="75">Finite participant coverage across the frozen detector space</text>
+  <text class="small" x="78" y="101">Fixed cohort n=322 · completeness gate = 95%</text>
+
+  <line class="grid" x1="120" y1="150" x2="800" y2="150"/>
+  <line class="grid" x1="120" y1="210" x2="800" y2="210"/>
+  <line class="grid" x1="120" y1="270" x2="800" y2="270"/>
+  <line class="grid" x1="120" y1="330" x2="800" y2="330"/>
+  <line class="axis" x1="120" y1="390" x2="800" y2="390"/>
+  <line class="axis" x1="120" y1="150" x2="120" y2="390"/>
+  <line class="gate" x1="120" y1="162" x2="800" y2="162"/>
+  <text class="note" x="650" y="154">95% gate</text>
+
+  <text class="tick" x="102" y="155" text-anchor="end">100%</text>
+  <text class="tick" x="102" y="215" text-anchor="end">75%</text>
+  <text class="tick" x="102" y="275" text-anchor="end">50%</text>
+  <text class="tick" x="102" y="335" text-anchor="end">25%</text>
+  <text class="tick" x="102" y="395" text-anchor="end">0%</text>
+
+  <rect class="bar" x="145" y="150" width="65" height="240" rx="7"/>
+  <rect class="bar" x="235" y="150" width="65" height="240" rx="7"/>
+  <rect class="bar" x="325" y="150" width="65" height="240" rx="7"/>
+  <rect class="bar" x="415" y="150" width="65" height="240" rx="7"/>
+  <rect class="bar" x="505" y="150" width="65" height="240" rx="7"/>
+  <rect class="fail" x="595" y="386" width="65" height="4" rx="2"/>
+  <rect class="fail" x="685" y="386" width="65" height="4" rx="2"/>
+
+  <text class="value" x="178" y="140" text-anchor="middle">322/322</text>
+  <text class="value" x="268" y="140" text-anchor="middle">322/322</text>
+  <text class="value" x="358" y="140" text-anchor="middle">322/322</text>
+  <text class="value" x="448" y="140" text-anchor="middle">322/322</text>
+  <text class="value" x="538" y="140" text-anchor="middle">322/322</text>
+  <text class="value" x="628" y="375" text-anchor="middle">0/322</text>
+  <text class="value" x="718" y="375" text-anchor="middle">0/322</text>
+
+  <text class="tick" x="178" y="418" text-anchor="middle">IVT</text>
+  <text class="tick" x="268" y="418" text-anchor="middle">IVVT</text>
+  <text class="tick" x="358" y="418" text-anchor="middle">IDT</text>
+  <text class="tick" x="448" y="418" text-anchor="middle">IDVT</text>
+  <text class="tick" x="538" y="418" text-anchor="middle">Engbert</text>
+  <text class="tick" x="628" y="418" text-anchor="middle">NH</text>
+  <text class="tick" x="718" y="418" text-anchor="middle">REMoDNaV</text>
+
+  <text class="note" x="78" y="451">Classification: incomplete — failed specifications remain in the declared space.</text>
+</svg>
