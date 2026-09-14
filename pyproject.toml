@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gazeaudit"
-version = "0.1.0.dev19"
+version = "0.1.0.dev20"
 description = "Measurement uncertainty and inferential robustness for eye-tracking research"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,7 +22,7 @@ keywords = [
   "AOI"
 ]
 classifiers = [
-  "Development Status :: 2 - Pre-Alpha",
+  "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
