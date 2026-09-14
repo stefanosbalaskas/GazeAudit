@@ -1,0 +1,116 @@
+{
+  "schema": "gazeaudit-reproducibility-index-v1",
+  "purpose": "Navigation and provenance index for the frozen scientific-MVP validation cases. This index does not replace authoritative protocols, source locks, execution manifests, or archived artifacts.",
+  "publication_bundle_base": {
+    "certified_main": "c5f85d6f58ec058c29953b4513dbf3995f390f06",
+    "package_version": "0.1.0.dev20",
+    "tests_run": 34828749470,
+    "interoperability_run": 34828749474,
+    "distribution_run": 34828749547,
+    "pages_run": 34828748964,
+    "distribution_artifact_id": 10341022917,
+    "distribution_archive_sha256": "c8ff5245ca6ce2a79c409257bf605acb4f7f1afa90c7705058c8cbe3ba3858f9",
+    "wheel_sha256": "debd6f6dcbdb337f15890d6124c73274e78db84ac36a79504b03297c4d56c9d0",
+    "sdist_sha256": "3118d6b219be7ed549dc8689eb167cd9ecb3a96f30ce38b21acdad42fc310361"
+  },
+  "cases": [
+    {
+      "case_id": "gazebase-multidetector",
+      "canonical_classification": "incomplete",
+      "protocol": {
+        "path": "docs/case_studies/gazebase_multidetector_protocol.json",
+        "human_path": "docs/case_studies/GAZEBASE_MULTIDETECTOR_PROTOCOL.md",
+        "fingerprint": "3f64122f62cbc9762b0bd0e0b95c7fef6ff40c4700215ee4b90f005af77003b1"
+      },
+      "source_control": {
+        "mode": "execution_bound_source_identity",
+        "path": "docs/case_studies/gazebase_real_data_execution.md",
+        "separate_source_freeze": false,
+        "note": "Selected source CSV paths, byte sizes, and SHA-256 hashes are bound within the controlled execution/source identity."
+      },
+      "scientific_execution": {
+        "commit": "609203dfc37f2ef4984de82b888660e7cc30675c",
+        "record_path": "docs/case_studies/gazebase_real_data_execution.md",
+        "execution_fingerprint": "35975d89dea728bd3aa146739dc58ea2bcb9322e357a44856b424fffb4183632",
+        "artifact_manifest_fingerprint": "965ba4b83b06bd3da549b9ca9e36e79443e33b2bbde76d81f87ed7767f94f71d"
+      },
+      "scientific_artifact": {
+        "artifact_id": 10284017265,
+        "name": "gazebase-partitioned-final-609203df",
+        "zip_sha256": "2fae4e99243e6738047a34b8dc24a183e8fb98606e4873723d43b8baa4ae937b"
+      },
+      "authoritative_summary_path": "docs/VALIDATION_MATRIX.md"
+    },
+    {
+      "case_id": "korthals-target-tracking-aoi-v2",
+      "canonical_classification": "robust_negative",
+      "protocol": {
+        "path": "docs/protocols/korthals2026_target_tracking_aoi_v2.json",
+        "fingerprint": "1cd4150c9341db145b8f6aee544f9634c67c46116e61e7e675ae3c50282d2d55"
+      },
+      "source_control": {
+        "mode": "endpoint_blind_source_freeze",
+        "record_path": "docs/validation/korthals_source_lock_v2.md",
+        "run_id": 34719412734,
+        "job_id": 103622387211,
+        "execution_commit": "50ca8239006cdf8d0771b7209dc85acf366ade31",
+        "lock_fingerprint": "8bcd9e1dfc8d6ca07c6222a20f563bf8b3bd67aed0de0d3b0e97628799de3a08",
+        "source_manifest_fingerprint": "04dd531fb5e0eaa8aa77cb3743d7dadfd4c218895f7edf8186cc3ff9362b7541",
+        "artifact_id": 10305414874,
+        "artifact_name": "korthals-source-freeze-v2-50ca8239006cdf8d0771b7209dc85acf366ade31",
+        "artifact_zip_sha256": "ae68ad62e148cf101730e7b73923fe694694f6616cae3432c8c15a164d21adcb"
+      },
+      "scientific_execution": {
+        "record_path": "docs/validation/korthals_scientific_execution_v2.md",
+        "result_path": "docs/results/korthals2026_target_tracking_aoi_v2.md",
+        "result_json_path": "docs/results/korthals2026_target_tracking_aoi_v2.json",
+        "run_id": 34721629856,
+        "commit": "3312423cb43b1d9da3877914455dd471aba81174",
+        "execution_fingerprint": "2db2b92fea136ba516f38a87a3c218cf90c9a2a69c55e8ea37b63cad8febb51b",
+        "scientific_fingerprint": "aa4c04af9c011fe997ef107c8250b20d6a20824b180abdeb16871b5b5a2fc768",
+        "artifact_manifest_fingerprint": "c55dbeb476197196a36d1c1af857bd6424e2db6fb1c7c5e5bdc94169bd380de0"
+      },
+      "scientific_artifact": {
+        "artifact_id": 10306308440,
+        "zip_sha256": "2eaab8171d9d5f70e138eb929554648cb6bed10b21646ab0acd7cfae4d607d11"
+      },
+      "authoritative_summary_path": "docs/VALIDATION_MATRIX.md"
+    },
+    {
+      "case_id": "pedrotti-reading-numerals-sampling-missingness-v1",
+      "canonical_classification": "materially_fragile",
+      "protocol": {
+        "path": "docs/protocols/pedrotti2023_sampling_missingness_v1.json",
+        "human_path": "docs/protocols/PEDROTTI2023_SAMPLING_MISSINGNESS_V1.md",
+        "fingerprint": "efb194ad2c492768962320198d281c98574eb2dc22291279bfd176a15606a0d5"
+      },
+      "source_control": {
+        "mode": "endpoint_blind_source_freeze",
+        "record_path": "src/gazeaudit/data/pedrotti2023_source_lock_v1.json",
+        "method_path": "docs/validation/pedrotti_source_freeze_v1.md",
+        "run_id": 34786624831,
+        "job_id": 103803177169,
+        "execution_commit": "63c4dabc47d716d8616f0df422a4d6115d19cb77",
+        "lock_fingerprint": "d71949f035ecdf14b9e225b8ca441d291625767dc4a07fa4854882ff2dcae898",
+        "source_manifest_fingerprint": "ca676426a01c1d57dda93b62709d4e9040369e4193c0b44353be78d644a33b1f",
+        "artifact_id": 10326523152,
+        "artifact_name": "pedrotti-source-freeze-v1-63c4dabc47d716d8616f0df422a4d6115d19cb77",
+        "artifact_zip_sha256": "e90a7e196df951cbd9c4b2a544beed69cbf2c289a2fd945c3755762dc1c6c667"
+      },
+      "scientific_execution": {
+        "result_path": "docs/results/pedrotti_sampling_missingness_v1.md",
+        "run_id": 34793103977,
+        "commit": "270d444c599363ebd25f25e8a95f5f3c78e55b02",
+        "results_fingerprint": "5bafe0d1d1d0d054a681cb7136fc4e259c0f75e07d51653acde472c7c6e4dce9",
+        "execution_fingerprint": "35dd53da10646400aca657c388f8b77a6a974c555de7efbd6f83faeb970b1eb6",
+        "artifact_manifest_fingerprint": "05a986abe8a7be7a7ccbf2bf24b7467a3c623381d05d2dab8f4ae81b0618d661"
+      },
+      "scientific_artifact": {
+        "artifact_id": 10328414078,
+        "name": "pedrotti-scientific-execution-v1-270d444c599363ebd25f25e8a95f5f3c78e55b02",
+        "zip_sha256": "b411fe6a5f4ad7035ac606d60a952306c0b818d956f7b4930827b8cbe10ae8d5"
+      },
+      "authoritative_summary_path": "docs/VALIDATION_MATRIX.md"
+    }
+  ]
+}
