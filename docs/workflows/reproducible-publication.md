@@ -1,0 +1,163 @@
+---
+title: Reproducible publication workflow
+description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints.
+kicker: Workflow · Reproducibility
+---
+
+# Reproducible publication workflow
+
+This workflow is for analyses intended to support a manuscript, validation record, benchmark, or other durable scientific claim.
+
+## Workflow overview
+
+<div class="workflow-steps">
+  <div class="workflow-step"><strong>Identify the exact software</strong><p>Record GazeAudit version/commit and material external package versions.</p></div>
+  <div class="workflow-step"><strong>Bind the source</strong><p>Preserve stable source identity, source locks, checksums, or immutable retrieval metadata where appropriate.</p></div>
+  <div class="workflow-step"><strong>Freeze scientific choices</strong><p>Preserve the endpoint, specification space, validity rules, measurement assumptions, and conclusion rule before final classification.</p></div>
+  <div class="workflow-step"><strong>Execute and preserve all outputs</strong><p>Keep the complete valid specification and sensitivity evidence rather than selected rows.</p></div>
+  <div class="workflow-step"><strong>Build the audit bundle</strong><p>Generate deterministic methods, report, manifest, summaries, and fingerprints from the executed evidence.</p></div>
+  <div class="workflow-step"><strong>Verify and archive</strong><p>Re-run bundle verification, archive the evidence, and cite the exact release or commit used.</p></div>
+</div>
+
+## 1. Record software identity
+
+For release 0.1.0:
+
+```bash
+python -m pip install gazeaudit==0.1.0
+```
+
+The version-specific archive DOI is [10.5281/zenodo.22757340](https://doi.org/10.5281/zenodo.22757340).
+
+For analyses run from development `main`, record the exact Git commit rather than describing the code only as “latest”.
+
+## 2. Preserve source identity
+
+Depending on the source, preserve one or more of:
+
+- DOI and version;
+- immutable repository commit;
+- download URL and retrieval timestamp;
+- cryptographic checksum;
+- source manifest;
+- participant/file inventory;
+- preprocessing provenance supplied by the upstream ecosystem.
+
+The level of source locking should match the strength of the claim. Formal validation evidence benefits from stricter source control than an exploratory tutorial.
+
+## 3. Freeze the scientific specification
+
+Before final classification, preserve:
+
+- endpoint definition;
+- AOI geometry;
+- measurement-error model and grouping;
+- specification factors and levels;
+- invalid-combination rules;
+- perturbation grids;
+- reference effect and rationale, if used;
+- `ConclusionRule`, if used;
+- expected software/version constraints when external packages are scientifically material.
+
+## 4. Execute without post-hoc filtering
+
+Preserve every valid specification that was declared. If a specification fails technically, record the failure and its reason rather than silently deleting it.
+
+This distinction is central to the GazeBase validation record, where completeness itself is part of the scientific gate.
+
+## 5. Build a conclusion audit bundle
+
+```python
+from gazeaudit import ConclusionRule, build_conclusion_audit_bundle
+
+rule = ConclusionRule(
+    relative_tolerance=0.20,
+    require_sign=True,
+    minimum_recovery_fraction=0.90,
+)
+
+bundle = build_conclusion_audit_bundle(
+    results,
+    reference_effect=reference_effect,
+    rule=rule,
+    title="Study robustness audit",
+    endpoint="predeclared scientific endpoint",
+    source_description="immutable source description",
+)
+```
+
+Only use a reference effect when its scientific meaning is independently justified.
+
+## 6. Preserve deterministic outputs
+
+Useful bundle outputs include:
+
+```python
+bundle.summary
+bundle.scientific_fingerprint
+bundle.bundle_fingerprint
+bundle.manifest_json()
+bundle.markdown
+```
+
+The **scientific fingerprint** binds scientific inputs/outputs. The **bundle fingerprint** additionally binds recorded execution context.
+
+## 7. Verify before publication
+
+```python
+from gazeaudit import verify_publication_audit_bundle
+
+verify_publication_audit_bundle(bundle)
+```
+
+If bound content has changed, verification should fail rather than silently bless the modified bundle.
+
+## 8. Archive methods and complete evidence
+
+Recommended archive layout:
+
+```text
+analysis/
+  protocol/
+    scientific-specification.json
+    source-lock.json
+  results/
+    specifications.csv
+    sensitivity-curves.csv
+    robustness-summary.json
+  publication/
+    manifest.json
+    methods.md
+    report.md
+    fingerprints.txt
+  environment/
+    software-versions.txt
+```
+
+This is an illustrative structure, not a required GazeAudit filesystem schema.
+
+## 9. Report claims at the right scope
+
+A robust conclusion under one frozen protocol does not imply universal robustness to every conceivable pipeline. A fragile conclusion under one protocol does not imply the source dataset is unusable.
+
+Report:
+
+- what was varied;
+- what was held fixed;
+- the endpoint;
+- the conclusion rule, if any;
+- the observed stability/fragility pattern;
+- the protocol boundary;
+- known untested uncertainty dimensions.
+
+## 10. Cite reproducibly
+
+For GazeAudit 0.1.0, cite the version DOI and record the software version or commit:
+
+> Balaskas, S. (2026). *GazeAudit: Measurement uncertainty and inferential robustness for eye-tracking research* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22757340
+
+Use the concept DOI `10.5281/zenodo.22757339` only when you intentionally want a reference that resolves to the latest archived version.
+
+## GazeAudit's own frozen evidence
+
+The package's validation programme applies stronger archive-before-reveal controls to its canonical case studies. See the [validation matrix](../VALIDATION_MATRIX.html) and [scientific methods](../SCIENTIFIC_METHODS.html) for the authoritative records.
