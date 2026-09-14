@@ -1,9 +1,10 @@
 # GazeAudit release qualification
 
-GazeAudit is currently an **unreleased alpha development package**. The active package
-line is `0.1.0.dev20`; no Git tag, GitHub Release, PyPI upload, DOI, or archive should be
-represented as a formal `0.1.0` release until the release-candidate gate below has been
-satisfied on an exact certified `main` commit.
+GazeAudit now carries **stable `0.1.0` candidate metadata** in the release-preparation
+branch. That metadata does not, by itself, mean that `v0.1.0` has been tagged or that a
+GitHub Release, PyPI upload, DOI, or archival publication exists. Formal release status
+begins only after the exact stable candidate has passed the release-candidate gate and a
+separate publication action has been explicitly authorized.
 
 ## Release-engineering principle
 
@@ -31,20 +32,21 @@ It must:
 
 The uploaded distribution artifact is CI evidence only. It is not a release.
 
-## Preparing the first stable `0.1.0` candidate
+## Stable `0.1.0` metadata gate
 
-A dedicated release-preparation pull request must make the release identity explicit.
-At minimum it must:
+The dedicated release-preparation change must keep all release identities synchronized:
 
-1. change `[project].version` in `pyproject.toml` from `0.1.0.dev20` to `0.1.0`;
-2. change `CITATION.cff` to the same `0.1.0` version;
-3. promote the changelog to a level-2 stable release entry such as
-   `## 0.1.0 — YYYY-MM-DD`;
-4. preserve the canonical GazeBase, Korthals, and Pedrotti scientific records unchanged;
-5. pass the full standard tests, live interoperability, Pages, and distribution workflow;
-6. be merged pinned to its exact qualified head and then pass exact-main certification.
+1. `[project].version` in `pyproject.toml` must equal `0.1.0`;
+2. `CITATION.cff` must report the same `0.1.0` version;
+3. `CHANGELOG.md` must contain a level-2 `0.1.0` release entry;
+4. the canonical GazeBase, Korthals, and Pedrotti scientific records must remain
+   unchanged;
+5. the release-preparation pull request must pass the full standard tests, live
+   interoperability, and distribution workflow;
+6. the pull request must be merged pinned to its exact qualified head and the merge must
+   then pass exact-main tests, interoperability, distribution, and Pages certification.
 
-Before tagging, the stable metadata gate must pass from that exact certified `main`:
+On that exact certified `main`, the stable metadata gate must pass:
 
 ```bash
 python tools/release_gate.py \
@@ -53,13 +55,25 @@ python tools/release_gate.py \
   --require-changelog-entry
 ```
 
-The current `0.1.0.dev20` line is expected to fail this stable gate. That failure is a
-feature: development metadata must never be mistaken for a release candidate.
+A mismatch between project version, citation version, expected version, changelog entry,
+or tag remains a hard failure.
+
+## Pre-tag candidate qualification
+
+After stable `0.1.0` metadata is merged and exact-main certified, run the manual
+`workflow_dispatch` path of `.github/workflows/release-candidate.yml` from `main` with
+`expected_version=0.1.0`. This pre-tag qualification does not create a tag or publish a
+release. It reruns the stable metadata gate, rebuilds the candidate distributions,
+validates them, installs the candidate wheel in a fresh environment, and archives the
+candidate artifacts for review.
+
+Only after that exact-main candidate artifact has been reviewed should `v0.1.0` be
+created.
 
 ## Tag-bound candidate qualification
 
-After stable `0.1.0` metadata is merged and exact-main certified, create the tag
-`v0.1.0` **on that exact certified main commit**. A tag push triggers
+Create the tag `v0.1.0` **only on the exact certified main commit that passed the
+pre-tag candidate qualification**. A tag push triggers
 `.github/workflows/release-candidate.yml`, which additionally requires:
 
 ```bash
@@ -72,15 +86,11 @@ python tools/release_gate.py \
 
 The tag must therefore equal `v{project_version}` exactly. The workflow then rebuilds the
 sdist and wheel from the tagged commit, validates them, installs the wheel in a fresh
-environment, and archives the candidate artifacts.
-
-A manual `workflow_dispatch` path is also available from `main` for pre-tag stable
-qualification. It accepts an `expected_version` but does not create a tag or publish any
-artifact outside GitHub Actions.
+environment, and archives the tag-bound candidate artifacts.
 
 ## Publication boundary
 
-A successful release-candidate workflow means only that the tagged source and the built
+A successful release-candidate workflow means only that the candidate source and built
 distributions satisfy the repository's release contract. Actual publication—PyPI,
 GitHub Release creation, archival deposition, or DOI registration—requires a separate,
 explicitly authorized action after reviewing:
@@ -90,7 +100,8 @@ explicitly authorized action after reviewing:
 - package metadata and contents;
 - citation/changelog identity;
 - exact-main CI evidence;
+- pre-tag and tag-bound release-candidate evidence; and
 - the unchanged authoritative scientific validation records.
 
 No scientific protocol, cohort, endpoint, perturbation, threshold, seed, or canonical
-classification may be altered as part of release preparation.
+classification may be altered as part of release preparation or publication.

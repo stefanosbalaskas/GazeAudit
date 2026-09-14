@@ -19,14 +19,20 @@ def test_citation_version_matches_installed_package() -> None:
     assert _quoted_scalar(citation, "version") == version("gazeaudit")
 
 
-def test_release_metadata_marks_alpha_not_pre_alpha() -> None:
+def test_release_metadata_is_stable_alpha_candidate() -> None:
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    release = (ROOT / "docs" / "RELEASE.md").read_text(encoding="utf-8")
 
-    assert 'version = "0.1.0.dev20"' in pyproject
+    assert 'version = "0.1.0"' in pyproject
+    assert 'version = "0.1.0.dev20"' not in pyproject
     assert '"Development Status :: 3 - Alpha"' in pyproject
     assert "Development Status :: 2 - Pre-Alpha" not in pyproject
     assert "pre-alpha" not in readme.lower()
+    assert "## 0.1.0 — 2026-09-14" in changelog
+    assert "stable `0.1.0` candidate metadata" in release
+    assert "does not, by itself" in release
 
 
 def test_authoritative_validation_matrix_binds_canonical_outcomes() -> None:

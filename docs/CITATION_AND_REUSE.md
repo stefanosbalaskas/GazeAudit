@@ -1,16 +1,17 @@
 # Citation, reporting, and reuse guidance
 
-GazeAudit is currently an **alpha pre-release package**. The repository contains a
-scientifically validated MVP and release-qualified `0.1.0.dev20` distributions, but no
-stable `0.1.0` tag or formal package publication is implied by those qualification
-artifacts.
+GazeAudit now carries **stable `0.1.0` candidate metadata**. This repository state is a
+release candidate, not evidence that `v0.1.0` has already been tagged or that a GitHub
+Release, PyPI publication, DOI, or archival deposit exists. Those publication events are
+separate, explicitly controlled actions after release-candidate qualification.
 
-## Citing the software before the first tagged release
+## Citing the software
 
 Use the metadata in the repository root [`CITATION.cff`](../CITATION.cff) and report the
-**exact GazeAudit commit** used for the analysis. For reproducible manuscripts, also
-report the installed package version and the scientific protocol or publication-bundle
-fingerprint relevant to the analysis.
+**exact GazeAudit version and commit** used for the analysis. Before formal publication
+of `v0.1.0`, cite the repository candidate only as candidate software. After a tagged or
+archived release exists, use the release/DOI metadata supplied for that release and
+retain the exact analysis commit when it materially improves reproducibility.
 
 A methods or software statement should therefore identify, at minimum:
 
@@ -21,9 +22,9 @@ A methods or software statement should therefore identify, at minimum:
 - Python version;
 - the frozen protocol fingerprint for any controlled validation or case-study analysis.
 
-Do not cite the development version as if it were a stable archival release. When a
-formal release exists, use the release/DOI metadata supplied for that release and retain
-the exact analysis commit when it materially improves reproducibility.
+Do not infer publication merely from a stable version string in source metadata. The
+release tag, release-candidate evidence, and any external publication record must be
+reported separately when they exist.
 
 ## Reporting a GazeAudit robustness analysis
 
@@ -85,7 +86,9 @@ Before submission or archival, verify that the manuscript or supplement records:
 - the classification rule and interpretation boundary;
 - any optional interoperability packages and their versions;
 - whether reported uncertainty is measurement-model-induced, sampling-based,
-  inferential, or another explicitly defined quantity.
+  inferential, or another explicitly defined quantity; and
+- whether the cited software state was a repository candidate, tagged release, or
+  externally archived publication.
 
 For the package's own scientific-MVP evidence, use the exact identities in the
 reproducibility index rather than transcribing values from memory.
@@ -93,7 +96,7 @@ reproducibility index rather than transcribing values from memory.
 ## Release procedure
 
 The stable-release qualification procedure is documented in [`RELEASE.md`](RELEASE.md).
-The release-candidate workflow validates tag/version/changelog identity and rebuilds the
-candidate distributions, but it deliberately does **not** publish to PyPI or create a
-GitHub Release. Publication remains a separate explicit action after successful release
-qualification.
+The release-candidate workflow validates version/changelog identity, and—when a tag is
+present—exact tag identity. It rebuilds the candidate distributions but deliberately
+does **not** publish to PyPI or create a GitHub Release. Publication remains a separate
+explicit action after successful release qualification.
