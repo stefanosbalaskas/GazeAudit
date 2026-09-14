@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import runpy
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
 
-from gazeaudit import GazeStudy
-from gazeaudit.study_qc import StudyQCReport, audit_study_qc
+from gazeaudit import GazeStudy, StudyQCReport, audit_study_qc
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _study(frame: pd.DataFrame) -> GazeStudy:
@@ -157,6 +161,17 @@ def test_report_exports_derived_fields() -> None:
     assert set(table.columns) == {"metric", "value"}
     assert "issue_codes" not in set(table["metric"])
     assert "status" in set(table["metric"])
+
+
+def test_preflight_example_is_deterministic_and_review_bound() -> None:
+    namespace = runpy.run_path(str(ROOT / "examples/study_preflight.py"))
+    summary = namespace["run_demo"]()
+
+    assert summary["status"] == "review"
+    assert summary["issue_codes"] == ("coordinate_nonfinite", "timestamp_duplicate")
+    assert summary["coordinate_issue_rows"] == 1
+    assert summary["duplicate_timestamp_rows"] == 2
+    assert summary["decreasing_time_groups"] == 0
 
 
 def test_preflight_rejects_noncanonical_input() -> None:
