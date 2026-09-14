@@ -1,0 +1,52 @@
+{
+  "schema": "gazeaudit-external-publication-plan-v1",
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "source_commit": "fdade23c12b3c2a2f26a1ca8398034b6f8d0213f",
+  "source_tree": "938007cda6051d50243fff27a892870f7128d407",
+  "github_release": {
+    "url": "https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.1.0",
+    "release_id": 388545002,
+    "publication_run_id": 34868438946,
+    "payload_artifact_id": 10358460785,
+    "payload_archive_sha256": "b3b3a6448f67a8ea6ae3f18646a57882730e9f6a9a757eae279fbb12c6c688ba"
+  },
+  "payload": {
+    "wheel": {
+      "filename": "gazeaudit-0.1.0-py3-none-any.whl",
+      "sha256": "51fa1f0a0388dfe337fad0d6564df802ae8464f01d5ce666cc96ce2e144271a1",
+      "size_bytes": 192027
+    },
+    "sdist": {
+      "filename": "gazeaudit-0.1.0.tar.gz",
+      "sha256": "8c449e2fc469c2b91f1c2471b674b5d6b16b6e6aa883289069ffb0a679517173",
+      "size_bytes": 242029
+    }
+  },
+  "pypi": {
+    "authorized": true,
+    "project": "gazeaudit",
+    "authentication": "trusted-publishing-oidc",
+    "workflow": ".github/workflows/publish-pypi.yml",
+    "environment": "pypi",
+    "project_url": "https://pypi.org/project/gazeaudit/",
+    "version": "0.1.0",
+    "status": "pending_external_configuration"
+  },
+  "zenodo": {
+    "authorized": true,
+    "mode": "manual-existing-release-deposit",
+    "resource_type": "software",
+    "metadata_source": "CITATION.cff@v0.1.0",
+    "single_file": "gazeaudit-0.1.0.tar.gz",
+    "single_file_sha256": "8c449e2fc469c2b91f1c2471b674b5d6b16b6e6aa883289069ffb0a679517173",
+    "version_doi": null,
+    "concept_doi": null,
+    "status": "pending_external_deposit"
+  },
+  "scientific_record": {
+    "gazebase": "incomplete",
+    "korthals": "robust_negative",
+    "pedrotti": "materially_fragile"
+  }
+}

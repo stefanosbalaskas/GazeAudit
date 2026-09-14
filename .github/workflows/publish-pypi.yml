@@ -1,0 +1,203 @@
+name: publish-pypi
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: Exact stable version to publish
+        required: true
+        default: '0.1.0'
+        type: string
+      expected_tag:
+        description: Exact qualified release tag to publish
+        required: true
+        default: 'v0.1.0'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-pypi-${{ inputs.expected_tag }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_VERSION: ${{ inputs.expected_version }}
+      EXPECTED_TAG: ${{ inputs.expected_tag }}
+      GITHUB_MANIFEST: release/0.1.0-publication.json
+      EXTERNAL_PLAN: release/0.1.0-external-publication.json
+    steps:
+      - name: Checkout publication control plane
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+
+      - name: Verify PyPI publication authorization and tag binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          python tools/external_publication_gate.py \
+            --plan "$EXTERNAL_PLAN" \
+            --github-manifest "$GITHUB_MANIFEST" \
+            --destination pypi \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit"
+          git fetch origin "refs/tags/$EXPECTED_TAG:refs/tags/$EXPECTED_TAG"
+          test "$(git rev-parse "refs/tags/$EXPECTED_TAG^{commit}")" = "$expected_commit"
+          test "$(gh release view "$EXPECTED_TAG" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$EXPECTED_TAG" --json isPrerelease --jq '.isPrerelease')" = "false"
+
+      - name: Checkout exact qualified tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.expected_tag }}
+          path: tagged-source
+          fetch-depth: 0
+
+      - name: Install build validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Rebuild and verify exact tagged distributions
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          test "$(git -C tagged-source rev-parse HEAD)" = "$expected_commit"
+          rm -rf tagged-source/build tagged-source/dist
+          python -m build tagged-source
+          python -m twine check tagged-source/dist/*
+          python tagged-source/tools/verify_distribution.py tagged-source/dist
+          python tools/publication_gate.py \
+            --manifest "$GITHUB_MANIFEST" \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir tagged-source/dist
+          python tools/external_publication_gate.py \
+            --plan "$EXTERNAL_PLAN" \
+            --github-manifest "$GITHUB_MANIFEST" \
+            --destination pypi \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir tagged-source/dist
+
+      - name: Round-trip verify public GitHub Release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf github-release
+          mkdir github-release
+          gh release download "$EXPECTED_TAG" --dir github-release
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          python tools/external_publication_gate.py \
+            --plan "$EXTERNAL_PLAN" \
+            --github-manifest "$GITHUB_MANIFEST" \
+            --destination pypi \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir github-release
+          cmp tagged-source/dist/gazeaudit-0.1.0-py3-none-any.whl github-release/gazeaudit-0.1.0-py3-none-any.whl
+          cmp tagged-source/dist/gazeaudit-0.1.0.tar.gz github-release/gazeaudit-0.1.0.tar.gz
+
+      - name: Archive exact PyPI payload
+        uses: actions/upload-artifact@v7
+        with:
+          name: gazeaudit-pypi-payload-${{ inputs.expected_tag }}-${{ github.run_id }}
+          path: tagged-source/dist/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+  publish:
+    name: publish trusted payload
+    needs: prepare
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/gazeaudit/
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      EXPECTED_VERSION: ${{ inputs.expected_version }}
+      EXPECTED_TAG: ${{ inputs.expected_tag }}
+      GITHUB_MANIFEST: release/0.1.0-publication.json
+      EXTERNAL_PLAN: release/0.1.0-external-publication.json
+    steps:
+      - name: Checkout publication control plane
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.12.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+
+      - name: Retrieve exact prepared payload
+        uses: actions/download-artifact@v7
+        with:
+          name: gazeaudit-pypi-payload-${{ inputs.expected_tag }}-${{ github.run_id }}
+          path: dist/
+
+      - name: Reverify exact payload immediately before publishing
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_commit="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          PY
+          )"
+          python tools/external_publication_gate.py \
+            --plan "$EXTERNAL_PLAN" \
+            --github-manifest "$GITHUB_MANIFEST" \
+            --destination pypi \
+            --expected-version "$EXPECTED_VERSION" \
+            --expected-tag "$EXPECTED_TAG" \
+            --expected-commit "$expected_commit" \
+            --dist-dir dist
+
+      - name: Publish exact distributions to PyPI with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          skip-existing: false
