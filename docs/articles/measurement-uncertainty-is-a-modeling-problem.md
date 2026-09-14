@@ -112,4 +112,4 @@ Measurement quality should not be reduced to a single tracker accuracy number. T
 
 That is why GazeAudit treats measurement uncertainty as a first-class part of the scientific model and then asks whether the final conclusion survives it.
 
-Continue with the [AOI uncertainty guide](../guides/aoi-uncertainty/) or the [measurement audit workflow](../workflows/measurement-audit/).
+Continue with the [AOI uncertainty guide]({{ '/docs/guides/aoi-uncertainty/' | relative_url }}) or the [measurement audit workflow]({{ '/docs/workflows/measurement-audit/' | relative_url }}).
