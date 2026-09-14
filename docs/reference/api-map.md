@@ -9,13 +9,22 @@ permalink: /docs/reference/api-map/
 
 This page is a task-oriented map of the public API exposed by `gazeaudit`. Function docstrings remain the source-level reference; the map helps you find the right entry point without scanning the package source.
 
-## Canonical study representation and preflight
+## Canonical study representation and structural QC
 
 | API | Purpose |
 |---|---|
 | `GazeStudy` | Vendor-neutral tabular gaze/fixation representation with semantic column mapping. |
 | `audit_study_qc` | Conservative structural preflight for non-finite coordinates/timestamps, identifier gaps, duplicate timestamps, and decreasing within-trial time. |
 | `StudyQCReport` | Frozen machine-readable preflight result with counts, `status`, issue codes, and tabular export. |
+| `study_qc_diagnostics` | Deterministic row/group diagnostics with stable IDs and issue/detail codes. |
+| `StudyQCDecision` | Explicit researcher decision and rationale attached to a flagged QC issue family. |
+| `build_study_qc_audit` | Bind mapped study identity, report, diagnostics, decisions, and software provenance. |
+| `StudyQCAudit` | Deterministic structural-QC record with study, audit, and manifest fingerprints. |
+| `verify_study_qc_audit` | Detect mutation of the in-memory QC record or its manifest. |
+| `verify_study_qc_manifest` | Verify a standalone QC manifest and its nested fingerprints. |
+| `write_study_qc_artifacts` | Write deterministic QC JSON/CSV evidence and byte-level integrity metadata. |
+| `verify_study_qc_artifacts` | Verify the written QC evidence directory byte-for-byte. |
+| `study_qc_publication_metadata` | Create a compact substantive QC descriptor for publication-bundle metadata. |
 | `adapt_study` | Adapt an external study object through the `StudyAdapter` contract. |
 | `StudyAdapter` | Runtime-checkable protocol for custom study integrations. |
 | `DetectionResult` | Normalised event-detection output contract. |
@@ -23,6 +32,10 @@ This page is a task-oriented map of the public API exposed by `gazeaudit`. Funct
 | `run_detector_backend` | Execute a detector backend against a canonical study. |
 
 The study preflight is descriptive. It does not assign a universal data-quality score or replace calibration, event-detection, missingness, or scientific-validity assessment.
+
+### Structural-QC provenance constants
+
+`STUDY_QC_SCHEMA`, `STUDY_QC_ARTIFACT_SCHEMA`, `STUDY_QC_PUBLICATION_LINK_SCHEMA`, and `STUDY_QC_ISSUE_CODES` expose the stable machine-readable contracts used by the QC provenance layer.
 
 ## AOIs and measurement uncertainty
 
@@ -92,9 +105,10 @@ The study preflight is descriptive. It does not assign a universal data-quality 
 
 | API | Purpose |
 |---|---|
-| `build_conclusion_audit_bundle` | Bind results, conclusion rule, source description, methods/report, and provenance. |
+| `build_conclusion_audit_bundle` | Bind results, conclusion rule, source description, methods/report, metadata, and provenance. |
 | `PublicationAuditBundle` | Deterministic bundle object containing scientific and execution evidence. |
 | `verify_publication_audit_bundle` | Detect mutation of bound publication evidence. |
+| `study_qc_publication_metadata` | Bind structural-QC scientific identity through the existing publication metadata channel. |
 | `render_publication_methods` | Deterministic methods text for the audit. |
 | `render_publication_markdown` | Deterministic Markdown report. |
 | `canonical_json` | Canonical serialisation used by provenance fingerprints. |
@@ -147,11 +161,12 @@ Start with the [validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_
 
 ## Recommended entry points by task
 
-- **I have a vendor or analysis table:** `GazeStudy` → `audit_study_qc` → inspect/document flagged structure before downstream analysis.
+- **I have a vendor or analysis table:** `GazeStudy` → `audit_study_qc` → `study_qc_diagnostics` → explicit `StudyQCDecision` values → `build_study_qc_audit`.
+- **I need portable QC evidence:** `write_study_qc_artifacts` → archive → `verify_study_qc_artifacts`.
 - **I have validation data and AOIs:** `GaussianGazeErrorModel` → `aoi_probabilities` → `compare_hard_probabilistic` → uncertainty-weighted endpoint.
 - **I have multiple defensible analysis choices:** `PipelineSpace` → `run_specs` → `specification_curve` → `effect_stability` → sensitivity diagnostics.
 - **I need sampling/missingness stress tests:** `sampling_sensitivity_curve` / `missingness_sensitivity_curve`.
-- **I need a reproducible conclusion record:** `ConclusionRule` → `build_conclusion_audit_bundle` → `verify_publication_audit_bundle`.
+- **I need a reproducible conclusion record:** `ConclusionRule` + optional `study_qc_publication_metadata` → `build_conclusion_audit_bundle` → `verify_publication_audit_bundle`.
 - **I have external data/detectors:** use BIDS/pymovements/pEYES adapters or implement the study/detector protocols.
 
 For conceptual guidance, return to the [documentation hub]({{ '/docs/' | relative_url }}).
