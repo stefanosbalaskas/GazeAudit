@@ -126,7 +126,7 @@ def test_results_manifest_is_deterministic_and_sensitive_to_results():
     second = results_manifest(results, metadata={"endpoint": "dwell"})
     assert first == second
     assert first["n_rows"] == 2
-    assert first["software"]["gazeaudit"].startswith("0.1.0.dev")
+    assert first["software"]["gazeaudit"] == "0.1.0"
     changed = results.copy()
     changed.loc[1, "estimate"] = 2.0
     assert first["records_fingerprint"] != results_manifest(changed)["records_fingerprint"]

@@ -8,10 +8,10 @@ separate, explicitly controlled actions after release-candidate qualification.
 ## Citing the software
 
 Use the metadata in the repository root [`CITATION.cff`](../CITATION.cff) and report the
-**exact GazeAudit version and commit** used for the analysis. Before formal publication
-of `v0.1.0`, cite the repository candidate only as candidate software. After a tagged or
-archived release exists, use the release/DOI metadata supplied for that release and
-retain the exact analysis commit when it materially improves reproducibility.
+**exact GazeAudit commit** and installed version used for the analysis. Before formal
+publication of `v0.1.0`, cite the repository candidate only as candidate software. After
+a tagged or archived release exists, use the release/DOI metadata supplied for that
+release and retain the exact analysis commit when it materially improves reproducibility.
 
 A methods or software statement should therefore identify, at minimum:
 
