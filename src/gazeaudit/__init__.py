@@ -154,6 +154,7 @@ from .scientific_benchmark import (
 )
 from .sensitivity import scale_error_model, spatial_sensitivity_curve
 from .study import GazeStudy
+from .study_qc import StudyQCReport, audit_study_qc
 from .task_contrast import (
     DetectorRobustnessAudit,
     audit_detector_robustness,
@@ -217,12 +218,14 @@ __all__ = [
     "PymovementsGazeAdapter",
     "RectangleAOI",
     "StudyAdapter",
+    "StudyQCReport",
     "adapt_study",
     "aoi_conclusion_specifications",
     "aoi_probabilities",
     "assemble_gazebase_partitioned_execution",
     "audit_aoi_effect_uncertainty",
     "audit_detector_robustness",
+    "audit_study_qc",
     "benchmark_known_aoi_effect",
     "build_aoi_uncertainty_protocol",
     "build_conclusion_audit_bundle",

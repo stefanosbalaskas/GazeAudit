@@ -36,6 +36,30 @@ For pEYES integration, Python 3.12+ is required by the current pEYES dependency 
 python -m pip install "gazeaudit[peyes]==0.1.0"
 ```
 
+### Before using your own table
+
+Post-release development on `main` includes a structural study preflight. Map the source table explicitly and inspect it before downstream analysis:
+
+```python
+import pandas as pd
+
+from gazeaudit import GazeStudy, audit_study_qc
+
+frame = pd.read_csv("my_eye_tracking_export.csv")
+study = GazeStudy(
+    frame,
+    x="gaze_x_px",
+    y="gaze_y_px",
+    timestamp="time_ms",
+    participant="participant_id",
+    trial="trial_id",
+)
+report = audit_study_qc(study)
+print(report.status, report.issue_codes)
+```
+
+The preflight is descriptive, not a universal quality score. See [Data onboarding and structural preflight]({{ '/docs/guides/data-onboarding/' | relative_url }}) for the full contract and a runnable example.
+
 ## 2. Fit a transparent gaze-error model
 
 A `GaussianGazeErrorModel` treats validation residuals as observed-minus-target x/y error. The model stores estimated systematic bias and the residual covariance matrix.
@@ -164,6 +188,7 @@ Continue with the [specification-space guide]({{ '/docs/guides/specification-spa
 ## Recommended learning path
 
 <div class="workflow-steps">
+  <div class="workflow-step"><strong>Data preflight</strong><p>Map the incoming table and inspect structural conditions without turning them into universal exclusion thresholds.</p></div>
   <div class="workflow-step"><strong>AOI uncertainty</strong><p>Understand error models, grouped error models, probabilistic membership, and boundary risk.</p></div>
   <div class="workflow-step"><strong>Specification spaces</strong><p>Declare the analytical decisions that could reasonably vary before looking for a preferred result.</p></div>
   <div class="workflow-step"><strong>Sensitivity curves</strong><p>Perturb spatial error, sampling, and missingness when those dimensions matter to the scientific endpoint.</p></div>

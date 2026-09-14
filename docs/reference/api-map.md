@@ -1,6 +1,6 @@
 ---
 title: API map
-description: Task-oriented map of the public GazeAudit API for study representation, uncertainty, robustness, sensitivity, interoperability, and publication evidence.
+description: Task-oriented map of the public GazeAudit API for study representation, structural QC, uncertainty, robustness, sensitivity, interoperability, and publication evidence.
 kicker: Reference
 permalink: /docs/reference/api-map/
 ---
@@ -9,16 +9,20 @@ permalink: /docs/reference/api-map/
 
 This page is a task-oriented map of the public API exposed by `gazeaudit`. Function docstrings remain the source-level reference; the map helps you find the right entry point without scanning the package source.
 
-## Canonical study representation
+## Canonical study representation and preflight
 
 | API | Purpose |
 |---|---|
 | `GazeStudy` | Vendor-neutral tabular gaze/fixation representation with semantic column mapping. |
+| `audit_study_qc` | Conservative structural preflight for non-finite coordinates/timestamps, identifier gaps, duplicate timestamps, and decreasing within-trial time. |
+| `StudyQCReport` | Frozen machine-readable preflight result with counts, `status`, issue codes, and tabular export. |
 | `adapt_study` | Adapt an external study object through the `StudyAdapter` contract. |
 | `StudyAdapter` | Runtime-checkable protocol for custom study integrations. |
 | `DetectionResult` | Normalised event-detection output contract. |
 | `DetectorBackend` | Runtime-checkable protocol for external detector backends. |
 | `run_detector_backend` | Execute a detector backend against a canonical study. |
+
+The study preflight is descriptive. It does not assign a universal data-quality score or replace calibration, event-detection, missingness, or scientific-validity assessment.
 
 ## AOIs and measurement uncertainty
 
@@ -143,6 +147,7 @@ Start with the [validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_
 
 ## Recommended entry points by task
 
+- **I have a vendor or analysis table:** `GazeStudy` → `audit_study_qc` → inspect/document flagged structure before downstream analysis.
 - **I have validation data and AOIs:** `GaussianGazeErrorModel` → `aoi_probabilities` → `compare_hard_probabilistic` → uncertainty-weighted endpoint.
 - **I have multiple defensible analysis choices:** `PipelineSpace` → `run_specs` → `specification_curve` → `effect_stability` → sensitivity diagnostics.
 - **I need sampling/missingness stress tests:** `sampling_sensitivity_curve` / `missingness_sensitivity_curve`.

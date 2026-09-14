@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="420" viewBox="0 0 1080 420" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic GazeAudit study preflight</title>
+  <desc id="desc">A synthetic five-row gaze table flows through structural checks. One row has a missing horizontal coordinate and two rows share a timestamp, producing a review status rather than an automatic exclusion.</desc>
+  <rect width="1080" height="420" rx="28" fill="#0b1220"/>
+  <text x="54" y="58" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="26" font-weight="700">Synthetic study preflight</text>
+  <text x="54" y="88" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="15">Structural conditions are surfaced for review; no universal exclusion rule is applied.</text>
+
+  <g transform="translate(54 122)">
+    <rect width="430" height="232" rx="18" fill="#111c2f" stroke="#334155"/>
+    <text x="24" y="34" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="16" font-weight="700">Canonical GazeStudy</text>
+    <g fill="#94a3b8" font-family="ui-monospace, monospace" font-size="13">
+      <text x="24" y="68">pid   trial   time     x      y</text>
+      <text x="24" y="96">P01   ad_1    0.0    520    410</text>
+      <text x="24" y="124">P01   ad_1   16.7    523    412</text>
+      <text x="24" y="152">P01   ad_1   16.7     —     414</text>
+      <text x="24" y="180">P02   ad_2    0.0    610    390</text>
+      <text x="24" y="208">P02   ad_2   33.4    615    394</text>
+    </g>
+    <circle cx="316" cy="147" r="8" fill="#f59e0b"/>
+    <path d="M316 147 L395 147" stroke="#f59e0b" stroke-width="2"/>
+    <text x="326" y="137" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="12">missing x</text>
+  </g>
+
+  <path d="M510 238 C550 238 554 238 594 238" stroke="#64748b" stroke-width="3" fill="none"/>
+  <path d="M586 230 L598 238 L586 246" fill="none" stroke="#64748b" stroke-width="3"/>
+
+  <g transform="translate(620 122)">
+    <rect width="406" height="232" rx="18" fill="#111c2f" stroke="#334155"/>
+    <text x="24" y="34" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="16" font-weight="700">audit_study_qc()</text>
+    <g font-family="system-ui, sans-serif" font-size="14">
+      <text x="24" y="70" fill="#cbd5e1">coordinate_issue_rows</text><text x="344" y="70" fill="#fbbf24" text-anchor="end">1</text>
+      <text x="24" y="98" fill="#cbd5e1">timestamp_issue_rows</text><text x="344" y="98" fill="#86efac" text-anchor="end">0</text>
+      <text x="24" y="126" fill="#cbd5e1">duplicate_timestamp_rows</text><text x="344" y="126" fill="#fbbf24" text-anchor="end">2</text>
+      <text x="24" y="154" fill="#cbd5e1">decreasing_time_groups</text><text x="344" y="154" fill="#86efac" text-anchor="end">0</text>
+    </g>
+    <rect x="24" y="176" width="112" height="36" rx="18" fill="#3b2711" stroke="#f59e0b"/>
+    <text x="80" y="199" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">REVIEW</text>
+    <text x="154" y="199" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="13">inspect + document; do not auto-drop</text>
+  </g>
+</svg>
