@@ -13,6 +13,7 @@ page_type: landing
         <p class="hero-lede">GazeAudit propagates gaze-measurement uncertainty and evaluates scientifically defensible analytical alternatives so researchers can see whether an eye-tracking conclusion survives reasonable choices.</p>
         <div class="hero-actions">
           <a class="button primary" href="{{ '/docs/getting-started/' | relative_url }}">Start in 5 minutes →</a>
+          <a class="button" href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">Run a complete audit</a>
           <a class="button" href="{{ '/docs/case-studies/' | relative_url }}">See real case studies</a>
           <button class="button" type="button" data-search-open>Search documentation</button>
           <a class="button" href="https://github.com/stefanosbalaskas/GazeAudit">View source</a>
@@ -79,9 +80,9 @@ and analytical choices?</code></pre>
   <div class="section-heading">
     <p class="eyebrow">Visual diagnostics</p>
     <h2>Reason about uncertainty with plots, not only tables.</h2>
-    <p>Runnable examples pair code with visual explanations of AOI-boundary uncertainty, specification curves, and perturbation sensitivity.</p>
+    <p>Runnable examples pair code with visual explanations of AOI-boundary uncertainty, specification curves, complete robustness audits, and perturbation sensitivity.</p>
   </div>
-  <div class="plot-grid">
+  <div class="evidence-plot-grid">
     <figure class="plot-card">
       <img src="{{ '/assets/images/aoi-boundary-uncertainty.svg' | relative_url }}" alt="Illustrative probabilistic AOI membership near a shared AOI boundary">
       <figcaption><strong>AOI uncertainty.</strong> A boundary fixation can contribute probabilistically rather than being forced immediately into one deterministic label.</figcaption>
@@ -89,6 +90,10 @@ and analytical choices?</code></pre>
     <figure class="plot-card">
       <img src="{{ '/assets/images/specification-curve.svg' | relative_url }}" alt="Illustrative specification curve with ordered negative estimates">
       <figcaption><strong>Specification curve.</strong> Ordered estimates expose the shape of the declared analytical decision space. Values shown are synthetic illustrations.</figcaption>
+    </figure>
+    <figure class="plot-card">
+      <img src="{{ '/assets/images/end-to-end-robustness.svg' | relative_url }}" alt="Synthetic end-to-end robustness audit with twelve specification estimates spanning positive, negative, and exact-zero values">
+      <figcaption><strong>Complete audit.</strong> A deterministic 12-specification example shows how declared QC, sampling, and AOI choices can change the endpoint. <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">Run it →</a></figcaption>
     </figure>
   </div>
 </section>
@@ -157,9 +162,14 @@ and analytical choices?</code></pre>
       <p><a href="{{ '/docs/getting-started/' | relative_url }}">Getting started →</a></p>
     </article>
     <article class="card">
-      <h3>Design an analysis</h3>
-      <p>Build a specification space, define a common endpoint, and decide which sensitivity analyses belong in the study.</p>
-      <p><a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification-space guide →</a></p>
+      <h3>Run a complete audit</h3>
+      <p>Construct a canonical study, declare a 12-specification decision space, execute every branch, and inspect stability plus sensitivity.</p>
+      <p><a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end example →</a></p>
+    </article>
+    <article class="card">
+      <h3>Design and report an analysis</h3>
+      <p>Build a defensible specification space and translate the resulting robustness diagnostics into precise scientific language.</p>
+      <p><a href="{{ '/docs/guides/reporting-robustness/' | relative_url }}">Reporting guide →</a></p>
     </article>
     <article class="card">
       <h3>Publish reproducibly</h3>
