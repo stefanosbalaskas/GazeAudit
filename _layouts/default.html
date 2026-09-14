@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="color-scheme" content="light dark">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('gazeaudit-theme');
+        if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+      } catch (e) {}
+    }());
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" data-site-header>
+    <div class="header-inner">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="GazeAudit home">
+        <span class="brand-mark" aria-hidden="true">GA</span>
+        <span class="brand-copy">
+          <strong>GazeAudit</strong>
+          <span>uncertainty × robustness</span>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="Primary">
+        <a href="{{ '/docs/' | relative_url }}">Docs</a>
+        <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
+        <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+        <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
+        <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
+      </nav>
+
+      <div class="header-actions">
+        <span class="version-badge">v0.1.0</span>
+        <a class="icon-link" href="https://github.com/stefanosbalaskas/GazeAudit" aria-label="GazeAudit on GitHub">GitHub</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">◐</button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation">☰</button>
+      </div>
+    </div>
+
+    <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile navigation" hidden>
+      <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+      <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
+      <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+      <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
+      <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
+      <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
+      <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation</a>
+    </nav>
+  </header>
+
+  {% if page.page_type == 'landing' %}
+    <main id="main-content" class="landing-main">
+      {{ content }}
+    </main>
+  {% else %}
+    <div class="docs-shell">
+      <aside class="docs-sidebar" aria-label="Documentation navigation">
+        <div class="sidebar-sticky">
+          <div class="sidebar-search-wrap">
+            <label class="sr-only" for="nav-filter">Filter documentation</label>
+            <input id="nav-filter" class="nav-filter" type="search" placeholder="Filter docs…" autocomplete="off" data-nav-filter>
+          </div>
+
+          <nav class="docs-nav" data-docs-nav>
+            <p class="nav-label">Start</p>
+            <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
+            <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
+            <a href="{{ '/docs/faq/' | relative_url }}">FAQ</a>
+
+            <p class="nav-label">Guides</p>
+            <a href="{{ '/docs/guides/aoi-uncertainty/' | relative_url }}">AOI uncertainty</a>
+            <a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification spaces</a>
+            <a href="{{ '/docs/guides/publication-audits/' | relative_url }}">Publication audits</a>
+            <a href="{{ '/docs/guides/interoperability/' | relative_url }}">Interoperability</a>
+
+            <p class="nav-label">Examples</p>
+            <a href="{{ '/docs/examples/aoi-boundary/' | relative_url }}">AOI boundary example</a>
+            <a href="{{ '/docs/examples/specification-curve/' | relative_url }}">Specification curve</a>
+            <a href="{{ '/docs/examples/sampling-sensitivity/' | relative_url }}">Sampling sensitivity</a>
+
+            <p class="nav-label">Research workflows</p>
+            <a href="{{ '/docs/workflows/' | relative_url }}">Workflow map</a>
+            <a href="{{ '/docs/workflows/measurement-audit/' | relative_url }}">Measurement audit</a>
+            <a href="{{ '/docs/workflows/robustness-audit/' | relative_url }}">Robustness audit</a>
+            <a href="{{ '/docs/workflows/reproducible-publication/' | relative_url }}">Reproducible publication</a>
+
+            <p class="nav-label">Methods & evidence</p>
+            <a href="{{ '/docs/SCIENTIFIC_METHODS.html' | relative_url }}">Scientific methods</a>
+            <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
+            <a href="{{ '/docs/results/korthals2026_target_tracking_aoi_v2.html' | relative_url }}">Korthals result</a>
+            <a href="{{ '/docs/results/pedrotti_sampling_missingness_v1.html' | relative_url }}">Pedrotti result</a>
+
+            <p class="nav-label">Reference</p>
+            <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
+            <a href="{{ '/docs/CITATION_AND_REUSE.html' | relative_url }}">Citation & reuse</a>
+            <a href="{{ '/docs/RELEASE_NOTES_0.1.0.html' | relative_url }}">Release notes</a>
+          </nav>
+        </div>
+      </aside>
+
+      <main id="main-content" class="docs-main">
+        <article class="doc-article">
+          {% if page.kicker %}<p class="page-kicker">{{ page.kicker }}</p>{% endif %}
+          {{ content }}
+        </article>
+      </main>
+
+      <aside class="toc" aria-label="On this page">
+        <div class="toc-sticky">
+          <p class="toc-title">On this page</p>
+          <nav data-toc></nav>
+        </div>
+      </aside>
+    </div>
+  {% endif %}
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>GazeAudit</strong>
+        <p>Measurement uncertainty and inferential robustness for eye-tracking research.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://doi.org/10.5281/zenodo.22757340">DOI 10.5281/zenodo.22757340</a>
+        <a href="https://pypi.org/project/gazeaudit/0.1.0/">PyPI</a>
+        <a href="https://github.com/stefanosbalaskas/GazeAudit">GitHub</a>
+        <span>MIT License</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+</body>
+</html>
