@@ -69,7 +69,10 @@ def condition_aoi_occupancy_effect(
 
     radius = float(spec["aoi_radius"])
     frame = processed.data
-    inside = (frame[processed.x] - 0.50) ** 2 + (frame[processed.y] - 0.50) ** 2 <= radius**2
+    squared_distance = (frame[processed.x] - 0.50) ** 2 + (
+        frame[processed.y] - 0.50
+    ) ** 2
+    inside = squared_distance <= radius**2
     by_condition = (
         frame.assign(in_aoi=inside)
         .groupby("condition", sort=False)["in_aoi"]
