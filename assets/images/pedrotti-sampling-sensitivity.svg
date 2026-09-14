@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-labelledby="title desc">
+  <title id="title">Pedrotti sampling-rate sensitivity</title>
+  <desc id="desc">Reference long-minus-short gaze-path-rate effect is minus 75.38 pixels per second. Estimates at 500 and 250 hertz recover within the frozen 20 percent tolerance; estimates at 125, 100, and 50 hertz remain negative but fall outside the tolerance band.</desc>
+  <style>
+    .bg{fill:#fff}.panel{fill:#f7f9fd;stroke:#d8dfeb;stroke-width:1.5}.band{fill:#e6f4ef}.grid{stroke:#e2e7f0;stroke-width:1}.axis{stroke:#6b778c;stroke-width:1.5}.ref{stroke:#172033;stroke-width:2;stroke-dasharray:7 6}.line{fill:none;stroke:#2157d5;stroke-width:4}.good{fill:#147a58}.bad{fill:#b53d50}.tick{fill:#667085;font:14px system-ui,sans-serif}.label{fill:#172033;font:600 16px system-ui,sans-serif}.small{fill:#60708a;font:14px system-ui,sans-serif}.legend{fill:#172033;font:600 14px system-ui,sans-serif}
+    @media (prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#32415a}.band{fill:#173a31}.grid{stroke:#26364f}.axis{stroke:#a5b3c9}.ref{stroke:#edf3ff}.line{stroke:#7da2ff}.good{fill:#67d3aa}.bad{fill:#ff8ca0}.tick,.small{fill:#a5b3c9}.label,.legend{fill:#edf3ff}}
+  </style>
+  <rect class="bg" width="900" height="500" rx="24"/>
+  <rect class="panel" x="42" y="34" width="816" height="410" rx="20"/>
+  <text class="label" x="78" y="75">Sampling-rate sensitivity of the frozen gaze-path-rate contrast</text>
+  <text class="small" x="78" y="101">Long − short, pixels/second · recovery requires same sign and ≤20% relative deviation</text>
+
+  <rect class="band" x="120" y="139" width="680" height="81" rx="8"/>
+  <text class="small" x="132" y="158">Frozen ±20% recovery band around reference</text>
+
+  <line class="grid" x1="120" y1="140" x2="800" y2="140"/>
+  <line class="grid" x1="120" y1="194" x2="800" y2="194"/>
+  <line class="grid" x1="120" y1="248" x2="800" y2="248"/>
+  <line class="grid" x1="120" y1="302" x2="800" y2="302"/>
+  <line class="grid" x1="120" y1="356" x2="800" y2="356"/>
+  <line class="axis" x1="120" y1="390" x2="800" y2="390"/>
+  <line class="axis" x1="120" y1="140" x2="120" y2="390"/>
+
+  <text class="tick" x="105" y="145" text-anchor="end">−90</text>
+  <text class="tick" x="105" y="199" text-anchor="end">−70</text>
+  <text class="tick" x="105" y="253" text-anchor="end">−50</text>
+  <text class="tick" x="105" y="307" text-anchor="end">−30</text>
+  <text class="tick" x="105" y="361" text-anchor="end">−10</text>
+
+  <line class="ref" x1="120" y1="180" x2="800" y2="180"/>
+  <text class="legend" x="620" y="171">Reference −75.38</text>
+
+  <polyline class="line" points="165,182 310,204 455,255 600,258 745,327"/>
+  <circle class="good" cx="165" cy="182" r="9"/><circle class="good" cx="310" cy="204" r="9"/>
+  <circle class="bad" cx="455" cy="255" r="9"/><circle class="bad" cx="600" cy="258" r="9"/><circle class="bad" cx="745" cy="327" r="9"/>
+
+  <text class="tick" x="165" y="416" text-anchor="middle">500 Hz</text>
+  <text class="tick" x="310" y="416" text-anchor="middle">250 Hz</text>
+  <text class="tick" x="455" y="416" text-anchor="middle">125 Hz</text>
+  <text class="tick" x="600" y="416" text-anchor="middle">100 Hz</text>
+  <text class="tick" x="745" y="416" text-anchor="middle">50 Hz</text>
+
+  <circle class="good" cx="575" cy="456" r="7"/><text class="small" x="590" y="461">recovered</text>
+  <circle class="bad" cx="690" cy="456" r="7"/><text class="small" x="705" y="461">not recovered</text>
+</svg>

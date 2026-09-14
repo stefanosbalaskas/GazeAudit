@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" role="img" aria-labelledby="title desc">
+  <title id="title">Korthals target-tracking AOI effect under frozen measurement uncertainty</title>
+  <desc id="desc">The hard jumping-minus-moving occupancy effect is minus 0.09864. The measurement-error expected effect is minus 0.07401 with a 95 percent measurement-model interval from minus 0.07652 to minus 0.07146. All 2,000 Monte Carlo draws are below zero.</desc>
+  <style>
+    .bg{fill:#fff}.panel{fill:#f7f9fd;stroke:#d8dfeb;stroke-width:1.5}.axis{stroke:#6b778c;stroke-width:1.5}.grid{stroke:#e2e7f0;stroke-width:1}.zero{stroke:#b53d50;stroke-width:2;stroke-dasharray:7 7}.tick{fill:#667085;font:14px system-ui,sans-serif}.label{fill:#172033;font:600 16px system-ui,sans-serif}.small{fill:#60708a;font:14px system-ui,sans-serif}.hard{fill:#6d55d9}.expected{fill:#2157d5}.interval{stroke:#2157d5;stroke-width:8;stroke-linecap:round}.cap{stroke:#2157d5;stroke-width:2}.note{fill:#147a58;font:700 15px system-ui,sans-serif}
+    @media (prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#32415a}.axis{stroke:#a5b3c9}.grid{stroke:#26364f}.tick,.small{fill:#a5b3c9}.label{fill:#edf3ff}.zero{stroke:#ff8ca0}.hard{fill:#a892ff}.expected{fill:#7da2ff}.interval,.cap{stroke:#7da2ff}.note{fill:#67d3aa}}
+  </style>
+  <rect class="bg" width="900" height="480" rx="24"/>
+  <rect class="panel" x="42" y="34" width="816" height="390" rx="20"/>
+  <text class="label" x="78" y="78">Jumping − moving target-centred occupancy</text>
+  <text class="small" x="78" y="104">Frozen Korthals protocol v2 · measurement-model uncertainty, not a population CI</text>
+
+  <line class="grid" x1="120" y1="145" x2="120" y2="355"/>
+  <line class="grid" x1="228" y1="145" x2="228" y2="355"/>
+  <line class="grid" x1="335" y1="145" x2="335" y2="355"/>
+  <line class="grid" x1="443" y1="145" x2="443" y2="355"/>
+  <line class="grid" x1="551" y1="145" x2="551" y2="355"/>
+  <line class="grid" x1="658" y1="145" x2="658" y2="355"/>
+  <line class="zero" x1="766" y1="135" x2="766" y2="365"/>
+
+  <line class="axis" x1="120" y1="355" x2="820" y2="355"/>
+  <text class="tick" x="120" y="382" text-anchor="middle">−0.12</text>
+  <text class="tick" x="228" y="382" text-anchor="middle">−0.10</text>
+  <text class="tick" x="335" y="382" text-anchor="middle">−0.08</text>
+  <text class="tick" x="443" y="382" text-anchor="middle">−0.06</text>
+  <text class="tick" x="551" y="382" text-anchor="middle">−0.04</text>
+  <text class="tick" x="658" y="382" text-anchor="middle">−0.02</text>
+  <text class="tick" x="766" y="382" text-anchor="middle">0</text>
+
+  <text class="small" x="78" y="203">Expected membership</text>
+  <line class="interval" x1="354" y1="221" x2="381" y2="221"/>
+  <line class="cap" x1="354" y1="207" x2="354" y2="235"/>
+  <line class="cap" x1="381" y1="207" x2="381" y2="235"/>
+  <circle class="expected" cx="368" cy="221" r="9"/>
+  <text class="label" x="400" y="227">−0.07401</text>
+  <text class="small" x="400" y="249">95% interval [−0.07652, −0.07146]</text>
+
+  <text class="small" x="78" y="295">Hard membership</text>
+  <circle class="hard" cx="235" cy="313" r="9"/>
+  <text class="label" x="255" y="319">−0.09864</text>
+
+  <text class="note" x="78" y="407">✓ All 2,000 prespecified Monte Carlo draws were below zero</text>
+</svg>

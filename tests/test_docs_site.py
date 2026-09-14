@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,7 @@ def test_pages_configuration_is_explicit_and_excludes_repository_internals() -> 
         assert f"  - {path}\n" in config
 
 
-def test_site_shell_exposes_core_navigation_and_accessibility_controls() -> None:
+def test_site_shell_exposes_navigation_search_and_accessibility_controls() -> None:
     layout = _text("_layouts/default.html")
     for contract in (
         "Skip to content",
@@ -25,11 +26,20 @@ def test_site_shell_exposes_core_navigation_and_accessibility_controls() -> None
         "data-menu-toggle",
         "data-nav-filter",
         "data-toc",
+        "data-search-open",
+        "data-search-dialog",
+        "data-site-search",
+        "data-breadcrumbs",
+        "data-page-pagination",
+        "data-reading-progress",
         "/assets/css/site.css",
+        "/assets/css/enhancements.css",
         "/assets/js/site.js",
+        "/assets/search-index.json",
         "/docs/guides/",
         "/docs/examples/",
         "/docs/workflows/",
+        "/docs/case-studies/",
         "/docs/articles/",
     ):
         assert contract in layout
@@ -54,6 +64,10 @@ def test_required_documentation_pages_exist() -> None:
         "docs/workflows/measurement-audit.md",
         "docs/workflows/robustness-audit.md",
         "docs/workflows/reproducible-publication.md",
+        "docs/case-studies/index.md",
+        "docs/case-studies/gazebase-incomplete.md",
+        "docs/case-studies/korthals-target-tracking.md",
+        "docs/case-studies/pedrotti-sensitivity.md",
         "docs/articles/index.md",
         "docs/articles/measurement-uncertainty-is-a-modeling-problem.md",
         "docs/articles/from-one-pipeline-to-a-robustness-audit.md",
@@ -80,6 +94,69 @@ def test_explanatory_visuals_are_present_and_labelled_as_illustrative() -> None:
     assert "Synthetic" in _text("assets/images/aoi-boundary-uncertainty.svg")
     assert "Synthetic" in _text("assets/images/specification-curve.svg")
     assert "Synthetic" in _text("assets/images/sensitivity-curves.svg")
+
+
+def test_observed_evidence_visuals_are_bound_to_frozen_case_values() -> None:
+    gazebase = _text("assets/images/gazebase-completeness.svg")
+    assert "322/322" in gazebase
+    assert "0/322" in gazebase
+    assert "95% gate" in gazebase
+
+    korthals = _text("assets/images/korthals-effect.svg")
+    assert "−0.09864" in korthals
+    assert "−0.07401" in korthals
+    assert "2,000" in korthals
+
+    sampling = _text("assets/images/pedrotti-sampling-sensitivity.svg")
+    assert "Reference −75.38" in sampling
+    for rate in ("500 Hz", "250 Hz", "125 Hz", "100 Hz", "50 Hz"):
+        assert rate in sampling
+
+    missingness = _text("assets/images/pedrotti-missingness-recovery.svg")
+    assert "MCAR within trial" in missingness
+    assert "single block" in missingness
+
+    for text in (gazebase, korthals, sampling, missingness):
+        assert "<title" in text
+        assert "<desc" in text
+        assert "Synthetic" not in text
+
+
+def test_case_studies_preserve_authoritative_interpretation_boundaries() -> None:
+    gazebase = _text("docs/case-studies/gazebase-incomplete.md")
+    assert "`incomplete`" in gazebase
+    assert "NH" in gazebase and "REMoDNaV" in gazebase
+    assert "95%" in gazebase
+
+    korthals = _text("docs/case-studies/korthals-target-tracking.md")
+    assert "`robust_negative`" in korthals
+    assert "not a population confidence interval" in korthals
+    assert "All 2,000 draws were below zero" in korthals
+
+    pedrotti = _text("docs/case-studies/pedrotti-sensitivity.md")
+    assert "`materially_fragile`" in pedrotti
+    assert "Do not paraphrase this as sign reversal" in pedrotti
+    assert "−75.3781404722" in pedrotti
+
+
+def test_search_index_is_structured_and_points_to_core_documentation() -> None:
+    index = json.loads(_text("assets/search-index.json"))
+    assert isinstance(index, list)
+    assert len(index) >= 20
+    urls = {item["url"] for item in index}
+    for item in index:
+        assert {"title", "category", "url", "description", "keywords"} <= item.keys()
+        assert item["title"].strip()
+        assert item["url"].startswith("/docs/")
+    for url in (
+        "/docs/getting-started/",
+        "/docs/case-studies/",
+        "/docs/case-studies/gazebase-incomplete/",
+        "/docs/case-studies/korthals-target-tracking/",
+        "/docs/case-studies/pedrotti-sensitivity/",
+        "/docs/reference/api-map/",
+    ):
+        assert url in urls
 
 
 def test_readme_is_a_gateway_to_public_documentation() -> None:
@@ -109,3 +186,4 @@ def test_docs_site_verifier_is_wired_into_pr_workflow() -> None:
     verifier = _text("tools/check_docs_site.py")
     assert "repository internals leaked into generated Pages site" in verifier
     assert "broken generated-site references" in verifier
+    assert "search index target failures" in verifier

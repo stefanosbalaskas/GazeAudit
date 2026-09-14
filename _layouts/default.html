@@ -9,6 +9,7 @@
   <meta name="description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/enhancements.css' | relative_url }}">
   <script>
     (function () {
       try {
@@ -18,8 +19,9 @@
     }());
   </script>
 </head>
-<body>
+<body data-baseurl="{{ site.baseurl }}" data-search-index="{{ '/assets/search-index.json' | relative_url }}">
   <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
 
   <header class="site-header" data-site-header>
     <div class="header-inner">
@@ -36,10 +38,14 @@
         <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
         <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
         <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
+        <a href="{{ '/docs/case-studies/' | relative_url }}">Case studies</a>
         <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
       </nav>
 
       <div class="header-actions">
+        <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-label="Search documentation">
+          <span>Search</span><kbd>Ctrl K</kbd>
+        </button>
         <span class="version-badge">v0.1.0</span>
         <a class="icon-link" href="https://github.com/stefanosbalaskas/GazeAudit" aria-label="GazeAudit on GitHub">GitHub</a>
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">◐</button>
@@ -48,10 +54,12 @@
     </div>
 
     <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile navigation" hidden>
+      <button class="mobile-search" type="button" data-search-open>Search documentation</button>
       <a href="{{ '/docs/' | relative_url }}">Documentation</a>
       <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
       <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
       <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
+      <a href="{{ '/docs/case-studies/' | relative_url }}">Case studies</a>
       <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
       <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation</a>
@@ -68,7 +76,7 @@
         <div class="sidebar-sticky">
           <div class="sidebar-search-wrap">
             <label class="sr-only" for="nav-filter">Filter documentation</label>
-            <input id="nav-filter" class="nav-filter" type="search" placeholder="Filter docs…" autocomplete="off" data-nav-filter>
+            <input id="nav-filter" class="nav-filter" type="search" placeholder="Filter this menu…" autocomplete="off" data-nav-filter>
           </div>
 
           <nav class="docs-nav" data-docs-nav>
@@ -94,11 +102,17 @@
             <a href="{{ '/docs/workflows/robustness-audit/' | relative_url }}">Robustness audit</a>
             <a href="{{ '/docs/workflows/reproducible-publication/' | relative_url }}">Reproducible publication</a>
 
+            <p class="nav-label">Case studies</p>
+            <a href="{{ '/docs/case-studies/' | relative_url }}">Evidence overview</a>
+            <a href="{{ '/docs/case-studies/gazebase-incomplete/' | relative_url }}">GazeBase · incomplete</a>
+            <a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Korthals · robust negative</a>
+            <a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Pedrotti · fragile</a>
+
             <p class="nav-label">Methods & evidence</p>
             <a href="{{ '/docs/SCIENTIFIC_METHODS.html' | relative_url }}">Scientific methods</a>
             <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
-            <a href="{{ '/docs/results/korthals2026_target_tracking_aoi_v2.html' | relative_url }}">Korthals result</a>
-            <a href="{{ '/docs/results/pedrotti_sampling_missingness_v1.html' | relative_url }}">Pedrotti result</a>
+            <a href="{{ '/docs/results/korthals2026_target_tracking_aoi_v2.html' | relative_url }}">Korthals authority</a>
+            <a href="{{ '/docs/results/pedrotti_sampling_missingness_v1.html' | relative_url }}">Pedrotti authority</a>
 
             <p class="nav-label">Reference</p>
             <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
@@ -110,8 +124,10 @@
 
       <main id="main-content" class="docs-main">
         <article class="doc-article">
+          <nav class="breadcrumbs" aria-label="Breadcrumb" data-breadcrumbs></nav>
           {% if page.kicker %}<p class="page-kicker">{{ page.kicker }}</p>{% endif %}
           {{ content }}
+          <nav class="page-pagination" aria-label="Previous and next documentation pages" data-page-pagination></nav>
         </article>
       </main>
 
@@ -119,10 +135,27 @@
         <div class="toc-sticky">
           <p class="toc-title">On this page</p>
           <nav data-toc></nav>
+          <button type="button" class="back-to-top" data-back-to-top>↑ Back to top</button>
         </div>
       </aside>
     </div>
   {% endif %}
+
+  <dialog class="search-dialog" data-search-dialog aria-labelledby="site-search-title">
+    <div class="search-dialog-inner">
+      <div class="search-dialog-head">
+        <div>
+          <p class="eyebrow">Documentation search</p>
+          <h2 id="site-search-title">Find a method, workflow, or case</h2>
+        </div>
+        <button class="search-close" type="button" data-search-close aria-label="Close search">×</button>
+      </div>
+      <label class="sr-only" for="site-search-input">Search documentation</label>
+      <input id="site-search-input" class="site-search-input" type="search" placeholder="Try “missingness”, “AOI”, or “publication”…" autocomplete="off" data-site-search>
+      <div class="search-hint"><span>↑↓ navigate</span><span>Enter open</span><span>Esc close</span></div>
+      <div class="search-results" data-search-results aria-live="polite"></div>
+    </div>
+  </dialog>
 
   <footer class="site-footer">
     <div class="footer-inner">

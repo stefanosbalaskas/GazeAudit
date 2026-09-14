@@ -13,7 +13,8 @@ page_type: landing
         <p class="hero-lede">GazeAudit propagates gaze-measurement uncertainty and evaluates scientifically defensible analytical alternatives so researchers can see whether an eye-tracking conclusion survives reasonable choices.</p>
         <div class="hero-actions">
           <a class="button primary" href="{{ '/docs/getting-started/' | relative_url }}">Start in 5 minutes →</a>
-          <a class="button" href="{{ '/docs/examples/' | relative_url }}">Explore examples</a>
+          <a class="button" href="{{ '/docs/case-studies/' | relative_url }}">See real case studies</a>
+          <button class="button" type="button" data-search-open>Search documentation</button>
           <a class="button" href="https://github.com/stefanosbalaskas/GazeAudit">View source</a>
         </div>
       </div>
@@ -78,7 +79,7 @@ and analytical choices?</code></pre>
   <div class="section-heading">
     <p class="eyebrow">Visual diagnostics</p>
     <h2>Reason about uncertainty with plots, not only tables.</h2>
-    <p>The documentation now pairs runnable code with visual explanations of AOI-boundary uncertainty, specification curves, and perturbation sensitivity.</p>
+    <p>Runnable examples pair code with visual explanations of AOI-boundary uncertainty, specification curves, and perturbation sensitivity.</p>
   </div>
   <div class="plot-grid">
     <figure class="plot-card">
@@ -116,8 +117,31 @@ and analytical choices?</code></pre>
     </article>
   </div>
   <div class="hero-actions">
+    <a class="button" href="{{ '/docs/case-studies/' | relative_url }}">Explore case studies</a>
     <a class="button" href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Open validation matrix</a>
     <a class="button" href="{{ '/docs/SCIENTIFIC_METHODS.html' | relative_url }}">Read scientific methods</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Observed evidence</p>
+    <h2>See what the frozen validation cases actually did.</h2>
+    <p>These plots use the archived case-study numbers. They are explanatory views of the authoritative records, not new analyses.</p>
+  </div>
+  <div class="evidence-plot-grid">
+    <figure class="plot-card">
+      <img src="{{ '/assets/images/gazebase-completeness.svg' | relative_url }}" alt="GazeBase detector completeness plot">
+      <figcaption><strong>GazeBase completeness.</strong> Five detectors reached 322/322 finite estimates; two reached 0/322, so the frozen 95% completeness gate failed. <a href="{{ '/docs/case-studies/gazebase-incomplete/' | relative_url }}">Read case →</a></figcaption>
+    </figure>
+    <figure class="plot-card">
+      <img src="{{ '/assets/images/korthals-effect.svg' | relative_url }}" alt="Korthals hard and uncertainty-propagated AOI effects">
+      <figcaption><strong>Korthals uncertainty.</strong> The expected effect moved toward zero but all 2,000 prespecified draws remained below zero. <a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Read case →</a></figcaption>
+    </figure>
+    <figure class="plot-card">
+      <img src="{{ '/assets/images/pedrotti-sampling-sensitivity.svg' | relative_url }}" alt="Pedrotti sampling-rate sensitivity plot">
+      <figcaption><strong>Pedrotti sensitivity.</strong> Direction stayed negative while magnitude recovery failed at 125, 100, and 50 Hz. <a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Read case →</a></figcaption>
+    </figure>
   </div>
 </section>
 
