@@ -1,0 +1,69 @@
+{
+  "schema": "gazeaudit-external-publication-verification-v1",
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "source_commit": "fdade23c12b3c2a2f26a1ca8398034b6f8d0213f",
+  "source_tree": "938007cda6051d50243fff27a892870f7128d407",
+  "verified_date": "2026-09-14",
+  "github_release": {
+    "url": "https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.1.0",
+    "release_id": 388545002
+  },
+  "pypi": {
+    "status": "published_verified",
+    "project": "gazeaudit",
+    "version": "0.1.0",
+    "url": "https://pypi.org/project/gazeaudit/0.1.0/",
+    "authentication": "trusted-publishing-oidc",
+    "publication_run_id": 34887345589,
+    "publication_job_id": 104121447203,
+    "payload_artifact_id": 10366130093,
+    "payload_artifact_sha256": "8d0352ed22f6aeb2f587cc12929171dbd04bfc4859e173b84440703b7bb780d7",
+    "wheel": {
+      "filename": "gazeaudit-0.1.0-py3-none-any.whl",
+      "size_bytes": 192027,
+      "sha256": "51fa1f0a0388dfe337fad0d6564df802ae8464f01d5ce666cc96ce2e144271a1"
+    },
+    "sdist": {
+      "filename": "gazeaudit-0.1.0.tar.gz",
+      "size_bytes": 242029,
+      "sha256": "8c449e2fc469c2b91f1c2471b674b5d6b16b6e6aa883289069ffb0a679517173",
+      "md5": "7550c722e9ad18e4dd288c7e1aad7f05"
+    }
+  },
+  "zenodo": {
+    "status": "published_verified",
+    "record_id": 22757340,
+    "record_url": "https://zenodo.org/records/22757340",
+    "version_doi": "10.5281/zenodo.22757340",
+    "concept_doi": "10.5281/zenodo.22757339",
+    "resource_type": "software",
+    "license": "MIT",
+    "repository_url": "https://github.com/stefanosbalaskas/GazeAudit",
+    "keywords": [
+      "eye tracking",
+      "gaze",
+      "measurement uncertainty",
+      "inferential robustness",
+      "multiverse analysis",
+      "area of interest"
+    ],
+    "file": {
+      "filename": "gazeaudit-0.1.0.tar.gz",
+      "size_bytes": 242029,
+      "sha256": "8c449e2fc469c2b91f1c2471b674b5d6b16b6e6aa883289069ffb0a679517173",
+      "md5": "7550c722e9ad18e4dd288c7e1aad7f05"
+    },
+    "independent_download_verification": {
+      "workflow_run_id": 34889732485,
+      "job_id": 104129090621,
+      "runner": "ubuntu-24.04",
+      "result": "success"
+    }
+  },
+  "scientific_record": {
+    "gazebase": "incomplete",
+    "korthals": "robust_negative",
+    "pedrotti": "materially_fragile"
+  }
+}
