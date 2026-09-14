@@ -7,11 +7,11 @@ import pandas as pd
 import pytest
 
 from gazeaudit import (
-    ConclusionRule,
-    GazeStudy,
     STUDY_QC_ARTIFACT_SCHEMA,
     STUDY_QC_PUBLICATION_LINK_SCHEMA,
     STUDY_QC_SCHEMA,
+    ConclusionRule,
+    GazeStudy,
     StudyQCAudit,
     StudyQCDecision,
     build_conclusion_audit_bundle,
