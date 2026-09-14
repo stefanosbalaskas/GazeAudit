@@ -129,4 +129,4 @@ For each observation × AOI row, `flip_probability` is the probability that late
 
 Try moving the first fixation from `[500, 400]` to `[495, 400]` and `[505, 400]`. The hard classification can change abruptly, while probabilistic membership should usually change more smoothly under a fixed error model.
 
-Then continue to the [measurement audit workflow](../workflows/measurement-audit/) to place this calculation inside a complete study design.
+Then continue to the [measurement audit workflow]({{ '/docs/workflows/measurement-audit/' | relative_url }}) to place this calculation inside a complete study design.
