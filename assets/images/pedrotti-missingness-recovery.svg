@@ -2,8 +2,8 @@
   <title id="title">Pedrotti added-missingness recovery fractions</title>
   <desc id="desc">Recovery fractions by added missingness are 1.00, 1.00, 0.40, and 0.00 for MCAR at 1, 5, 10, and 20 percent, and 1.00, 0.55, 0.40, and 0.00 for single-block missingness at the same levels.</desc>
   <style>
-    .bg{fill:#fff}.panel{fill:#f7f9fd;stroke:#d8dfeb;stroke-width:1.5}.grid{stroke:#e2e7f0;stroke-width:1}.axis{stroke:#6b778c;stroke-width:1.5}.mcar{fill:none;stroke:#2157d5;stroke-width:4}.block{fill:none;stroke:#6d55d9;stroke-width:4}.mcarp{fill:#2157d5}.blockp{fill:#6d55d9}.floor{stroke:#b53d50;stroke-width:2;stroke-dasharray:7 6}.tick{fill:#667085;font:14px system-ui,sans-serif}.label{fill:#172033;font:600 16px system-ui,sans-serif}.small{fill:#60708a;font:14px system-ui,sans-serif}.legend{fill:#172033;font:600 14px system-ui,sans-serif}
-    @media (prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#32415a}.grid{stroke:#26364f}.axis{stroke:#a5b3c9}.mcar{stroke:#7da2ff}.block{stroke:#a892ff}.mcarp{fill:#7da2ff}.blockp{fill:#a892ff}.floor{stroke:#ff8ca0}.tick,.small{fill:#a5b3c9}.label,.legend{fill:#edf3ff}}
+    .bg{fill:#fff}.panel{fill:#f7f9fd;stroke:#d8dfeb;stroke-width:1.5}.grid{stroke:#e2e7f0;stroke-width:1}.axis{stroke:#6b778c;stroke-width:1.5}.mcar{fill:none;stroke:#2157d5;stroke-width:4}.block{fill:none;stroke:#6d55d9;stroke-width:4}.mcarp{fill:#2157d5}.blockp{fill:#6d55d9}.tick{fill:#667085;font:14px system-ui,sans-serif}.label{fill:#172033;font:600 16px system-ui,sans-serif}.small{fill:#60708a;font:14px system-ui,sans-serif}.legend{fill:#172033;font:600 14px system-ui,sans-serif}
+    @media (prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#32415a}.grid{stroke:#26364f}.axis{stroke:#a5b3c9}.mcar{stroke:#7da2ff}.block{stroke:#a892ff}.mcarp{fill:#7da2ff}.blockp{fill:#a892ff}.tick,.small{fill:#a5b3c9}.label,.legend{fill:#edf3ff}}
   </style>
   <rect class="bg" width="900" height="500" rx="24"/>
   <rect class="panel" x="42" y="34" width="816" height="410" rx="20"/>
@@ -17,8 +17,6 @@
   <line class="grid" x1="120" y1="360" x2="800" y2="360"/>
   <line class="axis" x1="120" y1="140" x2="120" y2="380"/>
   <line class="axis" x1="120" y1="380" x2="800" y2="380"/>
-  <line class="floor" x1="120" y1="294" x2="800" y2="294"/>
-  <text class="small" x="612" y="286">material-fragility region begins at low recovery</text>
 
   <text class="tick" x="103" y="145" text-anchor="end">1.0</text>
   <text class="tick" x="103" y="200" text-anchor="end">0.75</text>
