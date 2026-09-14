@@ -154,7 +154,23 @@ from .scientific_benchmark import (
 )
 from .sensitivity import scale_error_model, spatial_sensitivity_curve
 from .study import GazeStudy
-from .study_qc import StudyQCReport, audit_study_qc
+from .study_qc import (
+    STUDY_QC_ARTIFACT_SCHEMA,
+    STUDY_QC_ISSUE_CODES,
+    STUDY_QC_PUBLICATION_LINK_SCHEMA,
+    STUDY_QC_SCHEMA,
+    StudyQCAudit,
+    StudyQCDecision,
+    StudyQCReport,
+    audit_study_qc,
+    build_study_qc_audit,
+    study_qc_diagnostics,
+    study_qc_publication_metadata,
+    verify_study_qc_artifacts,
+    verify_study_qc_audit,
+    verify_study_qc_manifest,
+    write_study_qc_artifacts,
+)
 from .task_contrast import (
     DetectorRobustnessAudit,
     audit_detector_robustness,
@@ -217,7 +233,13 @@ __all__ = [
     "PublicationAuditBundle",
     "PymovementsGazeAdapter",
     "RectangleAOI",
+    "STUDY_QC_ARTIFACT_SCHEMA",
+    "STUDY_QC_ISSUE_CODES",
+    "STUDY_QC_PUBLICATION_LINK_SCHEMA",
+    "STUDY_QC_SCHEMA",
     "StudyAdapter",
+    "StudyQCAudit",
+    "StudyQCDecision",
     "StudyQCReport",
     "adapt_study",
     "aoi_conclusion_specifications",
@@ -230,6 +252,7 @@ __all__ = [
     "build_aoi_uncertainty_protocol",
     "build_conclusion_audit_bundle",
     "build_korthals_source_manifest",
+    "build_study_qc_audit",
     "canonical_json",
     "compare_hard_probabilistic",
     "conclusion_recovery_table",
@@ -287,6 +310,8 @@ __all__ = [
     "spatial_sensitivity_curve",
     "specification_curve",
     "specification_manifest",
+    "study_qc_diagnostics",
+    "study_qc_publication_metadata",
     "summarize_aoi_risk",
     "summarize_conclusion_recovery",
     "summarize_missingness",
@@ -301,12 +326,16 @@ __all__ = [
     "verify_korthals_source_intake_artifacts",
     "verify_korthals_source_manifest",
     "verify_publication_audit_bundle",
+    "verify_study_qc_artifacts",
+    "verify_study_qc_audit",
+    "verify_study_qc_manifest",
     "write_aoi_uncertainty_artifacts",
     "write_gazebase_detector_partition",
     "write_gazebase_execution_artifacts",
     "write_korthals_execution_artifacts",
     "write_korthals_source_freeze_artifacts",
     "write_korthals_source_intake_artifacts",
+    "write_study_qc_artifacts",
 ]
 
-__version__ = "0.1.0.dev18"
+__version__ = "0.1.0.dev19"
