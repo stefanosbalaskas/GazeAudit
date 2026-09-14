@@ -160,4 +160,4 @@ Use the concept DOI `10.5281/zenodo.22757339` only when you intentionally want a
 
 ## GazeAudit's own frozen evidence
 
-The package's validation programme applies stronger archive-before-reveal controls to its canonical case studies. See the [validation matrix](../VALIDATION_MATRIX.html) and [scientific methods](../SCIENTIFIC_METHODS.html) for the authoritative records.
+The package's validation programme applies stronger archive-before-reveal controls to its canonical case studies. See the [validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }}) and [scientific methods]({{ '/docs/SCIENTIFIC_METHODS.html' | relative_url }}) for the authoritative records.
