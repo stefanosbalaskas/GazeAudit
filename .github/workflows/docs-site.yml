@@ -1,0 +1,46 @@
+name: docs-site
+
+on:
+  pull_request:
+    paths:
+      - "_config.yml"
+      - "_layouts/**"
+      - "assets/**"
+      - "docs/**"
+      - "index.md"
+      - "README.md"
+      - "tools/check_docs_site.py"
+      - ".github/workflows/docs-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build documentation site with GitHub Pages Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+          verbose: true
+
+      - name: Verify generated site structure and internal references
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/check_docs_site.py _site --baseurl /GazeAudit
+
+      - name: Summarize generated site
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'HTML pages: %s\n' "$(find _site -type f -name '*.html' | wc -l)"
+          printf 'Site files: %s\n' "$(find _site -type f | wc -l)"
+          du -sh _site

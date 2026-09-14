@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" role="img" aria-labelledby="title desc">
+  <title id="title">GazeAudit end-to-end workflow</title>
+  <desc id="desc">A six-stage workflow from gaze data through uncertainty modelling, defensible specifications, common endpoints, robustness diagnostics, and reproducible publication artifacts.</desc>
+  <style>
+    :root{color-scheme:light dark}.bg{fill:#fff}.card{fill:#f8faff;stroke:#dbe2ee}.txt{fill:#20304a;font-family:Inter,system-ui,sans-serif}.muted{fill:#6e7c92}.n{fill:#315fd3}.arrow{stroke:#9aa8bc;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.accent{fill:#e5ecff}.accent2{fill:#eee8ff}
+    @media(prefers-color-scheme:dark){.bg{fill:#111a2a}.card{fill:#162238;stroke:#31415c}.txt{fill:#eef4ff}.muted{fill:#a5b3c9}.n{fill:#7da2ff}.arrow{stroke:#667691}.accent{fill:#203a6f}.accent2{fill:#3d316b}}
+  </style>
+  <rect class="bg" width="1120" height="420" rx="26"/>
+  <text class="txt" x="46" y="55" font-size="26" font-weight="760">From gaze data to an auditable conclusion</text>
+  <text class="muted" x="46" y="82" font-size="15">The core workflow separates measurement uncertainty from analytical decision uncertainty, then binds both into reproducible evidence.</text>
+
+  <g transform="translate(50 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">1</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Gaze data</text>
+    <text class="muted" x="20" y="105" font-size="12">Canonical study</text><text class="muted" x="20" y="124" font-size="12">or adapter input</text>
+  </g>
+  <g transform="translate(224 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent2" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">2</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Error model</text>
+    <text class="muted" x="20" y="105" font-size="12">Bias + covariance</text><text class="muted" x="20" y="124" font-size="12">from validation</text>
+  </g>
+  <g transform="translate(398 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">3</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Specifications</text>
+    <text class="muted" x="20" y="105" font-size="12">Predeclared</text><text class="muted" x="20" y="124" font-size="12">decision space</text>
+  </g>
+  <g transform="translate(572 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent2" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">4</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Endpoint</text>
+    <text class="muted" x="20" y="105" font-size="12">Same scientific</text><text class="muted" x="20" y="124" font-size="12">quantity each time</text>
+  </g>
+  <g transform="translate(746 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">5</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Robustness</text>
+    <text class="muted" x="20" y="105" font-size="12">Curves, stability,</text><text class="muted" x="20" y="124" font-size="12">sensitivity</text>
+  </g>
+  <g transform="translate(920 145)">
+    <rect class="card" width="150" height="150" rx="18"/>
+    <circle class="accent2" cx="32" cy="34" r="18"/><text class="n" x="32" y="39" text-anchor="middle" font-size="13" font-weight="800">6</text>
+    <text class="txt" x="20" y="78" font-size="17" font-weight="760">Audit bundle</text>
+    <text class="muted" x="20" y="105" font-size="12">Methods, results,</text><text class="muted" x="20" y="124" font-size="12">fingerprints</text>
+  </g>
+
+  <path class="arrow" d="M202 220h18l-7-7m7 7-7 7M376 220h18l-7-7m7 7-7 7M550 220h18l-7-7m7 7-7 7M724 220h18l-7-7m7 7-7 7M898 220h18l-7-7m7 7-7 7"/>
+  <text class="muted" x="50" y="348" font-size="13">Design principle: define defensible choices first; quantify how the conclusion changes second.</text>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrative probabilistic AOI membership near a boundary</title>
+  <desc id="desc">Two adjacent areas of interest with an observed fixation near their shared edge, an uncertainty ellipse, and marginal membership probabilities.</desc>
+  <style>
+    :root{color-scheme:light dark}.bg{fill:#fff}.panel{fill:#f7f9fc;stroke:#d9e0eb}.grid{stroke:#e6ebf2}.txt{fill:#22304a;font-family:Inter,system-ui,sans-serif}.muted{fill:#6d7a90}.blue{fill:#3a67dc}.purple{fill:#7b5ad7}.softb{fill:#dfe8ff;stroke:#7393ea}.softp{fill:#ece4ff;stroke:#9e84e8}.unc{fill:#476ed91f;stroke:#476ed9;stroke-width:2}.barbg{fill:#e7ebf2}.outside{fill:#aab4c3}
+    @media(prefers-color-scheme:dark){.bg{fill:#111a2a}.panel{fill:#162238;stroke:#31415c}.grid{stroke:#26344b}.txt{fill:#edf3ff}.muted{fill:#a5b3c9}.softb{fill:#1f3769;stroke:#7da2ff}.softp{fill:#3d2f68;stroke:#b59cff}.barbg{fill:#2a3850}.outside{fill:#7f8ba0}}
+  </style>
+  <rect class="bg" width="960" height="560" rx="26"/>
+  <text class="txt" x="46" y="55" font-size="26" font-weight="750">AOI boundary uncertainty</text>
+  <text class="muted" x="46" y="82" font-size="15">Synthetic illustration: measurement error is propagated instead of forcing a hard label.</text>
+
+  <rect class="panel" x="46" y="115" width="560" height="380" rx="18"/>
+  <g opacity=".7">
+    <path class="grid" d="M86 155H566M86 215H566M86 275H566M86 335H566M86 395H566M86 455H566"/>
+    <path class="grid" d="M146 145V465M206 145V465M266 145V465M326 145V465M386 145V465M446 145V465M506 145V465"/>
+  </g>
+  <rect class="softb" x="126" y="190" width="200" height="210" rx="10"/>
+  <rect class="softp" x="326" y="190" width="200" height="210" rx="10"/>
+  <text class="txt" x="145" y="220" font-size="16" font-weight="700">AOI A · claim</text>
+  <text class="txt" x="345" y="220" font-size="16" font-weight="700">AOI B · price</text>
+  <line x1="326" y1="190" x2="326" y2="400" stroke="#65748d" stroke-width="2" stroke-dasharray="7 6"/>
+  <ellipse class="unc" cx="329" cy="302" rx="72" ry="48" transform="rotate(-12 329 302)"/>
+  <circle cx="329" cy="302" r="8" fill="#172033" stroke="#fff" stroke-width="3"/>
+  <text class="muted" x="348" y="295" font-size="13">observed fixation</text>
+  <text class="muted" x="348" y="315" font-size="13">uncertainty ellipse</text>
+
+  <text class="txt" x="650" y="145" font-size="18" font-weight="750">Marginal membership</text>
+  <text class="muted" x="650" y="170" font-size="13">Example Monte Carlo proportions</text>
+
+  <text class="txt" x="650" y="222" font-size="14" font-weight="650">Claim</text>
+  <rect class="barbg" x="650" y="235" width="250" height="18" rx="9"/>
+  <rect class="blue" x="650" y="235" width="128" height="18" rx="9"/>
+  <text class="txt" x="910" y="250" text-anchor="end" font-size="14" font-weight="700">0.51</text>
+
+  <text class="txt" x="650" y="295" font-size="14" font-weight="650">Price</text>
+  <rect class="barbg" x="650" y="308" width="250" height="18" rx="9"/>
+  <rect class="purple" x="650" y="308" width="118" height="18" rx="9"/>
+  <text class="txt" x="910" y="323" text-anchor="end" font-size="14" font-weight="700">0.47</text>
+
+  <text class="txt" x="650" y="368" font-size="14" font-weight="650">Outside</text>
+  <rect class="barbg" x="650" y="381" width="250" height="18" rx="9"/>
+  <rect class="outside" x="650" y="381" width="5" height="18" rx="3"/>
+  <text class="txt" x="910" y="396" text-anchor="end" font-size="14" font-weight="700">0.02</text>
+
+  <text class="muted" x="650" y="454" font-size="13">The probabilities are illustrative, not</text>
+  <text class="muted" x="650" y="474" font-size="13">values from a published validation case.</text>
+</svg>
