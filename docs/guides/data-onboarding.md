@@ -1,6 +1,6 @@
 ---
 title: Data onboarding and structural preflight
-description: Map vendor or analysis tables into GazeStudy, inspect structural QC, and decide what must be reviewed before uncertainty or robustness analysis.
+description: Map vendor or analysis tables into GazeStudy, inspect structural QC, and preserve transparent provenance before uncertainty or robustness analysis.
 kicker: Guide · Data
 permalink: /docs/guides/data-onboarding/
 ---
@@ -159,9 +159,121 @@ python examples/study_preflight.py
 
 It intentionally returns `status == "review"` so users can see how issue codes and counts behave without needing external data.
 
+## 10. Inspect actionable row and group diagnostics
+
+Summary counts are useful, but they do not tell you which observations triggered the flag. `study_qc_diagnostics()` returns a deterministic long-form table with stable diagnostic IDs:
+
+```python
+from gazeaudit import study_qc_diagnostics
+
+diagnostics = study_qc_diagnostics(study)
+print(diagnostics)
+```
+
+Each record carries:
+
+- `diagnostic_id` — stable within that deterministic preflight, such as `D000001`;
+- `scope` — `row` or `group`;
+- `issue_code` — the stable issue family;
+- `detail_code` — the specific condition, such as `x_missing` or `timestamp_infinite`;
+- row position where applicable;
+- participant, trial, and timestamp context;
+- a compact human-readable message.
+
+A participant × trial unit with decreasing time is represented as a group-level diagnostic. Missing/infinite values and duplicate timestamps are represented at row level.
+
+## 11. Record the researcher decision explicitly
+
+The package deliberately does not decide what a flag means for your design. Use `StudyQCDecision` to record what you decided and why:
+
+```python
+from gazeaudit import StudyQCDecision, build_study_qc_audit
+
+decision = StudyQCDecision(
+    issue_code="timestamp_duplicate",
+    action="retain after representation review",
+    rationale="Rows are valid simultaneous records from the acquisition representation.",
+    diagnostic_ids=("D000001", "D000003"),
+)
+
+audit = build_study_qc_audit(study, decisions=(decision,))
+```
+
+`action` and `rationale` are intentionally free text. GazeAudit records the decision; it does not prescribe a universal retain/exclude/repair rule.
+
+Decision references fail closed when they point to an issue that is not present, an unknown diagnostic ID, or a diagnostic belonging to another issue family. This makes stale manual bookkeeping detectable.
+
+## 12. Understand the three integrity levels
+
+`StudyQCAudit` separates three provenance concepts:
+
+- **study fingerprint** — binds the five mapped columns actually inspected by structural QC, their semantic source-column mapping, dtypes, row order, and values;
+- **audit fingerprint** — additionally binds the structural report, diagnostics, and recorded decisions;
+- **manifest fingerprint** — additionally binds the recorded software environment.
+
+```python
+print(audit.study_fingerprint)
+print(audit.audit_fingerprint)
+print(audit.manifest_fingerprint)
+```
+
+Only the five semantically mapped QC columns are bound to the study fingerprint. Changing an unrelated experimental covariate does not silently change the structural-QC identity; changing mapped gaze, time, participant, or trial information does.
+
+Missing values remain explicit. Positive and negative infinity are represented by tagged provenance values rather than being silently converted to ordinary numbers.
+
+## 13. Export an integrity-checked QC evidence directory
+
+A complete QC record can be written as deterministic JSON/CSV artifacts:
+
+```python
+from gazeaudit import write_study_qc_artifacts, verify_study_qc_artifacts
+
+paths = write_study_qc_artifacts(audit, "qc-evidence")
+assert verify_study_qc_artifacts("qc-evidence")
+```
+
+The directory contains:
+
+- `study_qc_report.json`
+- `study_qc_diagnostics.csv`
+- `study_qc_decisions.csv`
+- `study_qc_audit.json`
+- `study_qc_artifacts.json`
+
+The artifact manifest binds the UTF-8 byte length and SHA-256 digest of every payload file. Later edits therefore fail verification instead of retaining a stale audit identity.
+
+## 14. Bind structural QC into a publication audit
+
+`study_qc_publication_metadata()` creates a compact descriptor designed for the existing publication-bundle metadata channel:
+
+```python
+from gazeaudit import study_qc_publication_metadata
+
+qc_metadata = study_qc_publication_metadata(audit)
+
+bundle = build_conclusion_audit_bundle(
+    results,
+    reference_effect=reference_effect,
+    rule=rule,
+    title="Robustness audit",
+    endpoint="primary endpoint",
+    source_description="Study analysis dataset",
+    metadata={"study_qc": qc_metadata},
+)
+```
+
+Because publication metadata is already part of GazeAudit's scientific fingerprint, this binds the QC audit identity without introducing a new publication schema. The compact link uses the substantive audit fingerprint rather than the software-bound manifest fingerprint.
+
+<div class="callout warning">
+<strong>Provenance is not automatic validity</strong>
+A verified QC manifest proves that the recorded structural evidence and decisions have not changed relative to their fingerprints. It does not prove that the decisions were scientifically appropriate.
+</div>
+
 ## Recommended next pages
 
+- [Study preflight example]({{ '/docs/examples/study-preflight/' | relative_url }}) — runnable diagnostics, decisions, and fingerprints.
 - [Getting started]({{ '/docs/getting-started/' | relative_url }}) — minimal uncertainty-aware AOI analysis.
+- [Publication audits]({{ '/docs/guides/publication-audits/' | relative_url }}) — bind QC identity into reproducible robustness evidence.
 - [Interoperability guide]({{ '/docs/guides/interoperability/' | relative_url }}) — BIDS, pymovements, pEYES, and custom adapters.
 - [AOI uncertainty]({{ '/docs/guides/aoi-uncertainty/' | relative_url }}) — move from validation error to probabilistic AOI membership.
 - [End-to-end robustness audit]({{ '/docs/examples/end-to-end-robustness/' | relative_url }}) — evaluate a complete declared analysis space.

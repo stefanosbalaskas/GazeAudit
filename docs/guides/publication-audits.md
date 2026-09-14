@@ -1,6 +1,6 @@
 ---
 title: Publication audit guide
-description: Build deterministic robustness evidence with predeclared conclusion rules, provenance, and fingerprints.
+description: Build deterministic robustness evidence with predeclared conclusion rules, structural-QC provenance, and fingerprints.
 kicker: Guide · Reproducibility
 ---
 
@@ -53,11 +53,40 @@ bundle = build_conclusion_audit_bundle(
 
 The values above are synthetic demonstration values.
 
-## Understand the two fingerprints
+## Bind structural-QC provenance when available
+
+If the analysis dataset has a `StudyQCAudit`, turn it into a compact publication descriptor and pass that descriptor through the existing `metadata` channel:
+
+```python
+from gazeaudit import study_qc_publication_metadata
+
+qc_metadata = study_qc_publication_metadata(qc_audit)
+
+bundle = build_conclusion_audit_bundle(
+    results,
+    reference_effect=10.0,
+    rule=rule,
+    title="Example conclusion-robustness audit",
+    endpoint="treatment-minus-control dwell",
+    source_description="Synthetic known-truth validation fixture",
+    metadata={"study_qc": qc_metadata},
+)
+```
+
+The descriptor records the structural status, stable issue codes, study fingerprint, QC audit fingerprint, diagnostic count, and decision count. Because publication metadata already belongs to the scientific manifest, changing the bound QC audit changes the publication scientific fingerprint.
+
+This integration is backward-compatible: publication bundles without structural-QC metadata retain the existing `gazeaudit-publication-audit-v1` schema and behavior.
+
+<div class="callout info">
+<strong>Why the audit fingerprint, not the manifest fingerprint?</strong>
+The compact publication link binds the substantive structural evidence and researcher decisions. The QC manifest fingerprint additionally binds the software environment, which is preserved in the QC evidence directory but is not needed to redefine the publication's scientific identity.
+</div>
+
+## Understand the two publication fingerprints
 
 The bundle exposes two different integrity concepts:
 
-- **scientific fingerprint** — binds the scientific specification/results content;
+- **scientific fingerprint** — binds the scientific specification/results content, including supplied metadata such as structural-QC provenance;
 - **bundle fingerprint** — additionally binds the recorded execution environment and full publication bundle.
 
 This separation matters because scientific identity and execution identity answer different provenance questions.
@@ -86,7 +115,7 @@ from gazeaudit import verify_publication_audit_bundle
 verify_publication_audit_bundle(bundle)
 ```
 
-Verification is designed to detect later mutation of bound specification, recovery, summary, methods, report, or manifest content.
+Verification is designed to detect later mutation of bound specification, recovery, summary, methods, report, or manifest content. If structural-QC metadata was supplied, its descriptor is part of that bound scientific manifest.
 
 ## Real-data reference effects require justification
 
@@ -103,6 +132,7 @@ A serious robustness publication should preserve, directly or by stable referenc
 
 - software version/commit;
 - source-data identity or source lock;
+- structural-QC study fingerprint, audit fingerprint, diagnostics, and explicit decision log where applicable;
 - predeclared specification space;
 - invalid-combination rules;
 - scientific endpoint definition;
@@ -114,8 +144,10 @@ A serious robustness publication should preserve, directly or by stable referenc
 - scientific and execution fingerprints;
 - any frozen source/validation artifacts required to reproduce the run.
 
+For a GazeAudit-native structural-QC archive, `write_study_qc_artifacts()` writes the report, row/group diagnostics, decisions, QC manifest, and byte-level artifact manifest as deterministic JSON/CSV files.
+
 ## Archive-before-reveal workflows
 
 GazeAudit's own frozen case studies use stricter protocol/source/artifact controls than a generic user needs for every exploratory analysis. The general principle is still useful: where a result is intended to function as formal validation evidence, freeze source identity and scientific decision rules before revealing the final classification.
 
-For implementation patterns, continue to the [reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) and the package's [citation and reuse record]({{ '/docs/CITATION_AND_REUSE.html' | relative_url }}).
+For implementation patterns, continue to the [data onboarding guide]({{ '/docs/guides/data-onboarding/' | relative_url }}), [reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}), and the package's [citation and reuse record]({{ '/docs/CITATION_AND_REUSE.html' | relative_url }}).
