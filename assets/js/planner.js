@@ -16,13 +16,36 @@
   const count = root.querySelector('[data-planner-count]');
   const clear = root.querySelector('[data-planner-clear]');
   const share = root.querySelector('[data-planner-share]');
+  const copyBrief = root.querySelector('[data-planner-copy-brief]');
+  const downloadJson = root.querySelector('[data-planner-download-json]');
+  const exportStatus = root.querySelector('[data-planner-export-status]');
 
   const esc = (value) => String(value).replace(/[&<>'"]/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
   }[char]));
 
   const relative = (url) => `${document.body.dataset.baseurl || ''}${url}`;
+  const absolute = (url) => new URL(relative(url), window.location.origin).href;
   const selectedIds = () => choices.filter((input) => input.checked).map((input) => input.value);
+
+  const docsRevision = () => {
+    const link = document.querySelector('.footer-provenance a[href*="/commit/"]');
+    if (!link) return 'local-build';
+    return link.href.split('/commit/')[1]?.split(/[?#]/)[0] || 'local-build';
+  };
+
+  const releaseVersion = () => {
+    const text = document.querySelector('.version-badge-link')?.textContent || '';
+    return text.match(/v([0-9]+(?:\.[0-9]+)*)/)?.[1] || 'unknown';
+  };
+
+  const showExportStatus = (message) => {
+    if (!exportStatus) return;
+    exportStatus.textContent = message;
+    exportStatus.hidden = false;
+    window.clearTimeout(showExportStatus.timer);
+    showExportStatus.timer = window.setTimeout(() => { exportStatus.hidden = true; }, 2600);
+  };
 
   Promise.all([
     fetch(plannerUrl).then((r) => r.json()),
@@ -54,6 +77,85 @@
       const params = new URLSearchParams(window.location.search);
       const restored = (params.get('plan') || '').split(',').filter(Boolean);
       choices.forEach((input) => { input.checked = restored.includes(input.value); });
+
+      let currentManifest = null;
+
+      const buildManifest = (selected, ordered, handoffs, reasons) => ({
+        schema_version: 1,
+        artifact_type: 'gazeaudit-navigation-plan',
+        boundary: 'Navigation artifact only. Thresholds, exclusions, scientific assumptions, and validity judgements remain researcher-owned.',
+        selected_conditions: selected
+          .map((id) => ruleMap.get(id))
+          .filter(Boolean)
+          .map((rule) => ({
+            id: rule.id,
+            group: rule.group,
+            label: rule.label,
+            prompt: rule.prompt,
+            method_ids: [...rule.methods]
+          })),
+        method_route: ordered.map((method) => ({
+          id: method.id,
+          phase: method.phase,
+          title: method.title,
+          question: method.question,
+          functions: [...method.functions],
+          reasons: [...new Set(reasons.get(method.id) || [])],
+          guide_url: absolute(method.guide_url),
+          example_url: absolute(method.example_url),
+          plot_url: absolute(method.plot_url),
+          method_url: absolute(`/docs/methods/#method-${method.id}`)
+        })),
+        workflow_handoffs: handoffs.map((workflow) => ({
+          id: workflow.id,
+          title: workflow.title,
+          matched_method_ids: [...workflow.matchedMethods],
+          url: absolute(workflow.url)
+        })),
+        provenance: {
+          gazeaudit_release: releaseVersion(),
+          docs_revision: docsRevision(),
+          plan_url: window.location.href
+        }
+      });
+
+      const renderBrief = (manifest) => {
+        const lines = [
+          '# GazeAudit audit plan',
+          '',
+          `> ${manifest.boundary}`,
+          '',
+          '## Provenance',
+          '',
+          `- GazeAudit stable release: ${manifest.provenance.gazeaudit_release}`,
+          `- Documentation revision: ${manifest.provenance.docs_revision}`,
+          `- Shareable plan: ${manifest.provenance.plan_url}`,
+          '',
+          '## Selected study conditions',
+          ''
+        ];
+        manifest.selected_conditions.forEach((condition) => {
+          lines.push(`- **${condition.label}** — ${condition.prompt}`);
+        });
+        lines.push('', '## Governed method route', '');
+        manifest.method_route.forEach((method, index) => {
+          lines.push(
+            `${index + 1}. **${method.title}** (${method.phase})`,
+            `   - Question: ${method.question}`,
+            `   - Why included: ${method.reasons.join(' ')}`,
+            `   - Public API: ${method.functions.join(' → ')}`,
+            `   - Guide: ${method.guide_url}`,
+            `   - Example: ${method.example_url}`,
+            `   - Plot: ${method.plot_url}`
+          );
+        });
+        lines.push('', '## Workflow handoffs', '');
+        manifest.workflow_handoffs.forEach((workflow) => {
+          lines.push(`- **${workflow.title}** — ${workflow.url}`);
+        });
+        lines.push('', 'This export records navigation choices only; it does not constitute a QC verdict, exclusion rule, validation result, or preregistration.');
+        return lines.join('\n');
+      };
 
       const render = () => {
         const selected = selectedIds();
@@ -88,12 +190,14 @@
         window.history.replaceState({}, '', next);
 
         if (!ordered.length) {
+          currentManifest = null;
           results.hidden = true;
           actions.hidden = true;
           workflowSection.hidden = true;
           empty.hidden = false;
           route.innerHTML = '';
           workflowList.innerHTML = '';
+          if (exportStatus) exportStatus.hidden = true;
           return;
         }
 
@@ -146,6 +250,8 @@
             <a class="button" href="${relative(workflow.url)}">Open workflow →</a>
           </article>`;
         }).join('');
+
+        currentManifest = buildManifest(selected, ordered, handoffs, reasons);
       };
 
       choices.forEach((input) => input.addEventListener('change', render));
@@ -156,12 +262,33 @@
       share?.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
-          const original = share.textContent;
-          share.textContent = 'Plan link copied';
-          window.setTimeout(() => { share.textContent = original; }, 1600);
+          showExportStatus('Shareable plan link copied.');
         } catch (_) {
           window.prompt('Copy this plan URL:', window.location.href);
         }
+      });
+      copyBrief?.addEventListener('click', async () => {
+        if (!currentManifest) return;
+        const brief = renderBrief(currentManifest);
+        try {
+          await navigator.clipboard.writeText(brief);
+          showExportStatus('Audit brief copied as Markdown.');
+        } catch (_) {
+          window.prompt('Copy this audit brief:', brief);
+        }
+      });
+      downloadJson?.addEventListener('click', () => {
+        if (!currentManifest) return;
+        const blob = new Blob([`${JSON.stringify(currentManifest, null, 2)}\n`], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'gazeaudit-audit-plan.json';
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        URL.revokeObjectURL(url);
+        showExportStatus('Audit plan JSON prepared from the governed route.');
       });
       render();
     })
