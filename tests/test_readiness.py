@@ -112,7 +112,7 @@ def test_readiness_artifacts_detect_tampering_and_bind_publication_metadata(tmp_
 
     manifest = json.loads(paths["analysis_readiness_artifacts.json"].read_text())
     assert manifest["schema"].startswith("gazeaudit-analysis-readiness")
-    target = paths["analysis_readiness_trials.csv"]
+    target = paths["trial_readiness.csv"]
     target.write_text(target.read_text() + "tampered\n", encoding="utf-8")
     assert not verify_analysis_readiness_artifacts(tmp_path)
 
