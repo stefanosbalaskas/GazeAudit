@@ -1,6 +1,6 @@
 ---
 title: Research workflows
-description: End-to-end GazeAudit workflows for measurement uncertainty, analytical robustness, and reproducible publication.
+description: End-to-end GazeAudit workflows for applying the package to a study, measurement uncertainty, analytical robustness, and reproducible publication.
 kicker: Workflows
 ---
 
@@ -12,6 +12,20 @@ Use these pages when you already understand the basic functions and need to stru
   <img src="{{ '/assets/images/workflow-overview.svg' | relative_url }}" alt="GazeAudit end-to-end workflow">
   <figcaption>GazeAudit separates measurement uncertainty, analytical decision uncertainty, endpoint definition, robustness diagnostics, and publication provenance.</figcaption>
 </figure>
+
+## [First-study audit](first-study-audit/)
+
+**Question:** how do I take one real project from canonical data through preflight, declared robustness, evidence review, and publication provenance?
+
+Typical sequence:
+
+1. define the scientific endpoint and study-specific assumptions;
+2. map one canonical `GazeStudy`;
+3. run structural preflight and record decisions;
+4. add readiness or measurement layers only when scientifically relevant;
+5. declare and execute the defensible specification space;
+6. inspect robustness and targeted sensitivity diagnostics;
+7. preserve the complete evidence and software identity.
 
 ## [Measurement audit](measurement-audit/)
 
@@ -56,6 +70,8 @@ Typical sequence:
 
 ## Combine workflows deliberately
 
-The three workflows can be nested. For example, a `PipelineSpace` may contain hard versus probabilistic AOI branches, while each probabilistic branch is generated under a declared error model. The publication workflow can then bind the complete decision space and outputs.
+The first-study workflow is the project-level spine. Measurement, robustness, and publication workflows are governed layers that can be nested where the study requires them.
+
+For example, a `PipelineSpace` may contain hard versus probabilistic AOI branches, while each probabilistic branch is generated under a declared error model. The publication workflow can then bind the complete decision space and outputs.
 
 The important constraint is **semantic clarity**: measurement assumptions, analytical choices, perturbation analyses, and publication rules should remain distinguishable in the provenance record.
