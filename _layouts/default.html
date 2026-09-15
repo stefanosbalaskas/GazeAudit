@@ -52,6 +52,7 @@
 
       <nav class="top-nav" aria-label="Primary">
         <a href="{{ '/docs/' | relative_url }}">Docs</a>
+        <a href="{{ '/docs/workspace/' | relative_url }}">Workspace</a>
         <a href="{{ '/docs/planner/' | relative_url }}">Planner</a>
         <a href="{{ '/docs/methods/' | relative_url }}">Methods</a>
         <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
@@ -59,7 +60,6 @@
         <a href="{{ '/docs/plots/' | relative_url }}">Plots</a>
         <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
         <a href="{{ '/docs/case-studies/' | relative_url }}">Case studies</a>
-        <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
       </nav>
 
       <div class="header-actions">
@@ -76,6 +76,7 @@
     <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile navigation" hidden>
       <button class="mobile-search" type="button" data-search-open>Search documentation</button>
       <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+      <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
       <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
       <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
       <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
@@ -106,6 +107,7 @@
           <nav class="docs-nav" data-docs-nav>
             <p class="nav-label">Start</p>
             <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
+            <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
             <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
             <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
@@ -200,6 +202,7 @@
         <p class="footer-provenance">Stable release v{{ site.release_version }} · {{ site.docs_channel }} docs{% if site.github.build_revision %} · build <a href="https://github.com/stefanosbalaskas/GazeAudit/commit/{{ site.github.build_revision }}"><code>{{ docs_revision_short }}</code></a>{% endif %}</p>
       </div>
       <div class="footer-links">
+        <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
         <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
         <a href="https://doi.org/10.5281/zenodo.22757340">DOI 10.5281/zenodo.22757340</a>
         <a href="https://pypi.org/project/gazeaudit/0.1.0/">PyPI</a>
