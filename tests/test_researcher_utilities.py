@@ -84,3 +84,43 @@ def test_plot_gallery_links_back_to_method_explorer() -> None:
     assert "/docs/methods/#method-" in page
     assert ".plot-method-links" in css
     assert ".plot-card:target" in css
+
+
+def test_researcher_workspace_connects_governed_layers_without_adding_judgement() -> None:
+    page = _text("docs/workspace/index.md")
+    for contract in (
+        "permalink: /docs/workspace/",
+        "Navigation and judgement separate",
+        "Markdown audit brief",
+        "JSON navigation manifest",
+        "no inferred diagnosis",
+        "Method explorer",
+        "Plot gallery",
+        "`incomplete`",
+        "`robust_negative`",
+        "`materially_fragile`",
+        "reproducible-publication workflow",
+    ):
+        assert contract.lower() in page.lower()
+
+    layout = _text("_layouts/default.html")
+    assert layout.count("'/docs/workspace/' | relative_url") >= 4
+    hub = _text("docs/index.md")
+    assert "[Researcher workspace](workspace/)" in hub
+
+
+def test_search_catalog_is_generated_from_page_metadata_and_rendered_output_is_crawled() -> None:
+    source = _text("assets/search-index.json")
+    verifier = _text("tools/check_docs_site.py")
+    for contract in (
+        'site.pages | sort: "url"',
+        "item.title and item.description",
+        "item.url contains '/docs/'",
+        "item.search_category",
+        "item.search_keywords",
+        "| jsonify",
+    ):
+        assert contract in source
+    assert "json.loads(search_path.read_text" in verifier
+    assert "duplicate url" in verifier
+    assert "search index target failures" in verifier
