@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import runpy
 from pathlib import Path
 
@@ -91,15 +90,18 @@ def test_api_map_exposes_study_qc_provenance_surface() -> None:
         assert f"`{name}`" in page
 
 
-def test_search_index_surfaces_qc_provenance_terms() -> None:
-    index = json.loads(_text("assets/search-index.json"))
-    entries = {item["url"]: item for item in index}
+def test_generated_search_sources_qc_provenance_terms_from_page_metadata() -> None:
+    onboarding = _text("docs/guides/data-onboarding.md")
+    example = _text("docs/examples/study-preflight.md")
+    publication = _text("docs/guides/publication-audits.md")
+    search = _text("assets/search-index.json")
 
-    onboarding = entries["/docs/guides/data-onboarding/"]
-    example = entries["/docs/examples/study-preflight/"]
-    publication = entries["/docs/guides/publication-audits/"]
-
-    assert "fingerprint" in onboarding["keywords"]
-    assert "decisions" in onboarding["keywords"]
-    assert "StudyQCAudit" in example["keywords"]
-    assert "metadata" in publication["keywords"]
+    assert "search_keywords:" in onboarding
+    assert "fingerprint" in onboarding
+    assert "decisions" in onboarding
+    assert "search_keywords:" in example
+    assert "StudyQCAudit" in example
+    assert "search_keywords:" in publication
+    assert "metadata" in publication
+    assert "item.search_keywords" in search
+    assert "search_keywords | strip | jsonify" in search
