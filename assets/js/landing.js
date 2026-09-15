@@ -2,6 +2,55 @@
   const baseurl = document.body.dataset.baseurl || '';
   const plannerIndexUrl = `${baseurl}/assets/planner-index.json`;
   const plannerUrl = `${baseurl}/docs/planner/`;
+  const firstAuditUrl = `${baseurl}/docs/guides/first-real-audit/`;
+  const gettingStartedUrl = `${baseurl}/docs/getting-started/`;
+  const workspaceUrl = `${baseurl}/docs/workspace/`;
+
+  const addPracticalStart = () => {
+    const router = document.querySelector('[data-research-router]');
+    if (!router || document.querySelector('[data-practical-start]')) return;
+
+    const heroActions = document.querySelector('.product-hero-actions');
+    const primary = heroActions?.querySelector('.button.primary');
+    if (primary) {
+      primary.href = firstAuditUrl;
+      primary.textContent = 'Audit your own data →';
+      primary.dataset.heroOwnData = '';
+    }
+
+    const section = document.createElement('section');
+    section.className = 'section practical-start-section';
+    section.dataset.practicalStart = '';
+    section.innerHTML = `
+      <div class="section-heading wide-heading">
+        <p class="eyebrow">Start from where you are</p>
+        <h2>Use the shortest route into GazeAudit.</h2>
+        <p>You do not need to learn the whole package before using it. Choose the starting point that matches what you already have.</p>
+      </div>
+      <div class="practical-start-grid" aria-label="Practical GazeAudit starting routes">
+        <a class="practical-start-card is-primary" href="${firstAuditUrl}">
+          <span class="start-kicker">I have gaze data</span>
+          <strong>Run a first real audit</strong>
+          <p>Map a canonical CSV, run structural preflight, declare a finite robustness space, and save the complete evidence trail.</p>
+          <small>CSV → preflight → robustness → outputs →</small>
+        </a>
+        <a class="practical-start-card" href="${gettingStartedUrl}">
+          <span class="start-kicker">I am learning the package</span>
+          <strong>Install and learn the core API</strong>
+          <p>Start with the stable release, fit a transparent gaze-error model, propagate AOI uncertainty, and continue into specification spaces.</p>
+          <small>Open getting started →</small>
+        </a>
+        <a class="practical-start-card" href="${plannerUrl}">
+          <span class="start-kicker">I am designing an audit</span>
+          <strong>Build a governed method route</strong>
+          <p>Select only the study conditions that apply and hand the route into measurement, robustness, or publication workflows.</p>
+          <small>Open Audit planner →</small>
+        </a>
+      </div>
+      <p class="practical-start-boundary">These routes organise documentation and provenance. Thresholds, exclusions, AOIs, perturbations, endpoints, and validity judgements remain researcher-owned. <a href="${workspaceUrl}">See the full researcher workspace →</a></p>`;
+
+    router.parentNode.insertBefore(section, router);
+  };
 
   const ensurePlannerStyles = () => {
     if (document.querySelector('link[data-landing-planner-styles]')) return;
@@ -140,5 +189,6 @@
     }
   }
 
+  addPracticalStart();
   addPlannerJourney();
 })();
