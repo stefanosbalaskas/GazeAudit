@@ -18,7 +18,7 @@ A method family without a directly relevant frozen empirical case says so explic
 <div class="method-explorer" data-method-explorer data-method-index="{{ '/assets/method-index.json' | relative_url }}">
   <div class="method-explorer-summary" aria-label="Method explorer summary">
     <div><strong>{{ site.data.methods | size }}</strong><span>method families</span></div>
-    <div><strong>7</strong><span>research phases</span></div>
+    <div><strong>8</strong><span>research phases</span></div>
     <div><strong>3</strong><span>frozen real-data cases</span></div>
     <div><strong>1</strong><span>governed catalog</span></div>
   </div>
