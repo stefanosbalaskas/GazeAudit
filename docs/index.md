@@ -21,6 +21,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 |---|---|
 | Install and run the smallest example | [Getting started](getting-started/) |
 | Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
+| Declare participant/trial readiness policies and preview cohort impact | [Analysis-readiness governance](guides/analysis-readiness/) |
+| Browse reproducible code-generated figures | [Plot gallery](plots/) |
 | Run one complete robustness audit | [End-to-end robustness example](examples/end-to-end-robustness/) |
 | Understand uncertainty at AOI boundaries | [AOI uncertainty guide](guides/aoi-uncertainty/) |
 | Build a multiverse/specification analysis | [Specification-space guide](guides/specification-space/) |
@@ -115,3 +117,7 @@ For deeper provenance or publication operations, use the existing authoritative 
 ## Need a quick answer?
 
 Open the [FAQ](faq/) for installation, interpretation, versioning, and scope questions.
+
+## Code-generated visual reference
+
+The [plot gallery](plots/) contains 14 deterministic Matplotlib SVGs tied to executable source, including readiness, cohort-impact, repair, specification, sensitivity, AOI, and recovery diagnostics.

@@ -1,5 +1,6 @@
 ---
 title: Analysis-readiness example
+permalink: /docs/examples/analysis-readiness/
 kicker: Example
 ---
 

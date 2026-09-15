@@ -27,4 +27,6 @@ jobs:
       - name: Regenerate plot gallery
         run: python tools/generate_plot_gallery.py
       - name: Verify committed gallery is reproducible
-        run: git diff --exit-code -- assets/plots
+        run: |
+          git diff --exit-code -- assets/plots
+          test -z "$(git status --porcelain --untracked-files=all -- assets/plots)"

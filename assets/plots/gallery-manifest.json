@@ -1,0 +1,100 @@
+[
+  {
+    "filename": "qc-issue-profile.svg",
+    "title": "Structural QC issue profile",
+    "description": "Synthetic example showing counts across the five structural QC issue families.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "trial-readiness.svg",
+    "title": "Trial-level readiness preview",
+    "description": "Synthetic participant-by-trial units showing structural issue burden and policy-relative pass or review status.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "participant-readiness.svg",
+    "title": "Participant readiness profile",
+    "description": "Synthetic participant-level fraction of trials failing the declared structural policy.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "cohort-impact.svg",
+    "title": "Cohort impact preview",
+    "description": "Synthetic baseline-versus-retained row counts under explicit trial- and participant-scope filtering previews.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "repair-comparison.svg",
+    "title": "Before and after structural QC",
+    "description": "Synthetic comparison of structural QC counts before and after an explicitly performed repair operation.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "policy-tradeoffs.svg",
+    "title": "Readiness-policy cohort trade-offs",
+    "description": "Synthetic comparison of trial-scope and participant-scope retained rows across declared policies.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "threshold-sweep.svg",
+    "title": "Threshold sensitivity of cohort retention",
+    "description": "Synthetic sensitivity curve showing how retained rows change as a user-declared coordinate-issue threshold changes.",
+    "category": "readiness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "specification-curve-code.svg",
+    "title": "Specification curve",
+    "description": "Code-generated synthetic estimates ordered across readiness-policy and endpoint-offset specifications.",
+    "category": "robustness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "factor-sensitivity.svg",
+    "title": "Specification-factor sensitivity",
+    "description": "Synthetic marginal sensitivity diagnostic ranking the declared specification factors.",
+    "category": "robustness",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "missingness-sensitivity-code.svg",
+    "title": "Missingness sensitivity",
+    "description": "Synthetic controlled-MCAR perturbation showing the scientific endpoint across increasing observed missingness.",
+    "category": "sensitivity",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "sampling-sensitivity-code.svg",
+    "title": "Sampling-rate sensitivity",
+    "description": "Synthetic controlled downsampling analysis showing the endpoint across declared target sampling rates.",
+    "category": "sensitivity",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "gaze-trajectory-aoi.svg",
+    "title": "Gaze trajectory and AOI geometry",
+    "description": "Synthetic gaze trajectory overlaid with an explicitly declared rectangular AOI.",
+    "category": "measurement",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "aoi-probability-profile.svg",
+    "title": "Probabilistic AOI boundary profile",
+    "description": "Synthetic probability profile illustrating gradual AOI membership around a signed boundary distance.",
+    "category": "measurement",
+    "source": "tools/generate_plot_gallery.py"
+  },
+  {
+    "filename": "recovery-matrix.svg",
+    "title": "Synthetic recovery matrix",
+    "description": "Illustrative matrix of deterministic recovery values across missingness and sampling-rate conditions.",
+    "category": "robustness",
+    "source": "tools/generate_plot_gallery.py"
+  }
+]

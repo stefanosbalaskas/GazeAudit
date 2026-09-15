@@ -45,3 +45,5 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 ## What a guide is not
 
 Guides describe GazeAudit's scientific contracts and recommended use. They do not replace study-specific justification. Researchers remain responsible for deciding which AOIs, error models, detectors, preprocessing choices, QC thresholds, perturbations, and scientific endpoints are defensible for their design.
+
+- [Analysis-readiness governance]({{ '/docs/guides/analysis-readiness/' | relative_url }}) — declare structural-QC policies, preview cohort impact, and bind provenance.

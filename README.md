@@ -250,3 +250,7 @@ Citation metadata are provided in [`CITATION.cff`](CITATION.cff). External publi
 ## License
 
 MIT.
+
+## Development documentation on `main`
+
+Post-release development now includes provenance-bound analysis-readiness governance and a [code-generated plot gallery](https://stefanosbalaskas.github.io/GazeAudit/docs/plots/) covering QC, cohort impact, repairs, specification curves, sensitivity, AOI geometry, and recovery diagnostics. These additions do not alter the frozen v0.1.0 scientific outcomes.

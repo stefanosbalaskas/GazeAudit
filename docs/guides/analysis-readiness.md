@@ -1,5 +1,6 @@
 ---
 title: Analysis-readiness governance
+permalink: /docs/guides/analysis-readiness/
 kicker: Guide
 ---
 
