@@ -6,7 +6,7 @@ kicker: Documentation
 
 # Documentation hub
 
-GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, and reproducible publication.
+GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, build a transparent audit route from study conditions, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, and reproducible publication.
 
 <div class="callout info">
 <strong>Current release</strong>
@@ -20,6 +20,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Goal | Recommended page |
 |---|---|
 | Install and run the smallest example | [Getting started](getting-started/) |
+| Build a transparent audit route from study conditions | [Audit planner](planner/) |
 | Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
 | Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
 | Declare participant/trial readiness policies and preview cohort impact | [Analysis-readiness governance](guides/analysis-readiness/) |
@@ -32,6 +33,12 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Create deterministic publication evidence | [Publication audits](guides/publication-audits/) |
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
 | Find the right public function | [API map](reference/api-map/) |
+
+## Plan an audit from study conditions
+
+The [Audit planner](planner/) is the shortest route when you know which study conditions or methodological risks are relevant but do not yet know which parts of GazeAudit to combine. Select only the conditions that genuinely apply; the planner deduplicates the corresponding governed method families, explains why each method entered the route, and links directly to its guide, runnable example, diagnostic plot, and evidence boundary.
+
+The planner is deliberately **non-diagnostic**. It does not choose thresholds, infer unselected risks, exclude participants, or decide whether a result is scientifically valid. A shared planner URL records navigation choices, not a scientific conclusion.
 
 ## Explore methods by research question
 
