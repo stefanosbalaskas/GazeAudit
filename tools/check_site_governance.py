@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CONFIG = ROOT / "_config.yml"
 INIT = ROOT / "src" / "gazeaudit" / "__init__.py"
 API_MAP = ROOT / "docs" / "reference" / "api-map.md"
 CORE_API_INVENTORY = ROOT / "docs" / "reference" / "core-api-inventory.md"
@@ -98,9 +99,34 @@ def check_search_coverage() -> None:
 
 
 def check_site_contract() -> None:
+    config = CONFIG.read_text(encoding="utf-8")
+    layout = LAYOUT.read_text(encoding="utf-8")
     provenance = PROVENANCE_PAGE.read_text(encoding="utf-8")
     robots = ROBOTS.read_text(encoding="utf-8")
     sitemap = SITEMAP.read_text(encoding="utf-8")
+
+    required_config = (
+        'release_version: "0.1.0"',
+        "docs_channel: development",
+    )
+    missing = [token for token in required_config if token not in config]
+    if missing:
+        raise SystemExit("site governance: config identity missing: " + ", ".join(missing))
+
+    required_layout = (
+        'property="og:title"',
+        'property="og:description"',
+        'property="og:url"',
+        'name="twitter:card"',
+        "site.docs_channel",
+        "site.release_version",
+        "site.github.build_revision",
+        "/docs/reference/site-provenance/",
+    )
+    missing = [token for token in required_layout if token not in layout]
+    if missing:
+        raise SystemExit("site governance: layout contract missing: " + ", ".join(missing))
+
     required_provenance = (
         "v0.1.0",
         "site.github.build_revision",
