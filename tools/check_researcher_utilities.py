@@ -6,6 +6,14 @@ from pathlib import Path
 
 EXPECTED_CATEGORIES = {"readiness", "robustness", "sensitivity", "measurement"}
 REQUIRED_PLOT_KEYS = {"id", "filename", "title", "category", "question", "function", "method_ids"}
+REQUIRED_SEARCH_ROUTES = {
+    "/docs/workspace/",
+    "/docs/planner/",
+    "/docs/methods/",
+    "/docs/reference/core-api-inventory/",
+    "/docs/reference/site-provenance/",
+    "/docs/RELEASE_NOTES_0.1.0.html",
+}
 
 
 def _load_json(path: Path):
@@ -15,6 +23,7 @@ def _load_json(path: Path):
 def verify(site: Path, baseurl: str) -> tuple[int, int]:
     methods = _load_json(site / "assets" / "method-index.json")
     plots = _load_json(site / "assets" / "plot-index.json")
+    search = _load_json(site / "assets" / "search-index.json")
     method_ids = {item["id"] for item in methods}
 
     if len(plots) != 14:
@@ -88,6 +97,32 @@ def verify(site: Path, baseurl: str) -> tuple[int, int]:
             raise SystemExit(f"planner export implementation missing marker: {marker}")
     if "new Date(" in planner_js or "Date.now(" in planner_js:
         raise SystemExit("planner export must not add volatile timestamps")
+
+    workspace_path = site / "docs" / "workspace" / "index.html"
+    if not workspace_path.is_file():
+        raise SystemExit("researcher workspace is missing from generated site")
+    workspace = workspace_path.read_text(encoding="utf-8")
+    for marker in (
+        "Researcher workspace",
+        "Markdown audit brief",
+        "JSON navigation manifest",
+        "incomplete",
+        "robust_negative",
+        "materially_fragile",
+    ):
+        if marker not in workspace:
+            raise SystemExit(f"researcher workspace missing boundary marker: {marker}")
+
+    if not isinstance(search, list):
+        raise SystemExit("generated search catalog must be a list")
+    search_urls = {
+        item.get("url")
+        for item in search
+        if isinstance(item, dict) and isinstance(item.get("url"), str)
+    }
+    missing_search = sorted(REQUIRED_SEARCH_ROUTES - search_urls)
+    if missing_search:
+        raise SystemExit(f"generated search catalog missing governed routes: {missing_search}")
 
     return len(plots), len(method_ids)
 
