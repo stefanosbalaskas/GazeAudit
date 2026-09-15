@@ -99,7 +99,7 @@ def check_search_coverage() -> None:
         )
 
     nav_urls = set(
-        re.findall(r"href=\"\{\{ '(/docs/[^']+)' \| relative_url \}\}\"", layout)
+        re.findall(r"href=\"\{\{ '(/docs/[^']*)' \| relative_url \}\}\"", layout)
     )
     required_navigation = {
         "/docs/",
