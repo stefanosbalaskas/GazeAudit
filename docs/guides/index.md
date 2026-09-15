@@ -8,6 +8,12 @@ kicker: Guides
 
 The guides explain **how to design, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
+## Start with your own data
+
+### [First real audit with your own data](first-real-audit/)
+
+Take one canonical eye-tracking CSV through `GazeStudy`, structural preflight, researcher-owned decisions, a declared specification space, robustness summaries, and saved evidence. This is the recommended practical entry point when you have a study file and want to understand how the package pieces connect.
+
 ## Data onboarding
 
 ### [Data onboarding and structural preflight](data-onboarding/)
