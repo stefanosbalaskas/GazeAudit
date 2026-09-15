@@ -71,6 +71,7 @@ def test_landing_assets_are_wired_only_for_landing_pages() -> None:
     assert "/assets/js/landing.js" in layout
 
     assert (ROOT / "assets/css/landing.css").is_file()
+    assert (ROOT / "assets/css/landing-planner.css").is_file()
     assert (ROOT / "assets/js/landing.js").is_file()
 
 
@@ -88,6 +89,25 @@ def test_research_router_supports_keyboard_navigation_and_aria_state() -> None:
         "panel.hidden",
     ):
         assert contract in script
+
+
+def test_landing_planner_presets_are_governed_and_non_diagnostic() -> None:
+    script = _text("assets/js/landing.js")
+    for preset in ("new-study", "aoi-study", "robustness-study", "publication-study"):
+        assert f"id: '{preset}'" in script
+    for choice in (
+        "incoming-data",
+        "aoi-boundary",
+        "analysis-choices",
+        "sampling-risk",
+        "missingness-risk",
+        "publication-record",
+    ):
+        assert choice in script
+    assert "fetch(plannerIndexUrl)" in script
+    assert "Plan an audit" in script
+    assert "They do not diagnose your data" in script
+    assert "planner URL records navigation choices, not a scientific conclusion" in script
 
 
 def test_landing_is_task_first_not_duplicate_legacy_sections() -> None:
