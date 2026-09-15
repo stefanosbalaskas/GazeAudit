@@ -3,6 +3,7 @@ title: Data onboarding and structural preflight
 description: Map vendor or analysis tables into GazeStudy, inspect structural QC, and preserve transparent provenance before uncertainty or robustness analysis.
 kicker: Guide · Data
 permalink: /docs/guides/data-onboarding/
+search_keywords: data import csv GazeStudy preflight QC provenance fingerprint diagnostics decisions artifacts metadata timestamp duplicate
 ---
 
 # Data onboarding and structural preflight

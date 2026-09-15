@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import runpy
 from pathlib import Path
 
@@ -56,6 +55,7 @@ def test_required_documentation_pages_exist() -> None:
     required = [
         "index.md",
         "docs/index.md",
+        "docs/workspace/index.md",
         "docs/getting-started.md",
         "docs/faq.md",
         "docs/guides/index.md",
@@ -219,28 +219,25 @@ def test_accessibility_enhancements_cover_focus_and_motion_preferences() -> None
     assert "forced-colors: active" in css
 
 
-def test_search_index_is_structured_and_points_to_core_documentation() -> None:
-    index = json.loads(_text("assets/search-index.json"))
-    assert isinstance(index, list)
-    assert len(index) >= 29
-    urls = {item["url"] for item in index}
-    for item in index:
-        assert {"title", "category", "url", "description", "keywords"} <= item.keys()
-        assert item["title"].strip()
-        assert item["url"].startswith("/docs/")
-    for url in (
-        "/docs/getting-started/",
-        "/docs/guides/data-onboarding/",
-        "/docs/examples/study-preflight/",
-        "/docs/examples/end-to-end-robustness/",
-        "/docs/guides/reporting-robustness/",
-        "/docs/case-studies/",
-        "/docs/case-studies/gazebase-incomplete/",
-        "/docs/case-studies/korthals-target-tracking/",
-        "/docs/case-studies/pedrotti-sensitivity/",
-        "/docs/reference/api-map/",
+def test_search_index_is_generated_from_documentation_metadata() -> None:
+    source = _text("assets/search-index.json")
+    for contract in (
+        'site.pages | sort: "url"',
+        "item.title",
+        "item.url contains '/docs/'",
+        "item.search_category",
+        "item.search_keywords",
+        "item.description | default: item.title",
+        "item.title | jsonify",
+        "item.url | jsonify",
+        "search_description | jsonify",
     ):
-        assert url in urls
+        assert contract in source
+
+    workspace = _text("docs/workspace/index.md")
+    assert "permalink: /docs/workspace/" in workspace
+    assert "search_category: Start" in workspace
+    assert "search_keywords:" in workspace
 
 
 def test_readme_is_a_gateway_to_public_documentation() -> None:

@@ -13,14 +13,21 @@ GazeAudit documentation is organised around **research tasks**, not only modules
 The public release is <code>0.1.0</code>. Install it with <code>pip install gazeaudit==0.1.0</code>. The documentation also describes post-release development on <code>main</code>; when reproducibility matters, record the exact version or commit used.
 </div>
 
-Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material.
+<div class="callout tip">
+<strong>Have your own gaze CSV already?</strong>
+Open <a href="guides/first-real-audit/">First real audit with your own data</a> for the practical CSV → <code>GazeStudy</code> → structural preflight → declared robustness → saved evidence route. The companion <a href="examples/first-real-audit/">executable example</a> can be run first on deterministic demo data and then on your canonical table.
+</div>
+
+Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. The search catalog is generated from documentation metadata at build time, so new documented routes do not require a second hand-maintained index.
 
 ## Start here
 
 | Goal | Recommended page |
 |---|---|
+| Apply GazeAudit to my own canonical CSV | [First real audit guide](guides/first-real-audit/) |
+| See the whole project-level path from planning to publication | [Researcher workspace](workspace/) |
 | Install and run the smallest example | [Getting started](getting-started/) |
-| Build a transparent audit route from study conditions | [Audit planner](planner/) |
+| Build and export a transparent audit route from study conditions | [Audit planner](planner/) |
 | Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
 | Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
 | Declare participant/trial readiness policies and preview cohort impact | [Analysis-readiness governance](guides/analysis-readiness/) |
@@ -34,11 +41,19 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
 | Find the right public function | [API map](reference/api-map/) |
 
+## Researcher workspace
+
+The [Researcher workspace](workspace/) is the project-level route when you want to connect several documentation layers without losing their scientific boundaries. It links six stages: scope the audit, inspect the governed method route, run the smallest relevant workflow, inspect visuals in context, check the evidence boundary, and preserve the publication record.
+
+Use it as an orientation layer rather than a new source of scientific rules. The workspace does not choose thresholds, exclusions, perturbation levels, specifications, or validity claims.
+
 ## Plan an audit from study conditions
 
 The [Audit planner](planner/) is the shortest route when you know which study conditions or methodological risks are relevant but do not yet know which parts of GazeAudit to combine. Select only the conditions that genuinely apply; the planner deduplicates the corresponding governed method families, explains why each method entered the route, and links directly to its guide, runnable example, diagnostic plot, and evidence boundary.
 
 The planner is deliberately **non-diagnostic**. It does not choose thresholds, infer unselected risks, exclude participants, or decide whether a result is scientifically valid. A shared planner URL records navigation choices, not a scientific conclusion.
+
+When the route is useful, preserve it as a **shareable URL**, a **Markdown audit brief**, or a deterministic **JSON navigation manifest**. The JSON record includes a stable schema version, selected conditions, ordered methods, API sequences, workflow handoffs, the GazeAudit release identity, and the documentation revision; it intentionally does not insert a volatile timestamp.
 
 ## Explore methods by research question
 
@@ -50,10 +65,13 @@ Its evidence column is deliberately conservative: frozen real-data cases are lin
 
 Before applying measurement or robustness methods to a new table, map its semantic columns explicitly with `GazeStudy` and run the structural preflight. The [data onboarding guide](guides/data-onboarding/) explains how `audit_study_qc()` reports non-finite coordinates/timestamps, missing identifiers, duplicate within-trial timestamps, and decreasing time order without turning those diagnostics into universal exclusion rules.
 
+For a single practical path that continues beyond preflight into robustness outputs and saved evidence, use [First real audit with your own data](guides/first-real-audit/).
+
 ## Runnable examples
 
-The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps the examples runnable without private participant data while separating demonstration values from empirical claims.
+The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps demonstrations runnable without private participant data while separating demonstration values from empirical claims.
 
+- [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
 - [AOI boundary uncertainty](examples/aoi-boundary/) — fit a gaze-error model and convert a hard boundary decision into probabilistic membership.
@@ -65,6 +83,7 @@ The examples use synthetic data unless a page explicitly points to a frozen real
 Use the workflow pages when you are designing a study or analysis rather than learning one function.
 
 - [Workflow map](workflows/) — choose the right workflow family.
+- [First-study audit](workflows/first-study-audit/) — canonical data → preflight → optional readiness/measurement layers → robustness → publication provenance.
 - [Measurement audit](workflows/measurement-audit/) — validation information → error model → AOI uncertainty → endpoint propagation.
 - [Robustness audit](workflows/robustness-audit/) — defensible choices → common endpoint → specification curve → sensitivity diagnostics.
 - [Reproducible publication](workflows/reproducible-publication/) — declared rule → audit bundle → fingerprints → methods/report output.

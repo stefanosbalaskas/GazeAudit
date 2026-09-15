@@ -122,12 +122,17 @@ def test_planner_indexes_are_generated_from_governed_rules() -> None:
     assert "site.data.planner_workflows | jsonify" in workflow_index
 
 
-def test_planner_is_discoverable_from_docs_and_search() -> None:
+def test_planner_is_discoverable_from_docs_and_generated_search() -> None:
     docs = _text("docs/index.md")
+    planner = _text("docs/planner/index.md")
     search = _text("assets/search-index.json")
     assert "[Audit planner](planner/)" in docs
-    assert '"title":"Audit planner"' in search
-    assert '"url":"/docs/planner/"' in search
+    assert "title: Audit planner" in planner
+    assert "permalink: /docs/planner/" in planner
+    assert 'site.pages | sort: "url"' in search
+    assert "item.title and item.url contains '/docs/'" in search
+    assert "item.title | jsonify" in search
+    assert "item.url | jsonify" in search
 
 
 def test_generated_site_verifiers_govern_planner_assets_routes_and_handoff() -> None:

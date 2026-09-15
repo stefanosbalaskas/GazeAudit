@@ -120,12 +120,17 @@ def test_method_index_is_generated_from_the_governed_catalog() -> None:
     assert "site.data.methods | jsonify" in source
 
 
-def test_method_explorer_is_discoverable_from_docs_and_search() -> None:
+def test_method_explorer_is_discoverable_from_docs_and_generated_search() -> None:
     docs = _text("docs/index.md")
+    methods = _text("docs/methods/index.md")
     search = _text("assets/search-index.json")
     assert "[Method explorer](methods/)" in docs
-    assert '"title":"Method explorer"' in search
-    assert '"url":"/docs/methods/"' in search
+    assert "title: Method explorer" in methods
+    assert "permalink: /docs/methods/" in methods
+    assert 'site.pages | sort: "url"' in search
+    assert "item.title and item.url contains '/docs/'" in search
+    assert "item.title | jsonify" in search
+    assert "item.url | jsonify" in search
 
 
 def test_generated_site_verifier_governs_method_catalog_and_assets() -> None:
