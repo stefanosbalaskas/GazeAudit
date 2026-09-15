@@ -20,18 +20,25 @@ def write(path: str, text: str) -> None:
     target.write_text(text, encoding="utf-8")
 
 
-def replace_once(path: str, old: str, new: str) -> None:
-    text = read(path)
-    if new in text:
-        return
-    if old not in text:
-        raise RuntimeError(f"bootstrap anchor not found in {path}: {old[:80]!r}")
-    write(path, text.replace(old, new, 1))
-
-
 def wire_public_api() -> None:
     path = "src/gazeaudit/__init__.py"
     text = read(path)
+    plotting_import = '''from .plotting import (
+    plot_aoi_probability_profile,
+    plot_cohort_impact,
+    plot_factor_sensitivity,
+    plot_gaze_trajectory,
+    plot_participant_readiness,
+    plot_policy_tradeoffs,
+    plot_qc_issue_profile,
+    plot_recovery_matrix,
+    plot_repair_comparison,
+    plot_sensitivity_curve,
+    plot_specification_curve,
+    plot_threshold_sweep,
+    plot_trial_readiness,
+)
+'''
     readiness_import = '''from .readiness import (
     ANALYSIS_READINESS_ARTIFACT_SCHEMA,
     ANALYSIS_READINESS_PUBLICATION_LINK_SCHEMA,
@@ -56,22 +63,9 @@ def wire_public_api() -> None:
     verify_repair_comparison_manifest,
     write_analysis_readiness_artifacts,
 )
-from .plotting import (
-    plot_aoi_probability_profile,
-    plot_cohort_impact,
-    plot_factor_sensitivity,
-    plot_gaze_trajectory,
-    plot_participant_readiness,
-    plot_policy_tradeoffs,
-    plot_qc_issue_profile,
-    plot_recovery_matrix,
-    plot_repair_comparison,
-    plot_sensitivity_curve,
-    plot_specification_curve,
-    plot_threshold_sweep,
-    plot_trial_readiness,
-)
 '''
+    if "from .plotting import (" not in text:
+        text = text.replace("from .provenance import (", plotting_import + "from .provenance import (", 1)
     if "from .readiness import (" not in text:
         text = text.replace("from .robustness import (", readiness_import + "from .robustness import (", 1)
 
@@ -248,22 +242,11 @@ def augment_docs() -> None:
         write("index.md", landing)
 
 
-def harden_workflow() -> None:
-    path = ".github/workflows/plot-gallery.yml"
-    text = read(path)
-    old = "      - name: Verify committed gallery is reproducible\n        run: git diff --exit-code -- assets/plots\n"
-    new = "      - name: Verify committed gallery is reproducible\n        run: |\n          git diff --exit-code -- assets/plots\n          test -z \"$(git status --porcelain --untracked-files=all -- assets/plots)\"\n"
-    if old in text:
-        text = text.replace(old, new, 1)
-        write(path, text)
-
-
 def main() -> None:
     wire_public_api()
     wire_layout()
     wire_pages()
     augment_docs()
-    harden_workflow()
     subprocess.run([sys.executable, "tools/generate_plot_gallery.py"], cwd=ROOT, check=True)
 
 
