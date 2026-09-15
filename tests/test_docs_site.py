@@ -223,13 +223,14 @@ def test_search_index_is_generated_from_documentation_metadata() -> None:
     source = _text("assets/search-index.json")
     for contract in (
         'site.pages | sort: "url"',
-        "item.title and item.description",
+        "item.title",
         "item.url contains '/docs/'",
         "item.search_category",
         "item.search_keywords",
+        "item.description | default: item.title",
         "item.title | jsonify",
         "item.url | jsonify",
-        "item.description | jsonify",
+        "search_description | jsonify",
     ):
         assert contract in source
 
