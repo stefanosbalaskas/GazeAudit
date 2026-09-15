@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-import json
 import re
 from pathlib import Path
 
@@ -78,23 +77,59 @@ def check_api_map() -> None:
 
 def check_search_coverage() -> None:
     layout = LAYOUT.read_text(encoding="utf-8")
-    items = json.loads(SEARCH_INDEX.read_text(encoding="utf-8"))
-    indexed = {
-        item["url"]
-        for item in items
-        if isinstance(item, dict) and isinstance(item.get("url"), str)
-    }
+    template = SEARCH_INDEX.read_text(encoding="utf-8")
+    required_template = (
+        'site.pages | sort: "url"',
+        "item.title",
+        "item.url contains '/docs/'",
+        "item.search_category",
+        "item.search_keywords",
+        "search_description",
+        "item.description | default: item.title",
+        "item.title | jsonify",
+        "item.url | jsonify",
+        "search_description | jsonify",
+        "search_keywords | strip | jsonify",
+    )
+    missing_template = [token for token in required_template if token not in template]
+    if missing_template:
+        raise SystemExit(
+            "site governance: generated search template contract missing: "
+            + ", ".join(missing_template)
+        )
+
     nav_urls = set(
         re.findall(r"href=\"\{\{ '(/docs/[^']+)' \| relative_url \}\}\"", layout)
     )
-    required_reference = {
+    required_navigation = {
+        "/docs/",
+        "/docs/workspace/",
+        "/docs/planner/",
+        "/docs/methods/",
         "/docs/reference/core-api-inventory/",
         "/docs/reference/site-provenance/",
     }
-    missing = sorted((nav_urls | required_reference) - indexed)
-    if missing:
+    missing_nav = sorted(required_navigation - nav_urls)
+    if missing_nav:
         raise SystemExit(
-            "site governance: searchable documentation is missing routes: " + ", ".join(missing)
+            "site governance: primary searchable navigation is missing routes: "
+            + ", ".join(missing_nav)
+        )
+
+    metadata_pages = (
+        ROOT / "docs" / "workspace" / "index.md",
+        CORE_API_INVENTORY,
+        PROVENANCE_PAGE,
+    )
+    missing_metadata: list[str] = []
+    for path in metadata_pages:
+        text = path.read_text(encoding="utf-8")
+        if "title:" not in text or "description:" not in text:
+            missing_metadata.append(str(path.relative_to(ROOT)))
+    if missing_metadata:
+        raise SystemExit(
+            "site governance: searchable core pages are missing title/description metadata: "
+            + ", ".join(missing_metadata)
         )
 
 
