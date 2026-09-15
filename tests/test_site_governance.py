@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -26,12 +25,24 @@ def test_docs_site_runs_on_main_push() -> None:
     assert "python tools/check_site_governance.py" in workflow
 
 
-def test_reference_routes_are_searchable() -> None:
-    items = json.loads((ROOT / "assets" / "search-index.json").read_text(encoding="utf-8"))
-    urls = {item["url"] for item in items}
-    assert "/docs/reference/core-api-inventory/" in urls
-    assert "/docs/reference/site-provenance/" in urls
-    assert "/docs/RELEASE_NOTES_0.1.0.html" in urls
+def test_search_catalog_is_generated_and_core_routes_remain_governed() -> None:
+    template = (ROOT / "assets" / "search-index.json").read_text(encoding="utf-8")
+    verifier = (ROOT / "tools" / "check_site_governance.py").read_text(encoding="utf-8")
+    for marker in (
+        'site.pages | sort: "url"',
+        "item.title",
+        "item.url contains '/docs/'",
+        "item.description | default: item.title",
+        "item.title | jsonify",
+        "item.url | jsonify",
+    ):
+        assert marker in template
+    for route in (
+        "/docs/workspace/",
+        "/docs/reference/core-api-inventory/",
+        "/docs/reference/site-provenance/",
+    ):
+        assert route in verifier
 
 
 def test_site_provenance_keeps_release_and_development_identity_separate() -> None:
