@@ -1,0 +1,38 @@
+name: bootstrap-readiness-gallery
+
+on:
+  push:
+    branches: [feature/analysis-readiness-gallery]
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/analysis-readiness-gallery
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install editable package with plotting support
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[plot]" "matplotlib==3.10.8"
+      - name: Wire final candidate and generate SVG gallery
+        run: python tools/bootstrap_readiness_gallery.py
+      - name: Commit generated candidate
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/gazeaudit/__init__.py _layouts/default.html assets/search-index.json assets/plots README.md index.md docs .github/workflows/plot-gallery.yml
+          if git diff --cached --quiet; then
+            echo "No bootstrap changes"
+          else
+            git commit -m "chore: materialize readiness gallery candidate"
+            git push origin HEAD:feature/analysis-readiness-gallery
+          fi
