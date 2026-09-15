@@ -76,3 +76,13 @@ def test_first_real_audit_is_reachable_from_primary_docs_hubs() -> None:
     assert "first-real-audit/" in guides
     assert "first-real-audit/" in examples
     assert "first-study-audit/" in workflows
+
+
+def test_first_real_audit_is_reachable_from_persistent_navigation() -> None:
+    layout = _text("_layouts/default.html")
+    assert layout.count("'/docs/guides/first-real-audit/' | relative_url") >= 3
+    assert "First real audit example" in layout
+    assert "'/docs/examples/first-real-audit/' | relative_url" in layout
+    assert "First-study audit" in layout
+    assert "'/docs/workflows/first-study-audit/' | relative_url" in layout
+    assert "Use your own data" in layout
