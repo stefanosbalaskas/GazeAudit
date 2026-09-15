@@ -2,6 +2,7 @@
 title: Publication audit guide
 description: Build deterministic robustness evidence with predeclared conclusion rules, structural-QC provenance, and fingerprints.
 kicker: Guide · Reproducibility
+search_keywords: publication fingerprint provenance manifest reproducibility audit bundle metadata
 ---
 
 # Publication audit guide
