@@ -1,0 +1,30 @@
+- id: measurement-audit
+  title: Measurement audit
+  label: Continue with measurement audit
+  description: Carry structural, integration, readiness, and gaze-measurement questions into one auditable measurement workflow before downstream inference.
+  url: /docs/workflows/measurement-audit/
+  methods:
+    - interoperability
+    - structural-qc
+    - readiness-governance
+    - aoi-uncertainty
+    - spatial-sensitivity
+
+- id: robustness-audit
+  title: Robustness audit
+  label: Continue with robustness audit
+  description: Carry alternative pipelines, sampling, missingness, and known-truth checks into one declared robustness workflow without searching for a favourable specification.
+  url: /docs/workflows/robustness-audit/
+  methods:
+    - specification-robustness
+    - sampling-sensitivity
+    - missingness-sensitivity
+    - known-truth-recovery
+
+- id: reproducible-publication
+  title: Reproducible publication
+  label: Continue with publication workflow
+  description: Turn the selected audit outputs, declarations, manifests, and software identity into a deterministic record that can be checked after publication.
+  url: /docs/workflows/reproducible-publication/
+  methods:
+    - publication-provenance

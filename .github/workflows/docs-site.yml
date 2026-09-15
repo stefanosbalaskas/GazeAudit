@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "_config.yml"
+      - "_data/**"
       - "_layouts/**"
       - "assets/**"
       - "docs/**"
@@ -16,13 +17,17 @@ on:
       - "src/gazeaudit/__init__.py"
       - "tools/check_docs_site.py"
       - "tools/check_accessibility.py"
+      - "tools/check_planner_handoff.py"
       - "tools/check_site_governance.py"
       - "tests/test_site_governance.py"
       - "tests/test_accessibility_contracts.py"
+      - "tests/test_audit_planner_docs.py"
+      - "tests/test_mobile_docs_navigation.py"
       - ".github/workflows/docs-site.yml"
   pull_request:
     paths:
       - "_config.yml"
+      - "_data/**"
       - "_layouts/**"
       - "assets/**"
       - "docs/**"
@@ -33,9 +38,12 @@ on:
       - "src/gazeaudit/__init__.py"
       - "tools/check_docs_site.py"
       - "tools/check_accessibility.py"
+      - "tools/check_planner_handoff.py"
       - "tools/check_site_governance.py"
       - "tests/test_site_governance.py"
       - "tests/test_accessibility_contracts.py"
+      - "tests/test_audit_planner_docs.py"
+      - "tests/test_mobile_docs_navigation.py"
       - ".github/workflows/docs-site.yml"
   workflow_dispatch:
 
@@ -68,6 +76,12 @@ jobs:
         run: |
           set -euo pipefail
           python tools/check_docs_site.py _site --baseurl /GazeAudit
+
+      - name: Verify planner workflow handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/check_planner_handoff.py _site --baseurl /GazeAudit
 
       - name: Verify generated HTML accessibility contracts
         shell: bash

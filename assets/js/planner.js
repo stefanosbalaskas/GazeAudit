@@ -4,10 +4,13 @@
 
   const plannerUrl = root.dataset.plannerIndex;
   const methodUrl = root.dataset.methodIndex;
+  const workflowUrl = root.dataset.workflowIndex;
   const choices = [...root.querySelectorAll('[data-planner-choice]')];
   const cards = [...root.querySelectorAll('[data-planner-choice-card]')];
   const results = root.querySelector('[data-planner-results]');
   const route = root.querySelector('[data-planner-route]');
+  const workflowSection = root.querySelector('[data-planner-workflows]');
+  const workflowList = root.querySelector('[data-planner-workflow-list]');
   const empty = root.querySelector('[data-planner-empty]');
   const actions = root.querySelector('[data-planner-actions]');
   const count = root.querySelector('[data-planner-count]');
@@ -21,12 +24,31 @@
   const relative = (url) => `${document.body.dataset.baseurl || ''}${url}`;
   const selectedIds = () => choices.filter((input) => input.checked).map((input) => input.value);
 
-  Promise.all([fetch(plannerUrl).then((r) => r.json()), fetch(methodUrl).then((r) => r.json())])
-    .then(([rules, methods]) => {
+  Promise.all([
+    fetch(plannerUrl).then((r) => r.json()),
+    fetch(methodUrl).then((r) => r.json()),
+    fetch(workflowUrl).then((r) => r.json())
+  ])
+    .then(([rules, methods, workflows]) => {
       const ruleMap = new Map(rules.map((rule) => [rule.id, rule]));
       const methodMap = new Map(methods.map((method) => [method.id, method]));
       const invalid = rules.flatMap((rule) => rule.methods.filter((id) => !methodMap.has(id)));
       if (invalid.length) throw new Error(`Unknown planner method ids: ${invalid.join(', ')}`);
+
+      const workflowMethods = workflows.flatMap((workflow) => workflow.methods);
+      const invalidWorkflowMethods = workflowMethods.filter((id) => !methodMap.has(id));
+      if (invalidWorkflowMethods.length) {
+        throw new Error(`Unknown workflow handoff method ids: ${invalidWorkflowMethods.join(', ')}`);
+      }
+      const workflowCounts = new Map();
+      workflowMethods.forEach((id) => workflowCounts.set(id, (workflowCounts.get(id) || 0) + 1));
+      const duplicatedWorkflowMethods = [...workflowCounts.entries()]
+        .filter(([, total]) => total !== 1)
+        .map(([id]) => id);
+      if (duplicatedWorkflowMethods.length) {
+        throw new Error(`Workflow handoff methods must be unique: ${duplicatedWorkflowMethods.join(', ')}`);
+      }
+
       root.dataset.catalogState = 'verified';
 
       const params = new URLSearchParams(window.location.search);
@@ -50,6 +72,13 @@
         });
 
         const ordered = methods.filter((method) => wanted.has(method.id));
+        const handoffs = workflows
+          .map((workflow) => ({
+            ...workflow,
+            matchedMethods: workflow.methods.filter((methodId) => wanted.has(methodId))
+          }))
+          .filter((workflow) => workflow.matchedMethods.length);
+
         count.textContent = String(ordered.length);
         cards.forEach((card) => card.classList.toggle('is-selected', card.querySelector('input')?.checked));
 
@@ -61,8 +90,10 @@
         if (!ordered.length) {
           results.hidden = true;
           actions.hidden = true;
+          workflowSection.hidden = true;
           empty.hidden = false;
           route.innerHTML = '';
+          workflowList.innerHTML = '';
           return;
         }
 
@@ -91,6 +122,28 @@
               </div>
               <div class="planner-evidence-boundary"><strong>Evidence boundary</strong>${evidence}</div>
             </div>
+          </article>`;
+        }).join('');
+
+        workflowSection.hidden = !handoffs.length;
+        workflowList.innerHTML = handoffs.map((workflow) => {
+          const matched = workflow.matchedMethods
+            .map((methodId) => methodMap.get(methodId))
+            .filter(Boolean);
+          const methodChips = matched
+            .map((method) => `<span>${esc(method.title)}</span>`)
+            .join('');
+          return `<article class="planner-workflow-card">
+            <div class="planner-workflow-copy">
+              <span class="planner-kicker">${esc(workflow.title)}</span>
+              <h3>${esc(workflow.label)}</h3>
+              <p>${esc(workflow.description)}</p>
+            </div>
+            <div class="planner-workflow-match">
+              <strong>Matched from this plan</strong>
+              <div>${methodChips}</div>
+            </div>
+            <a class="button" href="${relative(workflow.url)}">Open workflow →</a>
           </article>`;
         }).join('');
       };

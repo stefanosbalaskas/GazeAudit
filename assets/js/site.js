@@ -290,3 +290,91 @@
     }
   });
 })();
+
+(() => {
+  const body = document.body;
+  const docsShell = document.querySelector('.docs-shell');
+  const docsNav = document.querySelector('[data-docs-nav]');
+  const toc = document.querySelector('[data-toc]');
+  if (!docsShell || !docsNav) return;
+
+  body.classList.add('site-js');
+
+  const dock = document.createElement('nav');
+  dock.className = 'mobile-doc-dock';
+  dock.dataset.mobileDocDock = '';
+  dock.setAttribute('aria-label', 'Documentation shortcuts');
+  dock.innerHTML = `
+    <button type="button" data-mobile-doc-open="browse">Browse docs</button>
+    <button type="button" data-mobile-doc-open="toc">On this page</button>
+    <button type="button" data-search-open>Search</button>`;
+
+  const mobileDocDialog = document.createElement('dialog');
+  mobileDocDialog.className = 'mobile-doc-dialog';
+  mobileDocDialog.dataset.mobileDocDialog = '';
+  mobileDocDialog.setAttribute('aria-labelledby', 'mobile-doc-dialog-title');
+  mobileDocDialog.innerHTML = `
+    <div class="mobile-doc-dialog-inner">
+      <div class="mobile-doc-dialog-head">
+        <div>
+          <p class="eyebrow">Documentation</p>
+          <h2 id="mobile-doc-dialog-title">Browse documentation</h2>
+        </div>
+        <button type="button" class="mobile-doc-close" data-mobile-doc-close aria-label="Close documentation navigator">×</button>
+      </div>
+      <div class="mobile-doc-dialog-content" data-mobile-doc-content></div>
+    </div>`;
+
+  docsShell.insertBefore(dock, docsShell.firstChild);
+  document.body.appendChild(mobileDocDialog);
+
+  const mobileDocTitle = mobileDocDialog.querySelector('#mobile-doc-dialog-title');
+  const mobileDocContent = mobileDocDialog.querySelector('[data-mobile-doc-content]');
+  const tocButton = dock.querySelector('[data-mobile-doc-open="toc"]');
+
+  const openMobileDocs = (mode) => {
+    if (!mobileDocContent || !mobileDocTitle) return;
+    mobileDocContent.innerHTML = '';
+    if (mode === 'toc') {
+      mobileDocTitle.textContent = 'On this page';
+      if (toc && toc.querySelector('a')) {
+        const clone = toc.cloneNode(true);
+        clone.removeAttribute('data-toc');
+        clone.classList.add('mobile-doc-toc');
+        mobileDocContent.appendChild(clone);
+      } else {
+        mobileDocContent.innerHTML = '<p class="mobile-doc-empty">This page has no section headings.</p>';
+      }
+    } else {
+      mobileDocTitle.textContent = 'Browse documentation';
+      const clone = docsNav.cloneNode(true);
+      clone.removeAttribute('data-docs-nav');
+      clone.classList.add('mobile-doc-browser');
+      mobileDocContent.appendChild(clone);
+    }
+    if (typeof mobileDocDialog.showModal === 'function') mobileDocDialog.showModal();
+    else mobileDocDialog.setAttribute('open', '');
+  };
+
+  if (tocButton && (!toc || !toc.querySelector('a'))) tocButton.disabled = true;
+
+  dock.querySelectorAll('[data-mobile-doc-open]').forEach((button) => {
+    button.addEventListener('click', () => openMobileDocs(button.dataset.mobileDocOpen));
+  });
+
+  const closeMobileDocs = () => {
+    if (typeof mobileDocDialog.close === 'function') mobileDocDialog.close();
+    else mobileDocDialog.removeAttribute('open');
+  };
+  mobileDocDialog.querySelector('[data-mobile-doc-close]')?.addEventListener('click', closeMobileDocs);
+  mobileDocDialog.addEventListener('click', (event) => {
+    if (event.target === mobileDocDialog) closeMobileDocs();
+  });
+  mobileDocContent?.addEventListener('click', (event) => {
+    if (event.target.closest('a')) closeMobileDocs();
+  });
+
+  dock.querySelector('[data-search-open]')?.addEventListener('click', () => {
+    document.querySelector('.mobile-menu [data-search-open], .header-actions [data-search-open]')?.click();
+  });
+})();
