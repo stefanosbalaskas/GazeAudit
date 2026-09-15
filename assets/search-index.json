@@ -5,11 +5,12 @@ layout: null
 {% assign search_pages = site.pages | sort: "url" %}
 {% assign first_item = true %}
 {% for item in search_pages %}
-  {% if item.title and item.description and item.url contains '/docs/' %}
+  {% if item.title and item.url contains '/docs/' %}
     {% unless first_item %},{% endunless %}
     {% assign search_category = item.search_category | default: item.kicker | default: 'Documentation' %}
-    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ item.description }} {{ item.url }}{% endcapture %}
-    {"title":{{ item.title | jsonify }},"category":{{ search_category | jsonify }},"url":{{ item.url | jsonify }},"description":{{ item.description | jsonify }},"keywords":{{ search_keywords | strip | jsonify }}}
+    {% assign search_description = item.description | default: item.title %}
+    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ search_description }} {{ item.url }}{% endcapture %}
+    {"title":{{ item.title | jsonify }},"category":{{ search_category | jsonify }},"url":{{ item.url | jsonify }},"description":{{ search_description | jsonify }},"keywords":{{ search_keywords | strip | jsonify }}}
     {% assign first_item = false %}
   {% endif %}
 {% endfor %}
