@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import runpy
+from html import escape
 from pathlib import Path
 
 import matplotlib
@@ -32,7 +33,6 @@ from gazeaudit import (
     plot_specification_curve,
     plot_threshold_sweep,
     plot_trial_readiness,
-    readiness_policy_table,
     sampling_sensitivity_curve,
 )
 
@@ -53,6 +53,20 @@ def _endpoint(study) -> float:
     return float(np.nanmean(values) - 0.75)
 
 
+def _inject_accessibility(text: str, title: str, description: str) -> str:
+    start = text.find("<svg")
+    if start < 0:
+        raise RuntimeError("generated SVG root element is missing")
+    end = text.find(">", start)
+    if end < 0:
+        raise RuntimeError("generated SVG root element is malformed")
+    accessible = (
+        f"\n <title>{escape(title, quote=False)}</title>"
+        f"\n <desc>{escape(description, quote=False)}</desc>"
+    )
+    return text[: end + 1] + accessible + text[end + 1 :]
+
+
 def _save(fig, filename: str, title: str, description: str, category: str) -> dict[str, str]:
     path = OUTPUT / filename
     fig.savefig(
@@ -62,7 +76,8 @@ def _save(fig, filename: str, title: str, description: str, category: str) -> di
         metadata={"Title": title, "Description": description, "Creator": "GazeAudit", "Date": None},
     )
     plt.close(fig)
-    text = path.read_text(encoding="utf-8")
+    text = _inject_accessibility(path.read_text(encoding="utf-8"), title, description)
+    path.write_text(text, encoding="utf-8")
     if "<title>" not in text or "<desc>" not in text:
         raise RuntimeError(f"SVG accessibility metadata missing from {filename}")
     return {
