@@ -5,6 +5,7 @@
   {% assign page_description = page.description | default: site.description %}
   {% assign docs_revision = site.github.build_revision | default: 'local-build' %}
   {% assign docs_revision_short = docs_revision | slice: 0, 8 %}
+  {% assign docs_source_ref = site.github.build_revision | default: 'main' %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
@@ -50,7 +51,7 @@
         </span>
       </a>
 
-      <nav class="top-nav" aria-label="Primary">
+      <nav class="top-nav" aria-label="Primary" data-primary-nav>
         <a href="{{ '/docs/' | relative_url }}">Docs</a>
         <a href="{{ '/docs/workspace/' | relative_url }}">Workspace</a>
         <a href="{{ '/docs/planner/' | relative_url }}">Planner</a>
@@ -73,9 +74,10 @@
       </div>
     </div>
 
-    <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile navigation" hidden>
+    <nav id="mobile-menu" class="mobile-menu" data-mobile-menu data-mobile-primary-nav aria-label="Mobile navigation" hidden>
       <button class="mobile-search" type="button" data-search-open>Search documentation</button>
       <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+      <a href="{{ '/docs/guides/first-real-audit/' | relative_url }}">Use your own data</a>
       <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
       <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
       <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
@@ -109,6 +111,7 @@
             <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
+            <a href="{{ '/docs/guides/first-real-audit/' | relative_url }}">First real audit</a>
             <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
             <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
             <a href="{{ '/docs/faq/' | relative_url }}">FAQ</a>
@@ -123,6 +126,7 @@
             <a href="{{ '/docs/guides/interoperability/' | relative_url }}">Interoperability</a>
 
             <p class="nav-label">Examples</p>
+            <a href="{{ '/docs/examples/first-real-audit/' | relative_url }}">First real audit example</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
             <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
             <a href="{{ '/docs/examples/analysis-readiness/' | relative_url }}">Analysis readiness</a>
@@ -133,6 +137,7 @@
 
             <p class="nav-label">Research workflows</p>
             <a href="{{ '/docs/workflows/' | relative_url }}">Workflow map</a>
+            <a href="{{ '/docs/workflows/first-study-audit/' | relative_url }}">First-study audit</a>
             <a href="{{ '/docs/workflows/measurement-audit/' | relative_url }}">Measurement audit</a>
             <a href="{{ '/docs/workflows/robustness-audit/' | relative_url }}">Robustness audit</a>
             <a href="{{ '/docs/workflows/reproducible-publication/' | relative_url }}">Reproducible publication</a>
@@ -163,6 +168,13 @@
         <article class="doc-article">
           <nav class="breadcrumbs" aria-label="Breadcrumb" data-breadcrumbs></nav>
           {% if page.kicker %}<p class="page-kicker">{{ page.kicker }}</p>{% endif %}
+          <div class="doc-tools" aria-label="Page tools">
+            <span class="doc-tools-context">Development docs{% if site.github.build_revision %} · <code>{{ docs_revision_short }}</code>{% endif %}</span>
+            <div class="doc-tools-actions">
+              <button type="button" class="doc-tool-copy" data-copy-page-link>Copy page link</button>
+              {% if page.path %}<a href="https://github.com/stefanosbalaskas/GazeAudit/blob/{{ docs_source_ref }}/{{ page.path }}">View source</a>{% endif %}
+            </div>
+          </div>
           {{ content }}
           <nav class="page-pagination" aria-label="Previous and next documentation pages" data-page-pagination></nav>
         </article>
@@ -202,6 +214,7 @@
         <p class="footer-provenance">Stable release v{{ site.release_version }} · {{ site.docs_channel }} docs{% if site.github.build_revision %} · build <a href="https://github.com/stefanosbalaskas/GazeAudit/commit/{{ site.github.build_revision }}"><code>{{ docs_revision_short }}</code></a>{% endif %}</p>
       </div>
       <div class="footer-links">
+        <a href="{{ '/docs/guides/first-real-audit/' | relative_url }}">First real audit</a>
         <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
         <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
         <a href="https://doi.org/10.5281/zenodo.22757340">DOI 10.5281/zenodo.22757340</a>
