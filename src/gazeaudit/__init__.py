@@ -121,6 +121,21 @@ from .missingness import (
 )
 from .multiverse import PipelineSpace, run_specs
 from .peyes_adapter import PeyesDetectorAdapter, make_peyes_detector, run_peyes_detector
+from .plotting import (
+    plot_aoi_probability_profile,
+    plot_cohort_impact,
+    plot_factor_sensitivity,
+    plot_gaze_trajectory,
+    plot_participant_readiness,
+    plot_policy_tradeoffs,
+    plot_qc_issue_profile,
+    plot_recovery_matrix,
+    plot_repair_comparison,
+    plot_sensitivity_curve,
+    plot_specification_curve,
+    plot_threshold_sweep,
+    plot_trial_readiness,
+)
 from .provenance import (
     canonical_json,
     fingerprint,
@@ -163,21 +178,6 @@ from .readiness import (
     verify_repair_comparison,
     verify_repair_comparison_manifest,
     write_analysis_readiness_artifacts,
-)
-from .plotting import (
-    plot_aoi_probability_profile,
-    plot_cohort_impact,
-    plot_factor_sensitivity,
-    plot_gaze_trajectory,
-    plot_participant_readiness,
-    plot_policy_tradeoffs,
-    plot_qc_issue_profile,
-    plot_recovery_matrix,
-    plot_repair_comparison,
-    plot_sensitivity_curve,
-    plot_specification_curve,
-    plot_threshold_sweep,
-    plot_trial_readiness,
 )
 from .robustness import (
     effect_stability,
