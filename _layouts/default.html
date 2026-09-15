@@ -168,7 +168,7 @@
         <article class="doc-article">
           <nav class="breadcrumbs" aria-label="Breadcrumb" data-breadcrumbs></nav>
           {% if page.kicker %}<p class="page-kicker">{{ page.kicker }}</p>{% endif %}
-          <div class="doc-tools" aria-label="Page tools">
+          <div class="doc-tools" role="group" aria-label="Page tools">
             <span class="doc-tools-context">Development docs{% if site.github.build_revision %} · <code>{{ docs_revision_short }}</code>{% endif %}</span>
             <div class="doc-tools-actions">
               <button type="button" class="doc-tool-copy" data-copy-page-link>Copy page link</button>
