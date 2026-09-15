@@ -70,7 +70,10 @@ def test_homepage_practical_start_routes_are_explicit_and_non_diagnostic() -> No
         "I have gaze data",
         "I am learning the package",
         "I am designing an audit",
-        "Thresholds, exclusions, AOIs, perturbations, endpoints, and validity judgements remain researcher-owned",
+        (
+            "Thresholds, exclusions, AOIs, perturbations, endpoints, and validity "
+            "judgements remain researcher-owned"
+        ),
         "Audit your own data →",
     ):
         assert contract in script
