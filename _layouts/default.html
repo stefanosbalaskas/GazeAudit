@@ -1,13 +1,26 @@
 <!doctype html>
 <html lang="en" data-theme="auto">
 <head>
+  {% assign page_title = page.title | default: site.title %}
+  {% assign page_description = page.description | default: site.description %}
+  {% assign docs_revision = site.github.build_revision | default: 'local-build' %}
+  {% assign docs_revision_short = docs_revision | slice: 0, 8 %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
   <meta name="color-scheme" content="light dark">
   <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
-  <meta name="description" content="{% if page.description %}{{ page.description | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+  <meta name="description" content="{{ page_description | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title | escape }} · {{ site.title }}">
+  <meta property="og:description" content="{{ page_description | escape }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ page_title | escape }} · {{ site.title }}">
+  <meta name="twitter:description" content="{{ page_description | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ '/sitemap.xml' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/enhancements.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}">
@@ -48,7 +61,7 @@
         <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K" aria-label="Search documentation">
           <span>Search</span><kbd>Ctrl K</kbd>
         </button>
-        <span class="version-badge">v0.1.0</span>
+        <a class="version-badge version-badge-link" href="{{ '/docs/reference/site-provenance/' | relative_url }}" title="Stable release v{{ site.release_version }}; this site documents {{ site.docs_channel }} main">v{{ site.release_version }} · {{ site.docs_channel }} docs</a>
         <a class="icon-link" href="https://github.com/stefanosbalaskas/GazeAudit" aria-label="GazeAudit on GitHub">GitHub</a>
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">◐</button>
         <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation">☰</button>
@@ -65,6 +78,7 @@
       <a href="{{ '/docs/case-studies/' | relative_url }}">Case studies</a>
       <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
       <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
+      <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation</a>
     </nav>
   </header>
@@ -126,6 +140,8 @@
 
             <p class="nav-label">Reference</p>
             <a href="{{ '/docs/reference/api-map/' | relative_url }}">API map</a>
+            <a href="{{ '/docs/reference/core-api-inventory/' | relative_url }}">Core API inventory</a>
+            <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Documentation provenance</a>
             <a href="{{ '/docs/CITATION_AND_REUSE.html' | relative_url }}">Citation & reuse</a>
             <a href="{{ '/docs/RELEASE_NOTES_0.1.0.html' | relative_url }}">Release notes</a>
           </nav>
@@ -172,8 +188,10 @@
       <div>
         <strong>GazeAudit</strong>
         <p>Measurement uncertainty and inferential robustness for eye-tracking research.</p>
+        <p class="footer-provenance">Stable release v{{ site.release_version }} · {{ site.docs_channel }} docs{% if site.github.build_revision %} · build <a href="https://github.com/stefanosbalaskas/GazeAudit/commit/{{ site.github.build_revision }}"><code>{{ docs_revision_short }}</code></a>{% endif %}</p>
       </div>
       <div class="footer-links">
+        <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
         <a href="https://doi.org/10.5281/zenodo.22757340">DOI 10.5281/zenodo.22757340</a>
         <a href="https://pypi.org/project/gazeaudit/0.1.0/">PyPI</a>
         <a href="https://github.com/stefanosbalaskas/GazeAudit">GitHub</a>
