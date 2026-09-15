@@ -13,8 +13,8 @@ def test_mobile_docs_navigation_is_progressive_enhancement() -> None:
     script = _text("assets/js/site.js")
     style = _text("assets/css/enhancements.css")
     assert "body.classList.add('site-js')" in script
-    assert "data-mobile-doc-dock" in script
-    assert "data-mobile-doc-dialog" in script
+    assert "dataset.mobileDocDock" in script
+    assert "dataset.mobileDocDialog" in script
     assert "cloneNode(true)" in script
     assert ".site-js .docs-sidebar" in style
     assert "@media (max-width: 820px)" in style
