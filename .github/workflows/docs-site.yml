@@ -1,6 +1,23 @@
 name: docs-site
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "_config.yml"
+      - "_layouts/**"
+      - "assets/**"
+      - "docs/**"
+      - "index.md"
+      - "README.md"
+      - "robots.txt"
+      - "sitemap.xml"
+      - "src/gazeaudit/__init__.py"
+      - "tools/check_docs_site.py"
+      - "tools/check_site_governance.py"
+      - "tests/test_site_governance.py"
+      - ".github/workflows/docs-site.yml"
   pull_request:
     paths:
       - "_config.yml"
@@ -9,7 +26,12 @@ on:
       - "docs/**"
       - "index.md"
       - "README.md"
+      - "robots.txt"
+      - "sitemap.xml"
+      - "src/gazeaudit/__init__.py"
       - "tools/check_docs_site.py"
+      - "tools/check_site_governance.py"
+      - "tests/test_site_governance.py"
       - ".github/workflows/docs-site.yml"
   workflow_dispatch:
 
@@ -23,6 +45,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Verify site governance contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/check_site_governance.py
 
       - name: Build documentation site with GitHub Pages Jekyll
         uses: actions/jekyll-build-pages@v1
