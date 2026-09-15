@@ -3,6 +3,15 @@
   const plannerIndexUrl = `${baseurl}/assets/planner-index.json`;
   const plannerUrl = `${baseurl}/docs/planner/`;
 
+  const ensurePlannerStyles = () => {
+    if (document.querySelector('link[data-landing-planner-styles]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `${baseurl}/assets/css/landing-planner.css`;
+    link.dataset.landingPlannerStyles = '';
+    document.head.appendChild(link);
+  };
+
   const addPlannerJourney = async () => {
     const router = document.querySelector('[data-research-router]');
     if (!router) return;
@@ -46,6 +55,7 @@
       const invalid = presets.flatMap((preset) => preset.choices.filter((id) => !validIds.has(id)));
       if (invalid.length) throw new Error(`Homepage preset references unknown planner ids: ${invalid.join(', ')}`);
 
+      ensurePlannerStyles();
       const section = document.createElement('section');
       section.className = 'section landing-planner-section';
       section.dataset.landingPlanner = '';
