@@ -45,6 +45,14 @@ def _candidate_targets(site_root: Path, source: Path, raw_reference: str, baseur
     return [target, target.with_suffix(".html"), target / "index.html"]
 
 
+def _resolves(site_root: Path, source: Path, reference: str, baseurl: str) -> bool:
+    candidates = _candidate_targets(site_root, source, f"{baseurl}{reference}", baseurl)
+    return bool(candidates) and any(
+        candidate.resolve().is_relative_to(site_root.resolve()) and candidate.exists()
+        for candidate in candidates
+    )
+
+
 def _verify_search_index(site_root: Path, *, baseurl: str) -> None:
     search_path = site_root / "assets/search-index.json"
     try:
@@ -88,6 +96,105 @@ def _verify_search_index(site_root: Path, *, baseurl: str) -> None:
         raise SystemExit(f"search index target failures ({len(failures)}):\n{preview}{extra}")
 
 
+def _verify_method_index(site_root: Path, *, baseurl: str) -> None:
+    method_path = site_root / "assets/method-index.json"
+    try:
+        methods = json.loads(method_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"invalid generated method index: {exc}") from exc
+
+    if not isinstance(methods, list) or len(methods) != 10:
+        raise SystemExit(
+            "unexpected method catalog: "
+            f"{type(methods).__name__}, entries={len(methods) if isinstance(methods, list) else 'n/a'}"
+        )
+
+    required_keys = {
+        "id",
+        "phase",
+        "phase_key",
+        "title",
+        "question",
+        "purpose",
+        "functions",
+        "guide_url",
+        "guide_label",
+        "example_url",
+        "example_label",
+        "plot_url",
+        "plot_label",
+        "evidence_url",
+        "evidence_label",
+        "evidence_note",
+        "keywords",
+    }
+    expected_phases = {
+        "preflight",
+        "governance",
+        "measurement",
+        "robustness",
+        "sensitivity",
+        "benchmarking",
+        "evidence",
+        "integration",
+    }
+    ids: set[str] = set()
+    phases: set[str] = set()
+    failures: list[str] = []
+    source = site_root / "docs/methods/index.html"
+
+    for position, item in enumerate(methods):
+        if not isinstance(item, dict):
+            failures.append(f"method {position}: expected object")
+            continue
+        missing = required_keys.difference(item)
+        if missing:
+            failures.append(f"method {position}: missing keys {sorted(missing)}")
+            continue
+
+        method_id = item["id"]
+        if not isinstance(method_id, str) or not method_id:
+            failures.append(f"method {position}: invalid id {method_id!r}")
+        elif method_id in ids:
+            failures.append(f"method {position}: duplicate id {method_id!r}")
+        else:
+            ids.add(method_id)
+
+        phase = item["phase_key"]
+        if not isinstance(phase, str) or phase not in expected_phases:
+            failures.append(f"method {position}: invalid phase_key {phase!r}")
+        else:
+            phases.add(phase)
+
+        functions = item["functions"]
+        if not isinstance(functions, list) or not functions or not all(isinstance(name, str) and name for name in functions):
+            failures.append(f"method {position}: functions must be a non-empty string list")
+
+        for field in ("guide_url", "example_url", "plot_url"):
+            reference = item[field]
+            if not isinstance(reference, str) or not reference.startswith("/"):
+                failures.append(f"method {position}: invalid {field} {reference!r}")
+            elif not _resolves(site_root, source, reference, baseurl):
+                failures.append(f"method {position}: unresolved {field} {reference!r}")
+
+        evidence = item["evidence_url"]
+        if evidence:
+            if not isinstance(evidence, str) or not evidence.startswith("/"):
+                failures.append(f"method {position}: invalid evidence_url {evidence!r}")
+            elif not _resolves(site_root, source, evidence, baseurl):
+                failures.append(f"method {position}: unresolved evidence_url {evidence!r}")
+            if not item["evidence_label"]:
+                failures.append(f"method {position}: evidence URL requires evidence_label")
+
+    if phases != expected_phases:
+        failures.append(f"method phases mismatch: expected {sorted(expected_phases)}, got {sorted(phases)}")
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = "" if len(failures) <= 30 else f"\n... and {len(failures) - 30} more"
+        raise SystemExit(f"method index failures ({len(failures)}):\n{preview}{extra}")
+
+
 def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     if not site_root.is_dir():
         raise SystemExit(f"site root does not exist: {site_root}")
@@ -95,6 +202,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     required = [
         "index.html",
         "docs/index.html",
+        "docs/methods/index.html",
         "docs/plots/index.html",
         "docs/reference/core-api-inventory/index.html",
         "docs/reference/site-provenance/index.html",
@@ -108,10 +216,13 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/enhancements.css",
         "assets/css/gallery.css",
         "assets/css/landing.css",
+        "assets/css/methods.css",
         "assets/js/site.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
+        "assets/js/methods.js",
         "assets/search-index.json",
+        "assets/method-index.json",
         "assets/plots/specification-curve-code.svg",
         "assets/plots/trial-readiness.svg",
         "assets/plots/cohort-impact.svg",
@@ -172,6 +283,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         raise SystemExit(f"broken generated-site references ({len(failures)}):\n{preview}{extra}")
 
     _verify_search_index(site_root, baseurl=baseurl)
+    _verify_method_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
 
 

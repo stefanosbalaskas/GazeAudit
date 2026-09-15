@@ -20,6 +20,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Goal | Recommended page |
 |---|---|
 | Install and run the smallest example | [Getting started](getting-started/) |
+| Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
 | Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
 | Declare participant/trial readiness policies and preview cohort impact | [Analysis-readiness governance](guides/analysis-readiness/) |
 | Browse reproducible code-generated figures | [Plot gallery](plots/) |
@@ -31,6 +32,12 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Create deterministic publication evidence | [Publication audits](guides/publication-audits/) |
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
 | Find the right public function | [API map](reference/api-map/) |
+
+## Explore methods by research question
+
+The [method explorer](methods/) connects ten methodological questions to a compact public API route, a guide or runnable example, a diagnostic figure, and an explicit evidence boundary. Use it when you know **what decision you need to defend** but do not yet know which GazeAudit functions or workflow page to open.
+
+Its evidence column is deliberately conservative: frozen real-data cases are linked only where they are substantively relevant, while synthetic known-truth benchmarks and live interoperability checks remain labelled as different evidence types.
 
 ## Data onboarding
 

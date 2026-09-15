@@ -1,0 +1,215 @@
+- id: structural-qc
+  phase: Preflight
+  phase_key: preflight
+  title: Structural QC
+  question: Is the canonical gaze table structurally safe to inspect downstream?
+  purpose: Detect non-finite coordinates or timestamps, missing identifiers, duplicate timestamps, and decreasing within-trial time without turning those diagnostics into a universal quality score.
+  functions:
+    - GazeStudy
+    - audit_study_qc
+    - study_qc_diagnostics
+    - build_study_qc_audit
+  guide_url: /docs/guides/data-onboarding/
+  guide_label: Data onboarding guide
+  example_url: /docs/examples/study-preflight/
+  example_label: Study preflight example
+  plot_url: /assets/plots/qc-issue-profile.svg
+  plot_label: QC issue profile
+  evidence_url: ""
+  evidence_label: ""
+  evidence_note: Descriptive preflight; no frozen real-data outcome is assigned to this method family.
+  keywords: qc preflight structure timestamps identifiers duplicates finite coordinates gaze study diagnostics
+
+- id: readiness-governance
+  phase: Governance
+  phase_key: governance
+  title: Analysis-readiness governance
+  question: What cohort consequences follow from the structural policy I declare?
+  purpose: Aggregate trial and participant diagnostics, preview retention consequences, compare declared policies, and preserve the policy as provenance rather than as an automatic exclusion rule.
+  functions:
+    - ReadinessThresholds
+    - evaluate_analysis_readiness
+    - cohort_impact_preview
+    - readiness_policy_table
+  guide_url: /docs/guides/analysis-readiness/
+  guide_label: Readiness guide
+  example_url: /docs/examples/analysis-readiness/
+  example_label: Readiness example
+  plot_url: /assets/plots/cohort-impact.svg
+  plot_label: Cohort-impact preview
+  evidence_url: ""
+  evidence_label: ""
+  evidence_note: Policy-relative governance; passing a policy is not a universal scientific-validity judgement.
+  keywords: readiness threshold cohort participant trial governance policy retention exclusion provenance
+
+- id: aoi-uncertainty
+  phase: Measurement
+  phase_key: measurement
+  title: AOI measurement uncertainty
+  question: Would the endpoint change if gaze coordinates near AOI boundaries were not treated as exact?
+  purpose: Represent declared gaze-position error, estimate probabilistic AOI membership, compare it with hard assignment, and propagate measurement uncertainty into dwell or fixation endpoints.
+  functions:
+    - GaussianGazeErrorModel
+    - aoi_probabilities
+    - compare_hard_probabilistic
+    - expected_dwell
+  guide_url: /docs/guides/aoi-uncertainty/
+  guide_label: AOI uncertainty guide
+  example_url: /docs/examples/aoi-boundary/
+  example_label: Boundary example
+  plot_url: /assets/plots/aoi-probability-profile.svg
+  plot_label: AOI probability profile
+  evidence_url: /docs/case-studies/korthals-target-tracking/
+  evidence_label: Korthals frozen case
+  evidence_note: The frozen Korthals audit retained a negative paired effect under the prespecified uncertainty model.
+  keywords: aoi uncertainty boundary gaussian error probability membership dwell fixation korthals
+
+- id: specification-robustness
+  phase: Robustness
+  phase_key: robustness
+  title: Specification-space robustness
+  question: Does the endpoint survive other defensible analytical choices?
+  purpose: Declare a finite decision space, execute one common endpoint across valid specifications, and inspect sign, magnitude, and factor sensitivity without searching for a favourable pipeline.
+  functions:
+    - PipelineSpace
+    - run_specs
+    - specification_curve
+    - effect_stability
+  guide_url: /docs/guides/specification-space/
+  guide_label: Specification-space guide
+  example_url: /docs/examples/end-to-end-robustness/
+  example_label: End-to-end audit
+  plot_url: /assets/plots/specification-curve-code.svg
+  plot_label: Specification curve
+  evidence_url: /docs/case-studies/gazebase-incomplete/
+  evidence_label: GazeBase frozen case
+  evidence_note: The frozen GazeBase programme stopped at its predeclared completeness gate rather than forcing a robustness conclusion.
+  keywords: robustness multiverse pipeline specification curve effect stability choices gazebase
+
+- id: sampling-sensitivity
+  phase: Sensitivity
+  phase_key: sensitivity
+  title: Sampling-rate sensitivity
+  question: How much does the endpoint move as temporal sampling resolution is reduced?
+  purpose: Downsample by retaining existing samples nearest a declared target grid and evaluate the same endpoint across controlled sampling rates without coordinate interpolation.
+  functions:
+    - downsample_gaze
+    - sampling_sensitivity_curve
+  guide_url: /docs/guides/specification-space/
+  guide_label: Sensitivity context
+  example_url: /docs/examples/sampling-sensitivity/
+  example_label: Sampling example
+  plot_url: /assets/plots/sampling-sensitivity-code.svg
+  plot_label: Sampling sensitivity
+  evidence_url: /docs/case-studies/pedrotti-sensitivity/
+  evidence_label: Pedrotti frozen case
+  evidence_note: The frozen Pedrotti/de Chambrier audit found materially degraded magnitude recovery at lower sampling rates.
+  keywords: sampling downsample hertz temporal sensitivity recovery pedrotti
+
+- id: missingness-sensitivity
+  phase: Sensitivity
+  phase_key: sensitivity
+  title: Missingness sensitivity
+  question: How robust is the endpoint to controlled amounts and mechanisms of missing gaze data?
+  purpose: Construct declared missingness masks, apply them without hiding the perturbation mechanism, and evaluate endpoint recovery across controlled missingness families.
+  functions:
+    - missingness_mask
+    - inject_missingness
+    - missingness_sensitivity_curve
+    - summarize_missingness
+  guide_url: /docs/guides/specification-space/
+  guide_label: Sensitivity context
+  example_url: /docs/examples/end-to-end-robustness/
+  example_label: Robustness workflow
+  plot_url: /assets/plots/missingness-sensitivity-code.svg
+  plot_label: Missingness sensitivity
+  evidence_url: /docs/case-studies/pedrotti-sensitivity/
+  evidence_label: Pedrotti frozen case
+  evidence_note: The frozen Pedrotti/de Chambrier protocol includes controlled MCAR and single-block missingness recovery.
+  keywords: missingness mcar block mask inject perturbation sensitivity recovery pedrotti
+
+- id: spatial-sensitivity
+  phase: Sensitivity
+  phase_key: sensitivity
+  title: Spatial-error sensitivity
+  question: How dependent is the endpoint on the scale of the declared gaze-error model?
+  purpose: Scale an explicit measurement-error model and rerun a common endpoint across controlled spatial uncertainty levels.
+  functions:
+    - scale_error_model
+    - spatial_sensitivity_curve
+  guide_url: /docs/guides/aoi-uncertainty/
+  guide_label: AOI uncertainty guide
+  example_url: /docs/examples/aoi-boundary/
+  example_label: Boundary example
+  plot_url: /assets/plots/factor-sensitivity.svg
+  plot_label: Factor sensitivity
+  evidence_url: /docs/case-studies/korthals-target-tracking/
+  evidence_label: Korthals measurement case
+  evidence_note: Korthals provides frozen measurement-error propagation evidence; it is not a generic spatial-sensitivity benchmark.
+  keywords: spatial error model scale uncertainty sensitivity aoi gaussian
+
+- id: known-truth-recovery
+  phase: Benchmarking
+  phase_key: benchmarking
+  title: Known-truth recovery
+  question: Can the analysis family recover a conclusion when the generating truth is known?
+  purpose: Simulate declared AOI effects, evaluate recovery under a predeclared conclusion rule, and compare analysis families without confusing synthetic recovery with empirical validation.
+  functions:
+    - simulate_known_aoi_effect
+    - benchmark_known_aoi_effect
+    - ConclusionRule
+    - summarize_conclusion_recovery
+  guide_url: /docs/SCIENTIFIC_METHODS.html
+  guide_label: Scientific methods
+  example_url: /docs/examples/end-to-end-robustness/
+  example_label: Audit context
+  plot_url: /assets/plots/recovery-matrix.svg
+  plot_label: Recovery matrix
+  evidence_url: ""
+  evidence_label: ""
+  evidence_note: Synthetic known-truth benchmark by design; it is not a frozen real-data case study.
+  keywords: benchmark known truth simulation recovery conclusion rule synthetic
+
+- id: publication-provenance
+  phase: Evidence
+  phase_key: evidence
+  title: Publication provenance
+  question: Can another researcher verify exactly what was declared, run, and reported?
+  purpose: Bind results, rules, manifests, methods text, software metadata, and content fingerprints into deterministic publication evidence that can be verified after writing.
+  functions:
+    - build_conclusion_audit_bundle
+    - verify_publication_audit_bundle
+    - render_publication_methods
+    - fingerprint
+  guide_url: /docs/guides/publication-audits/
+  guide_label: Publication-audit guide
+  example_url: /docs/workflows/reproducible-publication/
+  example_label: Publication workflow
+  plot_url: /assets/plots/policy-tradeoffs.svg
+  plot_label: Policy trade-offs
+  evidence_url: /docs/VALIDATION_MATRIX.html
+  evidence_label: Frozen validation matrix
+  evidence_note: The validation matrix shows how outcome labels remain bound to exact protocol and execution records.
+  keywords: publication provenance fingerprint manifest reproducibility audit bundle methods evidence
+
+- id: interoperability
+  phase: Integration
+  phase_key: integration
+  title: Interoperability
+  question: How do I bring external eye-tracking data or detector outputs into the canonical audit workflow?
+  purpose: Convert supported BIDS, pymovements, pEYES, or custom adapter inputs into explicit GazeAudit contracts while keeping upstream semantics visible.
+  functions:
+    - read_bids_eyetrack
+    - from_pymovements_gaze
+    - make_peyes_detector
+    - run_detector_backend
+  guide_url: /docs/guides/interoperability/
+  guide_label: Interoperability guide
+  example_url: /docs/guides/data-onboarding/
+  example_label: Canonical onboarding
+  plot_url: /assets/plots/gaze-trajectory-aoi.svg
+  plot_label: Gaze trajectory and AOI
+  evidence_url: ""
+  evidence_label: ""
+  evidence_note: Interoperability is guarded by live contract CI; it is not itself a frozen empirical outcome.
+  keywords: bids pymovements peyes detector adapter integration external data trajectory
