@@ -56,7 +56,11 @@ def test_planner_exports_are_portable_and_non_diagnostic() -> None:
     assert "gazeaudit-audit-plan.json" in script
     assert "new Date(" not in script
     assert "Date.now(" not in script
-    assert "Thresholds, exclusions, scientific assumptions, and validity judgements remain researcher-owned." in script
+    boundary = (
+        "Thresholds, exclusions, scientific assumptions, and validity judgements "
+        "remain researcher-owned."
+    )
+    assert boundary in script
 
 
 def test_researcher_utilities_have_generated_site_gate() -> None:
