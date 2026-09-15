@@ -53,7 +53,10 @@ def _verify_search_index(site_root: Path, *, baseurl: str) -> None:
         raise SystemExit(f"invalid generated search index: {exc}") from exc
 
     if not isinstance(index, list) or len(index) < 20:
-        raise SystemExit(f"unexpected documentation search index: {type(index).__name__}, entries={len(index) if isinstance(index, list) else 'n/a'}")
+        raise SystemExit(
+            "unexpected documentation search index: "
+            f"{type(index).__name__}, entries={len(index) if isinstance(index, list) else 'n/a'}"
+        )
 
     required_keys = {"title", "category", "url", "description", "keywords"}
     urls: set[str] = set()
@@ -92,10 +95,15 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     required = [
         "index.html",
         "docs/index.html",
+        "docs/plots/index.html",
+        "docs/reference/core-api-inventory/index.html",
+        "docs/reference/site-provenance/index.html",
         "docs/case-studies/index.html",
         "docs/case-studies/gazebase-incomplete/index.html",
         "docs/case-studies/korthals-target-tracking/index.html",
         "docs/case-studies/pedrotti-sensitivity/index.html",
+        "robots.txt",
+        "sitemap.xml",
         "assets/css/site.css",
         "assets/css/enhancements.css",
         "assets/js/site.js",
@@ -112,6 +120,11 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     missing_required = [path for path in required if not (site_root / path).is_file()]
     if missing_required:
         raise SystemExit(f"missing required generated site files: {missing_required}")
+
+    robots = (site_root / "robots.txt").read_text(encoding="utf-8")
+    sitemap = (site_root / "sitemap.xml").read_text(encoding="utf-8")
+    if "sitemap.xml" not in robots.lower() or "<urlset" not in sitemap:
+        raise SystemExit("generated discoverability endpoints are incomplete")
 
     forbidden = ["src", "tests", "tools", "release", ".github", "pyproject.toml", "README.md"]
     leaked = [path for path in forbidden if (site_root / path).exists()]
@@ -132,7 +145,10 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
             candidates = _candidate_targets(site_root, html_file, reference, baseurl)
             if not candidates:
                 continue
-            if not any(candidate.resolve().is_relative_to(site_root.resolve()) and candidate.exists() for candidate in candidates):
+            if not any(
+                candidate.resolve().is_relative_to(site_root.resolve()) and candidate.exists()
+                for candidate in candidates
+            ):
                 display = html_file.relative_to(site_root)
                 candidate_text = ", ".join(
                     str(path.relative_to(site_root)) if path.is_relative_to(site_root) else str(path)
