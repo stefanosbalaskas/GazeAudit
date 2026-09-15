@@ -106,6 +106,9 @@ def check_search_coverage() -> None:
         "/docs/workspace/",
         "/docs/planner/",
         "/docs/methods/",
+        "/docs/guides/first-real-audit/",
+        "/docs/examples/first-real-audit/",
+        "/docs/workflows/first-study-audit/",
         "/docs/reference/core-api-inventory/",
         "/docs/reference/site-provenance/",
     }
@@ -118,6 +121,9 @@ def check_search_coverage() -> None:
 
     metadata_pages = (
         ROOT / "docs" / "workspace" / "index.md",
+        ROOT / "docs" / "guides" / "first-real-audit.md",
+        ROOT / "docs" / "examples" / "first-real-audit.md",
+        ROOT / "docs" / "workflows" / "first-study-audit.md",
         CORE_API_INVENTORY,
         PROVENANCE_PAGE,
     )
@@ -156,6 +162,11 @@ def check_site_contract() -> None:
         "site.docs_channel",
         "site.release_version",
         "site.github.build_revision",
+        "docs_source_ref",
+        "data-copy-page-link",
+        "View source",
+        "data-primary-nav",
+        "data-mobile-primary-nav",
         "/docs/reference/site-provenance/",
     )
     missing = [token for token in required_layout if token not in layout]
