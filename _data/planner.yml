@@ -1,0 +1,73 @@
+- id: incoming-data
+  group: Starting point
+  label: I am onboarding a new gaze table
+  prompt: I need to inspect structure before analysis decisions.
+  methods:
+    - structural-qc
+    - readiness-governance
+  reason: Start with structural diagnostics, then make any readiness policy explicit before downstream analysis.
+
+- id: external-source
+  group: Starting point
+  label: My data or detector output comes from an external ecosystem
+  prompt: I need a canonical bridge from BIDS, pymovements, pEYES, or a custom adapter.
+  methods:
+    - interoperability
+    - structural-qc
+  reason: Preserve upstream semantics during conversion, then inspect the resulting canonical gaze table structurally.
+
+- id: aoi-boundary
+  group: Measurement
+  label: My endpoint depends on AOI membership near boundaries
+  prompt: Gaze-position error could alter hard AOI assignment.
+  methods:
+    - aoi-uncertainty
+  reason: Represent declared gaze-position error and propagate probabilistic membership into the endpoint.
+
+- id: analysis-choices
+  group: Robustness
+  label: More than one analytical pipeline is defensible
+  prompt: I want to know whether the endpoint depends on reasonable analysis choices.
+  methods:
+    - specification-robustness
+  reason: Declare the finite decision space before execution and evaluate a common endpoint across specifications.
+
+- id: sampling-risk
+  group: Sensitivity
+  label: Sampling rate may affect the endpoint
+  prompt: Temporal resolution differs across devices, studies, or plausible perturbations.
+  methods:
+    - sampling-sensitivity
+  reason: Stress-test the same endpoint over declared sampling rates without silently changing the scientific question.
+
+- id: missingness-risk
+  group: Sensitivity
+  label: Missing gaze data may affect the endpoint
+  prompt: I need to inspect controlled missingness mechanisms or amounts.
+  methods:
+    - missingness-sensitivity
+  reason: Apply declared missingness perturbations and inspect endpoint recovery without hiding the perturbation mechanism.
+
+- id: spatial-error-risk
+  group: Sensitivity
+  label: The scale of gaze-position error is uncertain
+  prompt: I want to inspect dependence on the declared spatial-error model.
+  methods:
+    - spatial-sensitivity
+  reason: Scale the measurement-error model explicitly and compare the same endpoint across controlled uncertainty levels.
+
+- id: known-truth
+  group: Benchmarking
+  label: I need a synthetic known-truth recovery check
+  prompt: I want to test whether an analysis family can recover a prespecified conclusion under simulation.
+  methods:
+    - known-truth-recovery
+  reason: Use a synthetic benchmark with known generating truth; do not interpret recovery as empirical validation.
+
+- id: publication-record
+  group: Evidence
+  label: I need a publication-ready provenance record
+  prompt: Results, rules, manifests, methods text, and software identity must stay verifiable after writing.
+  methods:
+    - publication-provenance
+  reason: Bind outputs and declared decisions into deterministic evidence that can be checked after publication.
