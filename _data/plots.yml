@@ -1,0 +1,127 @@
+- id: qc-issue-profile
+  filename: qc-issue-profile.svg
+  title: Structural QC issue profile
+  category: readiness
+  question: Where are the structural data-shape problems concentrated?
+  function: plot_qc_issue_profile
+  method_ids:
+    - structural-qc
+
+- id: trial-readiness
+  filename: trial-readiness.svg
+  title: Trial-level readiness preview
+  category: readiness
+  question: Which participant-by-trial cells would fail the declared readiness policy?
+  function: plot_trial_readiness
+  method_ids:
+    - readiness-governance
+
+- id: participant-readiness
+  filename: participant-readiness.svg
+  title: Participant readiness profile
+  category: readiness
+  question: Which participants accumulate the largest fraction of policy-failing trials?
+  function: plot_participant_readiness
+  method_ids:
+    - readiness-governance
+
+- id: cohort-impact
+  filename: cohort-impact.svg
+  title: Cohort impact preview
+  category: readiness
+  question: How much data would remain before any exclusion is actually applied?
+  function: plot_cohort_impact
+  method_ids:
+    - readiness-governance
+
+- id: repair-comparison
+  filename: repair-comparison.svg
+  title: Before/after structural QC
+  category: readiness
+  question: What changed after an explicitly performed repair?
+  function: plot_repair_comparison
+  method_ids:
+    - readiness-governance
+
+- id: policy-tradeoffs
+  filename: policy-tradeoffs.svg
+  title: Readiness-policy cohort trade-offs
+  category: readiness
+  question: How do alternative researcher-declared policies change cohort retention?
+  function: plot_policy_tradeoffs
+  method_ids:
+    - readiness-governance
+    - publication-provenance
+
+- id: threshold-sweep
+  filename: threshold-sweep.svg
+  title: Threshold sensitivity
+  category: readiness
+  question: How sensitive is retained cohort size to a declared threshold?
+  function: plot_threshold_sweep
+  method_ids:
+    - readiness-governance
+
+- id: specification-curve
+  filename: specification-curve-code.svg
+  title: Specification curve
+  category: robustness
+  question: How does the endpoint vary across the declared specification space?
+  function: plot_specification_curve
+  method_ids:
+    - specification-robustness
+
+- id: factor-sensitivity
+  filename: factor-sensitivity.svg
+  title: Specification-factor sensitivity
+  category: robustness
+  question: Which declared analytical factors are associated with the largest endpoint shifts?
+  function: plot_factor_sensitivity
+  method_ids:
+    - specification-robustness
+    - spatial-sensitivity
+
+- id: missingness-sensitivity
+  filename: missingness-sensitivity-code.svg
+  title: Missingness sensitivity
+  category: sensitivity
+  question: How does the endpoint behave under controlled missingness perturbations?
+  function: plot_sensitivity_curve
+  method_ids:
+    - missingness-sensitivity
+
+- id: sampling-sensitivity
+  filename: sampling-sensitivity-code.svg
+  title: Sampling-rate sensitivity
+  category: sensitivity
+  question: How does the endpoint behave across controlled target sampling rates?
+  function: plot_sensitivity_curve
+  method_ids:
+    - sampling-sensitivity
+
+- id: gaze-trajectory-aoi
+  filename: gaze-trajectory-aoi.svg
+  title: Gaze trajectory and AOI
+  category: measurement
+  question: How does a gaze path relate spatially to an explicit AOI?
+  function: plot_gaze_trajectory
+  method_ids:
+    - interoperability
+
+- id: aoi-probability-profile
+  filename: aoi-probability-profile.svg
+  title: Probabilistic AOI boundary profile
+  category: measurement
+  question: How does AOI membership probability change around a boundary?
+  function: plot_aoi_probability_profile
+  method_ids:
+    - aoi-uncertainty
+
+- id: recovery-matrix
+  filename: recovery-matrix.svg
+  title: Recovery matrix
+  category: robustness
+  question: Where does endpoint recovery hold across two perturbation dimensions?
+  function: plot_recovery_matrix
+  method_ids:
+    - known-truth-recovery

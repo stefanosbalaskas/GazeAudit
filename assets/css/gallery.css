@@ -90,6 +90,10 @@
   background: var(--surface-solid);
   box-shadow: var(--shadow-sm);
 }
+.plot-card:target {
+  border-color: color-mix(in srgb, var(--brand) 58%, var(--border));
+  box-shadow: 0 0 0 3px var(--brand-soft), var(--shadow-sm);
+}
 .plot-card[hidden] { display: none; }
 .plot-card figure { margin: 0; }
 .plot-card-image-link {
@@ -152,6 +156,35 @@
   font-weight: 820;
   letter-spacing: .06em;
   text-transform: uppercase;
+}
+.plot-method-links {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  flex-wrap: wrap;
+  margin-top: .75rem;
+}
+.plot-method-links > span {
+  color: var(--faint);
+  font-size: .64rem;
+  font-weight: 820;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.plot-method-links a {
+  padding: .22rem .45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 720;
+  text-decoration: none;
+  text-transform: capitalize;
+}
+.plot-method-links a:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
 }
 .plot-card-actions {
   display: flex;

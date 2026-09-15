@@ -44,9 +44,12 @@ Every recommendation comes from a visible planner rule and points to a method fa
 
   <div class="planner-actions" data-planner-actions hidden>
     <button type="button" class="button primary" data-planner-share>Copy plan link</button>
+    <button type="button" class="button" data-planner-copy-brief>Copy audit brief</button>
+    <button type="button" class="button" data-planner-download-json>Download plan JSON</button>
     <button type="button" class="button" data-planner-clear>Clear selections</button>
     <a class="button" href="{{ '/docs/methods/' | relative_url }}">Open full Method explorer</a>
   </div>
+  <p class="planner-export-status" data-planner-export-status aria-live="polite" hidden></p>
 
   <section class="planner-results" data-planner-results hidden aria-live="polite">
     <div class="planner-results-head">
@@ -75,6 +78,12 @@ Every recommendation comes from a visible planner rule and points to a method fa
     <p>Choose the study conditions that are relevant above. If you already know the methodological question, go directly to the <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>.</p>
   </div>
 </div>
+
+## Exporting a plan
+
+The **audit brief** and **JSON plan** are portable navigation records. They preserve the conditions you selected, the deduplicated method route, the reasons those methods entered the route, workflow handoffs, the current plan URL, and the documentation build revision when available. They deliberately do **not** contain invented thresholds, exclusions, diagnoses, or case-study outcomes for your study.
+
+The JSON export has a stable `schema_version` field and is deterministic for the same selection on the same documentation build. No timestamp is inserted, so two collaborators can compare the substantive plan rather than an incidental export time.
 
 ## How the planner is governed
 

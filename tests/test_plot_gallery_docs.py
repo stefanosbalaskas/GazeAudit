@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import runpy
 from pathlib import Path
 
@@ -53,21 +54,42 @@ def test_gallery_manifest_matches_committed_assets() -> None:
     }
 
 
-def test_gallery_page_links_every_code_generated_plot_and_source() -> None:
+def test_governed_plot_catalog_matches_committed_assets() -> None:
+    catalog = _text("_data/plots.yml")
+    filenames = set(re.findall(r"^  filename: (.+\.svg)$", catalog, flags=re.MULTILINE))
+    plot_ids = re.findall(r"^- id: ([a-z0-9-]+)$", catalog, flags=re.MULTILINE)
+    assert filenames == EXPECTED
+    assert len(plot_ids) == 14
+    assert len(plot_ids) == len(set(plot_ids))
+    assert catalog.count("  method_ids:") == 14
+    assert catalog.count("  function: plot_") == 14
+
+
+def test_gallery_page_is_driven_by_governed_catalog() -> None:
     page = _text("docs/plots/index.md")
     assert "data-plot-gallery" in page
     assert "data-plot-gallery-toolbar" in page
     assert "data-gallery-search" in page
     assert "data-gallery-count" in page
+    assert "site.data.plots" in page
+    assert "data-plot-index" in page
+    assert 'id="plot-{{ plot.id }}"' in page
+    assert "plot.method_ids" in page
+    assert "method-" in page
     assert "tools/generate_plot_gallery.py" in page
     assert "src/gazeaudit/plotting.py" in page
     assert "deterministic synthetic demonstration data" in page
-    for filename in EXPECTED:
-        assert filename in page
+    assert "assign plots =" not in page
+
+
+def test_plot_index_is_generated_from_governed_catalog() -> None:
+    index = _text("assets/plot-index.json")
+    assert "layout: null" in index
+    assert "site.data.plots | jsonify" in index
 
 
 def test_gallery_exposes_public_plotting_functions_and_questions() -> None:
-    page = _text("docs/plots/index.md")
+    catalog = _text("_data/plots.yml")
     for function in (
         "plot_qc_issue_profile",
         "plot_trial_readiness",
@@ -83,8 +105,8 @@ def test_gallery_exposes_public_plotting_functions_and_questions() -> None:
         "plot_aoi_probability_profile",
         "plot_recovery_matrix",
     ):
-        assert function in page
-    assert "Question" in page
+        assert function in catalog
+    assert catalog.count("  question:") == 14
 
 
 def test_gallery_controls_target_toolbar_and_grid_separately() -> None:
