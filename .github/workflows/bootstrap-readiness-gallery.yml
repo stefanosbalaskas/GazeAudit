@@ -29,7 +29,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/gazeaudit/__init__.py _layouts/default.html assets/search-index.json assets/plots README.md index.md docs .github/workflows/plot-gallery.yml
+          git add src/gazeaudit/__init__.py _layouts/default.html assets/search-index.json assets/plots README.md index.md docs
           if git diff --cached --quiet; then
             echo "No bootstrap changes"
           else
