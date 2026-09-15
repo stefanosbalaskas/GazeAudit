@@ -1,0 +1,35 @@
+name: fix-readiness-imports
+
+on:
+  push:
+    branches: [feature/analysis-readiness-gallery]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/analysis-readiness-gallery
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Ruff
+        run: python -m pip install "ruff==0.16.7"
+      - name: Apply exact Ruff import fix
+        run: ruff check --fix src/gazeaudit/__init__.py
+      - name: Commit source-only fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/gazeaudit/__init__.py
+          if git diff --cached --quiet; then
+            echo "No import fix required"
+          else
+            git commit -m "style: organize public API imports"
+            git push origin HEAD:feature/analysis-readiness-gallery
+          fi
