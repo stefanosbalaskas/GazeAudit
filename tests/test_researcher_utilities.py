@@ -114,10 +114,10 @@ def test_search_catalog_is_generated_from_page_metadata_and_rendered_output_is_c
     verifier = _text("tools/check_docs_site.py")
     for contract in (
         'site.pages | sort: "url"',
-        "item.title and item.description",
-        "item.url contains '/docs/'",
+        "item.title and item.url contains '/docs/'",
         "item.search_category",
         "item.search_keywords",
+        "item.description | default: item.title",
         "| jsonify",
     ):
         assert contract in source
