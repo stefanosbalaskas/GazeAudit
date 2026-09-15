@@ -54,3 +54,6 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 ## Visual convention
 
 Plots in these example pages are explanatory figures. When they display synthetic values, the page and figure say so explicitly. Frozen empirical validation results remain in the [validation matrix](../VALIDATION_MATRIX.html) and case-specific result records.
+
+- [Analysis-readiness example]({{ '/docs/examples/analysis-readiness/' | relative_url }}) — executable policy, cohort-impact, repair, and specification-space workflow.
+- [Plot gallery]({{ '/docs/plots/' | relative_url }}) — 14 deterministic code-generated figures with source links.

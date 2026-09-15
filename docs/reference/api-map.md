@@ -37,6 +37,24 @@ The study preflight is descriptive. It does not assign a universal data-quality 
 
 `STUDY_QC_SCHEMA`, `STUDY_QC_ARTIFACT_SCHEMA`, `STUDY_QC_PUBLICATION_LINK_SCHEMA`, and `STUDY_QC_ISSUE_CODES` expose the stable machine-readable contracts used by the QC provenance layer.
 
+## Analysis-readiness governance
+
+| API | Purpose |
+|---|---|
+| `ReadinessThresholds` | Researcher-declared structural-QC policy with no universal package defaults and a deterministic policy fingerprint. |
+| `trial_qc_summary` | Aggregate structural-QC metrics by participant × trial unit. |
+| `participant_qc_summary` | Aggregate trial QC into participant-level summaries. |
+| `evaluate_analysis_readiness` | Evaluate the declared policy and return trial/participant summaries, cohort impact, and provenance. |
+| `cohort_impact_preview` | Inspect filtering consequences without mutating the study. |
+| `filter_study_by_readiness` | Explicitly apply an already evaluated policy at trial or participant scope. |
+| `readiness_policy_table` | Compare cohort consequences across multiple declared policies. |
+| `readiness_pipeline_processor` | Expose readiness policy as an explicit `PipelineSpace` choice. |
+| `compare_qc_states` | Bind before/after structural-QC states and metric deltas without asserting repair validity. |
+| `analysis_readiness_publication_metadata` | Bind policy-relative readiness provenance into publication metadata. |
+| `write_analysis_readiness_artifacts` / `verify_analysis_readiness_artifacts` | Write and verify deterministic readiness evidence. |
+
+Passing a readiness policy means only that the canonical table satisfies that declared structural policy. It is not a universal data-quality score or a scientific-validity judgement.
+
 ## AOIs and measurement uncertainty
 
 | API | Purpose |
@@ -116,6 +134,10 @@ The study preflight is descriptive. It does not assign a universal data-quality 
 | `specification_manifest` | Manifest of the declared specification. |
 | `results_manifest` | Manifest of bound results. |
 | `software_environment` | Capture relevant execution-environment metadata. |
+
+## Plotting API
+
+Install the optional plotting extra with `python -m pip install "gazeaudit[plot]"`. Public helpers cover structural QC profiles, trial/participant readiness, cohort impact, repair comparison, policy trade-offs, threshold sweeps, specification curves, factor sensitivity, generic sensitivity curves, gaze trajectories with AOI overlays, probabilistic AOI boundary profiles, and recovery matrices. See the [plot gallery]({{ '/docs/plots/' | relative_url }}) for executable examples.
 
 ## Eye-Tracking-BIDS
 

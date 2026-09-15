@@ -186,3 +186,10 @@ and analytical choices?</code></pre>
     <p>Version 0.1.0 is archived at Zenodo DOI <a href="https://doi.org/10.5281/zenodo.22757340">10.5281/zenodo.22757340</a>. Record the exact software version or commit used in the analysis.</p>
   </div>
 </section>
+
+<section class="section-shell">
+  <p class="eyebrow">Visual methods reference</p>
+  <h2>Code-generated plot gallery</h2>
+  <p>Browse reproducible Matplotlib figures for structural QC, analysis readiness, cohort impact, repairs, specification analysis, sensitivity, AOI geometry, and recovery diagnostics.</p>
+  <p><a class="button secondary" href="{{ '/docs/plots/' | relative_url }}">Open the plot gallery →</a> <a class="button secondary" href="{{ '/docs/guides/analysis-readiness/' | relative_url }}">Analysis-readiness guide →</a></p>
+</section>
