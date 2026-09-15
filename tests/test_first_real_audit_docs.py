@@ -56,7 +56,7 @@ def test_first_real_audit_documentation_keeps_scientific_judgement_researcher_ow
         "not recommended universal cutoffs",
         "Structural QC is not scientific validity",
         "Do not expand the space after seeing",
-        "empirical specification quantiles are **not confidence intervals**",
+        "Empirical specification quantiles are **not confidence intervals**",
     ):
         assert contract in guide
 
