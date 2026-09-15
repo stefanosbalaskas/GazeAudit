@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INIT = ROOT / "src" / "gazeaudit" / "__init__.py"
 API_MAP = ROOT / "docs" / "reference" / "api-map.md"
+CORE_API_INVENTORY = ROOT / "docs" / "reference" / "core-api-inventory.md"
 LAYOUT = ROOT / "_layouts" / "default.html"
 SEARCH_INDEX = ROOT / "assets" / "search-index.json"
 
@@ -52,16 +53,22 @@ def parse_public_exports() -> tuple[set[str], dict[str, str]]:
 
 def check_api_map() -> None:
     exports, imported_from = parse_public_exports()
-    api_text = API_MAP.read_text(encoding="utf-8")
+    documented = "\n".join(
+        (
+            API_MAP.read_text(encoding="utf-8"),
+            CORE_API_INVENTORY.read_text(encoding="utf-8"),
+        )
+    )
     tracked = sorted(
         name
         for name in exports
         if imported_from.get(name) in TRACKED_MODULES and not name.isupper()
     )
-    missing = [name for name in tracked if f"`{name}`" not in api_text]
+    missing = [name for name in tracked if f"`{name}`" not in documented]
     if missing:
         raise SystemExit(
-            "site governance: API map is missing tracked public exports: " + ", ".join(missing)
+            "site governance: core documentation is missing tracked public exports: "
+            + ", ".join(missing)
         )
 
 
