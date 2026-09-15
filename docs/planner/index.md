@@ -15,7 +15,7 @@ Use this planner to turn **study conditions you already know** into a transparen
 Every recommendation comes from a visible planner rule and points to a method family already governed by the Method explorer. Selecting an item means “this issue is relevant to my audit,” not “GazeAudit has diagnosed a problem.”
 </div>
 
-<div class="audit-planner" data-audit-planner data-planner-index="{{ '/assets/planner-index.json' | relative_url }}" data-method-index="{{ '/assets/method-index.json' | relative_url }}">
+<div class="audit-planner" data-audit-planner data-planner-index="{{ '/assets/planner-index.json' | relative_url }}" data-method-index="{{ '/assets/method-index.json' | relative_url }}" data-workflow-index="{{ '/assets/planner-workflow-index.json' | relative_url }}">
   <section class="planner-intro-card">
     <div>
       <span class="planner-kicker">Build your route</span>
@@ -59,6 +59,17 @@ Every recommendation comes from a visible planner rule and points to a method fa
     <div class="planner-route" data-planner-route></div>
   </section>
 
+  <section class="planner-workflows" data-planner-workflows hidden aria-live="polite">
+    <div class="planner-results-head">
+      <div>
+        <span class="planner-kicker">Workflow handoff</span>
+        <h2>Continue from methods into an end-to-end workflow</h2>
+      </div>
+      <p>These handoffs are governed navigation links. They do not add methods, infer risks, or change your selected plan.</p>
+    </div>
+    <div class="planner-workflow-grid" data-planner-workflow-list></div>
+  </section>
+
   <div class="planner-empty" data-planner-empty>
     <strong>No route selected yet.</strong>
     <p>Choose the study conditions that are relevant above. If you already know the methodological question, go directly to the <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>.</p>
@@ -67,9 +78,9 @@ Every recommendation comes from a visible planner rule and points to a method fa
 
 ## How the planner is governed
 
-The planner has two machine-readable inputs. `planner-index.json` contains only the navigation rules shown on this page, while `method-index.json` contains the ten governed method families. CI verifies that every planner rule references an existing method ID and that every generated guide, example, plot, and evidence link resolves.
+The planner has three machine-readable inputs. `planner-index.json` contains only the navigation rules shown on this page, `method-index.json` contains the ten governed method families, and `planner-workflow-index.json` contains the three end-to-end workflow handoffs. CI verifies that every planner rule references an existing method ID, every planner-reachable method maps to exactly one workflow handoff, and every generated guide, example, plot, evidence, and workflow link resolves.
 
-The planner deliberately **does not** infer a missing risk from another answer. For example, selecting sampling-rate sensitivity does not automatically add missingness sensitivity. Likewise, selecting an empirical case-related method does not copy that case's outcome onto your study.
+The planner deliberately **does not** infer a missing risk from another answer. For example, selecting sampling-rate sensitivity does not automatically add missingness sensitivity. Likewise, selecting an empirical case-related method does not copy that case's outcome onto your study. Workflow handoffs are downstream navigation only; they do not alter the plan encoded in the URL.
 
 ## What to record in a study
 
