@@ -5,7 +5,7 @@ kicker: Researcher workspace
 page_type: workspace
 permalink: /docs/workspace/
 search_category: Start
-search_keywords: workspace project plan audit planner methods examples workflows evidence publication markdown json
+search_keywords: workspace project plan audit planner methods examples workflows evidence publication markdown json own data csv first audit
 ---
 
 # Researcher workspace
@@ -15,6 +15,11 @@ Use this page as the **project-level map** for GazeAudit. It connects the planne
 <div class="callout info">
 <strong>Keep navigation and judgement separate.</strong>
 GazeAudit can help you make a decision trail explicit. It does not decide which thresholds, exclusions, perturbation levels, specifications, or validity claims are scientifically justified for your study.
+</div>
+
+<div class="callout tip">
+<strong>Already have a gaze file?</strong>
+Use the <a href="{{ '/docs/guides/first-real-audit/' | relative_url }}">first real audit guide</a> for the practical CSV → preflight → robustness → saved evidence path, or run the <a href="{{ '/docs/examples/first-real-audit/' | relative_url }}">companion executable example</a> first.
 </div>
 
 ## 1. Scope the audit
@@ -47,6 +52,7 @@ Prefer the smallest executable path that answers the methodological question bef
 
 | Need | Start here | Continue with |
 |---|---|---|
+| Apply GazeAudit to your own canonical CSV | [First real audit]({{ '/docs/examples/first-real-audit/' | relative_url }}) | [First-study workflow]({{ '/docs/workflows/first-study-audit/' | relative_url }}) |
 | Structural preflight | [Study preflight]({{ '/docs/examples/study-preflight/' | relative_url }}) | [Data onboarding]({{ '/docs/guides/data-onboarding/' | relative_url }}) |
 | Readiness governance | [Analysis-readiness example]({{ '/docs/examples/analysis-readiness/' | relative_url }}) | [Readiness guide]({{ '/docs/guides/analysis-readiness/' | relative_url }}) |
 | AOI measurement uncertainty | [AOI boundary example]({{ '/docs/examples/aoi-boundary/' | relative_url }}) | [Measurement audit]({{ '/docs/workflows/measurement-audit/' | relative_url }}) |
@@ -86,6 +92,7 @@ Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducibl
 
 ## Fast routes
 
+- **I already have a gaze CSV:** [first real audit →]({{ '/docs/guides/first-real-audit/' | relative_url }})
 - **I have new gaze data:** [data onboarding →]({{ '/docs/guides/data-onboarding/' | relative_url }})
 - **I know the study risks:** [audit planner →]({{ '/docs/planner/' | relative_url }})
 - **I know the methodological question:** [method explorer →]({{ '/docs/methods/' | relative_url }})
