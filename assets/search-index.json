@@ -1,5 +1,6 @@
 [
   {"title":"Documentation hub","category":"Start","url":"/docs/","description":"Choose a GazeAudit path by research task.","keywords":"documentation overview uncertainty robustness"},
+  {"title":"Audit planner","category":"Start","url":"/docs/planner/","description":"Build a transparent route from declared study conditions to governed GazeAudit methods without automating scientific judgement.","keywords":"planner plan audit route study condition risk methods navigation thresholds exclusions"},
   {"title":"Method explorer","category":"Methods","url":"/docs/methods/","description":"Map a research question to public functions, guides, runnable examples, diagnostic plots, and evidence boundaries.","keywords":"methods explorer API research question QC readiness AOI robustness sensitivity provenance interoperability"},
   {"title":"Getting started","category":"Start","url":"/docs/getting-started/","description":"Install GazeAudit and run a minimal uncertainty-aware workflow.","keywords":"install quickstart AOI error model probabilities"},
   {"title":"FAQ","category":"Start","url":"/docs/faq/","description":"Scope, interpretation, reproducibility, and workflow questions.","keywords":"questions scope confidence interval significance causal"},

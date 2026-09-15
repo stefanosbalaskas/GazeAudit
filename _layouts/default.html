@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}">
   {% if page.page_type == 'landing' %}<link rel="stylesheet" href="{{ '/assets/css/landing.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'methods' %}<link rel="stylesheet" href="{{ '/assets/css/methods.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'planner' %}<link rel="stylesheet" href="{{ '/assets/css/planner.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -51,6 +52,7 @@
 
       <nav class="top-nav" aria-label="Primary">
         <a href="{{ '/docs/' | relative_url }}">Docs</a>
+        <a href="{{ '/docs/planner/' | relative_url }}">Planner</a>
         <a href="{{ '/docs/methods/' | relative_url }}">Methods</a>
         <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
         <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
@@ -74,6 +76,7 @@
     <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile navigation" hidden>
       <button class="mobile-search" type="button" data-search-open>Search documentation</button>
       <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+      <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
       <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
       <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
       <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
@@ -104,6 +107,7 @@
             <p class="nav-label">Start</p>
             <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
+            <a href="{{ '/docs/planner/' | relative_url }}">Audit planner</a>
             <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
             <a href="{{ '/docs/faq/' | relative_url }}">FAQ</a>
 
@@ -209,5 +213,6 @@
   <script src="{{ '/assets/js/gallery.js' | relative_url }}" defer></script>
   {% if page.page_type == 'landing' %}<script src="{{ '/assets/js/landing.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'methods' %}<script src="{{ '/assets/js/methods.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'planner' %}<script src="{{ '/assets/js/planner.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>

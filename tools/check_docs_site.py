@@ -195,6 +195,77 @@ def _verify_method_index(site_root: Path, *, baseurl: str) -> None:
         raise SystemExit(f"method index failures ({len(failures)}):\n{preview}{extra}")
 
 
+def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
+    planner_path = site_root / "assets/planner-index.json"
+    method_path = site_root / "assets/method-index.json"
+    try:
+        planner = json.loads(planner_path.read_text(encoding="utf-8"))
+        methods = json.loads(method_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"invalid generated planner index: {exc}") from exc
+
+    if not isinstance(planner, list) or len(planner) != 9:
+        raise SystemExit(
+            "unexpected planner catalog: "
+            f"{type(planner).__name__}, entries={len(planner) if isinstance(planner, list) else 'n/a'}"
+        )
+    if not isinstance(methods, list):
+        raise SystemExit("planner cannot verify against a non-list method catalog")
+
+    method_ids = {
+        item["id"] for item in methods
+        if isinstance(item, dict) and isinstance(item.get("id"), str) and item["id"]
+    }
+    required_keys = {"id", "group", "label", "prompt", "methods", "reason"}
+    planner_ids: set[str] = set()
+    referenced_methods: set[str] = set()
+    failures: list[str] = []
+
+    for position, item in enumerate(planner):
+        if not isinstance(item, dict):
+            failures.append(f"planner rule {position}: expected object")
+            continue
+        missing = required_keys.difference(item)
+        if missing:
+            failures.append(f"planner rule {position}: missing keys {sorted(missing)}")
+            continue
+
+        rule_id = item["id"]
+        if not isinstance(rule_id, str) or not rule_id:
+            failures.append(f"planner rule {position}: invalid id {rule_id!r}")
+        elif rule_id in planner_ids:
+            failures.append(f"planner rule {position}: duplicate id {rule_id!r}")
+        else:
+            planner_ids.add(rule_id)
+
+        for field in ("group", "label", "prompt", "reason"):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(f"planner rule {position}: {field} must be a non-empty string")
+
+        rule_methods = item["methods"]
+        if not isinstance(rule_methods, list) or not rule_methods or not all(
+            isinstance(method_id, str) and method_id for method_id in rule_methods
+        ):
+            failures.append(f"planner rule {position}: methods must be a non-empty string list")
+            continue
+        referenced_methods.update(rule_methods)
+
+    missing_methods = referenced_methods.difference(method_ids)
+    if missing_methods:
+        failures.append(f"planner methods missing from governed catalog: {sorted(missing_methods)}")
+
+    planner_page = site_root / "docs/planner/index.html"
+    if not planner_page.is_file():
+        failures.append("planner page is missing from generated site")
+    elif not _resolves(site_root, planner_page, "/docs/methods/", baseurl):
+        failures.append("planner cannot resolve the Method explorer route")
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = "" if len(failures) <= 30 else f"\n... and {len(failures) - 30} more"
+        raise SystemExit(f"planner index failures ({len(failures)}):\n{preview}{extra}")
+
+
 def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     if not site_root.is_dir():
         raise SystemExit(f"site root does not exist: {site_root}")
@@ -202,6 +273,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     required = [
         "index.html",
         "docs/index.html",
+        "docs/planner/index.html",
         "docs/methods/index.html",
         "docs/plots/index.html",
         "docs/reference/core-api-inventory/index.html",
@@ -217,12 +289,15 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/gallery.css",
         "assets/css/landing.css",
         "assets/css/methods.css",
+        "assets/css/planner.css",
         "assets/js/site.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
         "assets/js/methods.js",
+        "assets/js/planner.js",
         "assets/search-index.json",
         "assets/method-index.json",
+        "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
         "assets/plots/trial-readiness.svg",
         "assets/plots/cohort-impact.svg",
@@ -284,6 +359,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
 
     _verify_search_index(site_root, baseurl=baseurl)
     _verify_method_index(site_root, baseurl=baseurl)
+    _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
 
 

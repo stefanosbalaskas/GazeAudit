@@ -44,7 +44,7 @@ A method family without a directly relevant frozen empirical case says so explic
 
   <div class="method-grid" data-method-grid>
     {% for method in site.data.methods %}
-    <article class="method-card" data-method-card data-method-id="{{ method.id }}" data-phase="{{ method.phase_key }}" data-search="{{ method.title | escape }} {{ method.question | escape }} {{ method.functions | join: ' ' | escape }} {{ method.keywords | escape }}">
+    <article id="method-{{ method.id }}" class="method-card" data-method-card data-method-id="{{ method.id }}" data-phase="{{ method.phase_key }}" data-search="{{ method.title | escape }} {{ method.question | escape }} {{ method.functions | join: ' ' | escape }} {{ method.keywords | escape }}">
       <div class="method-card-main">
         <div class="method-card-head">
           <span class="method-phase">{{ method.phase }}</span>
