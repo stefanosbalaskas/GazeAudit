@@ -1,17 +1,23 @@
 ---
 title: Examples
-description: Runnable synthetic examples for GazeAudit data preflight, measurement uncertainty, specification spaces, complete robustness audits, and sensitivity analysis.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, measurement uncertainty, specification spaces, complete robustness audits, and sensitivity analysis.
 kicker: Examples
 ---
 
 # Examples
 
-These examples are intentionally small and use **synthetic data** unless stated otherwise. Their purpose is to make GazeAudit's contracts runnable without private eye-tracking files.
+These examples are intentionally small. Demonstration datasets are **synthetic unless stated otherwise**; project-oriented examples are explicit about which parts must be replaced with study-specific decisions.
 
 <div class="callout info">
 <strong>Starting with your own data?</strong>
-Run the <a href="study-preflight/">study preflight example</a> first to see how a vendor-neutral table is mapped and structurally inspected. For a complete robustness workflow after ingestion, continue with the <a href="end-to-end-robustness/">end-to-end robustness audit</a>.
+Use the <a href="first-real-audit/">first real audit example</a> for a CSV-oriented command-line path that writes structural-QC provenance and robustness tables. Use the <a href="study-preflight/">study preflight example</a> when you want to focus only on canonical mapping and structural diagnostics.
 </div>
+
+## [First real audit](first-real-audit/)
+
+Run one practical script on deterministic demo data or a canonical eye-tracking CSV. The script combines `GazeStudy`, structural-QC fingerprints, a declared 12-specification robustness space, stability/sensitivity summaries, and output writing.
+
+**Use this when:** you have a project file and want a concrete operational template to adapt before moving into study-specific methods.
 
 ## [Study preflight](study-preflight/)
 
@@ -45,11 +51,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 
 ## Suggested learning path
 
-1. Run the [study preflight](study-preflight/) when onboarding a table from a vendor export or preprocessing pipeline.
-2. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is new to you.
-3. Run the [end-to-end robustness audit](end-to-end-robustness/) to see a full specification workflow.
-4. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-5. Move to the [research workflows](../workflows/) when adapting these pieces to a real study.
+1. Start with the [first real audit](first-real-audit/) when you want to adapt GazeAudit to your own canonical CSV.
+2. Use the [study preflight](study-preflight/) when structural onboarding itself needs closer inspection.
+3. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is new to you.
+4. Run the [end-to-end robustness audit](end-to-end-robustness/) to study the specification API in isolation.
+5. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+6. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 
