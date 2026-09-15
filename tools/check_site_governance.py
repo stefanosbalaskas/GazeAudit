@@ -9,8 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 INIT = ROOT / "src" / "gazeaudit" / "__init__.py"
 API_MAP = ROOT / "docs" / "reference" / "api-map.md"
 CORE_API_INVENTORY = ROOT / "docs" / "reference" / "core-api-inventory.md"
+PROVENANCE_PAGE = ROOT / "docs" / "reference" / "site-provenance.md"
 LAYOUT = ROOT / "_layouts" / "default.html"
 SEARCH_INDEX = ROOT / "assets" / "search-index.json"
+ROBOTS = ROOT / "robots.txt"
+SITEMAP = ROOT / "sitemap.xml"
 
 TRACKED_MODULES = {
     "aoi",
@@ -74,35 +77,45 @@ def check_api_map() -> None:
 
 def check_search_coverage() -> None:
     layout = LAYOUT.read_text(encoding="utf-8")
+    items = json.loads(SEARCH_INDEX.read_text(encoding="utf-8"))
     indexed = {
         item["url"]
-        for item in json.loads(SEARCH_INDEX.read_text(encoding="utf-8"))
+        for item in items
         if isinstance(item, dict) and isinstance(item.get("url"), str)
     }
     nav_urls = set(
         re.findall(r"href=\"\{\{ '(/docs/[^']+)' \| relative_url \}\}\"", layout)
     )
-    missing = sorted(url for url in nav_urls if url not in indexed)
+    required_reference = {
+        "/docs/reference/core-api-inventory/",
+        "/docs/reference/site-provenance/",
+    }
+    missing = sorted((nav_urls | required_reference) - indexed)
     if missing:
         raise SystemExit(
-            "site governance: navigation routes missing from search index: " + ", ".join(missing)
+            "site governance: searchable documentation is missing routes: " + ", ".join(missing)
         )
 
 
 def check_site_contract() -> None:
-    layout = LAYOUT.read_text(encoding="utf-8")
-    required = (
-        'property="og:title"',
-        'property="og:description"',
-        'property="og:url"',
-        'name="twitter:card"',
-        "site.docs_channel",
-        "site.release_version",
+    provenance = PROVENANCE_PAGE.read_text(encoding="utf-8")
+    robots = ROBOTS.read_text(encoding="utf-8")
+    sitemap = SITEMAP.read_text(encoding="utf-8")
+    required_provenance = (
+        "v0.1.0",
         "site.github.build_revision",
+        "10.5281/zenodo.22757340",
+        "incomplete",
+        "robust_negative",
+        "materially_fragile",
     )
-    missing = [token for token in required if token not in layout]
+    missing = [token for token in required_provenance if token not in provenance]
     if missing:
-        raise SystemExit("site governance: layout contract missing: " + ", ".join(missing))
+        raise SystemExit("site governance: provenance page missing: " + ", ".join(missing))
+    if "Sitemap:" not in robots or "/sitemap.xml" not in robots:
+        raise SystemExit("site governance: robots.txt does not advertise sitemap")
+    if "<urlset" not in sitemap or "absolute_url" not in sitemap:
+        raise SystemExit("site governance: sitemap.xml contract is incomplete")
 
 
 if __name__ == "__main__":
