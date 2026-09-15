@@ -23,13 +23,37 @@
 
   const menuToggle = document.querySelector('[data-menu-toggle]');
   const mobileMenu = document.querySelector('[data-mobile-menu]');
+  const closeMobileMenu = () => {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    mobileMenu.hidden = true;
+  };
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
       const open = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', String(!open));
       mobileMenu.hidden = open;
     });
+    mobileMenu.addEventListener('click', (event) => {
+      if (event.target.closest('a')) closeMobileMenu();
+    });
   }
+
+  const markCurrentNavigation = (container) => {
+    if (!container) return;
+    const links = [...container.querySelectorAll('a')];
+    links.forEach((link) => link.removeAttribute('aria-current'));
+    const candidates = links
+      .map((link) => ({ link, target: normalizePath(new URL(link.href, window.location.href).pathname) }))
+      .filter(({ target }) => currentPath === target || currentPath.startsWith(target));
+    if (!candidates.length) return;
+    const exact = candidates.find(({ target }) => target === currentPath);
+    const selected = exact || candidates.sort((a, b) => b.target.length - a.target.length)[0];
+    selected.link.setAttribute('aria-current', 'page');
+  };
+
+  markCurrentNavigation(document.querySelector('[data-primary-nav]'));
+  markCurrentNavigation(document.querySelector('[data-mobile-primary-nav]'));
 
   const navLinks = [...document.querySelectorAll('[data-docs-nav] a')];
   navLinks.forEach((link) => {
@@ -107,6 +131,20 @@
     });
     pre.appendChild(button);
   });
+
+  const copyPageLink = document.querySelector('[data-copy-page-link]');
+  if (copyPageLink) {
+    copyPageLink.addEventListener('click', async () => {
+      const pageUrl = window.location.href.split('#')[0];
+      try {
+        await navigator.clipboard.writeText(pageUrl);
+        copyPageLink.textContent = 'Copied';
+        setTimeout(() => { copyPageLink.textContent = 'Copy page link'; }, 1400);
+      } catch (e) {
+        copyPageLink.textContent = 'Copy unavailable';
+      }
+    });
+  }
 
   const progress = document.querySelector('[data-reading-progress]');
   if (progress && article) {
@@ -287,6 +325,9 @@
     } else if (event.key === '/' && !typing && dialog && !dialog.open) {
       event.preventDefault();
       openSearch();
+    } else if (event.key === 'Escape' && mobileMenu && !mobileMenu.hidden) {
+      closeMobileMenu();
+      menuToggle?.focus();
     }
   });
 })();
