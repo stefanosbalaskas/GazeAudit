@@ -37,6 +37,14 @@ def test_related_content_is_deterministic_and_excludes_current_page() -> None:
     assert "relatedHubPaths.has(currentPath)" in script
 
 
+def test_related_content_requires_topical_or_category_evidence() -> None:
+    script = _text("assets/js/search-tools.js")
+
+    assert "const sameCategory = Boolean(" in script
+    assert "if (sharedTokens === 0 && !sameCategory) return 0;" in script
+    assert "if (sameCategory) score += 6;" in script
+
+
 def test_related_navigation_does_not_present_scientific_recommendations() -> None:
     script = _text("assets/js/search-tools.js")
 
