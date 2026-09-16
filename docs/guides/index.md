@@ -1,12 +1,12 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, reporting, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
-The guides explain **how to design, govern, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+The guides explain **how to design, govern, interpret, troubleshoot, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
 ## Choose by task
 
@@ -25,9 +25,9 @@ The guides explain **how to design, govern, interpret, and report** GazeAudit an
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">3</div>
-    <h3>Run and interpret an audit</h3>
-    <p>Move from a canonical gaze table through structural preflight, declared alternatives, complete robustness evidence, and bounded interpretation.</p>
-    <p><a href="first-real-audit/">First real audit →</a></p>
+    <h3>Run, diagnose, and interpret</h3>
+    <p>Move from a canonical gaze table through structural preflight and declared alternatives, then diagnose common record failures before interpreting the complete evidence.</p>
+    <p><a href="common-audit-mistakes/">Common mistakes & repairs →</a></p>
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">4</div>
@@ -91,11 +91,23 @@ Translate specification curves, sign fractions, marginal sensitivity, and pairwi
 
 For a complete worked interpretation exercise, use the [decision-to-report example](../examples/decision-to-report/).
 
+## Troubleshooting the research record
+
+### [Common audit mistakes and repairs](common-audit-mistakes/)
+
+Diagnose nine recurring failure patterns: outcome-informed specification design, silent branch deletion, endpoint drift, QC/exclusion confusion, hidden interpolation or missingness repair, inferential over-reading of robustness summaries, rewritten decision history, incomplete archives, and transfer of protocol-bound case labels to new data. Each failure is paired with a concrete repair and the evidence that should be preserved.
+
+Use this guide when an analysis runs successfully but the **decision trail, completeness, or reporting boundary** is still difficult to defend.
+
 ## Reproducibility
 
 ### [Publication audits](publication-audits/)
 
 Use a predeclared conclusion rule, deterministic manifests, methods/report generation, and scientific/bundle fingerprints to make robustness evidence auditable.
+
+### [Publication and archive handoff example](../examples/publication-archive-handoff/)
+
+See one illustrative end state that brings together decision history, complete branch accountability, manuscript Methods/Results wording, limitations, source/software provenance, fingerprints, and a reviewer-friendly archive manifest. All effect values in the worked handoff are synthetic teaching material.
 
 ## Ecosystem integration
 
@@ -110,8 +122,10 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 3. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
 4. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
 5. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
-6. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation.
-7. [Publication audits](publication-audits/) — build the durable research record.
+6. [Common audit mistakes](common-audit-mistakes/) — diagnose record and interpretation failures before publication.
+7. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation.
+8. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+9. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
