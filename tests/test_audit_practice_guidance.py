@@ -37,7 +37,7 @@ def test_common_audit_mistakes_maps_failures_to_repairs() -> None:
 def test_common_mistakes_preserves_scientific_boundaries() -> None:
     page = _text("docs/guides/common-audit-mistakes.md")
 
-    assert "protocol-bound records, not reusable ratings" in page
+    assert "**protocol-bound records**, not reusable ratings" in page
     assert "do **not** by themselves quantify sampling uncertainty" in page
     assert "Append; do not overwrite." in page
     assert "A repair should make the history more explicit." in page
