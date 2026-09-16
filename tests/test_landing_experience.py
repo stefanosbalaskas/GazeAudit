@@ -110,6 +110,41 @@ def test_landing_planner_presets_are_governed_and_non_diagnostic() -> None:
     assert "planner URL records navigation choices, not a scientific conclusion" in script
 
 
+def test_landing_has_compact_section_navigation() -> None:
+    page = _text("index.md")
+    assert 'class="landing-jump-nav"' in page
+    assert 'aria-label="Explore the GazeAudit homepage"' in page
+    for anchor in (
+        "research-tasks",
+        "visual-methods",
+        "evidence",
+        "workflow",
+        "scientific-boundary",
+    ):
+        assert f'href="#{anchor}"' in page
+        assert f'id="{anchor}"' in page
+
+
+def test_featured_visuals_deep_link_to_plot_and_method_routes() -> None:
+    page = _text("index.md")
+    for plot_id in (
+        "specification-curve",
+        "trial-readiness",
+        "cohort-impact",
+        "aoi-probability-profile",
+        "threshold-sweep",
+        "factor-sensitivity",
+    ):
+        assert f"#plot-{plot_id}" in page
+    for route in (
+        "/docs/guides/analysis-readiness/",
+        "/docs/guides/aoi-uncertainty/",
+        "/docs/guides/specification-space/",
+    ):
+        assert route in page
+    assert page.count('class="featured-plot-links"') == 5
+
+
 def test_landing_is_task_first_not_duplicate_legacy_sections() -> None:
     page = _text("index.md")
     for heading in (
