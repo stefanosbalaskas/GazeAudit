@@ -1,5 +1,6 @@
 @import url("./onboarding.css");
 @import url("./visual-navigation.css");
+@import url("./practical-workspace.css");
 
 .gallery-summary {
   display: grid;
