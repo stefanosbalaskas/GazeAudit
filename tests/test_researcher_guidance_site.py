@@ -114,7 +114,7 @@ def test_workspace_hands_researchers_into_decision_governance_and_reporting() ->
         "Before execution, preserve the decisions that GazeAudit cannot make for you.",
         "Declare researcher-owned decisions",
         "Interpret a robustness pattern",
-        "record later amendments instead of rewriting the original declaration",
+        "Record later amendments instead of rewriting the original declaration",
         "I need to practise bounded reporting",
     ):
         assert contract in workspace
