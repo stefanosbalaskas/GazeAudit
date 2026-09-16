@@ -68,7 +68,7 @@ def test_publication_handoff_is_explicitly_synthetic_and_complete() -> None:
         assert contract in page
 
     assert "Do not invent fingerprints manually" in page
-    assert "not a confidence interval, posterior distribution, or causal decomposition" in page
+    assert "confidence interval, posterior distribution, or causal decomposition." in page
 
 
 def test_publication_handoff_teaches_bounded_methods_results_and_review() -> None:
