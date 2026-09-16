@@ -5,7 +5,17 @@ import json
 from pathlib import Path
 
 EXPECTED_CATEGORIES = {"readiness", "robustness", "sensitivity", "measurement"}
-REQUIRED_PLOT_KEYS = {"id", "filename", "title", "category", "question", "function", "method_ids"}
+REQUIRED_PLOT_KEYS = {
+    "id",
+    "filename",
+    "title",
+    "category",
+    "question",
+    "function",
+    "method_ids",
+    "next_path",
+    "next_label",
+}
 REQUIRED_SEARCH_ROUTES = {
     "/docs/workspace/",
     "/docs/planner/",
@@ -18,6 +28,15 @@ REQUIRED_SEARCH_ROUTES = {
 
 def _load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _published_route(site: Path, route: str) -> Path:
+    if not route.startswith("/docs/"):
+        raise SystemExit(f"plot continuation route must stay inside published docs: {route}")
+    target = site / route.lstrip("/")
+    if route.endswith("/"):
+        target /= "index.html"
+    return target
 
 
 def verify(site: Path, baseurl: str) -> tuple[int, int]:
@@ -45,6 +64,8 @@ def verify(site: Path, baseurl: str) -> tuple[int, int]:
             raise SystemExit(f"plot {plot.get('id', '<unknown>')} missing keys: {sorted(missing)}")
         if not plot["method_ids"]:
             raise SystemExit(f"plot {plot['id']} has no governed method links")
+        if not str(plot["next_label"]).strip():
+            raise SystemExit(f"plot {plot['id']} has an empty continuation label")
         unknown = set(plot["method_ids"]) - method_ids
         if unknown:
             raise SystemExit(f"plot {plot['id']} references unknown methods: {sorted(unknown)}")
@@ -52,6 +73,9 @@ def verify(site: Path, baseurl: str) -> tuple[int, int]:
         plot_by_filename[plot["filename"]] = plot
         if not (site / "assets" / "plots" / plot["filename"]).is_file():
             raise SystemExit(f"published plot asset missing: {plot['filename']}")
+        continuation = _published_route(site, plot["next_path"])
+        if not continuation.is_file():
+            raise SystemExit(f"plot {plot['id']} continuation route is not published: {plot['next_path']}")
 
     if represented_methods != method_ids:
         missing = sorted(method_ids - represented_methods)
@@ -74,6 +98,9 @@ def verify(site: Path, baseurl: str) -> tuple[int, int]:
             expected = f'{baseurl}/docs/methods/#method-{method_id}'
             if expected not in gallery:
                 raise SystemExit(f"plot {plot['id']} missing method link {expected}")
+        expected_next = f'{baseurl}{plot["next_path"]}'
+        if f'href="{expected_next}"' not in gallery:
+            raise SystemExit(f"plot {plot['id']} missing continuation link {expected_next}")
 
     planner_page = (site / "docs" / "planner" / "index.html").read_text(encoding="utf-8")
     for marker in ("data-planner-copy-brief", "data-planner-download-json", "data-planner-export-status"):
