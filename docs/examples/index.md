@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, and bounded reporting.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, bounded reporting, and publication handoff.
 kicker: Examples
 ---
 
@@ -31,9 +31,9 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">4</div>
-    <h3>Stress a measurement assumption</h3>
-    <p>Work through AOI uncertainty or sampling sensitivity when measurement geometry or temporal resolution is part of the scientific question.</p>
-    <p><a href="aoi-boundary/">AOI boundary example →</a></p>
+    <h3>Prepare the publication handoff</h3>
+    <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
+    <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
   </article>
 </div>
 
@@ -66,6 +66,12 @@ Use the deterministic 12-branch robustness demo to practise recording analytical
 
 **Use this when:** you understand the code path but want to learn what a defensible interpretation and manuscript handoff look like.
 
+## [Publication and archive handoff](publication-archive-handoff/)
+
+Continue the same synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
+
+**Use this when:** the analysis and interpretation are already clear and you want a concrete model for what a coauthor, reviewer, editor, or future analyst should be able to recover from the final handoff.
+
 ## [Analysis readiness](analysis-readiness/)
 
 Work through executable policy, cohort-impact, repair, and specification-space decisions while keeping structural diagnostics separate from scientific exclusions.
@@ -97,9 +103,11 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 3. Use the [study preflight](study-preflight/) when structural onboarding itself needs closer inspection.
 4. Run the [end-to-end robustness audit](end-to-end-robustness/) to study the specification API in isolation.
 5. Work through [decision-to-report](decision-to-report/) to practise interpreting the complete pattern without selecting a preferred branch after the fact.
-6. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-7. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-8. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+6. Use [common audit mistakes and repairs](../guides/common-audit-mistakes/) to diagnose a weak decision trail or incomplete evidence record.
+7. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+8. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+9. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+10. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 
