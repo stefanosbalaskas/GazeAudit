@@ -24,6 +24,36 @@
     ['AOI', 'AOI'],
     ['Publication', 'publication'],
   ];
+  const relatedKindOrder = {
+    Guide: ['Example', 'Workflow', 'Plot', 'Method', 'Article', 'Reference'],
+    Example: ['Guide', 'Workflow', 'Plot', 'Method', 'Reference'],
+    Workflow: ['Guide', 'Example', 'Plot', 'Method', 'Reference'],
+    Method: ['Guide', 'Example', 'Workflow', 'Plot', 'Reference'],
+    Plot: ['Guide', 'Example', 'Workflow', 'Method', 'Reference'],
+    'Case study': ['Evidence', 'Guide', 'Workflow', 'Article', 'Reference'],
+    Evidence: ['Case study', 'Reference', 'Article', 'Guide'],
+    Article: ['Guide', 'Workflow', 'Case study', 'Reference'],
+    Start: ['Guide', 'Example', 'Workflow', 'Reference'],
+    Reference: ['Guide', 'Workflow', 'Evidence', 'Method'],
+    Documentation: ['Guide', 'Workflow', 'Reference', 'Example'],
+  };
+  const relatedStopWords = new Set([
+    'a', 'an', 'and', 'audit', 'audits', 'documentation', 'for', 'from', 'gaze',
+    'gazeaudit', 'guide', 'guides', 'in', 'index', 'of', 'on', 'or', 'the', 'to',
+    'with', 'workflow', 'workflows', 'example', 'examples', 'method', 'methods',
+  ]);
+  const relatedHubPaths = new Set([
+    '/docs/',
+    '/docs/workspace/',
+    '/docs/planner/',
+    '/docs/methods/',
+    '/docs/guides/',
+    '/docs/examples/',
+    '/docs/plots/',
+    '/docs/workflows/',
+    '/docs/case-studies/',
+    '/docs/articles/',
+  ]);
 
   let index = null;
   let activeKind = 'All';
@@ -38,6 +68,20 @@
   const buildUrl = (url) => {
     const baseurl = body.dataset.baseurl || '';
     return `${baseurl}${url}`.replace(/\/+/g, '/');
+  };
+
+  const normalisePath = (value) => {
+    const baseurl = (body.dataset.baseurl || '').replace(/\/$/, '');
+    let path = value || '/';
+    try {
+      path = new URL(path, window.location.origin).pathname;
+    } catch (error) {
+      path = String(path).split(/[?#]/, 1)[0];
+    }
+    if (baseurl && path.startsWith(`${baseurl}/`)) path = path.slice(baseurl.length);
+    if (!path.startsWith('/')) path = `/${path}`;
+    if (!/\.[a-z0-9]+$/i.test(path) && !path.endsWith('/')) path += '/';
+    return path.replace(/\/+/g, '/');
   };
 
   const scoreItem = (item, terms) => {
@@ -152,6 +196,83 @@
       </a>`).join('');
   };
 
+  const topicTokens = (item) => {
+    const text = [item.title, item.category, item.description, item.keywords, item.url]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return new Set(text
+      .split(/[^a-z0-9]+/)
+      .filter((token) => token.length > 2 && !relatedStopWords.has(token)));
+  };
+
+  const relatedScore = (current, candidate) => {
+    const currentKind = current.kind || 'Documentation';
+    const candidateKind = candidate.kind || 'Documentation';
+    const preferredKinds = relatedKindOrder[currentKind] || relatedKindOrder.Documentation;
+    const kindPosition = preferredKinds.indexOf(candidateKind);
+    const currentTokens = topicTokens(current);
+    const candidateTokens = topicTokens(candidate);
+    let sharedTokens = 0;
+    currentTokens.forEach((token) => {
+      if (candidateTokens.has(token)) sharedTokens += 1;
+    });
+
+    let score = Math.min(sharedTokens, 5) * 3;
+    if (current.category && candidate.category && current.category === candidate.category) score += 6;
+    if (kindPosition !== -1) score += Math.max(1, 7 - kindPosition);
+    if (candidateKind !== currentKind) score += 1;
+    return score;
+  };
+
+  const renderRelated = () => {
+    const article = document.querySelector('.doc-article');
+    const pagination = article?.querySelector('[data-page-pagination]');
+    if (!article || !pagination || !index?.length) return;
+
+    const currentPath = normalisePath(window.location.pathname);
+    if (relatedHubPaths.has(currentPath)) return;
+    const current = index.find((item) => normalisePath(item.url) === currentPath);
+    if (!current) return;
+
+    const related = index
+      .filter((item) => normalisePath(item.url) !== currentPath)
+      .map((item) => ({ item, score: relatedScore(current, item) }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))
+      .map(({ item }) => item)
+      .slice(0, 4);
+
+    if (!related.length) return;
+
+    const section = document.createElement('section');
+    section.className = 'related-content';
+    section.dataset.relatedContent = '';
+    section.setAttribute('aria-labelledby', 'related-content-title');
+    section.setAttribute('aria-describedby', 'related-content-note');
+    section.innerHTML = `
+      <div class="related-content-head">
+        <div>
+          <p class="related-content-kicker">Continue exploring</p>
+          <h2 id="related-content-title">Related documentation for this topic</h2>
+        </div>
+        <p id="related-content-note">Generated from documentation metadata and content type. This is navigation support, not a scientific recommendation.</p>
+      </div>
+      <div class="related-content-grid">
+        ${related.map((item) => `
+          <a class="related-content-card" href="${buildUrl(item.url)}">
+            <span class="related-content-meta">
+              <span class="related-content-kind">${escapeHtml(item.kind || 'Documentation')}</span>
+              <span>${escapeHtml(item.category)}</span>
+            </span>
+            <strong>${escapeHtml(item.title)}</strong>
+            <span>${escapeHtml(item.description)}</span>
+            <span class="related-content-cta" aria-hidden="true">Open →</span>
+          </a>`).join('')}
+      </div>`;
+    pagination.insertAdjacentElement('beforebegin', section);
+  };
+
   const refresh = async () => {
     try {
       await loadIndex();
@@ -188,4 +309,12 @@
       window.requestAnimationFrame(() => refresh());
     });
   });
+
+  if (document.querySelector('.doc-article')) {
+    window.requestAnimationFrame(() => {
+      loadIndex().then(renderRelated).catch(() => {
+        // Related navigation is progressive enhancement; core docs remain intact.
+      });
+    });
+  }
 })();
