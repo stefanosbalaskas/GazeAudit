@@ -41,7 +41,7 @@ Use this page as the **project-level map** for GazeAudit. It connects the planne
 
 <div class="workspace-boundary-bar">
   <div><strong>Navigation is not judgement.</strong> <span>Thresholds, exclusions, perturbations, endpoints, and validity claims remain researcher-owned scientific decisions.</span></div>
-  <a href="{{ '/docs/guides/audit-output-bundle/' | relative_url }}">Understand the audit bundle →</a>
+  <a href="{{ '/docs/guides/audit-record-map/' | relative_url }}">Trace the audit record →</a>
 </div>
 
 ## The shortest practical route
@@ -54,6 +54,8 @@ Use this page as the **project-level map** for GazeAudit. It connects the planne
 </div>
 
 For a first study, this route is usually more useful than trying to learn the whole package at once. Run the [first real audit guide]({{ '/docs/guides/first-real-audit/' | relative_url }}) end to end, inspect the bundle it produces, then add readiness, measurement-uncertainty, or publication layers only when they answer a real study-specific question.
+
+If you need to see **how those stages become one reviewable scientific record**, use the [audit record map]({{ '/docs/guides/audit-record-map/' | relative_url }}). It links study inputs and researcher-owned decisions to QC, specification execution, robustness summaries, provenance, fingerprints, and manuscript/archive claims.
 
 <div class="audit-output-preview">
   <div class="audit-output-panel">
@@ -164,6 +166,7 @@ Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducibl
 ## Fast routes
 
 - **I already have a gaze CSV:** [first real audit →]({{ '/docs/guides/first-real-audit/' | relative_url }})
+- **I want to trace inputs to claims:** [audit record map →]({{ '/docs/guides/audit-record-map/' | relative_url }})
 - **I have new gaze data:** [data onboarding →]({{ '/docs/guides/data-onboarding/' | relative_url }})
 - **I know the study risks:** [audit planner →]({{ '/docs/planner/' | relative_url }})
 - **I know the methodological question:** [method explorer →]({{ '/docs/methods/' | relative_url }})
