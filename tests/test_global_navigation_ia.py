@@ -29,6 +29,7 @@ def test_desktop_navigation_is_task_first_and_preserves_research_routes() -> Non
         "/docs/reference/api-map/",
         "/docs/reference/site-provenance/",
         "/docs/VALIDATION_MATRIX.html",
+        "/docs/guides/audit-record-map/",
         "/docs/guides/audit-output-bundle/",
     ):
         assert route in layout
@@ -37,6 +38,29 @@ def test_desktop_navigation_is_task_first_and_preserves_research_routes() -> Non
     assert '<span>Learn</span>' in layout
     assert '<span>Apply</span>' in layout
     assert '<span>Reference</span>' in layout
+
+
+def test_practical_surfaces_have_desktop_mobile_and_sidebar_parity() -> None:
+    layout = _text("_layouts/default.html")
+
+    record_route = "/docs/guides/audit-record-map/"
+    bundle_route = "/docs/guides/audit-output-bundle/"
+
+    assert layout.count(record_route) == 3
+    assert layout.count(bundle_route) == 3
+    assert layout.count(">Audit record map</a>") == 3
+    assert layout.count(">Output bundle</a>") == 3
+
+    desktop_apply = layout.index('<div class="nav-explore-group">\n              <span>Apply</span>')
+    desktop_reference = layout.index('<span>Reference</span>', desktop_apply)
+    desktop_group = layout[desktop_apply:desktop_reference]
+    assert desktop_group.index(record_route) < desktop_group.index(bundle_route)
+
+    guides = layout.index('<p class="nav-label">Guides</p>')
+    examples = layout.index('<p class="nav-label">Examples</p>', guides)
+    guide_group = layout[guides:examples]
+    assert record_route in guide_group
+    assert bundle_route in guide_group
 
 
 def test_mobile_navigation_groups_routes_without_breaking_current_page_contract() -> None:
@@ -50,6 +74,8 @@ def test_mobile_navigation_groups_routes_without_breaking_current_page_contract(
         "mobile-nav-group",
         "Use your own data",
         "Evidence & case studies",
+        "Audit record map",
+        "Output bundle",
     ):
         assert contract in layout
 
