@@ -18,6 +18,10 @@ Set up a compact study directory that separates the canonical input table, analy
 
 Take one canonical eye-tracking CSV through `GazeStudy`, structural preflight, researcher-owned decisions, a declared specification space, robustness summaries, and saved evidence. This is the recommended practical entry point when you have a study file and want to understand how the package pieces connect.
 
+### [Audit record map](audit-record-map/)
+
+Follow the research record from source data and researcher-owned decisions through structural QC, declared specification execution, robustness and sensitivity summaries, provenance, fingerprints, and publication claims. Use this when you need to understand **how one artifact supports the next stage of the audit** rather than only what each file contains.
+
 ### [Understanding the audit output bundle](audit-output-bundle/)
 
 Read the files produced by the practical workflow as one evidence bundle: structural QC and fingerprints, every declared specification, the specification curve, effect-stability summaries, and marginal and pairwise sensitivity outputs. The guide separates what each artifact describes from conclusions it cannot establish.
