@@ -1,16 +1,16 @@
 ---
 title: Researcher workspace
-description: Move from study conditions to governed methods, runnable workflows, evidence boundaries, and a publication-ready audit record.
+description: Move from study conditions to governed methods, runnable workflows, evidence boundaries, result interpretation, and a publication-ready audit record.
 kicker: Researcher workspace
 page_type: workspace
 permalink: /docs/workspace/
 search_category: Start
-search_keywords: workspace project plan audit planner methods examples workflows evidence publication markdown json own data csv first audit
+search_keywords: workspace project plan audit planner methods examples workflows evidence interpretation result reporting publication markdown json own data csv first audit
 ---
 
 # Researcher workspace
 
-Use this page as the **project-level map** for GazeAudit. It connects the planner, method catalog, runnable documentation, visual diagnostics, empirical evidence, and publication tooling without turning any of them into an automatic scientific decision system.
+Use this page as the **project-level map** for GazeAudit. It connects the planner, method catalog, runnable documentation, visual diagnostics, empirical evidence, result interpretation, and publication tooling without turning any of them into an automatic scientific decision system.
 
 <div class="workspace-launchpad" aria-label="Choose a practical GazeAudit starting point">
   <a class="workspace-launch-card" href="{{ '/docs/guides/first-real-audit/' | relative_url }}">
@@ -56,6 +56,11 @@ Use this page as the **project-level map** for GazeAudit. It connects the planne
 For a first study, this route is usually more useful than trying to learn the whole package at once. Run the [first real audit guide]({{ '/docs/guides/first-real-audit/' | relative_url }}) end to end, inspect the bundle it produces, then add readiness, measurement-uncertainty, or publication layers only when they answer a real study-specific question.
 
 If you need to see **how those stages become one reviewable scientific record**, use the [audit record map]({{ '/docs/guides/audit-record-map/' | relative_url }}). It links study inputs and researcher-owned decisions to QC, specification execution, robustness summaries, provenance, fingerprints, and manuscript/archive claims.
+
+<div class="callout tip">
+<strong>Already have completed robustness outputs?</strong>
+Use <a href="{{ '/docs/guides/interpret-audit-result/' | relative_url }}">Interpret an audit result</a> to check the declared denominator, endpoint consistency, direction, magnitude, descriptive sensitivity, and untested uncertainty in that order. Then compare the four synthetic <a href="{{ '/docs/examples/result-patterns/' | relative_url }}">result-pattern reporting examples</a> before choosing manuscript wording.
+</div>
 
 <div class="callout tip">
 <strong>Before execution, preserve the decisions that GazeAudit cannot make for you.</strong>
@@ -137,7 +142,8 @@ Prefer the smallest executable path that answers the methodological question bef
 | Readiness governance | [Analysis-readiness example]({{ '/docs/examples/analysis-readiness/' | relative_url }}) | [Readiness guide]({{ '/docs/guides/analysis-readiness/' | relative_url }}) |
 | AOI measurement uncertainty | [AOI boundary example]({{ '/docs/examples/aoi-boundary/' | relative_url }}) | [Measurement audit]({{ '/docs/workflows/measurement-audit/' | relative_url }}) |
 | Alternative analytical choices | [End-to-end robustness audit]({{ '/docs/examples/end-to-end-robustness/' | relative_url }}) | [Robustness workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}) |
-| Interpret a robustness pattern | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
+| Interpret completed robustness outputs | [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) | [Result-pattern examples]({{ '/docs/examples/result-patterns/' | relative_url }}) |
+| Interpret the deterministic 12-branch exercise | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
 | Sampling sensitivity | [Sampling example]({{ '/docs/examples/sampling-sensitivity/' | relative_url }}) | [Specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) |
 | Publication evidence | [Publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) | [Publication-audit guide]({{ '/docs/guides/publication-audits/' | relative_url }}) |
 
@@ -159,7 +165,20 @@ The [Case studies]({{ '/docs/case-studies/' | relative_url }}) expose three deli
 
 These are protocol-bound records. Do not transfer a case-study label to a new dataset simply because the same method family is used.
 
-## 6. Preserve the publication record
+## 6. Interpret before writing the publication claim
+
+Before reducing the audit to a manuscript sentence, check:
+
+1. whether every declared valid branch is accounted for;
+2. whether every branch estimates the same scientific endpoint;
+3. whether direction changes across the declared space;
+4. whether magnitude changes enough to alter substantive interpretation;
+5. which declared factors align descriptively with the variation;
+6. which plausible uncertainty dimensions remain untested.
+
+The [interpretation guide]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) turns those checks into a practical decision path. The [result-pattern example]({{ '/docs/examples/result-patterns/' | relative_url }}) shows why stable sign, stable magnitude, sign-changing evidence, and incomplete execution require different wording.
+
+## 7. Preserve the publication record
 
 Before writing the final methods or results text, record:
 
@@ -181,6 +200,8 @@ Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducibl
 - **I know the study risks:** [audit planner →]({{ '/docs/planner/' | relative_url }})
 - **I know the methodological question:** [method explorer →]({{ '/docs/methods/' | relative_url }})
 - **I want runnable code:** [examples →]({{ '/docs/examples/' | relative_url }})
+- **I already have robustness outputs:** [interpret an audit result →]({{ '/docs/guides/interpret-audit-result/' | relative_url }})
+- **I want to compare reporting patterns:** [result-pattern examples →]({{ '/docs/examples/result-patterns/' | relative_url }})
 - **I need to practise bounded reporting:** [decision-to-report →]({{ '/docs/examples/decision-to-report/' | relative_url }})
 - **I want end-to-end analysis design:** [workflows →]({{ '/docs/workflows/' | relative_url }})
 - **I need evidence provenance:** [validation matrix →]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }})
