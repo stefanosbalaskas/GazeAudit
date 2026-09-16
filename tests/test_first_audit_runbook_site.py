@@ -59,7 +59,7 @@ def test_project_starter_preserves_complete_evidence_bundle_and_scientific_bound
         "Project structure is not a scientific protocol.",
         "Do not inherit demo defaults by convenience.",
         "Empirical specification quantiles are not confidence intervals",
-        "do not make the analysis scientifically appropriate by itself",
+        "does not make the analysis scientifically appropriate by itself",
     ):
         assert contract in starter
 
