@@ -8,6 +8,11 @@ kicker: Workflow · Reproducibility
 
 This workflow is for analyses intended to support a manuscript, validation record, benchmark, or other durable scientific claim.
 
+<div class="callout callout-info">
+  <strong>Need the lineage before the archive layout?</strong>
+  Use the <a href="{{ '/docs/guides/audit-record-map/' | relative_url }}">audit record map</a> to trace how source data and researcher-owned decisions become QC, specification evidence, robustness summaries, provenance, fingerprints, and scoped publication claims.
+</div>
+
 ## Workflow overview
 
 <div class="workflow-steps">
