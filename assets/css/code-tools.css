@@ -1,0 +1,65 @@
+.has-code-tools {
+  padding-top: 46px;
+}
+
+.code-language {
+  position: absolute;
+  top: 13px;
+  left: 15px;
+  color: #9eacc3;
+  font: 800 0.67rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.has-code-tools .copy-code {
+  top: 8px;
+  right: 9px;
+  min-width: 58px;
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.has-code-tools .copy-code:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  color: #f3f7ff;
+}
+
+.has-code-tools .copy-code[data-copy-state="success"] {
+  border-color: rgba(103, 211, 170, 0.48);
+  background: rgba(20, 122, 88, 0.24);
+  color: #d9ffef;
+}
+
+.has-code-tools .copy-code[data-copy-state="error"] {
+  border-color: rgba(255, 140, 160, 0.46);
+  background: rgba(181, 61, 80, 0.22);
+  color: #ffe5ea;
+}
+
+@media (max-width: 520px) {
+  .has-code-tools {
+    padding: 44px 15px 16px;
+  }
+  .code-language {
+    left: 13px;
+  }
+}
+
+@media (forced-colors: active) {
+  .code-language,
+  .has-code-tools .copy-code {
+    forced-color-adjust: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .has-code-tools .copy-code {
+    transition: none;
+  }
+}
