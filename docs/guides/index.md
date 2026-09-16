@@ -1,6 +1,6 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
 kicker: Guides
 ---
 
@@ -9,6 +9,10 @@ kicker: Guides
 The guides explain **how to design, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
 ## Start with your own data
+
+### [Start a reproducible GazeAudit project](project-starter/)
+
+Set up a compact study directory that separates the canonical input table, analysis code, researcher decisions, software record, and generated evidence. Use this when you want a clean project scaffold before adapting the practical first-audit example.
 
 ### [First real audit with your own data](first-real-audit/)
 
