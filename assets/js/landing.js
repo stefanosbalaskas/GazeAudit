@@ -3,6 +3,8 @@
   const plannerIndexUrl = `${baseurl}/assets/planner-index.json`;
   const plannerUrl = `${baseurl}/docs/planner/`;
   const firstAuditUrl = `${baseurl}/docs/guides/first-real-audit/`;
+  const firstAuditExampleUrl = `${baseurl}/docs/examples/first-real-audit/`;
+  const outputBundleUrl = `${baseurl}/docs/guides/audit-output-bundle/`;
   const gettingStartedUrl = `${baseurl}/docs/getting-started/`;
   const workspaceUrl = `${baseurl}/docs/workspace/`;
 
@@ -48,6 +50,89 @@
         </a>
       </div>
       <p class="practical-start-boundary">These routes organise documentation and provenance. Thresholds, exclusions, AOIs, perturbations, endpoints, and validity judgements remain researcher-owned. <a href="${workspaceUrl}">See the full researcher workspace →</a></p>`;
+
+    router.parentNode.insertBefore(section, router);
+  };
+
+  const addAuditJourney = () => {
+    const router = document.querySelector('[data-research-router]');
+    if (!router || document.querySelector('[data-audit-journey]')) return;
+
+    const section = document.createElement('section');
+    section.className = 'section audit-journey-section';
+    section.dataset.auditJourney = '';
+    section.innerHTML = `
+      <div class="section-heading wide-heading section-heading-row">
+        <div>
+          <p class="eyebrow">Audit in practice</p>
+          <h2>See what happens from raw table to saved evidence.</h2>
+          <p>The practical workflow keeps each research decision visible and leaves behind an inspectable artifact instead of only a final estimate.</p>
+        </div>
+        <a class="text-cta" href="${firstAuditUrl}">Open the complete guide →</a>
+      </div>
+
+      <div class="audit-journey-grid" aria-label="Six-stage practical audit journey">
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">01</span>
+          <div><span class="audit-stage-kicker">Represent</span><strong>Map the study explicitly</strong></div>
+          <p>Bind gaze, time, participant, and trial semantics with <code>GazeStudy</code> rather than guessing vendor columns downstream.</p>
+          <small>Working object · <code>GazeStudy</code></small>
+        </article>
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">02</span>
+          <div><span class="audit-stage-kicker">Preflight</span><strong>Inspect structural conditions</strong></div>
+          <p>Surface non-finite values, identifier problems, duplicate timestamps, and within-trial time-order issues before substantive analysis.</p>
+          <small>Saved artifact · <code>study-qc/</code></small>
+        </article>
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">03</span>
+          <div><span class="audit-stage-kicker">Decide</span><strong>Record researcher actions</strong></div>
+          <p>Attach explicit actions and rationales to reviewed diagnostics instead of silently editing records or treating flags as automatic exclusions.</p>
+          <small>Evidence · decisions + fingerprints</small>
+        </article>
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">04</span>
+          <div><span class="audit-stage-kicker">Declare</span><strong>Define defensible alternatives</strong></div>
+          <p>Construct a finite researcher-owned specification space before interpretation, keeping preprocessing choices separate from the scientific endpoint.</p>
+          <small>Saved artifact · <code>specifications.csv</code></small>
+        </article>
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">05</span>
+          <div><span class="audit-stage-kicker">Diagnose</span><strong>Inspect robustness and sensitivity</strong></div>
+          <p>Read the specification curve, effect stability, marginal sensitivity, and pairwise patterns as descriptive views of the declared result set.</p>
+          <small>Outputs · curve + stability + sensitivity</small>
+        </article>
+        <article class="audit-journey-step">
+          <span class="audit-stage-number">06</span>
+          <div><span class="audit-stage-kicker">Preserve</span><strong>Save the whole evidence bundle</strong></div>
+          <p>Keep QC provenance, every specification, diagnostic summaries, and interpretation together so the audit can be reviewed and reproduced.</p>
+          <small>Handoff · publication-ready provenance</small>
+        </article>
+      </div>
+
+      <div class="audit-run-panel">
+        <div class="audit-run-copy">
+          <span class="audit-run-label">Run the deterministic companion</span>
+          <strong>One command produces the complete demonstration bundle.</strong>
+          <p>The default path uses synthetic demonstration data so you can inspect the workflow contract before mapping a study of your own.</p>
+          <pre class="audit-run-command"><code>python examples/first_real_audit.py --output-dir demo-audit</code></pre>
+          <div class="audit-run-links">
+            <a href="${firstAuditExampleUrl}">Inspect the executable example →</a>
+            <a href="${outputBundleUrl}">Learn how to read every output →</a>
+          </div>
+        </div>
+        <div class="audit-output-list" aria-label="First audit output bundle">
+          <span class="audit-output-label">Output bundle</span>
+          <code>study-qc/</code>
+          <code>specifications.csv</code>
+          <code>specification-curve.csv</code>
+          <code>effect-stability.csv</code>
+          <code>marginal-sensitivity.csv</code>
+          <code>pairwise-sensitivity.csv</code>
+        </div>
+      </div>
+
+      <p class="audit-journey-boundary"><strong>Boundary:</strong> the companion's default data and demonstration choices teach the API and artifact contract. They are not universal cutoffs and do not constitute validation evidence for another study.</p>`;
 
     router.parentNode.insertBefore(section, router);
   };
@@ -190,5 +275,6 @@
   }
 
   addPracticalStart();
+  addAuditJourney();
   addPlannerJourney();
 })();
