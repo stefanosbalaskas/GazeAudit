@@ -69,7 +69,7 @@ def test_related_content_has_accessible_section_and_card_contracts() -> None:
     script = _text("assets/js/search-tools.js")
 
     for contract in (
-        "data.relatedContent = ''",
+        "section.dataset.relatedContent = ''",
         "aria-labelledby",
         "aria-describedby",
         "related-content-grid",
