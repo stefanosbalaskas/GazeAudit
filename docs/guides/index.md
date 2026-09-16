@@ -14,6 +14,10 @@ The guides explain **how to design, interpret, and report** GazeAudit analyses. 
 
 Take one canonical eye-tracking CSV through `GazeStudy`, structural preflight, researcher-owned decisions, a declared specification space, robustness summaries, and saved evidence. This is the recommended practical entry point when you have a study file and want to understand how the package pieces connect.
 
+### [Understanding the audit output bundle](audit-output-bundle/)
+
+Read the files produced by the practical workflow as one evidence bundle: structural QC and fingerprints, every declared specification, the specification curve, effect-stability summaries, and marginal and pairwise sensitivity outputs. The guide separates what each artifact describes from conclusions it cannot establish.
+
 ## Data onboarding
 
 ### [Data onboarding and structural preflight](data-onboarding/)
