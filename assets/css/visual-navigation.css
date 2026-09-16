@@ -1,0 +1,160 @@
+.landing-jump-nav {
+  position: sticky;
+  top: 70px;
+  z-index: 18;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(calc(100% - 32px), 1180px);
+  margin: 0 auto 8px;
+  padding: 8px 10px;
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 72%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-solid) 90%, transparent);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  scrollbar-width: none;
+}
+
+.landing-jump-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.landing-jump-nav > span {
+  flex: 0 0 auto;
+  padding: 0 8px 0 4px;
+  color: var(--faint);
+  font-size: .65rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.landing-jump-nav a {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .74rem;
+  font-weight: 760;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.landing-jump-nav a:hover,
+.landing-jump-nav a:focus-visible {
+  border-color: var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+#research-tasks,
+#scientific-boundary,
+#visual-methods,
+#evidence,
+#workflow {
+  scroll-margin-top: 126px;
+}
+
+.featured-plot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 5px;
+}
+
+.featured-plot-links a {
+  margin-top: 0;
+}
+
+.featured-plot-links a:first-child {
+  color: var(--brand);
+}
+
+.plot-next-step {
+  display: grid;
+  gap: 3px;
+  margin-top: .8rem;
+  padding: .7rem .75rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 20%, var(--border));
+  border-radius: .7rem;
+  background: color-mix(in srgb, var(--brand-soft) 52%, var(--surface-solid));
+}
+
+.plot-next-step span {
+  color: var(--faint);
+  font-size: .62rem;
+  font-weight: 840;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.plot-next-step a {
+  color: var(--text);
+  font-size: .76rem;
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.plot-next-step a:hover {
+  color: var(--brand);
+}
+
+.plot-card-actions button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 720;
+}
+
+.plot-card-actions button:hover,
+.plot-card-actions button:focus-visible {
+  color: var(--brand-2);
+  text-decoration: underline;
+}
+
+.gallery-share-status {
+  grid-column: 1 / -1;
+  min-height: 1em;
+  margin: -.2rem 0 0;
+  color: var(--faint);
+  font-size: .68rem;
+}
+
+.plot-card:target {
+  scroll-margin-top: 116px;
+}
+
+@media (max-width: 900px) {
+  .landing-jump-nav {
+    top: 62px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 620px) {
+  .landing-jump-nav {
+    width: calc(100% - 20px);
+    margin-bottom: 2px;
+  }
+
+  .landing-jump-nav > span {
+    display: none;
+  }
+
+  .landing-jump-nav a {
+    padding: 6px 9px;
+    font-size: .7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-jump-nav {
+    scroll-behavior: auto;
+  }
+}
