@@ -1,18 +1,55 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design and reporting, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
-The guides explain **how to design, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+The guides explain **how to design, govern, interpret, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+
+## Choose by task
+
+<div class="card-grid">
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">1</div>
+    <h3>Set up the research record</h3>
+    <p>Separate source data, researcher-owned decisions, analysis code, generated evidence, and exact software identity before the project becomes difficult to audit.</p>
+    <p><a href="project-starter/">Project starter →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">2</div>
+    <h3>Govern researcher decisions</h3>
+    <p>Use a before/during/after checklist and a copy-ready decision log so thresholds, exclusions, specifications, deviations, and reporting boundaries stay visible.</p>
+    <p><a href="researcher-audit-checklist/">Researcher checklist →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">3</div>
+    <h3>Run and interpret an audit</h3>
+    <p>Move from a canonical gaze table through structural preflight, declared alternatives, complete robustness evidence, and bounded interpretation.</p>
+    <p><a href="first-real-audit/">First real audit →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">4</div>
+    <h3>Prepare publication evidence</h3>
+    <p>Bind the complete audit bundle, provenance, fingerprints, methods wording, results wording, and unresolved limitations into a durable record.</p>
+    <p><a href="publication-audits/">Publication audits →</a></p>
+  </article>
+</div>
 
 ## Start with your own data
 
 ### [Start a reproducible GazeAudit project](project-starter/)
 
 Set up a compact study directory that separates the canonical input table, analysis code, researcher decisions, software record, and generated evidence. Use this when you want a clean project scaffold before adapting the practical first-audit example.
+
+### [Researcher audit checklist](researcher-audit-checklist/)
+
+Use a before/during/after checklist for source binding, endpoint declaration, QC policy, exclusions, specification design, failure handling, robustness interpretation, reporting language, and archive handoff. This is the practical governance layer between reproducible code and defensible scientific judgement.
+
+### [Audit decision log template](audit-decision-log-template/)
+
+Copy a structured Markdown record into the project repository to preserve source identity, endpoints, QC decisions, exclusions, declared specification factors, perturbations, deviations, software identity, generated evidence, and reporting boundaries.
 
 ### [First real audit with your own data](first-real-audit/)
 
@@ -32,6 +69,10 @@ Read the files produced by the practical workflow as one evidence bundle: struct
 
 Map vendor or analysis tables into `GazeStudy`, inspect structural QC, and separate import/ordering problems from scientific quality decisions before running uncertainty or robustness analyses.
 
+### [Analysis-readiness governance](analysis-readiness/)
+
+Declare structural-QC policies, preview cohort impact, separate repairable structural conditions from scientific exclusions, and bind the resulting readiness record to provenance.
+
 ## Measurement uncertainty
 
 ### [AOI uncertainty](aoi-uncertainty/)
@@ -48,6 +89,8 @@ Turn defensible analytical decisions into an explicit `PipelineSpace`, reject in
 
 Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
 
+For a complete worked interpretation exercise, use the [decision-to-report example](../examples/decision-to-report/).
+
 ## Reproducibility
 
 ### [Publication audits](publication-audits/)
@@ -60,8 +103,16 @@ Use a predeclared conclusion rule, deterministic manifests, methods/report gener
 
 Understand the division of responsibility between GazeAudit and Eye-Tracking-BIDS, pymovements, pEYES, and custom study/detector adapters.
 
+## A practical sequence
+
+1. [Project starter](project-starter/) — create the study structure.
+2. [Researcher audit checklist](researcher-audit-checklist/) — declare and govern decisions.
+3. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
+4. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
+5. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
+6. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation.
+7. [Publication audits](publication-audits/) — build the durable research record.
+
 ## What a guide is not
 
 Guides describe GazeAudit's scientific contracts and recommended use. They do not replace study-specific justification. Researchers remain responsible for deciding which AOIs, error models, detectors, preprocessing choices, QC thresholds, perturbations, and scientific endpoints are defensible for their design.
-
-- [Analysis-readiness governance]({{ '/docs/guides/analysis-readiness/' | relative_url }}) — declare structural-QC policies, preview cohort impact, and bind provenance.
