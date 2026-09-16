@@ -9,8 +9,30 @@ layout: null
     {% unless first_item %},{% endunless %}
     {% assign search_category = item.search_category | default: item.kicker | default: 'Documentation' %}
     {% assign search_description = item.description | default: item.title %}
-    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ search_description }} {{ item.url }}{% endcapture %}
-    {"title":{{ item.title | jsonify }},"category":{{ search_category | jsonify }},"url":{{ item.url | jsonify }},"description":{{ search_description | jsonify }},"keywords":{{ search_keywords | strip | jsonify }}}
+    {% assign search_kind = 'Documentation' %}
+    {% if item.url contains '/docs/guides/' %}
+      {% assign search_kind = 'Guide' %}
+    {% elsif item.url contains '/docs/examples/' %}
+      {% assign search_kind = 'Example' %}
+    {% elsif item.url contains '/docs/workflows/' %}
+      {% assign search_kind = 'Workflow' %}
+    {% elsif item.url contains '/docs/methods/' %}
+      {% assign search_kind = 'Method' %}
+    {% elsif item.url contains '/docs/plots/' %}
+      {% assign search_kind = 'Plot' %}
+    {% elsif item.url contains '/docs/case-studies/' %}
+      {% assign search_kind = 'Case study' %}
+    {% elsif item.url contains '/docs/articles/' %}
+      {% assign search_kind = 'Article' %}
+    {% elsif item.url contains '/docs/reference/' %}
+      {% assign search_kind = 'Reference' %}
+    {% elsif item.url contains '/docs/results/' or item.url contains '/docs/validation/' or item.url contains '/docs/protocols/' or item.url contains '/docs/case_studies/' or item.url contains 'VALIDATION_MATRIX' %}
+      {% assign search_kind = 'Evidence' %}
+    {% elsif item.url contains '/docs/workspace/' or item.url contains '/docs/planner/' or item.url contains '/docs/getting-started' or item.url contains '/docs/faq' %}
+      {% assign search_kind = 'Start' %}
+    {% endif %}
+    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ search_description }} {{ search_kind }} {{ item.url }}{% endcapture %}
+    {"title":{{ item.title | jsonify }},"category":{{ search_category | jsonify }},"kind":{{ search_kind | jsonify }},"url":{{ item.url | jsonify }},"description":{{ search_description | jsonify }},"keywords":{{ search_keywords | strip | jsonify }}}
     {% assign first_item = false %}
   {% endif %}
 {% endfor %}
