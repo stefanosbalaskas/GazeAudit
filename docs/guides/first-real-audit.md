@@ -4,7 +4,7 @@ description: A practical, end-to-end guide for taking a canonical eye-tracking C
 kicker: Guide · Start with your data
 permalink: /docs/guides/first-real-audit/
 search_category: Guides
-search_keywords: own data csv practical tutorial first audit gaze study preflight qc robustness pipeline specification output provenance
+search_keywords: own data csv practical tutorial first audit gaze study preflight qc robustness pipeline specification output provenance project starter
 ---
 
 # First real audit with your own data
@@ -21,6 +21,79 @@ The thresholds, AOIs, detector choices, exclusions, perturbation levels, endpoin
 </div>
 
 The companion executable is [`examples/first_real_audit.py`](https://github.com/stefanosbalaskas/GazeAudit/blob/main/examples/first_real_audit.py). Run its built-in deterministic demo first, then point the same script at a canonical CSV.
+
+## Runbook: prepare, run, verify
+
+<div class="first-audit-runbook" aria-label="Three-stage first real audit runbook">
+  <div class="runbook-step">
+    <span>01 · Prepare</span>
+    <strong>Make the input contract explicit</strong>
+    <p>Confirm the seven worked-example columns or map your source schema deliberately before analysis.</p>
+    <code>participant · trial · timestamp · x · y · condition · quality</code>
+  </div>
+  <div class="runbook-step">
+    <span>02 · Run</span>
+    <strong>Verify demo, then use your CSV</strong>
+    <p>Exercise the deterministic workflow first so environment and output-writing problems are separated from study-specific problems.</p>
+    <code>python examples/first_real_audit.py --csv …</code>
+  </div>
+  <div class="runbook-step">
+    <span>03 · Verify</span>
+    <strong>Inspect the complete evidence bundle</strong>
+    <p>Check structural-QC provenance, all declared specifications, robustness summaries, and software identity before interpretation.</p>
+    <code>analysis-output/study-qc/ + specifications.csv + summaries</code>
+  </div>
+</div>
+
+<div class="workspace-boundary-bar">
+  <div><strong>Starting a new study folder?</strong> <span>Use the project starter to separate data, analysis code, decisions, environment, and generated evidence before adapting the example.</span></div>
+  <a href="{{ '/docs/guides/project-starter/' | relative_url }}">Open project starter →</a>
+</div>
+
+### Quick input check
+
+The worked executable expects:
+
+<div class="schema-chip-grid" aria-label="Canonical first-audit CSV columns">
+  <code>participant</code>
+  <code>trial</code>
+  <code>timestamp</code>
+  <code>x</code>
+  <code>y</code>
+  <code>condition</code>
+  <code>quality</code>
+</div>
+
+These are **example-level canonical names**, not universal vendor fields. If your table differs, rename or map columns explicitly rather than guessing.
+
+### Quick commands
+
+Verify the deterministic path:
+
+```bash
+python examples/first_real_audit.py --output-dir demo-audit
+```
+
+Then run the canonical study table:
+
+```bash
+python examples/first_real_audit.py \
+  --csv path/to/my_gaze.csv \
+  --output-dir analysis-output
+```
+
+A successful practical run should preserve the complete evidence bundle rather than one preferred branch:
+
+<div class="artifact-grid" aria-label="Expected practical audit evidence">
+  <div><code>study-qc/</code><span>structural report, diagnostics, decisions, fingerprints, manifest</span></div>
+  <div><code>specifications.csv</code><span>every evaluated analytical branch</span></div>
+  <div><code>specification-curve.csv</code><span>ordered estimates across the declared space</span></div>
+  <div><code>effect-stability.csv</code><span>descriptive stability summary</span></div>
+  <div><code>marginal-sensitivity.csv</code><span>one-factor descriptive screening</span></div>
+  <div><code>pairwise-sensitivity.csv</code><span>pairwise non-additivity screening</span></div>
+</div>
+
+The sections below explain why each stage exists and where researcher judgement enters.
 
 ## 1. Install the release you intend to report
 
@@ -243,6 +316,7 @@ Before treating the example as your analysis, replace all demonstration-specific
 
 ## 12. Continue into the appropriate governed layer
 
+- Need a clean study directory first? Use the [reproducible project starter]({{ '/docs/guides/project-starter/' | relative_url }}).
 - Need participant/trial retention policies? Use [analysis-readiness governance]({{ '/docs/guides/analysis-readiness/' | relative_url }}).
 - Need gaze-position uncertainty at AOI boundaries? Use [AOI uncertainty]({{ '/docs/guides/aoi-uncertainty/' | relative_url }}).
 - Need a broader multiverse? Use [specification spaces]({{ '/docs/guides/specification-space/' | relative_url }}).
