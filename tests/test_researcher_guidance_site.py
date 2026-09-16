@@ -97,3 +97,24 @@ def test_guides_and_examples_hubs_surface_new_learning_path() -> None:
     assert examples.count('class="card"') >= 4
     assert "Choose by task" in guides
     assert "Choose by task" in examples
+
+
+def test_workspace_hands_researchers_into_decision_governance_and_reporting() -> None:
+    workspace = _text("docs/workspace/index.md")
+
+    for route in (
+        "/docs/guides/researcher-audit-checklist/",
+        "/docs/guides/audit-decision-log-template/",
+        "/docs/examples/decision-to-report/",
+        "/docs/guides/reporting-robustness/",
+    ):
+        assert route in workspace
+
+    for contract in (
+        "Before execution, preserve the decisions that GazeAudit cannot make for you.",
+        "Declare researcher-owned decisions",
+        "Interpret a robustness pattern",
+        "record later amendments instead of rewriting the original declaration",
+        "I need to practise bounded reporting",
+    ):
+        assert contract in workspace
