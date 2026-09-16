@@ -51,7 +51,10 @@ def test_practical_surfaces_have_desktop_mobile_and_sidebar_parity() -> None:
     assert layout.count(">Audit record map</a>") == 3
     assert layout.count(">Output bundle</a>") == 3
 
-    desktop_apply = layout.index('<div class="nav-explore-group">\n              <span>Apply</span>')
+    desktop_apply_marker = (
+        '<div class="nav-explore-group">\n              <span>Apply</span>'
+    )
+    desktop_apply = layout.index(desktop_apply_marker)
     desktop_reference = layout.index('<span>Reference</span>', desktop_apply)
     desktop_group = layout[desktop_apply:desktop_reference]
     assert desktop_group.index(record_route) < desktop_group.index(bundle_route)
