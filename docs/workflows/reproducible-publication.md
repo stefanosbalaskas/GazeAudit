@@ -70,6 +70,11 @@ Preserve every valid specification that was declared. If a specification fails t
 
 This distinction is central to the GazeBase validation record, where completeness itself is part of the scientific gate.
 
+<div class="callout warning">
+<strong>Before interpreting, audit the audit.</strong>
+Use <a href="{{ '/docs/guides/common-audit-mistakes/' | relative_url }}">common audit mistakes and repairs</a> to check for outcome-informed specification changes, silent failed-branch deletion, endpoint drift, undocumented exclusions or repairs, overwritten amendments, and inferential over-reading of descriptive robustness summaries.
+</div>
+
 ## 5. Build a conclusion audit bundle
 
 ```python
@@ -140,6 +145,8 @@ analysis/
 ```
 
 This is an illustrative structure, not a required GazeAudit filesystem schema.
+
+For a more complete reviewer-facing example—including decision history, execution-status accounting, Methods/Results wording, limitations, provenance, fingerprints, and a human-readable archive manifest—see the [publication and archive handoff example]({{ '/docs/examples/publication-archive-handoff/' | relative_url }}). Its effect values are synthetic teaching material, not validation evidence.
 
 ## 9. Report claims at the right scope
 
