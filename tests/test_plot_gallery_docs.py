@@ -58,9 +58,13 @@ def test_governed_plot_catalog_matches_committed_assets() -> None:
     catalog = _text("_data/plots.yml")
     filenames = set(re.findall(r"^  filename: (.+\.svg)$", catalog, flags=re.MULTILINE))
     plot_ids = re.findall(r"^- id: ([a-z0-9-]+)$", catalog, flags=re.MULTILINE)
+    next_paths = re.findall(r"^  next_path: (.+)$", catalog, flags=re.MULTILINE)
     assert filenames == EXPECTED
     assert len(plot_ids) == 14
     assert len(plot_ids) == len(set(plot_ids))
+    assert len(next_paths) == 14
+    assert all(path.startswith("/docs/") and path.endswith("/") for path in next_paths)
+    assert catalog.count("  next_label:") == 14
     assert catalog.count("  method_ids:") == 14
     assert catalog.count("  function: plot_") == 14
 
@@ -71,10 +75,14 @@ def test_gallery_page_is_driven_by_governed_catalog() -> None:
     assert "data-plot-gallery-toolbar" in page
     assert "data-gallery-search" in page
     assert "data-gallery-count" in page
+    assert "data-gallery-share-status" in page
     assert "site.data.plots" in page
     assert "data-plot-index" in page
     assert 'id="plot-{{ plot.id }}"' in page
     assert "plot.method_ids" in page
+    assert "plot.next_path" in page
+    assert "plot.next_label" in page
+    assert "data-copy-plot-link" in page
     assert "method-" in page
     assert "tools/generate_plot_gallery.py" in page
     assert "src/gazeaudit/plotting.py" in page
@@ -117,6 +125,37 @@ def test_gallery_controls_target_toolbar_and_grid_separately() -> None:
     assert "toolbar.querySelectorAll('[data-gallery-filter]')" in script
     assert "data-gallery-count" in script
     assert "plots`" in script
+
+
+def test_gallery_state_and_plot_links_are_shareable() -> None:
+    script = _text("assets/js/gallery.js")
+    for contract in (
+        "new URLSearchParams(window.location.search)",
+        "url.searchParams.set('category', category)",
+        "url.searchParams.set('q', query)",
+        "window.history.replaceState",
+        "data-copy-plot-link",
+        "navigator.clipboard?.writeText",
+        "plot-${plotId}",
+        "fallbackCopy",
+    ):
+        assert contract in script
+
+
+def test_visual_navigation_styles_are_loaded_and_responsive() -> None:
+    gallery_css = _text("assets/css/gallery.css")
+    visual_css = _text("assets/css/visual-navigation.css")
+    assert '@import url("./visual-navigation.css");' in gallery_css
+    for selector in (
+        ".landing-jump-nav",
+        ".plot-next-step",
+        ".plot-card-actions button",
+        ".gallery-share-status",
+        ".featured-plot-links",
+    ):
+        assert selector in visual_css
+    assert "@media (max-width: 620px)" in visual_css
+    assert "@media (prefers-reduced-motion: reduce)" in visual_css
 
 
 def test_gallery_workflow_regenerates_and_checks_byte_drift() -> None:
