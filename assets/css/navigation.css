@@ -1,0 +1,161 @@
+.nav-explore {
+  position: relative;
+}
+
+.nav-explore > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: 8px 10px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: .88rem;
+  font-weight: 620;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-explore > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-explore > summary:hover,
+.nav-explore > summary:focus-visible,
+.nav-explore[open] > summary,
+.nav-explore > summary.is-current {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.nav-explore > summary .nav-explore-chevron {
+  font-size: .72rem;
+  transition: transform 140ms ease;
+}
+
+.nav-explore[open] > summary .nav-explore-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-explore-menu {
+  position: absolute;
+  z-index: 140;
+  top: calc(100% + 12px);
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: .55rem;
+  width: min(610px, calc(100vw - 32px));
+  padding: .7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-explore-group {
+  min-width: 0;
+  padding: .45rem;
+  border-radius: 11px;
+}
+
+.nav-explore-group > span,
+.mobile-nav-group > span {
+  display: block;
+  margin: 0 0 .32rem;
+  padding: 0 .45rem;
+  color: var(--faint);
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.top-nav .nav-explore-menu a {
+  display: block;
+  padding: .52rem .55rem;
+  color: var(--text);
+  font-size: .82rem;
+  font-weight: 650;
+}
+
+.top-nav .nav-explore-menu a:hover,
+.top-nav .nav-explore-menu a:focus-visible,
+.top-nav .nav-explore-menu a[aria-current="page"] {
+  background: var(--surface-muted);
+}
+
+.top-nav > a[aria-current="page"],
+.nav-explore > summary[aria-current="page"] {
+  color: var(--text);
+  background: var(--brand-soft);
+}
+
+.mobile-nav-priority,
+.mobile-nav-groups {
+  display: grid;
+  gap: .45rem;
+}
+
+.mobile-nav-priority {
+  margin-top: .55rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-nav-priority a:first-child {
+  border: 1px solid color-mix(in srgb, var(--brand) 35%, var(--border));
+  background: var(--brand-soft);
+  font-weight: 760;
+}
+
+.mobile-nav-groups {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: .65rem;
+}
+
+.mobile-nav-group {
+  min-width: 0;
+  padding: .35rem;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+}
+
+.mobile-nav-group > span {
+  padding-top: .3rem;
+}
+
+.mobile-nav-group a {
+  font-size: .84rem;
+}
+
+@media (max-width: 760px) {
+  .mobile-nav-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-nav-group {
+    padding: .45rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .nav-explore-menu,
+  .mobile-nav-group,
+  .mobile-nav-priority a:first-child {
+    border: 1px solid CanvasText;
+  }
+
+  .nav-explore > summary.is-current,
+  .top-nav > a[aria-current="page"] {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-explore > summary .nav-explore-chevron {
+    transition: none;
+  }
+}
