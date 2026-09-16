@@ -143,7 +143,7 @@ Prefer the smallest executable path that answers the methodological question bef
 | AOI measurement uncertainty | [AOI boundary example]({{ '/docs/examples/aoi-boundary/' | relative_url }}) | [Measurement audit]({{ '/docs/workflows/measurement-audit/' | relative_url }}) |
 | Alternative analytical choices | [End-to-end robustness audit]({{ '/docs/examples/end-to-end-robustness/' | relative_url }}) | [Robustness workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}) |
 | Interpret completed robustness outputs | [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) | [Result-pattern examples]({{ '/docs/examples/result-patterns/' | relative_url }}) |
-| Interpret the deterministic 12-branch exercise | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
+| Interpret a robustness pattern | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
 | Sampling sensitivity | [Sampling example]({{ '/docs/examples/sampling-sensitivity/' | relative_url }}) | [Specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) |
 | Publication evidence | [Publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) | [Publication-audit guide]({{ '/docs/guides/publication-audits/' | relative_url }}) |
 
