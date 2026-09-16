@@ -57,6 +57,11 @@ For a first study, this route is usually more useful than trying to learn the wh
 
 If you need to see **how those stages become one reviewable scientific record**, use the [audit record map]({{ '/docs/guides/audit-record-map/' | relative_url }}). It links study inputs and researcher-owned decisions to QC, specification execution, robustness summaries, provenance, fingerprints, and manuscript/archive claims.
 
+<div class="callout tip">
+<strong>Before execution, preserve the decisions that GazeAudit cannot make for you.</strong>
+Use the <a href="{{ '/docs/guides/researcher-audit-checklist/' | relative_url }}">researcher audit checklist</a> to review scientific ownership points, then copy the <a href="{{ '/docs/guides/audit-decision-log-template/' | relative_url }}">audit decision log template</a> into the study repository. Record later amendments instead of rewriting the original declaration.
+</div>
+
 <div class="audit-output-preview">
   <div class="audit-output-panel">
     <span>What you preserve</span>
@@ -82,6 +87,7 @@ If you need to see **how those stages become one reviewable scientific record**,
       <li>Empirical robustness summaries are not presented as confidence intervals.</li>
       <li>The exact GazeAudit release or commit is recorded.</li>
     </ul>
+    <p><a href="{{ '/docs/guides/researcher-audit-checklist/' | relative_url }}">Open the full researcher checklist →</a></p>
   </div>
 </div>
 
@@ -126,10 +132,12 @@ Prefer the smallest executable path that answers the methodological question bef
 | Need | Start here | Continue with |
 |---|---|---|
 | Apply GazeAudit to your own canonical CSV | [First real audit]({{ '/docs/examples/first-real-audit/' | relative_url }}) | [First-study workflow]({{ '/docs/workflows/first-study-audit/' | relative_url }}) |
+| Declare researcher-owned decisions | [Researcher checklist]({{ '/docs/guides/researcher-audit-checklist/' | relative_url }}) | [Decision log template]({{ '/docs/guides/audit-decision-log-template/' | relative_url }}) |
 | Structural preflight | [Study preflight]({{ '/docs/examples/study-preflight/' | relative_url }}) | [Data onboarding]({{ '/docs/guides/data-onboarding/' | relative_url }}) |
 | Readiness governance | [Analysis-readiness example]({{ '/docs/examples/analysis-readiness/' | relative_url }}) | [Readiness guide]({{ '/docs/guides/analysis-readiness/' | relative_url }}) |
 | AOI measurement uncertainty | [AOI boundary example]({{ '/docs/examples/aoi-boundary/' | relative_url }}) | [Measurement audit]({{ '/docs/workflows/measurement-audit/' | relative_url }}) |
 | Alternative analytical choices | [End-to-end robustness audit]({{ '/docs/examples/end-to-end-robustness/' | relative_url }}) | [Robustness workflow]({{ '/docs/workflows/robustness-audit/' | relative_url }}) |
+| Interpret a robustness pattern | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
 | Sampling sensitivity | [Sampling example]({{ '/docs/examples/sampling-sensitivity/' | relative_url }}) | [Specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) |
 | Publication evidence | [Publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) | [Publication-audit guide]({{ '/docs/guides/publication-audits/' | relative_url }}) |
 
@@ -166,11 +174,14 @@ Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducibl
 ## Fast routes
 
 - **I already have a gaze CSV:** [first real audit →]({{ '/docs/guides/first-real-audit/' | relative_url }})
+- **I need to declare decisions before execution:** [researcher checklist →]({{ '/docs/guides/researcher-audit-checklist/' | relative_url }})
+- **I want a copy-ready decision record:** [decision log template →]({{ '/docs/guides/audit-decision-log-template/' | relative_url }})
 - **I want to trace inputs to claims:** [audit record map →]({{ '/docs/guides/audit-record-map/' | relative_url }})
 - **I have new gaze data:** [data onboarding →]({{ '/docs/guides/data-onboarding/' | relative_url }})
 - **I know the study risks:** [audit planner →]({{ '/docs/planner/' | relative_url }})
 - **I know the methodological question:** [method explorer →]({{ '/docs/methods/' | relative_url }})
 - **I want runnable code:** [examples →]({{ '/docs/examples/' | relative_url }})
+- **I need to practise bounded reporting:** [decision-to-report →]({{ '/docs/examples/decision-to-report/' | relative_url }})
 - **I want end-to-end analysis design:** [workflows →]({{ '/docs/workflows/' | relative_url }})
 - **I need evidence provenance:** [validation matrix →]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }})
 - **I am preparing a manuscript/archive:** [publication audits →]({{ '/docs/guides/publication-audits/' | relative_url }})

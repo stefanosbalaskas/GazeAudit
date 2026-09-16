@@ -29,8 +29,11 @@ def test_desktop_navigation_is_task_first_and_preserves_research_routes() -> Non
         "/docs/reference/api-map/",
         "/docs/reference/site-provenance/",
         "/docs/VALIDATION_MATRIX.html",
+        "/docs/guides/researcher-audit-checklist/",
+        "/docs/guides/audit-decision-log-template/",
         "/docs/guides/audit-record-map/",
         "/docs/guides/audit-output-bundle/",
+        "/docs/examples/decision-to-report/",
     ):
         assert route in layout
 
@@ -66,6 +69,43 @@ def test_practical_surfaces_have_desktop_mobile_and_sidebar_parity() -> None:
     assert bundle_route in guide_group
 
 
+def test_research_practice_surfaces_are_persistently_discoverable() -> None:
+    layout = _text("_layouts/default.html")
+
+    checklist_route = "/docs/guides/researcher-audit-checklist/"
+    decision_log_route = "/docs/guides/audit-decision-log-template/"
+    reporting_example_route = "/docs/examples/decision-to-report/"
+
+    assert layout.count(checklist_route) == 4
+    assert layout.count(decision_log_route) == 1
+    assert layout.count(reporting_example_route) == 3
+
+    desktop_apply_marker = (
+        '<div class="nav-explore-group">\n              <span>Apply</span>'
+    )
+    desktop_apply = layout.index(desktop_apply_marker)
+    desktop_reference = layout.index('<span>Reference</span>', desktop_apply)
+    desktop_group = layout[desktop_apply:desktop_reference]
+    assert checklist_route in desktop_group
+    assert reporting_example_route in desktop_group
+
+    mobile_apply = layout.index('<div class="mobile-nav-group">\n          <span>Apply</span>')
+    mobile_reference = layout.index('<span>Reference</span>', mobile_apply)
+    mobile_group = layout[mobile_apply:mobile_reference]
+    assert checklist_route in mobile_group
+    assert reporting_example_route in mobile_group
+
+    guides = layout.index('<p class="nav-label">Guides</p>')
+    examples = layout.index('<p class="nav-label">Examples</p>', guides)
+    guide_group = layout[guides:examples]
+    assert checklist_route in guide_group
+    assert decision_log_route in guide_group
+
+    workflows = layout.index('<p class="nav-label">Research workflows</p>', examples)
+    example_group = layout[examples:workflows]
+    assert reporting_example_route in example_group
+
+
 def test_mobile_navigation_groups_routes_without_breaking_current_page_contract() -> None:
     layout = _text("_layouts/default.html")
     site_script = _text("assets/js/site.js")
@@ -77,6 +117,8 @@ def test_mobile_navigation_groups_routes_without_breaking_current_page_contract(
         "mobile-nav-group",
         "Use your own data",
         "Evidence & case studies",
+        "Researcher checklist",
+        "Decision to report",
         "Audit record map",
         "Output bundle",
     ):
