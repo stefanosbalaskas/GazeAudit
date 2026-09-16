@@ -54,7 +54,8 @@ def test_mobile_navigation_groups_routes_without_breaking_current_page_contract(
         assert contract in layout
 
     assert "markCurrentNavigation(document.querySelector('[data-primary-nav]'))" in site_script
-    assert "markCurrentNavigation(document.querySelector('[data-mobile-primary-nav]'))" in site_script
+    mobile_current = "markCurrentNavigation(document.querySelector('[data-mobile-primary-nav]'))"
+    assert mobile_current in site_script
     assert "event.target.closest('a')" in site_script
 
 
