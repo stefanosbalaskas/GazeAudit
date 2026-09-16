@@ -1,6 +1,6 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, reporting, publication, and interoperability.
 kicker: Guides
 ---
 
@@ -25,9 +25,9 @@ The guides explain **how to design, govern, interpret, troubleshoot, and report*
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">3</div>
-    <h3>Run, diagnose, and interpret</h3>
-    <p>Move from a canonical gaze table through structural preflight and declared alternatives, then diagnose common record failures before interpreting the complete evidence.</p>
-    <p><a href="common-audit-mistakes/">Common mistakes & repairs →</a></p>
+    <h3>Interpret the completed audit</h3>
+    <p>Check execution completeness first, then separate direction stability, magnitude sensitivity, descriptive factor alignment, and unresolved uncertainty before choosing manuscript wording.</p>
+    <p><a href="interpret-audit-result/">Interpret an audit result →</a></p>
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">4</div>
@@ -85,6 +85,12 @@ Fit global or grouped gaze-error models, propagate spatial uncertainty into AOI 
 
 Turn defensible analytical decisions into an explicit `PipelineSpace`, reject invalid combinations before execution, and summarise endpoint stability without selecting a preferred specification after the fact.
 
+### [Interpret an audit result](interpret-audit-result/)
+
+Move from completed robustness outputs to bounded scientific interpretation. The guide starts with the declared execution denominator, then separates direction stability from magnitude sensitivity, treats marginal/pairwise summaries as descriptive rather than causal, records untested uncertainty dimensions, and maps each evidence pattern to an appropriate next action.
+
+For a side-by-side worked comparison, use the [result-pattern reporting example](../examples/result-patterns/).
+
 ### [Reporting robustness](reporting-robustness/)
 
 Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
@@ -122,10 +128,12 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 3. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
 4. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
 5. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
-6. [Common audit mistakes](common-audit-mistakes/) — diagnose record and interpretation failures before publication.
-7. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation.
-8. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
-9. [Publication audits](publication-audits/) — build and verify the durable research record.
+6. [Common audit mistakes](common-audit-mistakes/) — diagnose record and execution failures before interpretation.
+7. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
+8. [Result-pattern example](../examples/result-patterns/) — compare four synthetic evidence patterns and bounded wording.
+9. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation on the deterministic 12-branch exercise.
+10. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+11. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
