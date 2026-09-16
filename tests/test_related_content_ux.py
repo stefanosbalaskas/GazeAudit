@@ -29,7 +29,10 @@ def test_related_content_is_deterministic_and_excludes_current_page() -> None:
 
     assert "normalisePath(window.location.pathname)" in script
     assert "normalisePath(item.url) !== currentPath" in script
-    assert ".sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))" in script
+    assert (
+        ".sort((a, b) => b.score - a.score || "
+        "a.item.title.localeCompare(b.item.title))"
+    ) in script
     assert ".slice(0, 4)" in script
     assert "relatedHubPaths.has(currentPath)" in script
 
