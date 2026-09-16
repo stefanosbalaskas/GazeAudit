@@ -69,7 +69,10 @@ def test_result_pattern_example_teaches_bounded_reporting() -> None:
 
     assert "Direction is more stable than magnitude" in page
     assert "a single-direction summary would not represent the complete pattern" in page
-    assert "the robustness audit remains incomplete relative to the original specification declaration" in page
+    assert (
+        "the robustness audit remains incomplete relative to the original specification declaration"
+        in page
+    )
     assert "Across-specification summaries were interpreted descriptively" in page
 
     for error in (
@@ -106,4 +109,8 @@ def test_interpretation_routes_are_discoverable_across_site_hubs() -> None:
     assert "I already have outputs. What next?" in articles
     assert "../guides/interpret-audit-result/" in articles
     assert "../examples/result-patterns/" in articles
-    assert "Synthetic teaching patterns and general methodological articles do not create or modify case-study classifications." in articles
+    assert (
+        "Synthetic teaching patterns and general methodological articles do not create or "
+        "modify case-study classifications."
+        in articles
+    )
