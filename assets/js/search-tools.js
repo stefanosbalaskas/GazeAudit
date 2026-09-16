@@ -217,9 +217,13 @@
     currentTokens.forEach((token) => {
       if (candidateTokens.has(token)) sharedTokens += 1;
     });
+    const sameCategory = Boolean(
+      current.category && candidate.category && current.category === candidate.category,
+    );
+    if (sharedTokens === 0 && !sameCategory) return 0;
 
     let score = Math.min(sharedTokens, 5) * 3;
-    if (current.category && candidate.category && current.category === candidate.category) score += 6;
+    if (sameCategory) score += 6;
     if (kindPosition !== -1) score += Math.max(1, 7 - kindPosition);
     if (candidateKind !== currentKind) score += 1;
     return score;
