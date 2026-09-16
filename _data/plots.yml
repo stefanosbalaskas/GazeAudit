@@ -4,6 +4,8 @@
   category: readiness
   question: Where are the structural data-shape problems concentrated?
   function: plot_qc_issue_profile
+  next_path: /docs/guides/data-onboarding/
+  next_label: Data onboarding guide
   method_ids:
     - structural-qc
 
@@ -13,6 +15,8 @@
   category: readiness
   question: Which participant-by-trial cells would fail the declared readiness policy?
   function: plot_trial_readiness
+  next_path: /docs/guides/analysis-readiness/
+  next_label: Analysis-readiness guide
   method_ids:
     - readiness-governance
 
@@ -22,6 +26,8 @@
   category: readiness
   question: Which participants accumulate the largest fraction of policy-failing trials?
   function: plot_participant_readiness
+  next_path: /docs/guides/analysis-readiness/
+  next_label: Analysis-readiness guide
   method_ids:
     - readiness-governance
 
@@ -31,6 +37,8 @@
   category: readiness
   question: How much data would remain before any exclusion is actually applied?
   function: plot_cohort_impact
+  next_path: /docs/guides/analysis-readiness/
+  next_label: Analysis-readiness guide
   method_ids:
     - readiness-governance
 
@@ -40,6 +48,8 @@
   category: readiness
   question: What changed after an explicitly performed repair?
   function: plot_repair_comparison
+  next_path: /docs/examples/study-preflight/
+  next_label: Study-preflight example
   method_ids:
     - readiness-governance
 
@@ -49,6 +59,8 @@
   category: readiness
   question: How do alternative researcher-declared policies change cohort retention?
   function: plot_policy_tradeoffs
+  next_path: /docs/guides/analysis-readiness/
+  next_label: Analysis-readiness guide
   method_ids:
     - readiness-governance
     - publication-provenance
@@ -59,6 +71,8 @@
   category: readiness
   question: How sensitive is retained cohort size to a declared threshold?
   function: plot_threshold_sweep
+  next_path: /docs/guides/analysis-readiness/
+  next_label: Analysis-readiness guide
   method_ids:
     - readiness-governance
 
@@ -68,6 +82,8 @@
   category: robustness
   question: How does the endpoint vary across the declared specification space?
   function: plot_specification_curve
+  next_path: /docs/guides/specification-space/
+  next_label: Specification-space guide
   method_ids:
     - specification-robustness
 
@@ -77,6 +93,8 @@
   category: robustness
   question: Which declared analytical factors are associated with the largest endpoint shifts?
   function: plot_factor_sensitivity
+  next_path: /docs/examples/end-to-end-robustness/
+  next_label: End-to-end robustness example
   method_ids:
     - specification-robustness
     - spatial-sensitivity
@@ -87,6 +105,8 @@
   category: sensitivity
   question: How does the endpoint behave under controlled missingness perturbations?
   function: plot_sensitivity_curve
+  next_path: /docs/workflows/robustness-audit/
+  next_label: Robustness-audit workflow
   method_ids:
     - missingness-sensitivity
 
@@ -96,6 +116,8 @@
   category: sensitivity
   question: How does the endpoint behave across controlled target sampling rates?
   function: plot_sensitivity_curve
+  next_path: /docs/examples/sampling-sensitivity/
+  next_label: Sampling-sensitivity example
   method_ids:
     - sampling-sensitivity
 
@@ -105,6 +127,8 @@
   category: measurement
   question: How does a gaze path relate spatially to an explicit AOI?
   function: plot_gaze_trajectory
+  next_path: /docs/guides/interoperability/
+  next_label: Interoperability guide
   method_ids:
     - interoperability
 
@@ -114,6 +138,8 @@
   category: measurement
   question: How does AOI membership probability change around a boundary?
   function: plot_aoi_probability_profile
+  next_path: /docs/guides/aoi-uncertainty/
+  next_label: AOI-uncertainty guide
   method_ids:
     - aoi-uncertainty
 
@@ -123,5 +149,7 @@
   category: robustness
   question: Where does endpoint recovery hold across two perturbation dimensions?
   function: plot_recovery_matrix
+  next_path: /docs/guides/reporting-robustness/
+  next_label: Robustness-reporting guide
   method_ids:
     - known-truth-recovery
