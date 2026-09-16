@@ -13,7 +13,7 @@ def test_homepage_audit_journey_exposes_six_traceable_stages() -> None:
     script = _text("assets/js/landing.js")
 
     assert "addAuditJourney" in script
-    assert "data-audit-journey" in script
+    assert "section.dataset.auditJourney" in script
     assert "Six-stage practical audit journey" in script
     for stage in (
         "Map the study explicitly",
