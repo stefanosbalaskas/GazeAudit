@@ -1,12 +1,12 @@
 ---
 title: Articles
-description: Conceptual articles on measurement uncertainty, analytical robustness, fragility, and interpretation in GazeAudit, with direct routes into practical guides and examples.
+description: Conceptual articles on measurement uncertainty, analytical robustness, fragility, interpretation, and manuscript readiness in GazeAudit, with direct routes into practical guides and examples.
 kicker: Articles
 ---
 
 # Articles
 
-These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, or the frozen validation records.
+These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, manuscript-readiness checks, or the frozen validation records.
 
 ## Choose by question
 
@@ -35,6 +35,12 @@ These articles explain the methodological ideas behind GazeAudit. They are not s
     <p>Move from the complete execution record to bounded interpretation by checking denominator, endpoint, direction, magnitude, sensitivity, and untested uncertainty.</p>
     <p><a href="../guides/interpret-audit-result/">Interpret an audit result →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">5</div>
+    <h3>Can a reviewer reconstruct the claim?</h3>
+    <p>Check whether the manuscript, decision log, execution denominator, failures, limitations, archive manifest, and software identity tell one recoverable story.</p>
+    <p><a href="../guides/manuscript-readiness/">Manuscript readiness →</a></p>
+  </article>
 </div>
 
 ## [Measurement uncertainty is a modelling problem](measurement-uncertainty-is-a-modeling-problem/)
@@ -62,8 +68,10 @@ If you are no longer asking *why* robustness or uncertainty matters and instead 
 1. [Interpret an audit result](../guides/interpret-audit-result/) — verify completeness, endpoint consistency, direction, magnitude, sensitivity, and unresolved uncertainty.
 2. [Result-pattern reporting example](../examples/result-patterns/) — compare complete/stable, magnitude-sensitive, sign-sensitive, and incomplete synthetic patterns.
 3. [Reporting robustness](../guides/reporting-robustness/) — turn the bounded interpretation into precise Methods and Results language.
-4. [Publication/archive handoff](../examples/publication-archive-handoff/) — preserve the decision trail, branch accountability, provenance, limitations, and manuscript record.
+4. [Manuscript readiness](../guides/manuscript-readiness/) — test whether an independent reader can reconstruct endpoint, denominator, failures, decisions, wording, limitations, and software identity.
+5. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding an incomplete valid denominator and repairing an over-strong claim from outside the analysis team.
+6. [Publication/archive handoff](../examples/publication-archive-handoff/) — preserve the decision trail, branch accountability, provenance, limitations, and manuscript record.
 
 ## Relationship to the validation records
 
-The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns and general methodological articles do not create or modify case-study classifications.
+The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns, reviewer exercises, and general methodological articles do not create or modify case-study classifications.
