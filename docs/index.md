@@ -1,12 +1,12 @@
 ---
 title: Documentation hub
-description: Choose the GazeAudit documentation path that matches your research task, from first audit through peer-review revision and reproducible publication.
+description: Choose the GazeAudit documentation path that matches your research task, from first audit through troubleshooting, peer-review revision, and reproducible publication.
 kicker: Documentation
 ---
 
 # Documentation hub
 
-GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, build a transparent audit route from study conditions, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, peer-review revision, and reproducible publication.
+GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, build a transparent audit route from study conditions, troubleshoot blocked execution without rewriting the scientific record, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, peer-review revision, and reproducible publication.
 
 <div class="callout info">
 <strong>Current release</strong>
@@ -23,6 +23,11 @@ Open <a href="guides/what-next/">What should I do next?</a> for a static five-st
 Open <a href="guides/first-real-audit/">First real audit with your own data</a> for the practical CSV → <code>GazeStudy</code> → structural preflight → declared robustness → saved evidence route. The companion <a href="examples/first-real-audit/">executable example</a> can be run first on deterministic demo data and then on your canonical table.
 </div>
 
+<div class="callout warning">
+<strong>Something failed or the audit is blocked?</strong>
+Use <a href="guides/troubleshooting/">Troubleshooting GazeAudit</a> to route the symptom to the environment, source/schema, structural-QC, measurement, specification-execution, endpoint, or provenance layer. Then work through the <a href="examples/failed-audit-recovery/">failed-audit recovery walkthrough</a> to see how a valid technical failure is preserved, repaired, rerun, and reconciled without silently shrinking the denominator.
+</div>
+
 Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. The search catalog is generated from documentation metadata at build time, so new documented routes do not require a second hand-maintained index.
 
 ## Start here
@@ -31,6 +36,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 |---|---|
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
 | Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
+| Something failed or the audit is blocked | [Troubleshooting GazeAudit](guides/troubleshooting/) |
+| Practise a failure → repair → rerun workflow | [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) |
 | Apply GazeAudit to my own canonical CSV | [First real audit guide](guides/first-real-audit/) |
 | See the whole project-level path from planning to publication | [Researcher workspace](workspace/) |
 | Revise a manuscript after peer review | [Peer-review revision toolkit](workspace/revision-toolkit/) |
@@ -58,6 +65,14 @@ The [What should I do next?](guides/what-next/) page is the static counterpart t
 Use it when the question is **where should I go next in the documentation?** rather than **which scientific choice is correct?** The guide deliberately stops when endpoint identity, valid denominators, reviewer timing, or study-specific justification are unclear instead of inventing a decision.
 
 The companion [project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) follows one fully synthetic endpoint from an eight-branch submitted audit into interpretation, a separately denominated post-review amendment with one valid technical failure, a separate endpoint amendment, and final handoff. It is teaching material, not empirical validation evidence.
+
+## Troubleshoot a blocked audit
+
+Use [Troubleshooting GazeAudit](guides/troubleshooting/) when execution itself is blocked: installation/import problems, source-schema mismatches, structural-QC flags, incomplete grouped-model coverage, valid specification failures, non-finite endpoints, denominator mismatches, or revision-package validation errors.
+
+The symptom router separates **invalid before execution**, **valid and successful**, **valid but technically failed**, and **not run** states so troubleshooting cannot silently rewrite the valid denominator. The companion [failed-audit recovery walkthrough](examples/failed-audit-recovery/) follows a fully synthetic `8 declared → 7 valid → 6 initially successful` audit through diagnosis, technical repair, same-branch rerun, and final reconciliation while retaining the original failure event.
+
+If the software ran but the decision history, archive, or reporting boundary is weak, use [Common audit mistakes and repairs](guides/common-audit-mistakes/) instead. Troubleshooting is not a mechanism for choosing a more convenient scientific rule.
 
 ## Researcher workspace
 
@@ -98,6 +113,7 @@ For a single practical path that continues beyond preflight into robustness outp
 The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps demonstrations runnable without private participant data while separating demonstration values from empirical claims.
 
 - [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) — five-stage synthetic project from declared route through audit, interpretation, peer-review amendment, separate endpoint record, and final handoff.
+- [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) — synthetic declared/valid/successful denominator accounting, technical failure preservation, causal repair, same-branch rerun, and reconciliation.
 - [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
@@ -131,13 +147,13 @@ The case-study layer turns the frozen validation records into readable methodolo
     <span class="evidence-state">Robust negative</span>
     <h3>Korthals</h3>
     <p>Compare hard AOI membership with the uncertainty-propagated target-tracking effect.</p>
-    <p><a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Open case →</a></p>
+    <p><a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Read the frozen case →</a></p>
   </article>
   <article class="evidence-card evidence-fragile">
     <span class="evidence-state">Materially fragile</span>
     <h3>Pedrotti/de Chambrier</h3>
     <p>See how sampling resolution and controlled missingness changed magnitude recovery.</p>
-    <p><a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Open case →</a></p>
+    <p><a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Read the frozen case →</a></p>
   </article>
 </div>
 
@@ -177,7 +193,7 @@ For deeper provenance or publication operations, use the existing authoritative 
 
 ## Need a quick answer?
 
-Open the [FAQ](faq/) for installation, interpretation, versioning, and scope questions.
+Open the [FAQ](faq/) for installation, interpretation, versioning, and scope questions, or [Troubleshooting GazeAudit](guides/troubleshooting/) when a workflow is blocked or failing.
 
 ## Code-generated visual reference
 
