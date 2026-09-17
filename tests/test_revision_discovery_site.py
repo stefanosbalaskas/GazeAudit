@@ -34,7 +34,11 @@ def test_peer_review_checklist_exposes_cli_and_structural_scope_boundary() -> No
     assert "gazeaudit-revision-package init" in text
     assert "gazeaudit-revision-package validate" in text
     assert "structural provenance only" in text
-    assert "does not establish analytical validity, robustness, manuscript quality, or publication readiness" in text
+    boundary = (
+        "does not establish analytical validity, robustness, manuscript quality, "
+        "or publication readiness"
+    )
+    assert boundary in text
     assert "not a scientific scoring system" in text
 
 
@@ -57,7 +61,10 @@ def test_revision_package_quickstart_is_explicitly_synthetic_and_non_empirical()
     text = _read(EXAMPLE)
     assert "synthetic teaching material" in text
     assert "does not create empirical validation evidence" in text
-    assert "does not establish that any analysis or manuscript claim is scientifically valid" in text
+    boundary = (
+        "does not establish that any analysis or manuscript claim is scientifically valid"
+    )
+    assert boundary in text
     assert "GazeBase `incomplete`" in text
     assert "Korthals `robust_negative`" in text
     assert "Pedrotti/de Chambrier `materially_fragile`" in text
