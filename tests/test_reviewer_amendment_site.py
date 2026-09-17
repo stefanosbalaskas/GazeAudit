@@ -64,18 +64,20 @@ def test_reviewer_reanalysis_example_is_synthetic_and_not_retroactive() -> None:
 def test_reviewer_amendment_route_is_discoverable_across_site_surfaces() -> None:
     guide_hub = _text("docs/guides/index.md")
     example_hub = _text("docs/examples/index.md")
+    article_hub = _text("docs/articles/index.md")
     workspace = _text("docs/workspace/index.md")
     review_path = _text("docs/workspace/manuscript-review-path.md")
     workflow = _text("docs/workflows/reproducible-publication.md")
 
-    for page in (guide_hub, workspace, review_path, workflow):
+    for page in (guide_hub, article_hub, workspace, review_path, workflow):
         assert "reviewer-requested-amendments" in page
 
-    for page in (example_hub, workspace, review_path, workflow):
+    for page in (example_hub, article_hub, workspace, review_path, workflow):
         assert "reviewer-requested-reanalysis" in page
 
     assert "Handle reviewer amendments" in guide_hub
     assert "Respond to a reanalysis request" in example_hub
+    assert "The reviewer asked for another analysis. Now what?" in article_hub
     assert "Revising after peer review?" in workspace
     assert "4 · Amend" in review_path
     assert "Preserve reviewer-requested amendments" in workflow
