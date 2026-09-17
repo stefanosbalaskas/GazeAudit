@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, bounded reporting, and publication handoff.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, bounded reporting, and publication handoff.
 kicker: Examples
 ---
 
@@ -31,6 +31,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">4</div>
+    <h3>Review the manuscript record</h3>
+    <p>Act as an external reviewer: reconstruct the endpoint and denominator, find an unresolved valid branch, and repair over-strong manuscript wording without rewriting the audit.</p>
+    <p><a href="reviewer-reconstruction/">Reviewer reconstruction →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">5</div>
     <h3>Prepare the publication handoff</h3>
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
@@ -72,6 +78,12 @@ Use the deterministic 12-branch robustness demo to practise recording analytical
 
 **Use this when:** you understand the code path but want to learn what a defensible interpretation and manuscript handoff look like.
 
+## [Reviewer reconstruction](reviewer-reconstruction/)
+
+Read an illustrative submission archive from the perspective of a reviewer who was not involved in the analysis. The example reconstructs one endpoint, an eight-combination declared space, one invalid combination, seven valid branches, six successful estimates, and one unresolved technical failure. It then rewrites an over-strong robustness sentence so the valid denominator remains visible.
+
+**Use this when:** the manuscript draft looks finished but you want to test whether the claim can actually be reconstructed from the preserved record without private lab knowledge.
+
 ## [Publication and archive handoff](publication-archive-handoff/)
 
 Continue the same synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
@@ -112,10 +124,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 6. Compare the four [result-pattern examples](result-patterns/) before choosing bounded reporting language.
 7. Work through [decision-to-report](decision-to-report/) to practise interpreting the deterministic 12-branch pattern without selecting a preferred branch after the fact.
 8. Use [common audit mistakes and repairs](../guides/common-audit-mistakes/) to diagnose a weak decision trail or incomplete evidence record.
-9. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
-10. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-11. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-12. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+9. Apply the [manuscript readiness checklist](../guides/manuscript-readiness/) to the draft claim and archive.
+10. Work through [reviewer reconstruction](reviewer-reconstruction/) to practise finding denominator and reporting gaps from outside the analysis team.
+11. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+12. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+13. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+14. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 

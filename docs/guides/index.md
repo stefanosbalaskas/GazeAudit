@@ -1,12 +1,12 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, reporting, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, manuscript readiness, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
-The guides explain **how to design, govern, interpret, troubleshoot, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+The guides explain **how to design, govern, interpret, troubleshoot, review, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
 ## Choose by task
 
@@ -31,6 +31,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, and report*
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">4</div>
+    <h3>Check manuscript readiness</h3>
+    <p>Verify that the endpoint, denominator, failures, decision trail, manuscript wording, limitations, archive manifest, and software identity can be reconstructed by someone outside the analysis team.</p>
+    <p><a href="manuscript-readiness/">Manuscript readiness →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">5</div>
     <h3>Prepare publication evidence</h3>
     <p>Bind the complete audit bundle, provenance, fingerprints, methods wording, results wording, and unresolved limitations into a durable record.</p>
     <p><a href="publication-audits/">Publication audits →</a></p>
@@ -105,6 +111,14 @@ Diagnose nine recurring failure patterns: outcome-informed specification design,
 
 Use this guide when an analysis runs successfully but the **decision trail, completeness, or reporting boundary** is still difficult to defend.
 
+## Manuscript and review readiness
+
+### [Manuscript readiness checklist](manuscript-readiness/)
+
+Verify six pre-submission gates: endpoint reconstruction, execution-denominator accounting, researcher-decision provenance, complete-pattern Results wording, manuscript/archive consistency, and independent reviewer reconstruction. Use this after interpretation but before calling the manuscript record submission-ready.
+
+For a worked review exercise, use the [reviewer reconstruction example](../examples/reviewer-reconstruction/).
+
 ## Reproducibility
 
 ### [Publication audits](publication-audits/)
@@ -131,9 +145,11 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 6. [Common audit mistakes](common-audit-mistakes/) — diagnose record and execution failures before interpretation.
 7. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
 8. [Result-pattern example](../examples/result-patterns/) — compare four synthetic evidence patterns and bounded wording.
-9. [Decision-to-report example](../examples/decision-to-report/) — practice bounded interpretation on the deterministic 12-branch exercise.
-10. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
-11. [Publication audits](publication-audits/) — build and verify the durable research record.
+9. [Decision-to-report example](../examples/decision-to-report/) — practise bounded interpretation on the deterministic 12-branch exercise.
+10. [Manuscript readiness](manuscript-readiness/) — test whether the claim and evidence can be reconstructed independently.
+11. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding denominator and reporting gaps from the outside.
+12. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+13. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
