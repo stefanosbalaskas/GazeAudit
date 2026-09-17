@@ -2,6 +2,8 @@
 title: Project lifecycle walkthrough
 description: A fully synthetic five-stage GazeAudit walkthrough from planning and audit execution through interpretation, peer-review amendment, and final handoff.
 kicker: Example
+page_type: example
+permalink: /docs/examples/project-lifecycle-walkthrough/
 search_category: Example
 search_keywords: project lifecycle walkthrough what next onboarding plan audit interpret peer review revision amendment resubmission handoff synthetic example
 ---
