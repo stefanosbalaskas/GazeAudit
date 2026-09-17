@@ -144,14 +144,16 @@ The case-study layer turns the frozen validation records into readable methodolo
     <p><a href="{{ '/docs/case-studies/gazebase-incomplete/' | relative_url }}">Open case →</a></p>
   </article>
   <article class="evidence-card evidence-robust">
-    <span class="evidence-state">Robust negative</span><strong>Korthals</strong></div>
+    <span class="evidence-state">Robust negative</span>
+    <h3>Korthals</h3>
     <p>Compare hard AOI membership with the uncertainty-propagated target-tracking effect.</p>
-    <p><a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Open case →</a></p>
+    <p><a href="{{ '/docs/case-studies/korthals-target-tracking/' | relative_url }}">Read the frozen case →</a></p>
   </article>
   <article class="evidence-card evidence-fragile">
-    <span class="evidence-state">Materially fragile</span><strong>Pedrotti/de Chambrier</strong></div>
+    <span class="evidence-state">Materially fragile</span>
+    <h3>Pedrotti/de Chambrier</h3>
     <p>See how sampling resolution and controlled missingness changed magnitude recovery.</p>
-    <p><a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Open case →</a></p>
+    <p><a href="{{ '/docs/case-studies/pedrotti-sensitivity/' | relative_url }}">Read the frozen case →</a></p>
   </article>
 </div>
 
