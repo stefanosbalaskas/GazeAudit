@@ -14,6 +14,11 @@ The public release is <code>0.1.0</code>. Install it with <code>pip install gaze
 </div>
 
 <div class="callout tip">
+<strong>Not sure what comes next?</strong>
+Open <a href="guides/what-next/">What should I do next?</a> for a static five-stage decision map from planning through audit, interpretation, peer review, and final handoff. Then use the <a href="examples/project-lifecycle-walkthrough/">project lifecycle walkthrough</a> to follow one fully synthetic project across all five stages without importing its teaching choices into a real study.
+</div>
+
+<div class="callout tip">
 <strong>Have your own gaze CSV already?</strong>
 Open <a href="guides/first-real-audit/">First real audit with your own data</a> for the practical CSV → <code>GazeStudy</code> → structural preflight → declared robustness → saved evidence route. The companion <a href="examples/first-real-audit/">executable example</a> can be run first on deterministic demo data and then on your canonical table.
 </div>
@@ -24,6 +29,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 
 | Goal | Recommended page |
 |---|---|
+| I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
+| Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
 | Apply GazeAudit to my own canonical CSV | [First real audit guide](guides/first-real-audit/) |
 | See the whole project-level path from planning to publication | [Researcher workspace](workspace/) |
 | Revise a manuscript after peer review | [Peer-review revision toolkit](workspace/revision-toolkit/) |
@@ -43,6 +50,14 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Create deterministic publication evidence | [Publication audits](guides/publication-audits/) |
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
 | Find the right public function | [API map](reference/api-map/) |
+
+## Guided next step
+
+The [What should I do next?](guides/what-next/) page is the static counterpart to the homepage project-stage router. It keeps the same five project stages—plan, audit, interpret, peer review, and handoff—in ordinary semantic documentation that remains useful without JavaScript.
+
+Use it when the question is **where should I go next in the documentation?** rather than **which scientific choice is correct?** The guide deliberately stops when endpoint identity, valid denominators, reviewer timing, or study-specific justification are unclear instead of inventing a decision.
+
+The companion [project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) follows one fully synthetic endpoint from an eight-branch submitted audit into interpretation, a separately denominated post-review amendment with one valid technical failure, a separate endpoint amendment, and final handoff. It is teaching material, not empirical validation evidence.
 
 ## Researcher workspace
 
@@ -82,6 +97,7 @@ For a single practical path that continues beyond preflight into robustness outp
 
 The examples use synthetic data unless a page explicitly points to a frozen real-data validation record. This keeps demonstrations runnable without private participant data while separating demonstration values from empirical claims.
 
+- [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) — five-stage synthetic project from declared route through audit, interpretation, peer-review amendment, separate endpoint record, and final handoff.
 - [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
