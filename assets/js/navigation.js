@@ -1,5 +1,7 @@
 (() => {
   const baseurl = document.body.dataset.baseurl || '';
+  const whatNextUrl = `${baseurl}/docs/guides/what-next/`;
+  const lifecycleUrl = `${baseurl}/docs/examples/project-lifecycle-walkthrough/`;
   const revisionToolkitUrl = `${baseurl}/docs/workspace/revision-toolkit/`;
   const revisionRouteUrl = `${baseurl}/docs/guides/revision-route-map/`;
   const revisionChecklistUrl = `${baseurl}/docs/guides/peer-review-revision-checklist/`;
@@ -23,16 +25,62 @@
     document.head.appendChild(link);
   };
 
+  const setCurrentPage = (link) => {
+    if (window.location.pathname === new URL(link.href, window.location.origin).pathname) {
+      link.setAttribute('aria-current', 'page');
+    }
+    return link;
+  };
+
   const makeLink = (href, label, className = '') => {
     const link = document.createElement('a');
     link.href = href;
     link.textContent = label;
     link.dataset.revisionNav = '';
     if (className) link.className = className;
-    if (window.location.pathname === new URL(href, window.location.origin).pathname) {
-      link.setAttribute('aria-current', 'page');
+    return setCurrentPage(link);
+  };
+
+  const makeNextStepLink = (href, label, className = '') => {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    link.dataset.nextStepNav = '';
+    if (className) link.className = className;
+    return setCurrentPage(link);
+  };
+
+  const injectNextStepNavigation = () => {
+    const exploreGroups = Array.from(document.querySelectorAll('.nav-explore-group'));
+    const learnGroup = exploreGroups.find((group) => group.querySelector('span')?.textContent.trim() === 'Learn');
+    if (learnGroup && !learnGroup.querySelector('[data-next-step-nav]')) {
+      const firstLink = learnGroup.querySelector('a');
+      learnGroup.insertBefore(makeNextStepLink(whatNextUrl, 'What should I do next?'), firstLink || null);
+      learnGroup.appendChild(makeNextStepLink(lifecycleUrl, 'Project lifecycle walkthrough'));
     }
-    return link;
+
+    const mobilePriority = document.querySelector('.mobile-nav-priority');
+    if (mobilePriority && !mobilePriority.querySelector('[data-next-step-nav]')) {
+      const firstLink = mobilePriority.querySelector('a');
+      mobilePriority.insertBefore(makeNextStepLink(whatNextUrl, 'What should I do next?'), firstLink || null);
+    }
+
+    const mobileGroups = Array.from(document.querySelectorAll('.mobile-nav-group'));
+    const mobileLearn = mobileGroups.find((group) => group.querySelector('span')?.textContent.trim() === 'Learn');
+    if (mobileLearn && !mobileLearn.querySelector('[data-next-step-nav]')) {
+      mobileLearn.appendChild(makeNextStepLink(lifecycleUrl, 'Project lifecycle walkthrough'));
+    }
+
+    const docsNav = document.querySelector('[data-docs-nav]');
+    if (docsNav && !docsNav.querySelector('[data-next-step-nav]')) {
+      const guidesLabel = Array.from(docsNav.querySelectorAll('.nav-label')).find(
+        (label) => label.textContent.trim() === 'Guides',
+      );
+      if (guidesLabel) {
+        docsNav.insertBefore(makeNextStepLink(whatNextUrl, 'What should I do next?'), guidesLabel);
+        docsNav.insertBefore(makeNextStepLink(lifecycleUrl, 'Project lifecycle walkthrough'), guidesLabel);
+      }
+    }
   };
 
   const injectRevisionNavigation = () => {
@@ -172,6 +220,7 @@
         <p class="eyebrow">Start from your project stage</p>
         <h2>Go directly to the record you need to build now.</h2>
         <p>Study planning, execution, interpretation, peer review, and final handoff require different evidence records. Choose the current stage rather than browsing the whole documentation tree.</p>
+        <p class="project-stage-guide"><a href="${whatNextUrl}">Not sure which stage fits? Use the static decision map →</a> · <a href="${lifecycleUrl}">Follow one project through all five stages</a></p>
       </div>
       <div class="project-stage-shell">
         <div class="project-stage-tabs" role="tablist" aria-label="Research project stages">
@@ -263,6 +312,7 @@
   };
 
   ensureRevisionStyles();
+  injectNextStepNavigation();
   injectRevisionNavigation();
   addProjectStageRouter();
 
