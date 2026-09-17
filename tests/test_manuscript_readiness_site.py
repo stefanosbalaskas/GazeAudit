@@ -71,19 +71,23 @@ def test_manuscript_readiness_is_discoverable_across_learning_surfaces() -> None
     assert "/docs/examples/reviewer-reconstruction/" in workflow
 
 
-def test_workspace_review_path_connects_interpretation_to_archive() -> None:
+def test_workspace_review_path_connects_interpretation_revision_and_archive() -> None:
     guide = _text("docs/guides/manuscript-readiness.md")
     path = _text("docs/workspace/manuscript-review-path.md")
 
     assert "/docs/workspace/manuscript-review-path/" in guide
     for contract in (
         "result interpretation → manuscript wording → reviewer reconstruction",
+        "post-review amendment → archive verification",
         "1 · Interpret",
         "2 · Draft",
         "3 · Reconstruct",
-        "4 · Archive",
+        "4 · Amend",
+        "5 · Archive",
         "/docs/guides/manuscript-readiness/",
         "/docs/examples/reviewer-reconstruction/",
+        "/docs/guides/reviewer-requested-amendments/",
+        "/docs/examples/reviewer-requested-reanalysis/",
         "The route does not classify your study.",
     ):
         assert contract in path

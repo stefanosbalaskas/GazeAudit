@@ -1,16 +1,16 @@
 ---
 title: Researcher workspace
-description: Move from study conditions to governed methods, runnable workflows, evidence boundaries, result interpretation, and a publication-ready audit record.
+description: Move from study conditions to governed methods, runnable workflows, evidence boundaries, result interpretation, peer-review revision, and a publication-ready audit record.
 kicker: Researcher workspace
 page_type: workspace
 permalink: /docs/workspace/
 search_category: Start
-search_keywords: workspace project plan audit planner methods examples workflows evidence interpretation result reporting publication markdown json own data csv first audit
+search_keywords: workspace project plan audit planner methods examples workflows evidence interpretation result reporting manuscript reviewer amendment revision reanalysis publication markdown json own data csv first audit
 ---
 
 # Researcher workspace
 
-Use this page as the **project-level map** for GazeAudit. It connects the planner, method catalog, runnable documentation, visual diagnostics, empirical evidence, result interpretation, and publication tooling without turning any of them into an automatic scientific decision system.
+Use this page as the **project-level map** for GazeAudit. It connects the planner, method catalog, runnable documentation, visual diagnostics, empirical evidence, result interpretation, peer-review revision, and publication tooling without turning any of them into an automatic scientific decision system.
 
 <div class="workspace-launchpad" aria-label="Choose a practical GazeAudit starting point">
   <a class="workspace-launch-card" href="{{ '/docs/guides/first-real-audit/' | relative_url }}">
@@ -34,7 +34,7 @@ Use this page as the **project-level map** for GazeAudit. It connects the planne
   <a class="workspace-launch-card" href="{{ '/docs/workflows/reproducible-publication/' | relative_url }}">
     <span class="workspace-step">Report</span>
     <strong>Prepare the publication record</strong>
-    <p>Bind decisions, outputs, fingerprints, provenance, and interpretation limits into an auditable archive.</p>
+    <p>Bind decisions, outputs, fingerprints, provenance, interpretation limits, and review-stage amendments into an auditable archive.</p>
     <small>Publication workflow →</small>
   </a>
 </div>
@@ -60,6 +60,11 @@ If you need to see **how those stages become one reviewable scientific record**,
 <div class="callout tip">
 <strong>Already have completed robustness outputs?</strong>
 Use <a href="{{ '/docs/guides/interpret-audit-result/' | relative_url }}">Interpret an audit result</a> to check the declared denominator, endpoint consistency, direction, magnitude, descriptive sensitivity, and untested uncertainty in that order. Then compare the four synthetic <a href="{{ '/docs/examples/result-patterns/' | relative_url }}">result-pattern reporting examples</a> before choosing manuscript wording.
+</div>
+
+<div class="callout tip">
+<strong>Revising after peer review?</strong>
+Use the <a href="{{ '/docs/workspace/manuscript-review-path/' | relative_url }}">manuscript review path</a> for the interpretation → draft → reconstruction → amendment → archive sequence. If a reviewer requests new analytical work, preserve the submitted record and continue with <a href="{{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}">reviewer-requested amendments</a> and the <a href="{{ '/docs/examples/reviewer-requested-reanalysis/' | relative_url }}">worked reanalysis example</a> rather than rewriting the original declaration.
 </div>
 
 <div class="callout tip">
@@ -145,6 +150,8 @@ Prefer the smallest executable path that answers the methodological question bef
 | Interpret completed robustness outputs | [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) | [Result-pattern examples]({{ '/docs/examples/result-patterns/' | relative_url }}) |
 | Interpret a robustness pattern | [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }}) | [Reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) |
 | Sampling sensitivity | [Sampling example]({{ '/docs/examples/sampling-sensitivity/' | relative_url }}) | [Specification-space guide]({{ '/docs/guides/specification-space/' | relative_url }}) |
+| Manuscript/reviewer reconstruction | [Manuscript review path]({{ '/docs/workspace/manuscript-review-path/' | relative_url }}) | [Reviewer reconstruction]({{ '/docs/examples/reviewer-reconstruction/' | relative_url }}) |
+| Peer-review revision / reanalysis | [Reviewer amendments]({{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}) | [Reanalysis example]({{ '/docs/examples/reviewer-requested-reanalysis/' | relative_url }}) |
 | Publication evidence | [Publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) | [Publication-audit guide]({{ '/docs/guides/publication-audits/' | relative_url }}) |
 
 ## 4. Inspect visuals in context
@@ -178,7 +185,7 @@ Before reducing the audit to a manuscript sentence, check:
 
 The [interpretation guide]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) turns those checks into a practical decision path. The [result-pattern example]({{ '/docs/examples/result-patterns/' | relative_url }}) shows why stable sign, stable magnitude, sign-changing evidence, and incomplete execution require different wording.
 
-## 7. Preserve the publication record
+## 7. Preserve the publication and revision record
 
 Before writing the final methods or results text, record:
 
@@ -186,9 +193,10 @@ Before writing the final methods or results text, record:
 2. the planner route or rationale for the selected method families;
 3. researcher-declared thresholds, perturbation levels, and specifications;
 4. generated outputs and fingerprints;
-5. the interpretation boundary used in reporting.
+5. the interpretation boundary used in reporting;
+6. any reviewer-requested amendments, their timing, and their separate execution denominators.
 
-Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) and [reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) to keep robustness summaries distinct from confidence intervals, causal claims, or automated validity decisions.
+Then use the [manuscript review path]({{ '/docs/workspace/manuscript-review-path/' | relative_url }}), [reproducible-publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}), and [reporting guide]({{ '/docs/guides/reporting-robustness/' | relative_url }}) to keep submitted evidence, post-review extensions, robustness summaries, confidence intervals, causal claims, and researcher judgement distinct.
 
 ## Fast routes
 
@@ -203,6 +211,9 @@ Then use the [reproducible-publication workflow]({{ '/docs/workflows/reproducibl
 - **I already have robustness outputs:** [interpret an audit result →]({{ '/docs/guides/interpret-audit-result/' | relative_url }})
 - **I want to compare reporting patterns:** [result-pattern examples →]({{ '/docs/examples/result-patterns/' | relative_url }})
 - **I need to practise bounded reporting:** [decision-to-report →]({{ '/docs/examples/decision-to-report/' | relative_url }})
+- **I am preparing a manuscript for outside review:** [manuscript review path →]({{ '/docs/workspace/manuscript-review-path/' | relative_url }})
+- **A reviewer requested another analysis:** [reviewer-requested amendments →]({{ '/docs/guides/reviewer-requested-amendments/' | relative_url }})
+- **I want a worked revision example:** [reviewer-requested reanalysis →]({{ '/docs/examples/reviewer-requested-reanalysis/' | relative_url }})
 - **I want end-to-end analysis design:** [workflows →]({{ '/docs/workflows/' | relative_url }})
 - **I need evidence provenance:** [validation matrix →]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }})
 - **I am preparing a manuscript/archive:** [publication audits →]({{ '/docs/guides/publication-audits/' | relative_url }})

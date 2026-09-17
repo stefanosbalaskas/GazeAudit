@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, bounded reporting, and publication handoff.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, bounded reporting, and publication handoff.
 kicker: Examples
 ---
 
@@ -37,6 +37,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">5</div>
+    <h3>Respond to a reanalysis request</h3>
+    <p>Extend a submitted 8/8 audit with a separately recorded 4/4 reviewer-requested amendment without relabelling post-review work as pre-specified.</p>
+    <p><a href="reviewer-requested-reanalysis/">Reviewer-requested reanalysis →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">6</div>
     <h3>Prepare the publication handoff</h3>
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
@@ -84,6 +90,12 @@ Read an illustrative submission archive from the perspective of a reviewer who w
 
 **Use this when:** the manuscript draft looks finished but you want to test whether the claim can actually be reconstructed from the preserved record without private lab knowledge.
 
+## [Reviewer-requested reanalysis](reviewer-requested-reanalysis/)
+
+Extend a synthetic submitted **8 / 8** robustness audit with a stricter quality threshold requested after peer review. The amendment contributes **4 / 4** separately denominated branches and demonstrates revision timing, response-letter wording, revised Results and limitations, archive layout, failed-amendment handling, and why the combined record must not be described as “12 pre-specified analyses.”
+
+**Use this when:** a reviewer asks for another exclusion, threshold, sensitivity branch, measurement assumption, or endpoint and you need a concrete model for extending the record without retrospectively rewriting the submitted audit.
+
 ## [Publication and archive handoff](publication-archive-handoff/)
 
 Continue the same synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
@@ -126,10 +138,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 8. Use [common audit mistakes and repairs](../guides/common-audit-mistakes/) to diagnose a weak decision trail or incomplete evidence record.
 9. Apply the [manuscript readiness checklist](../guides/manuscript-readiness/) to the draft claim and archive.
 10. Work through [reviewer reconstruction](reviewer-reconstruction/) to practise finding denominator and reporting gaps from outside the analysis team.
-11. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
-12. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-13. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-14. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+11. Use the [reviewer-requested amendments guide](../guides/reviewer-requested-amendments/) when peer review adds analytical work.
+12. Work through [reviewer-requested reanalysis](reviewer-requested-reanalysis/) to keep submitted and post-review denominators distinct.
+13. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+14. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+15. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+16. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 

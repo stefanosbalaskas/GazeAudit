@@ -1,6 +1,6 @@
 ---
 title: Reproducible publication workflow
-description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints and a reviewer-reconstructable manuscript handoff.
+description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints, reviewer-reconstructable manuscript evidence, and traceable post-review amendments.
 kicker: Workflow · Reproducibility
 ---
 
@@ -21,7 +21,7 @@ This workflow is for analyses intended to support a manuscript, validation recor
   <div class="workflow-step"><strong>Freeze scientific choices</strong><p>Preserve the endpoint, specification space, validity rules, measurement assumptions, and conclusion rule before final classification.</p></div>
   <div class="workflow-step"><strong>Execute and preserve all outputs</strong><p>Keep the complete valid specification and sensitivity evidence rather than selected rows.</p></div>
   <div class="workflow-step"><strong>Build the audit bundle</strong><p>Generate deterministic methods, report, manifest, summaries, and fingerprints from the executed evidence.</p></div>
-  <div class="workflow-step"><strong>Review, verify, and archive</strong><p>Test whether an independent reader can reconstruct the claim, then verify the bundle and cite the exact software identity.</p></div>
+  <div class="workflow-step"><strong>Review, amend, and archive</strong><p>Test whether an independent reader can reconstruct the claim; preserve any post-review analyses as dated amendments; verify the final bundle.</p></div>
 </div>
 
 ## 1. Record software identity
@@ -168,7 +168,29 @@ Then work through the [reviewer reconstruction example]({{ '/docs/examples/revie
 Give the archive to someone who did not run the analysis. If they cannot recover the endpoint, denominator, failures, amendments, software identity, and evidence supporting the main claim without oral explanation, improve the record before submission.
 </div>
 
-## 10. Report claims at the right scope
+## 10. Preserve reviewer-requested amendments
+
+Peer review can legitimately add new sensitivity analyses, thresholds, exclusions, measurement assumptions, or endpoints. Those analyses belong in the final scientific record, but they should **extend the submitted audit rather than retrospectively rewrite it**.
+
+Use the [reviewer-requested amendments guide]({{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}) to record:
+
+- the reviewer item and review round;
+- whether the original outcomes had already been inspected;
+- the scientific rationale for the added work;
+- the amendment-specific specification space and execution status;
+- the software identity used for the amendment;
+- the relationship between amendment evidence and the revised manuscript claim.
+
+Keep temporal denominators explicit. For example, a submitted `8 / 8` audit followed by a reviewer-requested `4 / 4` sensitivity amendment remains **8 / 8 submitted + 4 / 4 post-review**. It is not “12 pre-specified analyses.”
+
+Work through the [reviewer-requested reanalysis example]({{ '/docs/examples/reviewer-requested-reanalysis/' | relative_url }}) for a complete synthetic revision exercise, including response-letter wording, revised Results and limitations, amendment archive structure, and failed-branch handling.
+
+<div class="callout warning">
+<strong>Corrections are not ordinary amendments.</strong>
+If review uncovers a coding, import, or analysis defect, preserve the superseded record, document the defect, rerun all materially affected evidence, and identify which manuscript claims changed. Do not present a correction as merely another robustness branch.
+</div>
+
+## 11. Report claims at the right scope
 
 A robust conclusion under one frozen protocol does not imply universal robustness to every conceivable pipeline. A fragile conclusion under one protocol does not imply the source dataset is unusable.
 
@@ -180,10 +202,11 @@ Report:
 - the conclusion rule, if any;
 - the observed stability/fragility pattern;
 - the execution denominator and unresolved valid failures;
+- any post-review amendment and its separate denominator;
 - the protocol boundary;
 - known untested uncertainty dimensions.
 
-## 11. Cite reproducibly
+## 12. Cite reproducibly
 
 For GazeAudit 0.1.0, cite the version DOI and record the software version or commit:
 
