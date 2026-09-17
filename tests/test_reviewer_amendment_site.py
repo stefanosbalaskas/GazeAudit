@@ -27,7 +27,10 @@ def test_reviewer_amendment_guide_preserves_temporal_provenance() -> None:
         assert contract in guide
 
     assert "The category determines how the new evidence should be described." in guide
-    assert "It does **not** decide whether the reviewer request is scientifically justified." in guide
+    assert (
+        "It does **not** decide whether the reviewer request is scientifically justified."
+        in guide
+    )
 
 
 def test_reviewer_amendment_guide_keeps_denominators_separate() -> None:
