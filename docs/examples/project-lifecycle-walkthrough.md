@@ -10,7 +10,7 @@ search_keywords: project lifecycle walkthrough what next onboarding plan audit i
 
 # Project lifecycle walkthrough
 
-This worked example follows one **fully synthetic teaching project** through the five project stages used by the GazeAudit homepage and the [What should I do next?](../guides/what-next/) guide.
+This worked example follows one **fully synthetic teaching project** through the five project stages used by the GazeAudit homepage and the [What should I do next?]({{ '/docs/guides/what-next/' | relative_url }}) guide.
 
 Nothing below is empirical validation evidence. The numbers, reviewer comments, endpoint values, branch counts, manuscript text, and file names are teaching material designed to show how the **research record changes over time**.
 
@@ -64,9 +64,9 @@ It does not prove that the endpoint is scientifically important, that the factor
 
 ### Where the site sends the researcher
 
-- [Audit planner](../planner/)
-- [Project starter](../guides/project-starter/)
-- [Researcher audit checklist](../guides/researcher-audit-checklist/)
+- [Audit planner]({{ '/docs/planner/' | relative_url }})
+- [Project starter]({{ '/docs/guides/project-starter/' | relative_url }})
+- [Researcher audit checklist]({{ '/docs/guides/researcher-audit-checklist/' | relative_url }})
 
 ## Stage 2 — audit the canonical data
 
@@ -99,9 +99,9 @@ The evidence bundle keeps all eight rows. It does not retain only the branch wit
 
 ### Where the site sends the researcher
 
-- [First real audit](../guides/first-real-audit/)
-- [Data onboarding](../guides/data-onboarding/)
-- [Audit output bundle](../guides/audit-output-bundle/)
+- [First real audit]({{ '/docs/guides/first-real-audit/' | relative_url }})
+- [Data onboarding]({{ '/docs/guides/data-onboarding/' | relative_url }})
+- [Audit output bundle]({{ '/docs/guides/audit-output-bundle/' | relative_url }})
 
 ## Stage 3 — interpret the complete pattern
 
@@ -135,10 +135,10 @@ rather than invariant to analysis decisions.
 
 ### Where the site sends the researcher
 
-- [Interpret an audit result](../guides/interpret-audit-result/)
-- [Result-pattern reporting](result-patterns/)
-- [Reporting robustness](../guides/reporting-robustness/)
-- [Manuscript readiness](../guides/manuscript-readiness/)
+- [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }})
+- [Result-pattern reporting]({{ '/docs/examples/result-patterns/' | relative_url }})
+- [Reporting robustness]({{ '/docs/guides/reporting-robustness/' | relative_url }})
+- [Manuscript readiness]({{ '/docs/guides/manuscript-readiness/' | relative_url }})
 
 ## Stage 4 — peer review adds new work
 
@@ -213,11 +213,11 @@ This preserves the distinction between **new branches of the same endpoint** and
 
 ### Where the site sends the researcher
 
-- [Revision route map](../guides/revision-route-map/)
-- [Peer-review revision checklist](../guides/peer-review-revision-checklist/)
-- [Revision toolkit](../workspace/revision-toolkit/)
-- [Revision-round scenarios](revision-round-scenarios/)
-- [Revision-package quickstart](revision-package-quickstart/)
+- [Revision route map]({{ '/docs/guides/revision-route-map/' | relative_url }})
+- [Peer-review revision checklist]({{ '/docs/guides/peer-review-revision-checklist/' | relative_url }})
+- [Revision toolkit]({{ '/docs/workspace/revision-toolkit/' | relative_url }})
+- [Revision-round scenarios]({{ '/docs/examples/revision-round-scenarios/' | relative_url }})
+- [Revision-package quickstart]({{ '/docs/examples/revision-package-quickstart/' | relative_url }})
 
 ## Build the structural revision package
 
@@ -274,11 +274,11 @@ The team verifies that:
 
 ### Where the site sends the researcher
 
-- [Resubmission readiness](../guides/resubmission-readiness/)
-- [Version-change manifest](../guides/version-change-manifest/)
-- [Submission-to-accepted-record](submission-to-accepted-record/)
-- [Publication/archive handoff](publication-archive-handoff/)
-- [Reproducible publication workflow](../workflows/reproducible-publication/)
+- [Resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }})
+- [Version-change manifest]({{ '/docs/guides/version-change-manifest/' | relative_url }})
+- [Submission-to-accepted-record]({{ '/docs/examples/submission-to-accepted-record/' | relative_url }})
+- [Publication/archive handoff]({{ '/docs/examples/publication-archive-handoff/' | relative_url }})
+- [Reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }})
 
 ## What changed across the five stages?
 
@@ -304,4 +304,4 @@ Those outcomes are protocol-bound records. The synthetic lifecycle above receive
 
 ## Continue
 
-Return to [What should I do next?](../guides/what-next/) and choose the stage that matches the real project. Replace every teaching choice here with a study-specific, provenance-preserved decision.
+Return to [What should I do next?]({{ '/docs/guides/what-next/' | relative_url }}) and choose the stage that matches the real project. Replace every teaching choice here with a study-specific, provenance-preserved decision.
