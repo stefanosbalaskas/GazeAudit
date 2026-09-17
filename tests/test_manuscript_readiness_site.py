@@ -35,7 +35,7 @@ def test_reviewer_example_keeps_failed_valid_branch_in_denominator() -> None:
         "valid execution denominator is **7**, not 8",
         "successful valid branches: **6**",
         "technically failed valid branches: **1**",
-        "The archive is **not a complete seven-branch execution**",
+        "not a complete seven-branch execution",
         "Do **not** convert six positive estimates into “100% robust.”",
         "keep S06 in the valid denominator",
     ):
