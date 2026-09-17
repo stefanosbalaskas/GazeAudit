@@ -75,7 +75,7 @@ Before final prose, verify separately:
 - **sensitivity alignment:** which declared factors align descriptively with variation?
 - **untested uncertainty:** which plausible dimensions were not included?
 
-Use the [result interpretation guide](interpret-audit-result/) and [result-pattern example](../examples/result-patterns/) before reducing these dimensions to one label.
+Use the [result interpretation guide]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) and [result-pattern example]({{ '/docs/examples/result-patterns/' | relative_url }}) before reducing these dimensions to one label.
 
 ### 5. The manuscript and archive tell the same story
 
@@ -158,8 +158,8 @@ If any answer is **no**, the manuscript record is not yet ready for handoff.
 
 ## Continue with
 
-- [Manuscript review path](../workspace/manuscript-review-path/) — use one compact Workspace route from interpretation through archive verification.
-- [Reviewer reconstruction worked example](../examples/reviewer-reconstruction/) — practise the checklist on an illustrative archive.
-- [Publication/archive handoff](../examples/publication-archive-handoff/) — see the broader archive structure.
-- [Reproducible publication workflow](../workflows/reproducible-publication/) — build and verify the durable publication record.
-- [Common audit mistakes](common-audit-mistakes/) — repair decision-trail and execution-accounting problems before submission.
+- [Manuscript review path]({{ '/docs/workspace/manuscript-review-path/' | relative_url }}) — use one compact Workspace route from interpretation through archive verification.
+- [Reviewer reconstruction worked example]({{ '/docs/examples/reviewer-reconstruction/' | relative_url }}) — practise the checklist on an illustrative archive.
+- [Publication/archive handoff]({{ '/docs/examples/publication-archive-handoff/' | relative_url }}) — see the broader archive structure.
+- [Reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) — build and verify the durable publication record.
+- [Common audit mistakes]({{ '/docs/guides/common-audit-mistakes/' | relative_url }}) — repair decision-trail and execution-accounting problems before submission.
