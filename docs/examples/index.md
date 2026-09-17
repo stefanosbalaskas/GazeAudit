@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, bounded reporting, and publication handoff.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, response packages, bounded reporting, and publication handoff.
 kicker: Examples
 ---
 
@@ -43,6 +43,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">6</div>
+    <h3>Assemble the response package</h3>
+    <p>Link reviewer items to clarification, amendment, endpoint, manuscript-change, and archive records in one reconstructable revision package.</p>
+    <p><a href="revision-response-package/">Revision response package →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">7</div>
     <h3>Prepare the publication handoff</h3>
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
@@ -96,6 +102,12 @@ Extend a synthetic submitted **8 / 8** robustness audit with a stricter quality 
 
 **Use this when:** a reviewer asks for another exclusion, threshold, sensitivity branch, measurement assumption, or endpoint and you need a concrete model for extending the record without retrospectively rewriting the submitted audit.
 
+## [Revision response package](revision-response-package/)
+
+Follow three synthetic reviewer items from request to final record: a denominator clarification with no rerun, a four-branch stricter-threshold sensitivity amendment, and a different-endpoint request that is preserved outside the original denominator. The example provides response-letter wording, a response matrix, manuscript-change log, round-specific archive layout, and an outsider reconstruction test.
+
+**Use this when:** the new analyses are complete but you need to ensure the response letter, revised manuscript, and archive all describe the same temporal evidence record.
+
 ## [Publication and archive handoff](publication-archive-handoff/)
 
 Continue the same synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
@@ -140,10 +152,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 10. Work through [reviewer reconstruction](reviewer-reconstruction/) to practise finding denominator and reporting gaps from outside the analysis team.
 11. Use the [reviewer-requested amendments guide](../guides/reviewer-requested-amendments/) when peer review adds analytical work.
 12. Work through [reviewer-requested reanalysis](reviewer-requested-reanalysis/) to keep submitted and post-review denominators distinct.
-13. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
-14. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-15. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-16. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+13. Use the [reviewer response letter guide](../guides/reviewer-response-letter/) to connect each response to timing, evidence, manuscript locations, and archive locations.
+14. Work through the [revision response package](revision-response-package/) to audit the response letter, manuscript-change log, and revision archive together.
+15. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+16. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+17. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+18. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 

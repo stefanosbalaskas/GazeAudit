@@ -1,6 +1,6 @@
 ---
 title: Reproducible publication workflow
-description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints, reviewer-reconstructable manuscript evidence, and traceable post-review amendments.
+description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints, reviewer-reconstructable manuscript evidence, traceable post-review amendments, and an evidence-linked reviewer response.
 kicker: Workflow · Reproducibility
 ---
 
@@ -21,7 +21,7 @@ This workflow is for analyses intended to support a manuscript, validation recor
   <div class="workflow-step"><strong>Freeze scientific choices</strong><p>Preserve the endpoint, specification space, validity rules, measurement assumptions, and conclusion rule before final classification.</p></div>
   <div class="workflow-step"><strong>Execute and preserve all outputs</strong><p>Keep the complete valid specification and sensitivity evidence rather than selected rows.</p></div>
   <div class="workflow-step"><strong>Build the audit bundle</strong><p>Generate deterministic methods, report, manifest, summaries, and fingerprints from the executed evidence.</p></div>
-  <div class="workflow-step"><strong>Review, amend, and archive</strong><p>Test whether an independent reader can reconstruct the claim; preserve any post-review analyses as dated amendments; verify the final bundle.</p></div>
+  <div class="workflow-step"><strong>Review, amend, respond, and archive</strong><p>Test whether an independent reader can reconstruct the claim; preserve post-review analyses as dated amendments; link responses to evidence; verify the final bundle.</p></div>
 </div>
 
 ## 1. Record software identity
@@ -190,7 +190,27 @@ Work through the [reviewer-requested reanalysis example]({{ '/docs/examples/revi
 If review uncovers a coding, import, or analysis defect, preserve the superseded record, document the defect, rerun all materially affected evidence, and identify which manuscript claims changed. Do not present a correction as merely another robustness branch.
 </div>
 
-## 11. Report claims at the right scope
+## 11. Bind the reviewer response to the evidence
+
+Once revision analyses are complete, keep the response letter synchronized with the manuscript and revision archive.
+
+Use the [reviewer response letter guide]({{ '/docs/guides/reviewer-response-letter/' | relative_url }}) so each reviewer item records:
+
+- the request and response category;
+- whether the relevant decision was introduced after outcome inspection;
+- the analytical action, including no-change decisions;
+- the submitted and post-review denominators separately;
+- the manuscript locations changed;
+- the revision files that support the response.
+
+Then work through the [revision response package example]({{ '/docs/examples/revision-response-package/' | relative_url }}) to see a clarification, a stricter-threshold sensitivity amendment, and a different-endpoint request carried through one synthetic response matrix and archive.
+
+<div class="callout tip">
+<strong>Response letters are part of the audit trail.</strong>
+A reviewer should not have to infer whether a new analysis was submitted, added after review, corrected after a defect, or reported under a different endpoint. Make that temporal status explicit in the response itself.
+</div>
+
+## 12. Report claims at the right scope
 
 A robust conclusion under one frozen protocol does not imply universal robustness to every conceivable pipeline. A fragile conclusion under one protocol does not imply the source dataset is unusable.
 
@@ -203,10 +223,11 @@ Report:
 - the observed stability/fragility pattern;
 - the execution denominator and unresolved valid failures;
 - any post-review amendment and its separate denominator;
+- the response-letter relationship to the final manuscript claim;
 - the protocol boundary;
 - known untested uncertainty dimensions.
 
-## 12. Cite reproducibly
+## 13. Cite reproducibly
 
 For GazeAudit 0.1.0, cite the version DOI and record the software version or commit:
 
