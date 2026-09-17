@@ -48,7 +48,10 @@ def test_response_package_explains_failed_amendment_branch() -> None:
 
     assert "3 successful / 4 valid" in example
     assert "one unresolved valid amendment branch retained in the archive" in example
-    assert "It should not say that the reviewer-requested sensitivity analysis was complete." in example
+    assert (
+        "It should not say that the reviewer-requested sensitivity analysis was complete."
+        in example
+    )
 
 
 def test_response_guidance_is_discoverable_from_hubs_and_review_path() -> None:
