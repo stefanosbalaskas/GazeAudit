@@ -1,6 +1,6 @@
 ---
 title: Reproducible publication workflow
-description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints, reviewer-reconstructable manuscript evidence, traceable post-review amendments, and an evidence-linked reviewer response.
+description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints, reviewer-reconstructable manuscript evidence, traceable post-review amendments, an evidence-linked reviewer response, and a final resubmission handoff.
 kicker: Workflow · Reproducibility
 ---
 
@@ -21,7 +21,7 @@ This workflow is for analyses intended to support a manuscript, validation recor
   <div class="workflow-step"><strong>Freeze scientific choices</strong><p>Preserve the endpoint, specification space, validity rules, measurement assumptions, and conclusion rule before final classification.</p></div>
   <div class="workflow-step"><strong>Execute and preserve all outputs</strong><p>Keep the complete valid specification and sensitivity evidence rather than selected rows.</p></div>
   <div class="workflow-step"><strong>Build the audit bundle</strong><p>Generate deterministic methods, report, manifest, summaries, and fingerprints from the executed evidence.</p></div>
-  <div class="workflow-step"><strong>Review, amend, respond, and archive</strong><p>Test whether an independent reader can reconstruct the claim; preserve post-review analyses as dated amendments; link responses to evidence; verify the final bundle.</p></div>
+  <div class="workflow-step"><strong>Review, amend, respond, finalize, and archive</strong><p>Test whether an independent reader can reconstruct the claim; preserve post-review analyses as dated amendments; bind responses and version changes to evidence; verify the final bundle.</p></div>
 </div>
 
 ## 1. Record software identity
@@ -210,7 +210,37 @@ Then work through the [revision response package example]({{ '/docs/examples/rev
 A reviewer should not have to infer whether a new analysis was submitted, added after review, corrected after a defect, or reported under a different endpoint. Make that temporal status explicit in the response itself.
 </div>
 
-## 12. Report claims at the right scope
+## 12. Finalize the resubmission and editor handoff
+
+Before sending the revised manuscript, bind the response package to the final version transition.
+
+Use the [version-change manifest guide]({{ '/docs/guides/version-change-manifest/' | relative_url }}) to give each material manuscript change a stable identifier and distinguish:
+
+- editorial text changes;
+- documentation clarifications;
+- corrections with superseded evidence;
+- sensitivity and analytical amendments;
+- endpoint and measurement amendments;
+- reporting-boundary changes.
+
+Then apply the [resubmission readiness and editor handoff guide]({{ '/docs/guides/resubmission-readiness/' | relative_url }}) to verify that:
+
+- every reviewer item has a stable disposition;
+- submitted and post-review evidence remain temporally distinct;
+- the response letter and revised manuscript use the same denominators and endpoint definitions;
+- every manifest entry points to real revision evidence;
+- software identity and fingerprints correspond to final claim-supporting files;
+- unresolved failures and uncertainty remain visible;
+- an outsider can follow the editor-facing evidence map from final claim to source evidence.
+
+The [submission-to-accepted-record worked example]({{ '/docs/examples/submission-to-accepted-record/' | relative_url }}) demonstrates the entire synthetic sequence from an `8 / 8` submitted audit through a `4 / 4` review amendment, separate endpoint amendment, response matrix, version manifest, and final archive.
+
+<div class="callout warning">
+<strong>Editorial status is not scientific validation.</strong>
+A manuscript can be editorially complete while still containing uncertainty, limitations, or disagreement. The final handoff records the evidence history; it does not turn acceptance into an empirical validation result.
+</div>
+
+## 13. Report claims at the right scope
 
 A robust conclusion under one frozen protocol does not imply universal robustness to every conceivable pipeline. A fragile conclusion under one protocol does not imply the source dataset is unusable.
 
@@ -224,10 +254,11 @@ Report:
 - the execution denominator and unresolved valid failures;
 - any post-review amendment and its separate denominator;
 - the response-letter relationship to the final manuscript claim;
+- material version changes that affect claim scope;
 - the protocol boundary;
 - known untested uncertainty dimensions.
 
-## 13. Cite reproducibly
+## 14. Cite reproducibly
 
 For GazeAudit 0.1.0, cite the version DOI and record the software version or commit:
 

@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, response packages, bounded reporting, and publication handoff.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, response packages, resubmission handoff, bounded reporting, and publication archive design.
 kicker: Examples
 ---
 
@@ -49,6 +49,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">7</div>
+    <h3>Trace the final handoff</h3>
+    <p>Follow submitted evidence through post-review amendments, version changes, resubmission checks, and the final editor-facing evidence map.</p>
+    <p><a href="submission-to-accepted-record/">Submission-to-accepted record →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">8</div>
     <h3>Prepare the publication handoff</h3>
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
@@ -108,9 +114,17 @@ Follow three synthetic reviewer items from request to final record: a denominato
 
 **Use this when:** the new analyses are complete but you need to ensure the response letter, revised manuscript, and archive all describe the same temporal evidence record.
 
+## [Submission-to-accepted-record worked example](submission-to-accepted-record/)
+
+Continue the same synthetic revision through the final handoff. The example keeps the submitted **8 / 8** record, reviewer-requested **4 / 4** sensitivity amendment, separate endpoint amendment, response matrix, version-change manifest, resubmission-readiness gate, editor-facing evidence map, and publication-associated archive distinct.
+
+It also shows the incomplete amendment variant (**3 successful / 4 valid**) and the correction path where superseded evidence must remain visible.
+
+**Use this when:** the response package is complete and you want to test whether the final manuscript can be traced back through submitted, post-review, and final evidence layers without rewriting history.
+
 ## [Publication and archive handoff](publication-archive-handoff/)
 
-Continue the same synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
+Continue the synthetic exercise into an illustrative archive containing decision history, source identity, structural-QC evidence, complete specification/execution records, manuscript Methods/Results wording, limitations, software/provenance records, fingerprints, and a human-readable manifest.
 
 **Use this when:** the analysis and interpretation are already clear and you want a concrete model for what a coauthor, reviewer, editor, or future analyst should be able to recover from the final handoff.
 
@@ -154,10 +168,13 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 12. Work through [reviewer-requested reanalysis](reviewer-requested-reanalysis/) to keep submitted and post-review denominators distinct.
 13. Use the [reviewer response letter guide](../guides/reviewer-response-letter/) to connect each response to timing, evidence, manuscript locations, and archive locations.
 14. Work through the [revision response package](revision-response-package/) to audit the response letter, manuscript-change log, and revision archive together.
-15. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
-16. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-17. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-18. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+15. Use the [version-change manifest guide](../guides/version-change-manifest/) to bind every material manuscript change to its rationale and evidence layer.
+16. Apply the [resubmission readiness guide](../guides/resubmission-readiness/) to the final manuscript, response package, version manifest, and evidence map.
+17. Work through [submission-to-accepted-record](submission-to-accepted-record/) to reconstruct the complete synthetic temporal handoff.
+18. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+19. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+20. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+21. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 
