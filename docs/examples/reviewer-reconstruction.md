@@ -228,7 +228,7 @@ That sentence describes record reconstruction. It is not an automatic judgement 
 
 ## Continue with
 
-- [Manuscript readiness checklist](../guides/manuscript-readiness/) — apply the same reconstruction gates to a real project.
-- [Interpret an audit result](../guides/interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
-- [Publication/archive handoff](publication-archive-handoff/) — assemble the broader archive.
-- [Reproducible publication workflow](../workflows/reproducible-publication/) — verify and preserve deterministic publication evidence.
+- [Manuscript readiness checklist]({{ '/docs/guides/manuscript-readiness/' | relative_url }}) — apply the same reconstruction gates to a real project.
+- [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) — separate completeness, direction, magnitude, and unresolved uncertainty.
+- [Publication/archive handoff]({{ '/docs/examples/publication-archive-handoff/' | relative_url }}) — assemble the broader archive.
+- [Reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) — verify and preserve deterministic publication evidence.
