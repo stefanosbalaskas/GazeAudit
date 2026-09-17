@@ -17,10 +17,10 @@ def test_response_letter_guide_preserves_revision_provenance() -> None:
         "This is a provenance guide, not a persuasion template.",
         "The response unit",
         "results_already_seen: yes",
-        "submitted_execution: \"8 / 8 valid branches completed\"",
-        "amendment_execution: \"4 / 4 added branches completed\"",
+        'submitted_execution: "8 / 8 valid branches completed"',
+        'amendment_execution: "4 / 4 added branches completed"',
         "Do not collapse temporal layers",
-        "Corrections preserve the superseded record",
+        "corrections preserve the superseded record",
         "Do not use the response letter to rewrite history.",
     ):
         assert contract in guide
@@ -37,7 +37,7 @@ def test_response_package_keeps_submitted_and_revision_layers_separate() -> None
         "8 / 8 submitted + 4 / 4 post-review",
         "It is not “12 pre-specified analyses.”",
         "endpoint amendment",
-        "do not merge it into the original robustness denominator",
+        "did not merge it into the original robustness denominator",
         "Reviewer reconstruction test",
     ):
         assert contract in example
