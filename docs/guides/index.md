@@ -1,12 +1,12 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, manuscript readiness, peer-review amendments, reviewer responses, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, manuscript readiness, peer-review amendments, reviewer responses, resubmission handoff, publication, and interoperability.
 kicker: Guides
 ---
 
 # Guides
 
-The guides explain **how to design, govern, interpret, troubleshoot, review, revise, respond, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
+The guides explain **how to design, govern, interpret, troubleshoot, review, revise, respond, finalize, and report** GazeAudit analyses. For copy-paste runnable demonstrations, use the [examples](../examples/).
 
 ## Choose by task
 
@@ -49,6 +49,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">7</div>
+    <h3>Finalize the resubmission</h3>
+    <p>Bind reviewer responses to stable version changes, final manuscript locations, temporal evidence layers, software identity, and an editor-facing evidence map.</p>
+    <p><a href="resubmission-readiness/">Resubmission readiness →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">8</div>
     <h3>Prepare publication evidence</h3>
     <p>Bind the complete audit bundle, provenance, fingerprints, methods wording, results wording, revision evidence, and unresolved limitations into a durable record.</p>
     <p><a href="publication-audits/">Publication audits →</a></p>
@@ -143,6 +149,16 @@ Build a reviewer response around stable response units: the reviewer request, re
 
 For a complete response package, use the [revision response package worked example](../examples/revision-response-package/).
 
+### [Version-change manifest](version-change-manifest/)
+
+Record the transition from submitted to revised manuscript using stable change IDs and explicit categories for editorial text, documentation clarification, correction, sensitivity/analytical amendment, endpoint amendment, measurement amendment, and reporting-boundary changes. The guide links each material revision to timing, manuscript locations, evidence, denominator effects, claim impact, and archive provenance.
+
+### [Resubmission readiness and editor handoff](resubmission-readiness/)
+
+Run seven final-handoff gates across reviewer-item closure, temporal evidence layers, response/manuscript agreement, version-change completeness, archive reproducibility, software identity, and an editor-facing evidence map. The guide explicitly treats editorial status as separate from scientific validity.
+
+For the complete temporal exercise, use the [submission-to-accepted-record worked example](../examples/submission-to-accepted-record/).
+
 ## Reproducibility
 
 ### [Publication audits](publication-audits/)
@@ -176,9 +192,12 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 13. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise a separately denominated post-review sensitivity amendment.
 14. [Reviewer response letter](reviewer-response-letter/) — connect each reviewer item to the revision evidence and manuscript changes.
 15. [Revision response package](../examples/revision-response-package/) — reconstruct the response letter, change log, and round-specific archive together.
-16. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
-17. [Publication audits](publication-audits/) — build and verify the durable research record.
+16. [Version-change manifest](version-change-manifest/) — bind material v1 → v2 changes to timing, evidence, and claim impact.
+17. [Resubmission readiness](resubmission-readiness/) — run the final editor-handoff consistency gate.
+18. [Submission-to-accepted-record example](../examples/submission-to-accepted-record/) — trace submitted, post-review, and final evidence layers end to end.
+19. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+20. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
-Guides describe GazeAudit's scientific contracts and recommended use. They do not replace study-specific justification. Researchers remain responsible for deciding which AOIs, error models, detectors, preprocessing choices, QC thresholds, perturbations, specifications, reviewer-requested extensions, and scientific endpoints are defensible for their design.
+Guides describe GazeAudit's scientific contracts and recommended use. They do not replace study-specific justification. Researchers remain responsible for deciding which AOIs, error models, detectors, preprocessing choices, QC thresholds, perturbations, specifications, reviewer-requested extensions, revision interpretations, and scientific endpoints are defensible for their design.
