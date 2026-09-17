@@ -29,11 +29,11 @@ If the endpoint, valid execution denominator, source identity, reviewer timing, 
 
 | Your current state | Build next | Start here | You are ready to leave the stage when… |
 |---|---|---|---|
-| The study is being designed or the analysis route is not yet declared | A governed project route | [Audit planner](../planner/) and [Project starter](project-starter/) | source, endpoint, researcher-owned decisions, and intended method route are explicit |
-| A canonical gaze table exists but the audit record is not complete | Structural QC + declared execution record | [First real audit](first-real-audit/) | the canonical mapping, QC record, valid branch denominator, execution status, and saved evidence are recoverable |
-| The audit has run but the manuscript claim is not yet settled | Bounded interpretation | [Interpret an audit result](interpret-audit-result/) | completeness, endpoint identity, direction, magnitude, sensitivity, and unresolved uncertainty are separated |
-| A reviewer has requested clarification or new work | A temporally separated revision record | [Revision toolkit](../workspace/revision-toolkit/) and [Revision route map](revision-route-map/) | every request is classified and linked to response, manuscript, evidence, and archive locations |
-| The revision is complete and the manuscript is moving to resubmission/final record | Editor-facing and publication handoff | [Resubmission readiness](resubmission-readiness/) and [Reproducible publication](../workflows/reproducible-publication/) | reviewer items, version changes, evidence layers, software identity, and final claims reconcile |
+| The study is being designed or the analysis route is not yet declared | A governed project route | [Audit planner]({{ '/docs/planner/' | relative_url }}) and [Project starter]({{ '/docs/guides/project-starter/' | relative_url }}) | source, endpoint, researcher-owned decisions, and intended method route are explicit |
+| A canonical gaze table exists but the audit record is not complete | Structural QC + declared execution record | [First real audit]({{ '/docs/guides/first-real-audit/' | relative_url }}) | the canonical mapping, QC record, valid branch denominator, execution status, and saved evidence are recoverable |
+| The audit has run but the manuscript claim is not yet settled | Bounded interpretation | [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }}) | completeness, endpoint identity, direction, magnitude, sensitivity, and unresolved uncertainty are separated |
+| A reviewer has requested clarification or new work | A temporally separated revision record | [Revision toolkit]({{ '/docs/workspace/revision-toolkit/' | relative_url }}) and [Revision route map]({{ '/docs/guides/revision-route-map/' | relative_url }}) | every request is classified and linked to response, manuscript, evidence, and archive locations |
+| The revision is complete and the manuscript is moving to resubmission/final record | Editor-facing and publication handoff | [Resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }}) and [Reproducible publication]({{ '/docs/workflows/reproducible-publication/' | relative_url }}) | reviewer items, version changes, evidence layers, software identity, and final claims reconcile |
 
 ## Stage 1 — plan before analysis
 
@@ -57,10 +57,10 @@ Preserve at least:
 
 ### Open next
 
-1. [Audit planner](../planner/) — route declared study conditions to method families.
-2. [Project starter](project-starter/) — create the study/evidence directory structure.
-3. [Researcher audit checklist](researcher-audit-checklist/) — record decisions before, during, and after execution.
-4. [Audit decision log template](audit-decision-log-template/) — preserve the reasoning in a copy-ready record.
+1. [Audit planner]({{ '/docs/planner/' | relative_url }}) — route declared study conditions to method families.
+2. [Project starter]({{ '/docs/guides/project-starter/' | relative_url }}) — create the study/evidence directory structure.
+3. [Researcher audit checklist]({{ '/docs/guides/researcher-audit-checklist/' | relative_url }}) — record decisions before, during, and after execution.
+4. [Audit decision log template]({{ '/docs/guides/audit-decision-log-template/' | relative_url }}) — preserve the reasoning in a copy-ready record.
 
 <div class="callout info">
 <strong>Do not use the planner as a diagnostic instrument.</strong>
@@ -90,10 +90,10 @@ Your record should make it possible to recover:
 
 ### Open next
 
-1. [First real audit](first-real-audit/) — the practical CSV → QC → specification → evidence route.
-2. [Data onboarding](data-onboarding/) — focus on structural mapping and preflight.
-3. [Analysis-readiness governance](analysis-readiness/) — preview cohort consequences when readiness policy is part of the question.
-4. [Audit output bundle](audit-output-bundle/) — learn what each saved artifact establishes.
+1. [First real audit]({{ '/docs/guides/first-real-audit/' | relative_url }}) — the practical CSV → QC → specification → evidence route.
+2. [Data onboarding]({{ '/docs/guides/data-onboarding/' | relative_url }}) — focus on structural mapping and preflight.
+3. [Analysis-readiness governance]({{ '/docs/guides/analysis-readiness/' | relative_url }}) — preview cohort consequences when readiness policy is part of the question.
+4. [Audit output bundle]({{ '/docs/guides/audit-output-bundle/' | relative_url }}) — learn what each saved artifact establishes.
 
 ### Stop condition
 
@@ -119,11 +119,11 @@ Do **not** move to interpretation because one preferred estimate exists. Move on
 
 ### Open next
 
-- [Interpret an audit result](interpret-audit-result/)
-- [Result-pattern reporting example](../examples/result-patterns/)
-- [Decision-to-report example](../examples/decision-to-report/)
-- [Reporting robustness](reporting-robustness/)
-- [Manuscript readiness](manuscript-readiness/)
+- [Interpret an audit result]({{ '/docs/guides/interpret-audit-result/' | relative_url }})
+- [Result-pattern reporting example]({{ '/docs/examples/result-patterns/' | relative_url }})
+- [Decision-to-report example]({{ '/docs/examples/decision-to-report/' | relative_url }})
+- [Reporting robustness]({{ '/docs/guides/reporting-robustness/' | relative_url }})
+- [Manuscript readiness]({{ '/docs/guides/manuscript-readiness/' | relative_url }})
 
 <div class="callout warning">
 <strong>Do not compress descriptive diagnostics into inferential claims they do not support.</strong>
@@ -141,7 +141,7 @@ Specification quantiles are not confidence intervals, sign fractions are not pos
 
 ### First classify the request
 
-Use the [Revision route map](revision-route-map/) to distinguish:
+Use the [Revision route map]({{ '/docs/guides/revision-route-map/' | relative_url }}) to distinguish:
 
 - `documentation_clarification`;
 - `correction`;
@@ -154,11 +154,11 @@ Then preserve the timing explicitly. A submitted `8 / 8` audit plus a reviewer-r
 
 ### Open next
 
-1. [Peer-review revision checklist](peer-review-revision-checklist/) — the compact pre-change gate.
-2. [Revision toolkit](../workspace/revision-toolkit/) — the full revision workspace.
-3. [Revision-round scenarios](../examples/revision-round-scenarios/) — compare common revision paths.
-4. [Revision-package quickstart](../examples/revision-package-quickstart/) — create and validate structural provenance with the real CLI.
-5. [Reviewer response letter](reviewer-response-letter/) — reconcile request, action, manuscript, and archive.
+1. [Peer-review revision checklist]({{ '/docs/guides/peer-review-revision-checklist/' | relative_url }}) — the compact pre-change gate.
+2. [Revision toolkit]({{ '/docs/workspace/revision-toolkit/' | relative_url }}) — the full revision workspace.
+3. [Revision-round scenarios]({{ '/docs/examples/revision-round-scenarios/' | relative_url }}) — compare common revision paths.
+4. [Revision-package quickstart]({{ '/docs/examples/revision-package-quickstart/' | relative_url }}) — create and validate structural provenance with the real CLI.
+5. [Reviewer response letter]({{ '/docs/guides/reviewer-response-letter/' | relative_url }}) — reconcile request, action, manuscript, and archive.
 
 ## Stage 5 — resubmission and durable handoff
 
@@ -183,11 +183,11 @@ Check that the final record connects:
 
 ### Open next
 
-- [Resubmission readiness](resubmission-readiness/)
-- [Version-change manifest](version-change-manifest/)
-- [Submission-to-accepted-record example](../examples/submission-to-accepted-record/)
-- [Publication/archive handoff example](../examples/publication-archive-handoff/)
-- [Reproducible publication workflow](../workflows/reproducible-publication/)
+- [Resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }})
+- [Version-change manifest]({{ '/docs/guides/version-change-manifest/' | relative_url }})
+- [Submission-to-accepted-record example]({{ '/docs/examples/submission-to-accepted-record/' | relative_url }})
+- [Publication/archive handoff example]({{ '/docs/examples/publication-archive-handoff/' | relative_url }})
+- [Reproducible publication workflow]({{ '/docs/workflows/reproducible-publication/' | relative_url }})
 
 ## Common branch points
 
@@ -215,7 +215,7 @@ Do not inherit the frozen outcome label. GazeBase `incomplete`, Korthals `robust
 
 This page is deliberately useful without JavaScript. The interactive homepage project-stage router is a faster entry point when scripting is available, while this guide keeps the same project-stage logic in a stable, searchable, linkable document.
 
-For one continuous synthetic exercise across all five stages, continue to the [project lifecycle walkthrough](../examples/project-lifecycle-walkthrough/).
+For one continuous synthetic exercise across all five stages, continue to the [project lifecycle walkthrough]({{ '/docs/examples/project-lifecycle-walkthrough/' | relative_url }}).
 
 ## Scientific boundary
 
