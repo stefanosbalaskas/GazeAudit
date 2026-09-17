@@ -9,7 +9,7 @@ search_keywords: manuscript reviewer readiness reconstruction revision amendment
 
 # Manuscript review path
 
-Use this route when the analysis is already complete enough to draft a manuscript but you want one compact map from **result interpretation → manuscript wording → reviewer reconstruction → post-review amendment → response package → executable revision package → archive verification**. For a revised manuscript, the archive stage includes a final resubmission/editor handoff that binds the response matrix, version-change manifest, final manuscript, software record, and evidence map.
+Use this route when the analysis is already complete enough to draft a manuscript but you want one compact map from **result interpretation → manuscript wording → reviewer reconstruction → post-review amendment → response package → archive verification**. The revision-package stage makes that archive verification executable: it scaffolds the response matrix, version-change manifest, post-review evidence layers, software record, and editor-facing evidence map before the final handoff.
 
 <div class="workflow-steps">
   <div class="workflow-step"><strong>1 · Interpret</strong><p>Check denominator, endpoint, direction, magnitude, descriptive sensitivity, and unresolved uncertainty.</p></div>
@@ -103,6 +103,6 @@ A reviewer-requested exclusion, threshold, endpoint, measurement assumption, or 
 </div>
 
 <div class="callout info">
-<strong>Structural validation is not scientific validation.</strong>
-The revision-package validator checks expected files and manifest integrity. It does not classify the study, judge whether the specification space is defensible, predict acceptance, or convert editorial status into empirical evidence.
+<strong>The route does not classify your study.</strong>
+Structural validation is not scientific validation. The revision-package validator checks expected files and manifest integrity. It does not classify the study, judge whether the specification space is defensible, predict acceptance, or convert editorial status into empirical evidence.
 </div>
