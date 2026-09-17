@@ -2,6 +2,8 @@
 title: What should I do next?
 description: A static-first decision map from study planning through audit, interpretation, peer review, resubmission, and publication handoff.
 kicker: Start
+page_type: guide
+permalink: /docs/guides/what-next/
 search_category: Start
 search_keywords: what next next step onboarding where do I start project stage plan audit interpret peer review revision resubmission publication handoff first audit
 ---
