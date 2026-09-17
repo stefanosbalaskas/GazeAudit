@@ -4,12 +4,17 @@ description: A compact route from interpreted robustness outputs to reviewer-rec
 kicker: Workspace · Review path
 permalink: /docs/workspace/manuscript-review-path/
 search_category: Start
-search_keywords: manuscript reviewer readiness reconstruction revision amendment reanalysis response rebuttal reproducibility package cli resubmission editor handoff version manifest accepted record archive methods results denominator failures publication
+search_keywords: manuscript reviewer readiness reconstruction revision toolkit amendment reanalysis response rebuttal reproducibility package cli resubmission editor handoff version manifest accepted record archive methods results denominator failures publication
 ---
 
 # Manuscript review path
 
 Use this route when the analysis is already complete enough to draft a manuscript but you want one compact map from **result interpretation → manuscript wording → reviewer reconstruction → post-review amendment → response package → archive verification**. The revision-package stage makes that archive verification executable: it scaffolds the response matrix, version-change manifest, post-review evidence layers, software record, and editor-facing evidence map before the final handoff.
+
+<div class="callout tip">
+<strong>Already in a revision round?</strong>
+Use the <a href="{{ '/docs/workspace/revision-toolkit/' | relative_url }}">peer-review revision toolkit</a> for the shorter task-based route: classify the request, preserve new evidence, write the response, record version changes, build the executable revision package, and run the resubmission gate.
+</div>
 
 <div class="workflow-steps">
   <div class="workflow-step"><strong>1 · Interpret</strong><p>Check denominator, endpoint, direction, magnitude, descriptive sensitivity, and unresolved uncertainty.</p></div>
