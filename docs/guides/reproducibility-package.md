@@ -28,7 +28,7 @@ Use the package after the submitted analysis record exists and peer review has c
 - a correction that supersedes submitted evidence;
 - a final editor-facing evidence map tying manuscript claims to files.
 
-For the scientific reasoning behind those categories, read [reviewer-requested amendments](reviewer-requested-amendments/) and the [version-change manifest guide](version-change-manifest/) first.
+For the scientific reasoning behind those categories, read [reviewer-requested amendments]({{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}) and the [version-change manifest guide]({{ '/docs/guides/version-change-manifest/' | relative_url }}) first.
 
 ## 1. Create the package
 
@@ -259,14 +259,14 @@ A structurally valid package does **not** prove that:
 - the manuscript is publication-ready;
 - editorial acceptance validates the scientific result.
 
-Use [resubmission readiness](resubmission-readiness/) for the final consistency gate and [publication audits](publication-audits/) for deterministic scientific bundle provenance.
+Use [resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }}) for the final consistency gate and [publication audits]({{ '/docs/guides/publication-audits/' | relative_url }}) for deterministic scientific bundle provenance.
 
 ## Recommended route
 
-1. [Reviewer-requested amendments](reviewer-requested-amendments/) — classify the request and preserve timing.
-2. [Reviewer response letter](reviewer-response-letter/) — link the response to evidence and manuscript locations.
-3. [Version-change manifest](version-change-manifest/) — record what changed between manuscript versions.
+1. [Reviewer-requested amendments]({{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}) — classify the request and preserve timing.
+2. [Reviewer response letter]({{ '/docs/guides/reviewer-response-letter/' | relative_url }}) — link the response to evidence and manuscript locations.
+3. [Version-change manifest]({{ '/docs/guides/version-change-manifest/' | relative_url }}) — record what changed between manuscript versions.
 4. **Revision reproducibility package** — scaffold and validate the revision record.
-5. [Resubmission readiness](resubmission-readiness/) — run the final outsider consistency gate.
-6. [Reproducibility-package worked example](../examples/reproducibility-package-cli/) — deliberately break and repair a synthetic package.
-7. [Submission-to-accepted-record](../examples/submission-to-accepted-record/) — trace the complete temporal scientific record.
+5. [Resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }}) — run the final outsider consistency gate.
+6. [Reproducibility-package worked example]({{ '/docs/examples/reproducibility-package-cli/' | relative_url }}) — deliberately break and repair a synthetic package.
+7. [Submission-to-accepted-record]({{ '/docs/examples/submission-to-accepted-record/' | relative_url }}) — trace the complete temporal scientific record.
