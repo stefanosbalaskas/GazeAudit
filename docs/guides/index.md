@@ -1,6 +1,6 @@
 ---
 title: Guides
-description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, manuscript readiness, peer-review amendments, reviewer responses, resubmission handoff, publication, and interoperability.
+description: Task-oriented GazeAudit guides for project setup, researcher decisions, data onboarding, uncertainty, robustness design, troubleshooting, result interpretation, manuscript readiness, peer-review revision checklists and amendments, reviewer responses, resubmission handoff, publication, and interoperability.
 kicker: Guides
 ---
 
@@ -39,7 +39,7 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <div class="card-icon" aria-hidden="true">5</div>
     <h3>Handle reviewer amendments</h3>
     <p>Keep the submitted audit recoverable when peer review requests new exclusions, thresholds, endpoints, measurement assumptions, or sensitivity analyses.</p>
-    <p><a href="reviewer-requested-amendments/">Reviewer amendments →</a></p>
+    <p><a href="peer-review-revision-checklist/">Peer-review revision checklist →</a></p>
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">6</div>
@@ -137,6 +137,12 @@ Verify six pre-submission gates: endpoint reconstruction, execution-denominator 
 
 For a worked review exercise, use the [reviewer reconstruction example](../examples/reviewer-reconstruction/).
 
+### [Peer-review revision checklist](peer-review-revision-checklist/)
+
+Use the compact revision gate before changing files. It classifies clarifications, sensitivity/analytical amendments, endpoint changes, measurement changes, and corrections; records whether outcomes were already inspected; preserves submitted versus post-review denominators; keeps failed valid branches visible; and checks response/manuscript/archive agreement before handoff.
+
+For the shortest real-CLI exercise, use the [revision-package quickstart](../examples/revision-package-quickstart/).
+
 ### [Reviewer-requested amendments](reviewer-requested-amendments/)
 
 Preserve the submitted record when peer review asks for new exclusions, sensitivity checks, endpoints, thresholds, or measurement assumptions. The guide separates clarifications, corrections, sensitivity amendments, analytical amendments, endpoint amendments, and measurement amendments; it also requires outcome-inspection timing, amendment-specific execution status, and separate submitted versus post-review denominators.
@@ -160,6 +166,10 @@ Run seven final-handoff gates across reviewer-item closure, temporal evidence la
 For the complete temporal exercise, use the [submission-to-accepted-record worked example](../examples/submission-to-accepted-record/).
 
 ## Reproducibility
+
+### [Revision reproducibility package](reproducibility-package/)
+
+Use the `gazeaudit-revision-package` CLI to scaffold reviewer-response, change-manifest, amendment, endpoint-amendment, software-identity, and editor-facing evidence-map records, then validate deterministic package structure without conflating structural provenance with scientific validity.
 
 ### [Publication audits](publication-audits/)
 
@@ -188,15 +198,17 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 9. [Decision-to-report example](../examples/decision-to-report/) — practise bounded interpretation on the deterministic 12-branch exercise.
 10. [Manuscript readiness](manuscript-readiness/) — test whether the claim and evidence can be reconstructed independently.
 11. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding denominator and reporting gaps from the outside.
-12. [Reviewer-requested amendments](reviewer-requested-amendments/) — preserve the submitted audit when revision adds new evidence.
-13. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise a separately denominated post-review sensitivity amendment.
-14. [Reviewer response letter](reviewer-response-letter/) — connect each reviewer item to the revision evidence and manuscript changes.
-15. [Revision response package](../examples/revision-response-package/) — reconstruct the response letter, change log, and round-specific archive together.
-16. [Version-change manifest](version-change-manifest/) — bind material v1 → v2 changes to timing, evidence, and claim impact.
-17. [Resubmission readiness](resubmission-readiness/) — run the final editor-handoff consistency gate.
-18. [Submission-to-accepted-record example](../examples/submission-to-accepted-record/) — trace submitted, post-review, and final evidence layers end to end.
-19. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
-20. [Publication audits](publication-audits/) — build and verify the durable research record.
+12. [Peer-review revision checklist](peer-review-revision-checklist/) — classify reviewer requests and preserve temporal provenance before changes begin.
+13. [Reviewer-requested amendments](reviewer-requested-amendments/) — preserve the submitted audit when revision adds new evidence.
+14. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise a separately denominated post-review sensitivity amendment.
+15. [Reviewer response letter](reviewer-response-letter/) — connect each reviewer item to the revision evidence and manuscript changes.
+16. [Revision response package](../examples/revision-response-package/) — reconstruct the response letter, change log, and round-specific archive together.
+17. [Version-change manifest](version-change-manifest/) — bind material v1 → v2 changes to timing, evidence, and claim impact.
+18. [Revision-package quickstart](../examples/revision-package-quickstart/) — create and structurally validate the governed package with the real CLI.
+19. [Resubmission readiness](resubmission-readiness/) — run the final editor-handoff consistency gate.
+20. [Submission-to-accepted-record example](../examples/submission-to-accepted-record/) — trace submitted, post-review, and final evidence layers end to end.
+21. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+22. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
