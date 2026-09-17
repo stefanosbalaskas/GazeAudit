@@ -273,9 +273,9 @@ The exercise does **not** demonstrate that the synthetic analyses are scientific
 
 ## Continue the workflow
 
-- [Revision reproducibility package guide](../guides/reproducibility-package/) — command and field reference.
-- [Reviewer response letter](../guides/reviewer-response-letter/) — bounded response wording.
-- [Version-change manifest](../guides/version-change-manifest/) — revision taxonomy and supersession rules.
-- [Resubmission readiness](../guides/resubmission-readiness/) — final manuscript/archive consistency gate.
-- [Submission-to-accepted-record](submission-to-accepted-record/) — full synthetic temporal record.
-- [Publication/archive handoff](publication-archive-handoff/) — durable end-state packaging.
+- [Revision reproducibility package guide]({{ '/docs/guides/reproducibility-package/' | relative_url }}) — command and field reference.
+- [Reviewer response letter]({{ '/docs/guides/reviewer-response-letter/' | relative_url }}) — bounded response wording.
+- [Version-change manifest]({{ '/docs/guides/version-change-manifest/' | relative_url }}) — revision taxonomy and supersession rules.
+- [Resubmission readiness]({{ '/docs/guides/resubmission-readiness/' | relative_url }}) — final manuscript/archive consistency gate.
+- [Submission-to-accepted-record]({{ '/docs/examples/submission-to-accepted-record/' | relative_url }}) — full synthetic temporal record.
+- [Publication/archive handoff]({{ '/docs/examples/publication-archive-handoff/' | relative_url }}) — durable end-state packaging.
