@@ -74,4 +74,4 @@ If you are no longer asking *why* robustness or uncertainty matters and instead 
 
 ## Relationship to the validation records
 
-The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns, reviewer exercises, and general methodological articles do not create or modify case-study classifications.
+The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns and general methodological articles do not create or modify case-study classifications. Reviewer reconstruction exercises are also synthetic teaching material and do not create or modify case-study classifications.
