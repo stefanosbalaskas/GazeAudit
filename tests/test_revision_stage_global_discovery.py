@@ -63,7 +63,7 @@ def test_revision_route_map_preserves_temporal_denominators_and_failures() -> No
 
     assert "8 / 8 submitted + 4 / 4 post-review" in text
     assert "3 successful / 4 valid" in text
-    assert "not `3 / 3`" in text
+    assert "<code>3 / 4</code>, not <code>3 / 3</code>" in text
     assert "structural provenance only" in text
 
 
