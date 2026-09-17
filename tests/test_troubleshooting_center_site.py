@@ -92,7 +92,10 @@ def test_troubleshooting_center_is_distinct_from_record_mistakes() -> None:
     troubleshooting = _read(TROUBLESHOOTING)
     mistakes = _read(COMMON_MISTAKES)
     guides = _read(GUIDES_INDEX)
-    assert "when a GazeAudit workflow is **blocked, errors, returns an unusable result" in troubleshooting
+    symptom_boundary = (
+        "when a GazeAudit workflow is **blocked, errors, returns an unusable result"
+    )
+    assert symptom_boundary in troubleshooting
     assert "A technically reproducible analysis can still have a weak scientific record" in mistakes
     assert "The two troubleshooting routes are deliberately different" in guides
 
