@@ -121,13 +121,19 @@ Translate specification curves, sign fractions, marginal sensitivity, and pairwi
 
 For a complete worked interpretation exercise, use the [decision-to-report example](../examples/decision-to-report/).
 
-## Troubleshooting the research record
+## Troubleshooting
+
+### [Troubleshooting GazeAudit](troubleshooting/)
+
+Start here when a workflow is **blocked or failing**. The guide routes symptoms across installation/environment, source/schema, structural preflight, grouped measurement models, specification execution, non-finite endpoints, denominator mismatches, and revision-package validation. Each route identifies what to inspect, the smallest safe repair, and what evidence should be preserved before changing anything.
+
+For a worked technical recovery, use the [failed-audit recovery walkthrough](../examples/failed-audit-recovery/). It keeps `8 declared → 7 valid → 6 initially successful` distinct, preserves a valid technical failure, repairs the causal processor defect, reruns the same branch, and retains the original failure event.
 
 ### [Common audit mistakes and repairs](common-audit-mistakes/)
 
-Diagnose nine recurring failure patterns: outcome-informed specification design, silent branch deletion, endpoint drift, QC/exclusion confusion, hidden interpolation or missingness repair, inferential over-reading of robustness summaries, rewritten decision history, incomplete archives, and transfer of protocol-bound case labels to new data. Each failure is paired with a concrete repair and the evidence that should be preserved.
+Use this when execution **ran**, but the decision trail, denominator governance, reporting boundary, or archive is difficult to defend. It covers outcome-informed specification design, silent branch deletion, endpoint drift, QC/exclusion confusion, hidden interpolation or missingness repair, inferential over-reading of robustness summaries, rewritten decision history, incomplete archives, and transfer of protocol-bound case labels to new data.
 
-Use this guide when an analysis runs successfully but the **decision trail, completeness, or reporting boundary** is still difficult to defend.
+The two troubleshooting routes are deliberately different: the troubleshooting center diagnoses blocked execution; this guide repairs weaknesses in the research record without rewriting inconvenient results.
 
 ## Manuscript and review readiness
 
@@ -192,23 +198,25 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 3. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
 4. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
 5. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
-6. [Common audit mistakes](common-audit-mistakes/) — diagnose record and execution failures before interpretation.
-7. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
-8. [Result-pattern example](../examples/result-patterns/) — compare four synthetic evidence patterns and bounded wording.
-9. [Decision-to-report example](../examples/decision-to-report/) — practise bounded interpretation on the deterministic 12-branch exercise.
-10. [Manuscript readiness](manuscript-readiness/) — test whether the claim and evidence can be reconstructed independently.
-11. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding denominator and reporting gaps from the outside.
-12. [Peer-review revision checklist](peer-review-revision-checklist/) — classify reviewer requests and preserve temporal provenance before changes begin.
-13. [Reviewer-requested amendments](reviewer-requested-amendments/) — preserve the submitted audit when revision adds new evidence.
-14. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise a separately denominated post-review sensitivity amendment.
-15. [Reviewer response letter](reviewer-response-letter/) — connect each reviewer item to the revision evidence and manuscript changes.
-16. [Revision response package](../examples/revision-response-package/) — reconstruct the response letter, change log, and round-specific archive together.
-17. [Version-change manifest](version-change-manifest/) — bind material v1 → v2 changes to timing, evidence, and claim impact.
-18. [Revision-package quickstart](../examples/revision-package-quickstart/) — create and structurally validate the governed package with the real CLI.
-19. [Resubmission readiness](resubmission-readiness/) — run the final editor-handoff consistency gate.
-20. [Submission-to-accepted-record example](../examples/submission-to-accepted-record/) — trace submitted, post-review, and final evidence layers end to end.
-21. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
-22. [Publication audits](publication-audits/) — build and verify the durable research record.
+6. [Troubleshooting GazeAudit](troubleshooting/) — diagnose a blocked or failed workflow without rewriting scientific choices.
+7. [Failed-audit recovery](../examples/failed-audit-recovery/) — practise preserving a valid technical failure and reconciling a causal repair.
+8. [Common audit mistakes](common-audit-mistakes/) — diagnose research-record failures before interpretation.
+9. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
+10. [Result-pattern example](../examples/result-patterns/) — compare four synthetic evidence patterns and bounded wording.
+11. [Decision-to-report example](../examples/decision-to-report/) — practise bounded interpretation on the deterministic 12-branch exercise.
+12. [Manuscript readiness](manuscript-readiness/) — test whether the claim and evidence can be reconstructed independently.
+13. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding denominator and reporting gaps from the outside.
+14. [Peer-review revision checklist](peer-review-revision-checklist/) — classify reviewer requests and preserve temporal provenance before changes begin.
+15. [Reviewer-requested amendments](reviewer-requested-amendments/) — preserve the submitted audit when revision adds new evidence.
+16. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise a separately denominated post-review sensitivity amendment.
+17. [Reviewer response letter](reviewer-response-letter/) — connect each reviewer item to the revision evidence and manuscript changes.
+18. [Revision response package](../examples/revision-response-package/) — reconstruct the response letter, change log, and round-specific archive together.
+19. [Version-change manifest](version-change-manifest/) — bind material v1 → v2 changes to timing, evidence, and claim impact.
+20. [Revision-package quickstart](../examples/revision-package-quickstart/) — create and structurally validate the governed package with the real CLI.
+21. [Resubmission readiness](resubmission-readiness/) — run the final editor-handoff consistency gate.
+22. [Submission-to-accepted-record example](../examples/submission-to-accepted-record/) — trace submitted, post-review, and final evidence layers end to end.
+23. [Publication/archive handoff](../examples/publication-archive-handoff/) — assemble a reviewable end state.
+24. [Publication audits](publication-audits/) — build and verify the durable research record.
 
 ## What a guide is not
 
