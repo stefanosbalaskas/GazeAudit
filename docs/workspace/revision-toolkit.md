@@ -4,7 +4,7 @@ description: Task-based workspace for classifying reviewer requests, preserving 
 kicker: Workspace · Revision toolkit
 permalink: /docs/workspace/revision-toolkit/
 search_category: Start
-search_keywords: reviewer revision response rebuttal amendment reanalysis correction endpoint package cli response matrix version change manifest evidence map resubmission editor handoff
+search_keywords: reviewer revision response rebuttal amendment reanalysis correction endpoint package cli response matrix version change manifest evidence map resubmission editor handoff checklist quickstart
 ---
 
 # Peer-review revision toolkit
@@ -16,6 +16,11 @@ Use this workspace when a manuscript has entered peer review and the revision no
 Keep what existed at submission distinct from work introduced after outcomes had already been inspected. A submitted <code>8 / 8</code> audit followed by a reviewer-requested <code>4 / 4</code> sensitivity amendment remains <strong>8 / 8 submitted + 4 / 4 post-review</strong>, not “12 pre-specified analyses.”
 </div>
 
+<div class="callout tip">
+<strong>Need the shortest route?</strong>
+Start with the <a href="{{ '/docs/guides/peer-review-revision-checklist/' | relative_url }}">peer-review revision checklist</a> to classify the request and preserve timing before changing files. Then run the <a href="{{ '/docs/examples/revision-package-quickstart/' | relative_url }}">revision-package quickstart</a> to create, populate, validate, and hand off the governed revision scaffold with the real CLI.
+</div>
+
 ## Choose what you need to do now
 
 <div class="card-grid">
@@ -23,7 +28,7 @@ Keep what existed at submission distinct from work introduced after outcomes had
     <div class="card-icon" aria-hidden="true">1</div>
     <h3>Classify the reviewer request</h3>
     <p>Decide whether the item is a clarification, correction, sensitivity amendment, analytical amendment, endpoint amendment, or measurement amendment before changing the record.</p>
-    <p><a href="{{ '/docs/guides/reviewer-requested-amendments/' | relative_url }}">Classify the request →</a></p>
+    <p><a href="{{ '/docs/guides/peer-review-revision-checklist/' | relative_url }}">Open the compact checklist →</a></p>
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">2</div>
@@ -47,7 +52,7 @@ Keep what existed at submission distinct from work introduced after outcomes had
     <div class="card-icon" aria-hidden="true">5</div>
     <h3>Build the revision package</h3>
     <p>Use the real CLI to scaffold response, change, amendment, software-identity, and editor-facing evidence-map records, then validate the structural manifest.</p>
-    <p><a href="{{ '/docs/guides/reproducibility-package/' | relative_url }}">Reproducibility package →</a></p>
+    <p><a href="{{ '/docs/examples/revision-package-quickstart/' | relative_url }}">Run the quickstart →</a></p>
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">6</div>
@@ -101,7 +106,7 @@ gazeaudit-revision-package validate --root revision-package
 
 A passing validation establishes **structural provenance only**. It checks the expected package files and deterministic manifest integrity; it does not certify the scientific validity of the analysis or the editorial quality of the manuscript.
 
-For the full break-and-repair exercise, use the [revision reproducibility package worked example]({{ '/docs/examples/reproducibility-package-cli/' | relative_url }}).
+Use the [revision-package quickstart]({{ '/docs/examples/revision-package-quickstart/' | relative_url }}) for the shortest end-to-end exercise. For the full break-and-repair exercise, use the [revision reproducibility package worked example]({{ '/docs/examples/reproducibility-package-cli/' | relative_url }}).
 
 ## Three records that should not be collapsed
 
@@ -122,6 +127,10 @@ Use the [reviewer-requested reanalysis example]({{ '/docs/examples/reviewer-requ
 ### Multiple reviewer items
 
 Use the [revision response package example]({{ '/docs/examples/revision-response-package/' | relative_url }}) when clarification, new analysis, and endpoint changes must all agree across the response letter, manuscript, and archive.
+
+### Fast package creation
+
+Use the [revision-package quickstart]({{ '/docs/examples/revision-package-quickstart/' | relative_url }}) when you want the shortest real-CLI path from a synthetic reviewer request set to a structurally validated evidence package.
 
 ### Executable package validation
 
