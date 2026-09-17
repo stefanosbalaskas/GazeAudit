@@ -1,6 +1,6 @@
 ---
 title: Reproducible publication workflow
-description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints.
+description: Turn a GazeAudit robustness analysis into an auditable publication record with deterministic fingerprints and a reviewer-reconstructable manuscript handoff.
 kicker: Workflow · Reproducibility
 ---
 
@@ -21,7 +21,7 @@ This workflow is for analyses intended to support a manuscript, validation recor
   <div class="workflow-step"><strong>Freeze scientific choices</strong><p>Preserve the endpoint, specification space, validity rules, measurement assumptions, and conclusion rule before final classification.</p></div>
   <div class="workflow-step"><strong>Execute and preserve all outputs</strong><p>Keep the complete valid specification and sensitivity evidence rather than selected rows.</p></div>
   <div class="workflow-step"><strong>Build the audit bundle</strong><p>Generate deterministic methods, report, manifest, summaries, and fingerprints from the executed evidence.</p></div>
-  <div class="workflow-step"><strong>Verify and archive</strong><p>Re-run bundle verification, archive the evidence, and cite the exact release or commit used.</p></div>
+  <div class="workflow-step"><strong>Review, verify, and archive</strong><p>Test whether an independent reader can reconstruct the claim, then verify the bundle and cite the exact software identity.</p></div>
 </div>
 
 ## 1. Record software identity
@@ -148,7 +148,27 @@ This is an illustrative structure, not a required GazeAudit filesystem schema.
 
 For a more complete reviewer-facing example—including decision history, execution-status accounting, Methods/Results wording, limitations, provenance, fingerprints, and a human-readable archive manifest—see the [publication and archive handoff example]({{ '/docs/examples/publication-archive-handoff/' | relative_url }}). Its effect values are synthetic teaching material, not validation evidence.
 
-## 9. Report claims at the right scope
+## 9. Run the manuscript-readiness gate
+
+Before submission, test whether the manuscript and archive can be reconstructed **without private lab context**.
+
+Use the [manuscript readiness checklist]({{ '/docs/guides/manuscript-readiness/' | relative_url }}) to verify:
+
+1. one reconstructable scientific endpoint;
+2. the full declared/valid/successful/failed denominator;
+3. researcher decisions separated from software diagnostics;
+4. Results wording that matches the complete observed pattern;
+5. agreement among manuscript, decision log, limitations, and archive manifest;
+6. exact software identity and claim-supporting files.
+
+Then work through the [reviewer reconstruction example]({{ '/docs/examples/reviewer-reconstruction/' | relative_url }}) to see why six directionally consistent estimates do not license a complete-space robustness claim when a seventh valid branch remains unresolved.
+
+<div class="callout tip">
+<strong>Use an outsider test.</strong>
+Give the archive to someone who did not run the analysis. If they cannot recover the endpoint, denominator, failures, amendments, software identity, and evidence supporting the main claim without oral explanation, improve the record before submission.
+</div>
+
+## 10. Report claims at the right scope
 
 A robust conclusion under one frozen protocol does not imply universal robustness to every conceivable pipeline. A fragile conclusion under one protocol does not imply the source dataset is unusable.
 
@@ -159,10 +179,11 @@ Report:
 - the endpoint;
 - the conclusion rule, if any;
 - the observed stability/fragility pattern;
+- the execution denominator and unresolved valid failures;
 - the protocol boundary;
 - known untested uncertainty dimensions.
 
-## 10. Cite reproducibly
+## 11. Cite reproducibly
 
 For GazeAudit 0.1.0, cite the version DOI and record the software version or commit:
 
