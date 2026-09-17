@@ -1,0 +1,208 @@
+.project-stage-section {
+  border-top: 1px solid var(--border, rgba(127, 127, 127, 0.22));
+  border-bottom: 1px solid var(--border, rgba(127, 127, 127, 0.22));
+}
+
+.project-stage-shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.62fr);
+  gap: 1.2rem;
+  align-items: stretch;
+}
+
+.project-stage-tabs {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.project-stage-tab {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.72rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border, rgba(127, 127, 127, 0.24));
+  border-radius: 14px;
+  background: var(--surface, rgba(127, 127, 127, 0.06));
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms ease, transform 140ms ease, background 140ms ease;
+}
+
+.project-stage-tab:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent, #5b7cfa);
+}
+
+.project-stage-tab[aria-selected="true"] {
+  border-color: var(--accent, #5b7cfa);
+  background: color-mix(in srgb, var(--accent, #5b7cfa) 11%, transparent);
+}
+
+.project-stage-tab:focus-visible,
+.project-stage-panel a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent, #5b7cfa) 58%, transparent);
+  outline-offset: 3px;
+}
+
+.project-stage-number {
+  grid-row: 1 / span 2;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  opacity: 0.6;
+}
+
+.project-stage-tab strong {
+  line-height: 1.2;
+}
+
+.project-stage-tab small {
+  opacity: 0.72;
+}
+
+.project-stage-panels {
+  min-width: 0;
+}
+
+.project-stage-panel {
+  height: 100%;
+  padding: clamp(1.2rem, 2.5vw, 2rem);
+  border: 1px solid var(--border, rgba(127, 127, 127, 0.24));
+  border-radius: 18px;
+  background: var(--surface, rgba(127, 127, 127, 0.05));
+}
+
+.project-stage-panel[hidden] {
+  display: none;
+}
+
+.project-stage-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.64;
+}
+
+.project-stage-panel h3 {
+  margin-top: 0;
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+}
+
+.project-stage-panel p {
+  max-width: 72ch;
+}
+
+.project-stage-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1rem 0 1.15rem;
+  padding: 0;
+  list-style: none;
+}
+
+.project-stage-flow li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(127, 127, 127, 0.22));
+  font-size: 0.88rem;
+}
+
+.project-stage-flow li:not(:last-child)::after {
+  content: "→";
+  opacity: 0.55;
+}
+
+.project-stage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.project-stage-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(127, 127, 127, 0.24));
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.project-stage-actions a:first-child {
+  background: var(--accent, #5b7cfa);
+  border-color: var(--accent, #5b7cfa);
+  color: #fff;
+}
+
+.project-stage-boundary {
+  margin: 1rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border, rgba(127, 127, 127, 0.2));
+  font-size: 0.92rem;
+  opacity: 0.8;
+}
+
+.revision-nav-link {
+  position: relative;
+}
+
+.revision-nav-link::after {
+  content: "review";
+  display: inline-block;
+  margin-left: 0.38rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent, #5b7cfa) 14%, transparent);
+  color: inherit;
+  vertical-align: 0.08em;
+}
+
+@media (max-width: 840px) {
+  .project-stage-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .project-stage-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .project-stage-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .project-stage-actions {
+    display: grid;
+  }
+
+  .project-stage-actions a {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-stage-tab {
+    transition: none;
+  }
+
+  .project-stage-tab:hover {
+    transform: none;
+  }
+}
