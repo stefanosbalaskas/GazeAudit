@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, response packages, executable revision-package quickstarts, resubmission handoff, bounded reporting, and publication archive design.
+description: Runnable synthetic and project-oriented examples for GazeAudit data preflight, researcher decisions, measurement uncertainty, robustness analysis, troubleshooting and recovery, sensitivity, result interpretation, reviewer reconstruction, post-review reanalysis, response packages, executable revision-package quickstarts, resubmission handoff, bounded reporting, and publication archive design.
 kicker: Examples
 ---
 
@@ -25,42 +25,48 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">3</div>
+    <h3>Recover a failed audit</h3>
+    <p>Preserve invalid combinations and valid technical failures, diagnose the failing layer, repair the causal defect, and reconcile the execution denominator.</p>
+    <p><a href="failed-audit-recovery/">Failed-audit recovery →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">4</div>
     <h3>Compare result patterns</h3>
     <p>Contrast complete/stable, magnitude-sensitive, sign-sensitive, and incomplete synthetic audits before choosing reporting language.</p>
     <p><a href="result-patterns/">Result-pattern reporting →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">4</div>
+    <div class="card-icon" aria-hidden="true">5</div>
     <h3>Review the manuscript record</h3>
     <p>Act as an external reviewer: reconstruct the endpoint and denominator, find an unresolved valid branch, and repair over-strong manuscript wording without rewriting the audit.</p>
     <p><a href="reviewer-reconstruction/">Reviewer reconstruction →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">5</div>
+    <div class="card-icon" aria-hidden="true">6</div>
     <h3>Respond to a reanalysis request</h3>
     <p>Extend a submitted 8/8 audit with a separately recorded 4/4 reviewer-requested amendment without relabelling post-review work as pre-specified.</p>
     <p><a href="reviewer-requested-reanalysis/">Reviewer-requested reanalysis →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">6</div>
+    <div class="card-icon" aria-hidden="true">7</div>
     <h3>Assemble the response package</h3>
     <p>Link reviewer items to clarification, amendment, endpoint, manuscript-change, and archive records in one reconstructable revision package.</p>
     <p><a href="revision-response-package/">Revision response package →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">7</div>
+    <div class="card-icon" aria-hidden="true">8</div>
     <h3>Run the revision-package quickstart</h3>
     <p>Create the governed reviewer-revision scaffold with the real CLI, populate the response/change/evidence records, and validate structural provenance.</p>
     <p><a href="revision-package-quickstart/">Revision-package quickstart →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">8</div>
+    <div class="card-icon" aria-hidden="true">9</div>
     <h3>Trace the final handoff</h3>
     <p>Follow submitted evidence through post-review amendments, version changes, resubmission checks, and the final editor-facing evidence map.</p>
     <p><a href="submission-to-accepted-record/">Submission-to-accepted record →</a></p>
   </article>
   <article class="card">
-    <div class="card-icon" aria-hidden="true">9</div>
+    <div class="card-icon" aria-hidden="true">10</div>
     <h3>Prepare the publication handoff</h3>
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
@@ -70,6 +76,11 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
 <div class="callout info">
 <strong>Starting with your own data?</strong>
 Use the <a href="first-real-audit/">first real audit example</a> for a CSV-oriented command-line path that writes structural-QC provenance and robustness tables. Use the <a href="study-preflight/">study preflight example</a> when you want to focus only on canonical mapping and structural diagnostics. Use the <a href="../guides/researcher-audit-checklist/">researcher audit checklist</a> before treating any demonstration value as a study-specific decision.
+</div>
+
+<div class="callout warning">
+<strong>Audit blocked or failing?</strong>
+Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to identify the failing layer, then use <a href="failed-audit-recovery/">failed-audit recovery</a> to practise declared → valid → successful denominator accounting and a provenance-preserving technical rerun.
 </div>
 
 ## [First real audit](first-real-audit/)
@@ -89,6 +100,12 @@ Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue cod
 Run a complete 12-specification synthetic audit from `GazeStudy` construction through `PipelineSpace`, `run_specs()`, specification ordering, effect stability, marginal sensitivity, and pairwise interaction diagnostics.
 
 **Use this when:** you want a copy-ready template showing how the main robustness pieces fit together in one executable analysis.
+
+## [Failed-audit recovery](failed-audit-recovery/)
+
+Work through a fully synthetic audit with **8 declared combinations, 7 valid specifications, and 6 initially successful executions**. The example preserves one predeclared-invalid combination outside the valid denominator, records one valid technical failure, diagnoses a branch-specific processor defect, reruns the same branch after a causal technical repair, and retains both the original failure and repaired execution in history.
+
+**Use this when:** a declared audit stops or returns an incomplete result and you need to distinguish scientific validity from technical execution before changing anything.
 
 ## [Result-pattern reporting](result-patterns/)
 
@@ -170,25 +187,26 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 2. Use the [researcher audit checklist](../guides/researcher-audit-checklist/) and [decision-log template](../guides/audit-decision-log-template/) to replace demonstration choices with documented study-specific decisions.
 3. Use the [study preflight](study-preflight/) when structural onboarding itself needs closer inspection.
 4. Run the [end-to-end robustness audit](end-to-end-robustness/) to study the specification API in isolation.
-5. Use the [interpret an audit result guide](../guides/interpret-audit-result/) to check denominator, endpoint, direction, magnitude, sensitivity, and untested uncertainty in the right order.
-6. Compare the four [result-pattern examples](result-patterns/) before choosing bounded reporting language.
-7. Work through [decision-to-report](decision-to-report/) to practise interpreting the deterministic 12-branch pattern without selecting a preferred branch after the fact.
-8. Use [common audit mistakes and repairs](../guides/common-audit-mistakes/) to diagnose a weak decision trail or incomplete evidence record.
-9. Apply the [manuscript readiness checklist](../guides/manuscript-readiness/) to the draft claim and archive.
-10. Work through [reviewer reconstruction](reviewer-reconstruction/) to practise finding denominator and reporting gaps from outside the analysis team.
-11. Use the [peer-review revision checklist](../guides/peer-review-revision-checklist/) before changing files in response to review.
-12. Use the [reviewer-requested amendments guide](../guides/reviewer-requested-amendments/) when peer review adds analytical work.
-13. Work through [reviewer-requested reanalysis](reviewer-requested-reanalysis/) to keep submitted and post-review denominators distinct.
-14. Use the [reviewer response letter guide](../guides/reviewer-response-letter/) to connect each response to timing, evidence, manuscript locations, and archive locations.
-15. Work through the [revision response package](revision-response-package/) to audit the response letter, manuscript-change log, and revision archive together.
-16. Use the [version-change manifest guide](../guides/version-change-manifest/) to bind every material manuscript change to its rationale and evidence layer.
-17. Run the [revision-package quickstart](revision-package-quickstart/) to create and structurally validate the governed package with the real CLI.
-18. Apply the [resubmission readiness guide](../guides/resubmission-readiness/) to the final manuscript, response package, version manifest, and evidence map.
-19. Work through [submission-to-accepted-record](submission-to-accepted-record/) to reconstruct the complete synthetic temporal handoff.
-20. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
-21. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
-22. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-23. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+5. If execution blocks, use [Troubleshooting GazeAudit](../guides/troubleshooting/) and practise the [failed-audit recovery](failed-audit-recovery/) workflow before interpreting an incomplete result.
+6. Use the [interpret an audit result guide](../guides/interpret-audit-result/) to check denominator, endpoint, direction, magnitude, sensitivity, and untested uncertainty in the right order.
+7. Compare the four [result-pattern examples](result-patterns/) before choosing bounded reporting language.
+8. Work through [decision-to-report](decision-to-report/) to practise interpreting the deterministic 12-branch pattern without selecting a preferred branch after the fact.
+9. Use [common audit mistakes and repairs](../guides/common-audit-mistakes/) to diagnose a weak decision trail or incomplete evidence record.
+10. Apply the [manuscript readiness checklist](../guides/manuscript-readiness/) to the draft claim and archive.
+11. Work through [reviewer reconstruction](reviewer-reconstruction/) to practise finding denominator and reporting gaps from outside the analysis team.
+12. Use the [peer-review revision checklist](../guides/peer-review-revision-checklist/) before changing files in response to review.
+13. Use the [reviewer-requested amendments guide](../guides/reviewer-requested-amendments/) when peer review adds analytical work.
+14. Work through [reviewer-requested reanalysis](reviewer-requested-reanalysis/) to keep submitted and post-review denominators distinct.
+15. Use the [reviewer response letter guide](../guides/reviewer-response-letter/) to connect each response to timing, evidence, manuscript locations, and archive locations.
+16. Work through the [revision response package](revision-response-package/) to audit the response letter, manuscript-change log, and revision archive together.
+17. Use the [version-change manifest guide](../guides/version-change-manifest/) to bind every material manuscript change to its rationale and evidence layer.
+18. Run the [revision-package quickstart](revision-package-quickstart/) to create and structurally validate the governed package with the real CLI.
+19. Apply the [resubmission readiness guide](../guides/resubmission-readiness/) to the final manuscript, response package, version manifest, and evidence map.
+20. Work through [submission-to-accepted-record](submission-to-accepted-record/) to reconstruct the complete synthetic temporal handoff.
+21. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
+22. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
+23. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
+24. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 
