@@ -1,12 +1,12 @@
 ---
 title: Documentation hub
-description: Choose the GazeAudit documentation path that matches your research task.
+description: Choose the GazeAudit documentation path that matches your research task, from first audit through peer-review revision and reproducible publication.
 kicker: Documentation
 ---
 
 # Documentation hub
 
-GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, build a transparent audit route from study conditions, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, and reproducible publication.
+GazeAudit documentation is organised around **research tasks**, not only modules. Start with the smallest runnable example, build a transparent audit route from study conditions, then move into structural preflight, measurement uncertainty, specification-space design, sensitivity analysis, frozen real-data case studies, peer-review revision, and reproducible publication.
 
 <div class="callout info">
 <strong>Current release</strong>
@@ -26,6 +26,9 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 |---|---|
 | Apply GazeAudit to my own canonical CSV | [First real audit guide](guides/first-real-audit/) |
 | See the whole project-level path from planning to publication | [Researcher workspace](workspace/) |
+| Revise a manuscript after peer review | [Peer-review revision toolkit](workspace/revision-toolkit/) |
+| Use a compact reviewer-revision gate before changing files | [Peer-review revision checklist](guides/peer-review-revision-checklist/) |
+| Create and validate the reviewer-revision package | [Revision-package quickstart](examples/revision-package-quickstart/) |
 | Install and run the smallest example | [Getting started](getting-started/) |
 | Build and export a transparent audit route from study conditions | [Audit planner](planner/) |
 | Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
@@ -46,6 +49,14 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 The [Researcher workspace](workspace/) is the project-level route when you want to connect several documentation layers without losing their scientific boundaries. It links six stages: scope the audit, inspect the governed method route, run the smallest relevant workflow, inspect visuals in context, check the evidence boundary, and preserve the publication record.
 
 Use it as an orientation layer rather than a new source of scientific rules. The workspace does not choose thresholds, exclusions, perturbation levels, specifications, or validity claims.
+
+## Peer-review revision
+
+If the manuscript is already in a revision round, use the [Peer-review revision toolkit](workspace/revision-toolkit/) rather than reconstructing the route from publication pages manually. The toolkit separates clarification, analytical amendments, endpoint changes, corrections, reviewer-response records, package validation, and final editor handoff while preserving the submitted evidence layer.
+
+For the shortest operational route, run the [peer-review revision checklist](guides/peer-review-revision-checklist/) before changing files, then use the [revision-package quickstart](examples/revision-package-quickstart/) to create and structurally validate the governed package with the real `gazeaudit-revision-package` CLI.
+
+A valid revision package establishes **structural provenance only**. It does not certify scientific validity, robustness, manuscript quality, or publication readiness.
 
 ## Plan an audit from study conditions
 
@@ -77,6 +88,7 @@ The examples use synthetic data unless a page explicitly points to a frozen real
 - [AOI boundary uncertainty](examples/aoi-boundary/) — fit a gaze-error model and convert a hard boundary decision into probabilistic membership.
 - [Specification curve](examples/specification-curve/) — summarise an explicit analytical decision space.
 - [Sampling sensitivity](examples/sampling-sensitivity/) — perturb sampling rate and inspect endpoint stability.
+- [Revision-package quickstart](examples/revision-package-quickstart/) — synthetic reviewer requests → governed revision scaffold → response/change/evidence records → structural validation.
 
 ## Research workflows
 
