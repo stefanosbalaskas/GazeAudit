@@ -15,7 +15,7 @@ def test_resubmission_guide_preserves_temporal_evidence_layers() -> None:
     for contract in (
         "The seven final-handoff gates",
         "8 / 8 submitted + 4 / 4 post-review",
-        "Do not rewrite this as “12 pre-specified analyses.”",
+        "Do **not** rewrite this as “12 pre-specified analyses.”",
         "The version-change manifest is complete",
         "The final archive can reproduce the revised claim",
         "An outsider can follow the editor-facing evidence map",
