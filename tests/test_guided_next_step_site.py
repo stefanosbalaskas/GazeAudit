@@ -24,20 +24,21 @@ def test_next_step_guide_covers_the_five_project_stages() -> None:
 
     assert "Stop rather than guess" in text
     assert "Fast decision map" in text
-    assert "static counterpart to the homepage project-stage router" in text
+    assert "same project-stage logic in a stable, searchable, linkable document" in text
 
 
 def test_next_step_guide_routes_to_existing_governed_workflows() -> None:
     text = _read(GUIDE)
-    for route in (
-        "[Audit planner](../planner/)",
-        "[First real audit](first-real-audit/)",
-        "[Interpret an audit result](interpret-audit-result/)",
-        "[Revision toolkit](../workspace/revision-toolkit/)",
-        "[Resubmission readiness](resubmission-readiness/)",
-        "[Reproducible publication](../workflows/reproducible-publication/)",
+    for label, destination in (
+        ("Audit planner", "/docs/planner/"),
+        ("First real audit", "/docs/guides/first-real-audit/"),
+        ("Interpret an audit result", "/docs/guides/interpret-audit-result/"),
+        ("Revision toolkit", "/docs/workspace/revision-toolkit/"),
+        ("Resubmission readiness", "/docs/guides/resubmission-readiness/"),
+        ("Reproducible publication", "/docs/workflows/reproducible-publication/"),
     ):
-        assert route in text
+        assert f"[{label}]" in text
+        assert destination in text
 
 
 def test_next_step_guide_preserves_scientific_judgement_boundary() -> None:
