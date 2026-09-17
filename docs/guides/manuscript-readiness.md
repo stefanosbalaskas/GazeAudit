@@ -158,6 +158,7 @@ If any answer is **no**, the manuscript record is not yet ready for handoff.
 
 ## Continue with
 
+- [Manuscript review path](../workspace/manuscript-review-path/) — use one compact Workspace route from interpretation through archive verification.
 - [Reviewer reconstruction worked example](../examples/reviewer-reconstruction/) — practise the checklist on an illustrative archive.
 - [Publication/archive handoff](../examples/publication-archive-handoff/) — see the broader archive structure.
 - [Reproducible publication workflow](../workflows/reproducible-publication/) — build and verify the durable publication record.
