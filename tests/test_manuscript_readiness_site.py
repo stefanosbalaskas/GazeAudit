@@ -75,7 +75,7 @@ def test_workspace_review_path_connects_interpretation_to_archive() -> None:
     guide = _text("docs/guides/manuscript-readiness.md")
     path = _text("docs/workspace/manuscript-review-path.md")
 
-    assert "../workspace/manuscript-review-path/" in guide
+    assert "/docs/workspace/manuscript-review-path/" in guide
     for contract in (
         "result interpretation → manuscript wording → reviewer reconstruction",
         "1 · Interpret",
