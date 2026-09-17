@@ -1,12 +1,12 @@
 ---
 title: Articles
-description: Conceptual articles on measurement uncertainty, analytical robustness, fragility, interpretation, and manuscript readiness in GazeAudit, with direct routes into practical guides and examples.
+description: Conceptual articles on measurement uncertainty, analytical robustness, fragility, interpretation, manuscript readiness, and peer-review revision in GazeAudit, with direct routes into practical guides and examples.
 kicker: Articles
 ---
 
 # Articles
 
-These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, manuscript-readiness checks, or the frozen validation records.
+These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, manuscript-readiness checks, reviewer-amendment provenance, or the frozen validation records.
 
 ## Choose by question
 
@@ -41,6 +41,12 @@ These articles explain the methodological ideas behind GazeAudit. They are not s
     <p>Check whether the manuscript, decision log, execution denominator, failures, limitations, archive manifest, and software identity tell one recoverable story.</p>
     <p><a href="../guides/manuscript-readiness/">Manuscript readiness →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">6</div>
+    <h3>The reviewer asked for another analysis. Now what?</h3>
+    <p>Extend the record transparently: keep the submitted audit recoverable, record outcome-inspection timing, and give post-review evidence its own denominator and provenance.</p>
+    <p><a href="../guides/reviewer-requested-amendments/">Reviewer amendments →</a></p>
+  </article>
 </div>
 
 ## [Measurement uncertainty is a modelling problem](measurement-uncertainty-is-a-modeling-problem/)
@@ -70,8 +76,10 @@ If you are no longer asking *why* robustness or uncertainty matters and instead 
 3. [Reporting robustness](../guides/reporting-robustness/) — turn the bounded interpretation into precise Methods and Results language.
 4. [Manuscript readiness](../guides/manuscript-readiness/) — test whether an independent reader can reconstruct endpoint, denominator, failures, decisions, wording, limitations, and software identity.
 5. [Reviewer reconstruction](../examples/reviewer-reconstruction/) — practise finding an incomplete valid denominator and repairing an over-strong claim from outside the analysis team.
-6. [Publication/archive handoff](../examples/publication-archive-handoff/) — preserve the decision trail, branch accountability, provenance, limitations, and manuscript record.
+6. [Reviewer-requested amendments](../guides/reviewer-requested-amendments/) — preserve the submitted record when revision adds exclusions, thresholds, endpoints, measurement assumptions, or sensitivity analyses.
+7. [Reviewer-requested reanalysis](../examples/reviewer-requested-reanalysis/) — practise keeping a synthetic submitted 8/8 audit separate from a post-review 4/4 amendment.
+8. [Publication/archive handoff](../examples/publication-archive-handoff/) — preserve the decision trail, branch accountability, provenance, limitations, revision evidence, and manuscript record.
 
 ## Relationship to the validation records
 
-The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns and general methodological articles do not create or modify case-study classifications. Reviewer reconstruction exercises are also synthetic teaching material and do not create or modify case-study classifications.
+The articles discuss general methodology. The canonical GazeBase, Korthals, and Pedrotti/de Chambrier outcomes remain defined by their frozen protocols and evidence. Use the [validation matrix](../VALIDATION_MATRIX.html) for those claims. Synthetic teaching patterns and general methodological articles do not create or modify case-study classifications. Reviewer reconstruction and reviewer-requested reanalysis exercises are also synthetic teaching material and do not create or modify case-study classifications.
