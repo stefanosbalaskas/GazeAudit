@@ -63,7 +63,7 @@ def test_revision_cli_reference_matches_source_contract() -> None:
     ):
         assert argument in reference
         assert argument in source
-    assert "return 0 if result["valid"] else 2" in source
+    assert 'return 0 if result["valid"] else 2' in source
     assert "returns **2** when structural validation completes" in reference
     assert "structural" in reference.lower()
     assert "scientifically valid" in reference
