@@ -6,6 +6,11 @@ page_type: example
 permalink: /docs/examples/failed-audit-recovery/
 search_category: Example
 search_keywords: troubleshooting failed audit recovery technical failure invalid specification denominator run_specs exception non finite repair provenance synthetic example
+example_data: "Synthetic"
+example_focus: "Robustness & sensitivity"
+example_reuse: "Failure-recovery workflow"
+example_output: "Preserved failure record, repaired rerun, and reconciled denominator"
+example_boundary: "Technical repair must not change the scientific branch after outcome inspection."
 ---
 
 # Failed-audit recovery walkthrough
