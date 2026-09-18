@@ -5,6 +5,12 @@ kicker: Example · Documentation
 permalink: /docs/examples/documentation-intent-routing/
 search_category: Example
 search_keywords: documentation intent learn do look up understand route search compass synthetic guide example reference article
+page_type: example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Navigation pattern"
+example_output: "Intent-routed documentation path"
+example_boundary: "Navigation routing does not select a scientific method."
 ---
 
 # Documentation intent routing
