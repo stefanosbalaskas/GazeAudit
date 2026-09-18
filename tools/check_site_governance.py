@@ -103,6 +103,7 @@ def check_search_coverage() -> None:
     )
     required_navigation = {
         "/docs/",
+        "/docs/install/",
         "/docs/workspace/",
         "/docs/planner/",
         "/docs/methods/",
@@ -125,6 +126,7 @@ def check_search_coverage() -> None:
         )
 
     metadata_pages = (
+        ROOT / "docs" / "install.md",
         ROOT / "docs" / "workspace" / "index.md",
         ROOT / "docs" / "guides" / "first-real-audit.md",
         ROOT / "docs" / "examples" / "first-real-audit.md",

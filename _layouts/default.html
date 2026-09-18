@@ -31,6 +31,7 @@
   {% if page.page_type == 'landing' %}<link rel="stylesheet" href="{{ '/assets/css/landing.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'methods' %}<link rel="stylesheet" href="{{ '/assets/css/methods.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'api-pathways' %}<link rel="stylesheet" href="{{ '/assets/css/api-pathways.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'install' %}<link rel="stylesheet" href="{{ '/assets/css/install.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'planner' %}<link rel="stylesheet" href="{{ '/assets/css/planner.css' | relative_url }}">{% endif %}
   <script>
     (function () {
@@ -66,6 +67,7 @@
             <div class="nav-explore-group">
               <span>Learn</span>
               <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+              <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
               <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
               <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
               <a href="{{ '/docs/methods/' | relative_url }}">Methods</a>
@@ -117,6 +119,7 @@
         <div class="mobile-nav-group">
           <span>Learn</span>
           <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+          <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
           <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
           <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
           <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
@@ -161,6 +164,7 @@
           <nav class="docs-nav" data-docs-nav>
             <p class="nav-label">Start</p>
             <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
+            <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
             <a href="{{ '/docs/guides/first-real-audit/' | relative_url }}">First real audit</a>
@@ -169,6 +173,7 @@
             <a href="{{ '/docs/faq/' | relative_url }}">FAQ</a>
 
             <p class="nav-label">Guides</p>
+            <a href="{{ '/docs/guides/environment-setup/' | relative_url }}">Environment setup</a>
             <a href="{{ '/docs/guides/project-starter/' | relative_url }}">Project starter</a>
             <a href="{{ '/docs/guides/researcher-audit-checklist/' | relative_url }}">Researcher checklist</a>
             <a href="{{ '/docs/guides/audit-decision-log-template/' | relative_url }}">Decision log template</a>
@@ -183,6 +188,7 @@
             <a href="{{ '/docs/guides/interoperability/' | relative_url }}">Interoperability</a>
 
             <p class="nav-label">Examples</p>
+            <a href="{{ '/docs/examples/install-smoke-check/' | relative_url }}">Install smoke check</a>
             <a href="{{ '/docs/examples/first-real-audit/' | relative_url }}">First real audit example</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
             <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
@@ -294,6 +300,7 @@
   <script src="{{ '/assets/js/code-tools.js' | relative_url }}" defer></script>
   <script src="{{ '/assets/js/search-tools.js' | relative_url }}" defer></script>
   {% if page.page_type == 'api-pathways' %}<script src="{{ '/assets/js/api-symbol-reference.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'install' %}<script src="{{ '/assets/js/install-builder.js' | relative_url }}" defer></script>{% endif %}
   <script src="{{ '/assets/js/gallery.js' | relative_url }}" defer></script>
   {% if page.page_type == 'landing' %}<script src="{{ '/assets/js/landing.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'methods' %}<script src="{{ '/assets/js/methods.js' | relative_url }}" defer></script>{% endif %}

@@ -1,0 +1,180 @@
+.install-summary-grid,
+.install-platform-grid {
+  display: grid;
+  gap: .75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.install-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.install-summary-grid article,
+.install-platform-grid section {
+  min-width: 0;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: .8rem;
+  background: var(--surface-muted);
+}
+
+.install-summary-grid span {
+  display: block;
+  margin-bottom: .25rem;
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.install-summary-grid strong {
+  font-size: 1.02rem;
+}
+
+.install-platform-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.install-platform-grid h3 {
+  margin-top: 0;
+}
+
+.install-builder {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .9rem;
+  background: var(--surface-muted);
+}
+
+.install-builder fieldset {
+  display: grid;
+  gap: .5rem;
+  margin: 0;
+  padding: .8rem;
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+}
+
+.install-builder legend,
+.install-field > label {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.install-builder label {
+  display: flex;
+  gap: .55rem;
+  align-items: flex-start;
+}
+
+.install-builder input,
+.install-builder select,
+.install-builder button {
+  font: inherit;
+}
+
+.install-field {
+  display: grid;
+  gap: .4rem;
+}
+
+.install-field select {
+  min-height: 2.6rem;
+  width: min(100%, 28rem);
+  padding: .45rem .55rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+.install-field > span {
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+.install-command {
+  display: grid;
+  gap: .5rem;
+  padding: .8rem;
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+  background: var(--surface-solid);
+}
+
+.install-command-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.install-command-head button {
+  min-height: 2.25rem;
+  padding: .42rem .62rem;
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  background: var(--surface-muted);
+  color: var(--text);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.install-command-head button:hover,
+.install-command-head button:focus-visible,
+.install-field select:focus-visible,
+.install-builder input:focus-visible {
+  border-color: var(--accent);
+}
+
+.install-command-head button:focus-visible,
+.install-field select:focus-visible,
+.install-builder input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.install-command pre {
+  margin: 0;
+}
+
+.install-command [role="status"] {
+  min-height: 1.2rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: .76rem;
+}
+
+@media (max-width: 840px) {
+  .install-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .install-platform-grid,
+  .install-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .install-command-head {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .install-command-head button {
+    width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .install-command-head button:focus-visible,
+  .install-field select:focus-visible,
+  .install-builder input:focus-visible {
+    outline-color: Highlight;
+  }
+}

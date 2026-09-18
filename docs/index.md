@@ -10,7 +10,7 @@ GazeAudit documentation is organised around **research tasks**, not only modules
 
 <div class="callout info">
 <strong>Current release</strong>
-The public release is <code>0.1.0</code>. Install it with <code>pip install gazeaudit==0.1.0</code>. The documentation also describes post-release development on <code>main</code>; when reproducibility matters, record the exact version or commit used.
+The public release is <code>0.1.0</code>. Use the <a href="install/">Install & environment center</a> to create an isolated environment, choose optional extras, verify Python compatibility, and generate the exact install command. The documentation also describes post-release development on <code>main</code>; when reproducibility matters, record the exact version or commit used.
 </div>
 
 <div class="callout tip">
@@ -39,6 +39,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 
 | Goal | Recommended page |
 |---|---|
+| Set up Python, choose extras, and verify the installed environment | [Install & environment center](install/) |
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
 | Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
 | Find the right guide, example, reference, or evidence page quickly | [Find information fast](guides/find-information-fast/) |
@@ -54,7 +55,9 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Revise a manuscript after peer review | [Peer-review revision toolkit](workspace/revision-toolkit/) |
 | Use a compact reviewer-revision gate before changing files | [Peer-review revision checklist](guides/peer-review-revision-checklist/) |
 | Create and validate the reviewer-revision package | [Revision-package quickstart](examples/revision-package-quickstart/) |
-| Install and run the smallest example | [Getting started](getting-started/) |
+| Install and run the smallest uncertainty example | [Getting started](getting-started/) |
+| Record environment identity for reproducibility | [Environment setup guide](guides/environment-setup/) |
+| Run a software-only installation smoke check | [Install → verify → first import](examples/install-smoke-check/) |
 | Build and export a transparent audit route from study conditions | [Audit planner](planner/) |
 | Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
 | Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |

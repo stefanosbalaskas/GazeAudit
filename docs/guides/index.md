@@ -71,7 +71,21 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Interpret generated callable signatures, defaults, annotations, source locations, import snippets, and pathway backlinks without turning software metadata into scientific defaults.</p>
     <p><a href="read-api-reference/">Source-level API guide →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">11</div>
+    <h3>Reproduce the software environment</h3>
+    <p>Separate release/source identity, Python, optional extras, resolved dependencies, and environment records from the scientific decision log.</p>
+    <p><a href="environment-setup/">Environment setup →</a></p>
+  </article>
 </div>
+
+## Environment setup
+
+### [Environment setup & reproducibility](environment-setup/)
+
+Create an isolated environment, choose release versus source identity deliberately, install only the needed optional capability, record both declared and resolved software identity, and keep environment evidence separate from scientific decisions.
+
+The companion [Install → verify → first import]({{ '/docs/examples/install-smoke-check/' | relative_url }}) is a software-only smoke check for a fresh environment.
 
 ## API reference literacy
 

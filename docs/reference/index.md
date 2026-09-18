@@ -21,6 +21,7 @@ These pages describe public APIs, installed commands, status vocabulary, softwar
 
 | I need to know… | Open | What it is authoritative for |
 |---|---|---|
+| which release/Python/extras/console scripts are declared | [Install & environment center]({{ '/docs/install/' | relative_url }}) | generated package and CI compatibility metadata |
 | which public function fits a task | [API map]({{ '/docs/reference/api-map/' | relative_url }}) | task → public API mapping and bounded purpose |
 | where a public symbol is used in guides/examples/plots/evidence | [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}) | symbol → governed method context with stable deep links |
 | how to read generated signatures, source links, and imports | [Read the source-level API reference]({{ '/docs/guides/read-api-reference/' | relative_url }}) | interface metadata and source-inspection guidance |

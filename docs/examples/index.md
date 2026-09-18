@@ -95,6 +95,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Compare generated signatures, revision-pinned source links, local Python introspection, and the research context for three representative public symbols.</p>
     <p><a href="source-api-inspection/">Source API inspection →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">15</div>
+    <h3>Verify a fresh installation</h3>
+    <p>Create an isolated environment, install the public release, verify package identity, check representative imports, inspect one signature, and record the resolved environment.</p>
+    <p><a href="install-smoke-check/">Install smoke check →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -111,6 +117,12 @@ Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to
 <strong>Need a fact, not another workflow?</strong>
 Use the <a href="../reference/">Reference hub</a> for API, CLI, evidence vocabulary, provenance, and validation authority. The <a href="reference-lookup-workflow/">reference lookup walkthrough</a> demonstrates when to stop reading procedural material and consult an exact contract instead.
 </div>
+
+## [Install → verify → first import](install-smoke-check/)
+
+Run a software-only smoke check from a fresh virtual environment through package identity, representative public imports, one exact signature, a CLI entry point, and a minimal environment record.
+
+**Use this when:** you want to prove that the intended software environment is available before beginning a scientific workflow.
 
 ## [Source-level API inspection](source-api-inspection/)
 
