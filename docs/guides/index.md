@@ -183,6 +183,12 @@ Use row/group diagnostics to trace each structural flag to source and mapping pr
 
 For exact issue/detail-code lookup, use the [Structural QC Issue Clinic]({{ '/docs/reference/qc-issue-clinic/' | relative_url }}). For a complete synthetic exercise, use [All structural-QC issues in one table]({{ '/docs/examples/all-structural-qc-issues/' | relative_url }}).
 
+### [Design and audit readiness policies](readiness-policy-design/)
+
+Declare study-owned readiness thresholds without hidden defaults, separate trial and participant consequences, preserve timing and rationale sources, preview cohort impact before filtering, compare defensible alternatives, and report policy-relative readiness without turning it into a universal quality score.
+
+Use the [Readiness Policy Design Center]({{ '/docs/readiness-policy/' | relative_url }}) to generate a policy draft interactively, then the [Readiness policy design example]({{ '/docs/examples/readiness-policy-design/' | relative_url }}) to practise denominator and reporting interpretation.
+
 ### [Analysis-readiness governance](analysis-readiness/)
 
 Declare structural-QC policies, preview cohort impact, separate repairable structural conditions from scientific exclusions, and bind the resulting readiness record to provenance.
