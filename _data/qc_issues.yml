@@ -1,0 +1,109 @@
+- issue_code: coordinate_nonfinite
+  label: Non-finite coordinate
+  scope: row
+  report_field: coordinate_issue_rows
+  summary: One or both mapped gaze-coordinate values are missing or infinite on an observation.
+  detail_codes:
+    - code: x_missing
+      meaning: The mapped horizontal coordinate is missing.
+    - code: x_infinite
+      meaning: The mapped horizontal coordinate is positive or negative infinity.
+    - code: y_missing
+      meaning: The mapped vertical coordinate is missing.
+    - code: y_infinite
+      meaning: The mapped vertical coordinate is positive or negative infinity.
+  inspect:
+    - Confirm whether missingness or infinity is present in the source export or was introduced by preprocessing.
+    - Check whether the row still carries a valid participant, trial, timestamp, and any upstream validity flag.
+    - Determine whether downstream operations can represent the missing coordinate explicitly or require a declared handling rule.
+  possible_causes:
+    - tracker loss or off-screen gaze represented as missing
+    - channel-combination or coordinate-conversion output
+    - invalid numeric conversion or preprocessing arithmetic
+    - source export conventions for unavailable gaze samples
+  not_infer: A non-finite coordinate does not by itself identify the cause, justify imputation, or require row/trial/participant exclusion.
+  next_step: Preserve the missingness explicitly unless a study-owned preprocessing or exclusion rule justifies a different treatment.
+
+- issue_code: timestamp_nonfinite
+  label: Non-finite timestamp
+  scope: row
+  report_field: timestamp_issue_rows
+  summary: The mapped timestamp is missing or infinite on an observation.
+  detail_codes:
+    - code: timestamp_missing
+      meaning: The mapped timestamp is missing.
+    - code: timestamp_infinite
+      meaning: The mapped timestamp is positive or negative infinity.
+  inspect:
+    - Trace the observation back to the source event/time representation.
+    - Confirm the declared timestamp unit and origin before attempting any repair.
+    - Identify every downstream operation that depends on time magnitude, order, duration, interval, or rate.
+  possible_causes:
+    - incomplete export rows or malformed event joins
+    - failed time conversion
+    - missing event anchors
+    - invalid arithmetic during timestamp transformation
+  not_infer: A non-finite timestamp is not equivalent to time zero and must not be silently coerced to zero.
+  next_step: Repair only from defensible source information; otherwise keep the condition explicit and decide how time-dependent analyses should handle it.
+
+- issue_code: identifier_missing
+  label: Missing canonical identifier
+  scope: row
+  report_field: missing_identifier_rows
+  summary: The participant or trial identifier is missing, so the observation cannot be unambiguously assigned to both canonical grouping dimensions.
+  detail_codes:
+    - code: participant_missing
+      meaning: The mapped participant identifier is missing.
+    - code: trial_missing
+      meaning: The mapped trial identifier is missing.
+  inspect:
+    - Check source keys, joins, event segmentation, and any ID normalization performed before mapping.
+    - Confirm whether the identifier can be reconstructed from authoritative source information rather than guessed.
+    - Review downstream grouping assumptions before retaining an unresolved identifier gap.
+  possible_causes:
+    - incomplete merge keys
+    - event segmentation that did not assign all samples
+    - export rows outside a recognised trial
+    - identifier parsing or normalization error
+  not_infer: A missing identifier does not authorize inventing a participant or trial ID from row order, neighbouring rows, or convenience.
+  next_step: Recover the identifier from authoritative provenance when possible; otherwise record the unresolved grouping limitation and the study-specific decision.
+
+- issue_code: timestamp_duplicate
+  label: Duplicate participant × trial timestamp
+  scope: row
+  report_field: duplicate_timestamp_rows
+  summary: Two or more rows share the same finite participant, trial, and timestamp value; every participating row is reported.
+  detail_codes:
+    - code: timestamp_duplicate
+      meaning: The row shares its finite participant × trial timestamp with another row.
+  inspect:
+    - Inspect whether the rows are genuinely duplicated observations or a valid simultaneous representation such as separate channels.
+    - Compare the non-time columns for the repeated key.
+    - Check acquisition precision and export resolution before treating equality as duplication error.
+  possible_causes:
+    - binocular or multi-channel rows at one acquisition time
+    - limited timestamp resolution
+    - concatenated or repeated export rows
+    - accidental duplication during preprocessing
+  not_infer: Duplicate timestamps do not automatically mean duplicated scientific observations and are not an automatic deduplication or exclusion rule.
+  next_step: Preserve, combine, repair, or exclude only after the representation semantics are established and the decision is recorded.
+
+- issue_code: timestamp_decreasing
+  label: Decreasing within-unit time
+  scope: group
+  report_field: decreasing_time_groups
+  summary: Finite timestamps decrease in observed row order within at least one participant × trial group.
+  detail_codes:
+    - code: timestamp_decreasing
+      meaning: A participant × trial group contains a negative finite timestamp difference in observed row order.
+  inspect:
+    - Inspect the original row order and source segmentation for the affected participant × trial unit.
+    - Determine whether rows were concatenated, appended, or transformed out of acquisition order.
+    - Confirm that any sort operation would restore a known source order rather than merely make the warning disappear.
+  possible_causes:
+    - concatenated export blocks
+    - row-order corruption during joins or appends
+    - mixed event segments assigned to one trial
+    - unsorted but otherwise valid source representation
+  not_infer: A decreasing timestamp does not automatically justify sorting; sorting without establishing the intended temporal order can conceal a representation error.
+  next_step: Repair row order only when the intended order is reconstructable, then rebuild the study and rerun structural preflight.
