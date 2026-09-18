@@ -62,7 +62,7 @@ A coordinate column can be numeric in pixels, normalized screen coordinates, deg
 
 ## Map your existing column names
 
-This builder generates only the semantic `GazeStudy(...)` mapping. It does **not** upload or inspect your data, infer units, or choose any QC rule.
+This builder generates the semantic `GazeStudy(...)` mapping plus an optional documentation-side provenance record. It does **not** upload or inspect your data, infer units, fabricate source identity, or choose any QC rule.
 
 <form class="schema-mapper" data-schema-mapper aria-describedby="schema-mapper-help">
   <p id="schema-mapper-help" class="schema-mapper-help">
