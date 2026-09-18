@@ -130,11 +130,17 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Use data context, focus, reusable element, expected output, and evidence boundary to choose learning material without treating catalog matches as scientific recommendations.</p>
     <p><a href="choose-the-right-example/">Choose the right example →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">20</div>
+    <h3>Distinguish schema failure from structural review</h3>
+    <p>Compare valid construction, missing-column and nonnumeric failures, missing identifiers, duplicate timestamps, decreasing time, and preserved extra columns.</p>
+    <p><a href="data-contract-valid-invalid/">Data contract cases →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
 <strong>Starting with your own data?</strong>
-Use the <a href="first-real-audit/">first real audit example</a> for a CSV-oriented command-line path that writes structural-QC provenance and robustness tables. Use the <a href="study-preflight/">study preflight example</a> when you want to focus only on canonical mapping and structural diagnostics. Use the <a href="../guides/researcher-audit-checklist/">researcher audit checklist</a> before treating any demonstration value as a study-specific decision.
+Use the <a href="../data-contract/">Data Contract &amp; Schema Mapping Center</a> before the <a href="first-real-audit/">first real audit example</a> for a CSV-oriented command-line path that writes structural-QC provenance and robustness tables. Use the <a href="study-preflight/">study preflight example</a> when you want to focus only on canonical mapping and structural diagnostics. Use the <a href="../guides/researcher-audit-checklist/">researcher audit checklist</a> before treating any demonstration value as a study-specific decision.
 </div>
 
 <div class="callout warning">
@@ -182,6 +188,12 @@ Use one fully synthetic scenario to look up declared versus valid specification 
 Run one practical script on deterministic demo data or a canonical eye-tracking CSV. The script combines `GazeStudy`, structural-QC fingerprints, a declared 12-specification robustness space, stability/sensitivity summaries, and output writing.
 
 **Use this when:** you have a project file and want a concrete operational template to adapt before moving into study-specific methods.
+
+## [Valid, invalid, and reviewable tables](data-contract-valid-invalid/)
+
+Use a synthetic table to see exactly which conditions stop `GazeStudy` construction and which conditions construct successfully but become structural-preflight review evidence.
+
+**Use this when:** you need to understand the boundary between canonical schema validity and contextual structural QC before mapping your own source.
 
 ## [Study preflight](study-preflight/)
 
