@@ -41,6 +41,7 @@ The website is organised by research task rather than only by modules:
 | choose whether you need a learning example, task guide, exact reference, or explanation | [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) |
 | set up Python, choose extras, and verify the environment | [Install & environment center](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
+| browse worked examples by data context and methodological focus | [Example catalog](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/catalog/) |
 | adapt a teaching example to a real study without inheriting demonstration values | [Adapt examples to your study](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/adapt-examples-to-study/) |
 | model gaze-position uncertainty | [AOI uncertainty guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/aoi-uncertainty/) |
 | build a defensible analysis multiverse | [Specification-space guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/specification-space/) |
