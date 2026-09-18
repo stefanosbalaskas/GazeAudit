@@ -65,7 +65,21 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Use grouped search, type filters, keyboard controls, and the Guide / Example / Reference / Evidence distinction without treating navigation as scientific advice.</p>
     <p><a href="find-information-fast/">Find information fast →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">10</div>
+    <h3>Read signatures and source links correctly</h3>
+    <p>Interpret generated callable signatures, defaults, annotations, source locations, import snippets, and pathway backlinks without turning software metadata into scientific defaults.</p>
+    <p><a href="read-api-reference/">Source-level API guide →</a></p>
+  </article>
 </div>
+
+## API reference literacy
+
+### [Read the source-level API reference](read-api-reference/)
+
+Use the generated source metadata safely: distinguish Python defaults from scientific decisions, interpret positional/keyword-only markers, follow revision-pinned source links for implementation questions, and use pathway backlinks to recover research context.
+
+The companion [Source-level API inspection]({{ '/docs/examples/source-api-inspection/' | relative_url }}) traces three public symbols from signature to source and governed evidence boundary.
 
 ## Documentation navigation
 
