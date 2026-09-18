@@ -74,7 +74,7 @@ gazeaudit-revision-package validate --root revision-package
 
 The [CLI reference]({{ '/docs/reference/cli-reference/' | relative_url }}) defines the command and exit behavior. The [revision-package quickstart]({{ '/docs/examples/revision-package-quickstart/' | relative_url }}) is the procedural companion.
 
-The distinction is useful: **Reference answers “what is the command?”; the Example answers “how does the workflow fit together?”**
+The distinction is useful: **Reference** answers “what is the command?”; **Example** answers “how does the workflow fit together?”
 
 ## Question 3 — AOI uncertainty
 
