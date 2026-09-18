@@ -109,6 +109,10 @@ def check_search_coverage() -> None:
         "/docs/guides/first-real-audit/",
         "/docs/examples/first-real-audit/",
         "/docs/workflows/first-study-audit/",
+        "/docs/reference/",
+        "/docs/reference/api-map/",
+        "/docs/reference/cli-reference/",
+        "/docs/reference/evidence-vocabulary/",
         "/docs/reference/core-api-inventory/",
         "/docs/reference/site-provenance/",
     }
@@ -124,6 +128,9 @@ def check_search_coverage() -> None:
         ROOT / "docs" / "guides" / "first-real-audit.md",
         ROOT / "docs" / "examples" / "first-real-audit.md",
         ROOT / "docs" / "workflows" / "first-study-audit.md",
+        ROOT / "docs" / "reference" / "index.md",
+        ROOT / "docs" / "reference" / "cli-reference.md",
+        ROOT / "docs" / "reference" / "evidence-vocabulary.md",
         CORE_API_INVENTORY,
         PROVENANCE_PAGE,
     )
