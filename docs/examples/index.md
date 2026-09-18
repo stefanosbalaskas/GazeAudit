@@ -71,6 +71,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Turn the synthetic audit record into a reviewer-friendly archive with decision history, complete execution status, manuscript wording, limitations, provenance, and a manifest.</p>
     <p><a href="publication-archive-handoff/">Publication/archive handoff →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">11</div>
+    <h3>Look up the exact contract</h3>
+    <p>Answer API, denominator, exception, non-finite endpoint, CLI, and frozen-label questions by moving through the factual reference layer.</p>
+    <p><a href="reference-lookup-workflow/">Reference lookup →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -82,6 +88,17 @@ Use the <a href="first-real-audit/">first real audit example</a> for a CSV-orien
 <strong>Audit blocked or failing?</strong>
 Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to identify the failing layer, then use <a href="failed-audit-recovery/">failed-audit recovery</a> to practise declared → valid → successful denominator accounting and a provenance-preserving technical rerun.
 </div>
+
+<div class="callout info">
+<strong>Need a fact, not another workflow?</strong>
+Use the <a href="../reference/">Reference hub</a> for API, CLI, evidence vocabulary, provenance, and validation authority. The <a href="reference-lookup-workflow/">reference lookup walkthrough</a> demonstrates when to stop reading procedural material and consult an exact contract instead.
+</div>
+
+## [Reference lookup walkthrough](reference-lookup-workflow/)
+
+Use one fully synthetic scenario to look up declared versus valid specification counts, the actual exception behavior of `run_specs()`, the difference between a non-finite estimate and a null effect, exact reviewer-revision CLI syntax, and the boundary around frozen validation labels.
+
+**Use this when:** you already know the research task but need to verify exactly what a public API, command, denominator term, or validation label means.
 
 ## [First real audit](first-real-audit/)
 
