@@ -80,13 +80,14 @@ The contracts below are generated from one governed catalog. Each card identifie
 
 <div class="reporting-contract-grid" data-reporting-contracts>
 {% for contract in site.data.reporting_contracts %}
+  {% capture reporting_search %}{{ contract.id }} {{ contract.layer }} {{ contract.kind }} {{ contract.signal }} {{ contract.runtime_source }} {{ contract.meaning }} {{ contract.denominator }} {{ contract.can_say }} {{ contract.cannot_say }}{% endcapture %}
   <article
     class="reporting-contract-card"
     id="reporting-{{ contract.id }}"
     data-reporting-contract
     data-reporting-layer="{{ contract.layer | escape }}"
     data-reporting-kind="{{ contract.kind | escape }}"
-    data-reporting-search="{{ contract.id }} {{ contract.layer }} {{ contract.kind }} {{ contract.signal }} {{ contract.runtime_source }} {{ contract.meaning }} {{ contract.denominator }} {{ contract.can_say }} {{ contract.cannot_say }} | downcase | escape }}"
+    data-reporting-search="{{ reporting_search | downcase | escape }}"
   >
     <div class="reporting-contract-badges">
       <span>{{ contract.layer }}</span>
