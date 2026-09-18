@@ -10,7 +10,7 @@ search_keywords: reference api cli commands status glossary vocabulary denominat
 
 # Reference
 
-Use Reference when you already know **what you are trying to do** and need the exact contract, command, term, provenance rule, or authoritative record. If you need a sequence of actions instead, use the [Guides]({{ '/docs/guides/' | relative_url }}); if you want to learn by doing, use the [Examples]({{ '/docs/examples/' | relative_url }}).
+Use Reference when you already know **what you are trying to do** and need the exact contract, command, term, provenance rule, or authoritative record. If you need a sequence of actions instead, use the [Guides]({{ '/docs/guides/' | relative_url }}); if you want to learn by doing, use the [Examples]({{ '/docs/examples/' | relative_url }}). If you are unsure which kind of documentation you need, start with the [Documentation compass]({{ '/docs/documentation-map/' | relative_url }}).
 
 <div class="callout info">
 <strong>Reference states contracts; it does not choose research decisions.</strong>

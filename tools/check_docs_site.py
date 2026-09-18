@@ -273,6 +273,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     required = [
         "index.html",
         "docs/index.html",
+        "docs/documentation-map/index.html",
         "docs/planner/index.html",
         "docs/methods/index.html",
         "docs/plots/index.html",
@@ -281,7 +282,9 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reference/api-pathways/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
+        "docs/guides/documentation-authoring/index.html",
         "docs/examples/install-smoke-check/index.html",
+        "docs/examples/documentation-intent-routing/index.html",
         "docs/guides/read-api-reference/index.html",
         "docs/examples/source-api-inspection/index.html",
         "docs/examples/api-call-contracts/index.html",

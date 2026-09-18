@@ -6,7 +6,7 @@ kicker: Articles
 
 # Articles
 
-These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, manuscript-readiness checks, reviewer-amendment provenance, or the frozen validation records.
+These articles explain the methodological ideas behind GazeAudit. They are not substitutes for the API guides, researcher-owned study decisions, manuscript-readiness checks, reviewer-amendment provenance, or the frozen validation records. If the need is procedural, factual, or learning-oriented rather than explanatory, use the [Documentation compass]({{ '/docs/documentation-map/' | relative_url }}).
 
 ## Choose by question
 
