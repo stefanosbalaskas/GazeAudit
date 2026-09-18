@@ -134,7 +134,13 @@ The builder is local to this documentation page. It does not upload a dataset, i
   </div>
 </form>
 
-<div class="readiness-builder-errors" data-readiness-errors role="alert" hidden></div>
+<div
+  class="readiness-builder-errors"
+  data-readiness-errors
+  role="alert"
+  tabindex="-1"
+  hidden
+></div>
 
 <p class="readiness-builder-status" data-readiness-status role="status" aria-live="polite" aria-atomic="true">
   No policy draft generated yet.
