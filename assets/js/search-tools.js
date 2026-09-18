@@ -21,7 +21,9 @@
   const quickQueries = [
     ['Own data', 'first real audit'],
     ['Robustness', 'robustness'],
-    ['AOI', 'AOI'],
+    ['AOI', 'AOI uncertainty'],
+    ['CLI', 'CLI command'],
+    ['Denominators', 'declared valid successful'],
     ['Publication', 'publication'],
   ];
   const relatedKindOrder = {
@@ -107,13 +109,12 @@
   controls.className = 'search-discovery';
   controls.innerHTML = `
     <div class="search-facets" data-search-facets role="group" aria-label="Filter search results by documentation type"></div>
-    <div class="search-quick-queries" data-search-quick-queries aria-label="Suggested searches"></div>
-    <p class="search-result-summary" data-search-result-summary aria-hidden="true"></p>`;
+    <div class="search-quick-queries" data-search-quick-queries aria-label="Suggested searches"></div>`;
   input.insertAdjacentElement('afterend', controls);
 
   const facetContainer = controls.querySelector('[data-search-facets]');
   const quickContainer = controls.querySelector('[data-search-quick-queries]');
-  const summary = controls.querySelector('[data-search-result-summary]');
+  const status = document.querySelector('[data-search-status]');
 
   quickContainer.innerHTML = quickQueries.map(([label, query]) => `
     <button type="button" class="search-query-chip" data-search-query="${escapeHtml(query)}">${escapeHtml(label)}</button>`).join('');
@@ -172,28 +173,77 @@
     });
   };
 
+  const groupedItems = (items, maxResults = 12, perGroup = 4) => {
+    const groups = new Map();
+    items.forEach((item) => {
+      const kind = item.kind || 'Documentation';
+      if (!groups.has(kind)) groups.set(kind, []);
+      groups.get(kind).push(item);
+    });
+
+    let remaining = maxResults;
+    const visibleGroups = [];
+    groups.forEach((groupItems, kind) => {
+      if (remaining <= 0) return;
+      const visibleItems = groupItems.slice(0, Math.min(perGroup, remaining));
+      if (!visibleItems.length) return;
+      visibleGroups.push({
+        kind,
+        total: groupItems.length,
+        items: visibleItems,
+      });
+      remaining -= visibleItems.length;
+    });
+    return visibleGroups;
+  };
+
   const render = () => {
     if (!index) return;
     const matched = rankedItems(input.value);
-    const visible = matched.slice(0, 12);
-    if (summary) {
-      const label = activeKind === 'All' ? 'all documentation types' : activeKind;
-      summary.textContent = `${matched.length} ${matched.length === 1 ? 'result' : 'results'} · ${label}`;
+    const groups = groupedItems(matched);
+    const visibleCount = groups.reduce((total, group) => total + group.items.length, 0);
+    const label = activeKind === 'All' ? 'all documentation types' : activeKind;
+    if (status) {
+      status.textContent = matched.length
+        ? `${matched.length} ${matched.length === 1 ? 'result' : 'results'} across ${label}. Showing ${visibleCount}.`
+        : `No matching documentation in ${label}.`;
     }
-    if (!visible.length) {
+    if (!visibleCount) {
       const suffix = activeKind === 'All' ? '' : ` in ${escapeHtml(activeKind)}`;
       results.innerHTML = `<p class="search-empty">No matching documentation${suffix}. Try another term or choose All.</p>`;
       return;
     }
-    results.innerHTML = visible.map((item, indexPosition) => `
-      <a class="search-result${indexPosition === 0 ? ' is-selected' : ''}" href="${buildUrl(item.url)}" data-search-result data-index="${indexPosition}">
-        <span class="search-result-meta">
-          <span class="search-result-kind">${escapeHtml(item.kind || 'Documentation')}</span>
-          <span class="search-result-category">${escapeHtml(item.category)}</span>
-        </span>
-        <strong>${escapeHtml(item.title)}</strong>
-        <span>${escapeHtml(item.description)}</span>
-      </a>`).join('');
+
+    let resultIndex = 0;
+    results.innerHTML = groups.map((group, groupIndex) => {
+      const groupId = `search-result-group-${groupIndex + 1}`;
+      const groupCount = group.total === group.items.length
+        ? `${group.total}`
+        : `${group.items.length} of ${group.total}`;
+      const cards = group.items.map((item) => {
+        const indexPosition = resultIndex;
+        resultIndex += 1;
+        return `
+          <a class="search-result${indexPosition === 0 ? ' is-selected' : ''}" href="${buildUrl(item.url)}" data-search-result data-index="${indexPosition}">
+            <span class="search-result-meta">
+              <span class="search-result-category">${escapeHtml(item.category)}</span>
+            </span>
+            <strong>${escapeHtml(item.title)}</strong>
+            <span>${escapeHtml(item.description)}</span>
+          </a>`;
+      }).join('');
+
+      return `
+        <section class="search-result-group" aria-labelledby="${groupId}">
+          <div class="search-result-group-head">
+            <h3 id="${groupId}">${escapeHtml(group.kind)}</h3>
+            <span aria-label="${groupCount} results in this group">${groupCount}</span>
+          </div>
+          <div class="search-result-group-items">
+            ${cards}
+          </div>
+        </section>`;
+    }).join('');
   };
 
   const topicTokens = (item) => {
