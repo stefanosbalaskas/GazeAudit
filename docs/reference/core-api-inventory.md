@@ -31,4 +31,4 @@ The inventory deliberately focuses on normal research workflows. Frozen validati
 
 `plot_qc_issue_profile`, `plot_trial_readiness`, `plot_participant_readiness`, `plot_cohort_impact`, `plot_repair_comparison`, `plot_policy_tradeoffs`, `plot_threshold_sweep`, `plot_specification_curve`, `plot_factor_sensitivity`, `plot_sensitivity_curve`, `plot_gaze_trajectory`, `plot_aoi_probability_profile`, `plot_recovery_matrix`.
 
-For task-oriented descriptions, use the [API map]({{ '/docs/reference/api-map/' | relative_url }}). For visual examples, use the [plot gallery]({{ '/docs/plots/' | relative_url }}).
+For task-oriented descriptions, use the [API map]({{ '/docs/reference/api-map/' | relative_url }}). For stable symbol deep links and the surrounding guide/example/visual/evidence context, use [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}). For visual examples, use the [plot gallery]({{ '/docs/plots/' | relative_url }}).
