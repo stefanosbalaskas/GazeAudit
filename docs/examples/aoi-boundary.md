@@ -2,6 +2,13 @@
 title: AOI boundary example
 description: A complete synthetic example of probabilistic AOI membership near a shared boundary.
 kicker: Example · Measurement uncertainty
+search_category: Example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Measurement uncertainty"
+example_reuse: "Uncertainty workflow"
+example_output: "Probabilistic AOI membership and uncertainty-aware summaries"
+example_boundary: "Synthetic geometry and error values are not empirical calibration evidence."
 ---
 
 # AOI boundary example
