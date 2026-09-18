@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stefanosbalaskas.github.io/GazeAudit/assets/data-mapping-record.schema.json",
+  "title": "GazeAudit data mapping record",
+  "description": "Documentation-side provenance record for the semantic column mapping used to construct a canonical GazeStudy. This schema validates record structure only; it does not certify scientific validity or inspect source data.",
+  "type": "object",
+  "required": [
+    "schema",
+    "source_id",
+    "columns",
+    "units",
+    "coordinate_convention",
+    "pre_mapping_transformations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gazeaudit-data-mapping-record-v1"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "Project-controlled source reference. Empty when not supplied; no identifier is inferred."
+    },
+    "columns": {
+      "type": "object",
+      "required": ["participant", "trial", "timestamp", "x", "y"],
+      "properties": {
+        "participant": {"type": "string", "minLength": 1},
+        "trial": {"type": "string", "minLength": 1},
+        "timestamp": {"type": "string", "minLength": 1},
+        "x": {"type": "string", "minLength": 1},
+        "y": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "units": {
+      "type": "object",
+      "required": ["coordinates", "timestamp"],
+      "properties": {
+        "coordinates": {"type": "string"},
+        "timestamp": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "coordinate_convention": {
+      "type": "string"
+    },
+    "pre_mapping_transformations": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
