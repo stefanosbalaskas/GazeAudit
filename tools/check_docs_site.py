@@ -284,6 +284,136 @@ def _verify_example_index(site_root: Path, *, baseurl: str) -> None:
         raise SystemExit(f"example index failures ({len(failures)}):\n{preview}{extra}")
 
 
+def _verify_qc_issue_reference(site_root: Path) -> None:
+    issue_path = site_root / "assets/qc-issue-reference.json"
+    try:
+        issues = json.loads(issue_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"invalid generated QC issue reference: {exc}") from exc
+
+    expected_codes = {
+        "coordinate_nonfinite",
+        "timestamp_nonfinite",
+        "identifier_missing",
+        "timestamp_duplicate",
+        "timestamp_decreasing",
+    }
+    expected_detail_codes = {
+        "x_missing",
+        "x_infinite",
+        "y_missing",
+        "y_infinite",
+        "timestamp_missing",
+        "timestamp_infinite",
+        "participant_missing",
+        "trial_missing",
+        "timestamp_duplicate",
+        "timestamp_decreasing",
+    }
+    required = {
+        "issue_code",
+        "label",
+        "scope",
+        "report_field",
+        "summary",
+        "detail_codes",
+        "inspect",
+        "possible_causes",
+        "not_infer",
+        "next_step",
+    }
+
+    if not isinstance(issues, list) or len(issues) != 5:
+        raise SystemExit(
+            "unexpected QC issue catalog: "
+            f"{type(issues).__name__}, entries={len(issues) if isinstance(issues, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    issue_codes: set[str] = set()
+    detail_codes: set[str] = set()
+
+    for position, item in enumerate(issues):
+        if not isinstance(item, dict):
+            failures.append(f"issue {position}: expected object")
+            continue
+        missing = required.difference(item)
+        if missing:
+            failures.append(f"issue {position}: missing keys {sorted(missing)}")
+            continue
+
+        issue_code = item["issue_code"]
+        if not isinstance(issue_code, str) or not issue_code:
+            failures.append(f"issue {position}: invalid issue_code {issue_code!r}")
+        elif issue_code in issue_codes:
+            failures.append(f"issue {position}: duplicate issue_code {issue_code!r}")
+        else:
+            issue_codes.add(issue_code)
+
+        if item["scope"] not in {"row", "group"}:
+            failures.append(f"issue {position}: invalid scope {item['scope']!r}")
+
+        for field in ("label", "report_field", "summary", "not_infer", "next_step"):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(f"issue {position}: {field} must be a non-empty string")
+
+        for field in ("inspect", "possible_causes"):
+            values = item[field]
+            if not isinstance(values, list) or not values or not all(
+                isinstance(value, str) and value.strip() for value in values
+            ):
+                failures.append(f"issue {position}: {field} must be a non-empty string list")
+
+        details = item["detail_codes"]
+        if not isinstance(details, list) or not details:
+            failures.append(f"issue {position}: detail_codes must be a non-empty list")
+            continue
+        for detail_position, detail in enumerate(details):
+            if not isinstance(detail, dict):
+                failures.append(
+                    f"issue {position} detail {detail_position}: expected object"
+                )
+                continue
+            code = detail.get("code")
+            meaning = detail.get("meaning")
+            if not isinstance(code, str) or not code:
+                failures.append(
+                    f"issue {position} detail {detail_position}: invalid code {code!r}"
+                )
+            else:
+                detail_codes.add(code)
+            if not isinstance(meaning, str) or not meaning.strip():
+                failures.append(
+                    f"issue {position} detail {detail_position}: missing meaning"
+                )
+
+    if issue_codes != expected_codes:
+        failures.append(
+            f"QC issue codes mismatch: expected {sorted(expected_codes)}, got {sorted(issue_codes)}"
+        )
+    if detail_codes != expected_detail_codes:
+        failures.append(
+            "QC detail codes mismatch: "
+            f"expected {sorted(expected_detail_codes)}, got {sorted(detail_codes)}"
+        )
+
+    clinic = site_root / "docs/reference/qc-issue-clinic/index.html"
+    if not clinic.is_file():
+        failures.append("QC issue clinic page is missing from generated site")
+    else:
+        rendered_cards = clinic.read_text(encoding="utf-8").count("data-qc-issue")
+        if rendered_cards != len(issues):
+            failures.append(
+                "QC issue clinic card count mismatch: "
+                f"index={len(issues)}, rendered={rendered_cards}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = "" if len(failures) <= 30 else f"\n... and {len(failures) - 30} more"
+        raise SystemExit(f"QC issue reference failures ({len(failures)}):\n{preview}{extra}")
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -370,17 +500,20 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reference/index.html",
         "docs/reference/api-map/index.html",
         "docs/reference/api-pathways/index.html",
+        "docs/reference/qc-issue-clinic/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
         "docs/guides/adapt-examples-to-study/index.html",
         "docs/guides/map-your-table/index.html",
         "docs/guides/data-mapping-provenance/index.html",
+        "docs/guides/structural-qc-triage/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
         "docs/examples/data-contract-valid-invalid/index.html",
         "docs/examples/data-mapping-change-audit/index.html",
+        "docs/examples/all-structural-qc-issues/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -407,12 +540,14 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/api-pathways.css",
         "assets/css/data-contract.css",
         "assets/css/example-catalog.css",
+        "assets/css/qc-issue-clinic.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
         "assets/js/api-symbol-reference.js",
         "assets/js/data-contract.js",
         "assets/js/example-catalog.js",
+        "assets/js/qc-issue-clinic.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -422,6 +557,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/api-symbol-reference.json",
         "assets/data-mapping-record.schema.json",
         "assets/example-index.json",
+        "assets/qc-issue-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -486,6 +622,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
 
     _verify_search_index(site_root, baseurl=baseurl)
     _verify_example_index(site_root, baseurl=baseurl)
+    _verify_qc_issue_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
