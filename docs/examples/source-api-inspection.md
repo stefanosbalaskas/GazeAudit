@@ -5,6 +5,12 @@ kicker: Example · API reference
 permalink: /docs/examples/source-api-inspection/
 search_category: Example
 search_keywords: source api inspect signature GazeStudy run_specs aoi_probabilities source link pathway import synthetic
+page_type: example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Source-inspection workflow"
+example_output: "Verified signatures, source links, and pathway context"
+example_boundary: "Source inspection describes implementation; it does not justify study choices."
 ---
 
 # Source-level API inspection
