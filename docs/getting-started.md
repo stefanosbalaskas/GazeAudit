@@ -10,6 +10,8 @@ This page takes you from installation to a small uncertainty-aware AOI analysis 
 
 ## 1. Install the public release
 
+For isolated-environment setup, optional extras, tested Python versions, and source-checkout commands, start with the [Install & environment center]({{ '/docs/install/' | relative_url }}).
+
 ```bash
 python -m pip install gazeaudit==0.1.0
 ```
@@ -20,11 +22,11 @@ Confirm the installed package:
 python -c "import gazeaudit; print(gazeaudit.__version__)"
 ```
 
-The package metadata for release `0.1.0` supports Python 3.10–3.13.
+The package declares Python `>=3.10`; the repository CI currently tests Python 3.10–3.13. The [Install Center]({{ '/docs/install/' | relative_url }}) generates this compatibility summary from package metadata and the test matrix.
 
 ### Optional interoperability extras
 
-Install only the adapter family you need:
+Install only the adapter family you need. The complete generated extras inventory is maintained in the [Install Center]({{ '/docs/install/' | relative_url }}):
 
 ```bash
 python -m pip install "gazeaudit[pymovements]==0.1.0"
