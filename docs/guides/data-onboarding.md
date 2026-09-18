@@ -10,6 +10,8 @@ search_keywords: data import csv GazeStudy preflight QC provenance fingerprint d
 
 GazeAudit deliberately does not require a vendor-specific export schema. The first job is therefore to create a canonical `GazeStudy` that tells the package which columns represent horizontal position, vertical position, time, participant, and trial. The second job is to inspect whether that representation contains structural conditions that deserve review before downstream analysis.
 
+For the compact constructor contract and local semantic-column snippet builder, start with the [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}). For the task-oriented mapping sequence, use [Map your table into GazeStudy]({{ '/docs/guides/map-your-table/' | relative_url }}).
+
 This guide separates those two steps. **Structural QC is not scientific validity.** A table can pass these checks and still have poor calibration, unsuitable event detection, inappropriate AOIs, or an analytically weak endpoint. Conversely, a flagged condition is not automatically an exclusion rule.
 
 ## 1. Start from the table you actually have
