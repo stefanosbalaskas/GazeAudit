@@ -5,6 +5,12 @@ kicker: Example · Peer review
 permalink: /docs/examples/reviewer-requested-reanalysis/
 search_category: Example
 search_keywords: reviewer revision amendment reanalysis sensitivity post review denominator response letter synthetic robustness
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Post-review amendment workflow"
+example_output: "Separate submitted and reviewer-requested evidence layers"
+example_boundary: "Post-review analyses must not be relabelled as pre-specified."
 ---
 
 # Reviewer-requested reanalysis worked example
