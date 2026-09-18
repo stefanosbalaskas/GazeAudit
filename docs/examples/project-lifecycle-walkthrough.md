@@ -6,6 +6,11 @@ page_type: example
 permalink: /docs/examples/project-lifecycle-walkthrough/
 search_category: Example
 search_keywords: project lifecycle walkthrough what next onboarding plan audit interpret peer review revision amendment resubmission handoff synthetic example
+example_data: "Synthetic"
+example_focus: "Project lifecycle"
+example_reuse: "Project-stage workflow"
+example_output: "Five-stage project record from planning through final handoff"
+example_boundary: "Synthetic project decisions are teaching choices, not a protocol."
 ---
 
 # Project lifecycle walkthrough
