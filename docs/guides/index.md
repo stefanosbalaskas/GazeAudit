@@ -59,7 +59,21 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Bind the complete audit bundle, provenance, fingerprints, methods wording, results wording, revision evidence, and unresolved limitations into a durable record.</p>
     <p><a href="publication-audits/">Publication audits →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">9</div>
+    <h3>Find the right documentation fast</h3>
+    <p>Use grouped search, type filters, keyboard controls, and the Guide / Example / Reference / Evidence distinction without treating navigation as scientific advice.</p>
+    <p><a href="find-information-fast/">Find information fast →</a></p>
+  </article>
 </div>
+
+## Documentation navigation
+
+### [Find information fast](find-information-fast/)
+
+Use the site search deliberately: start with the smallest distinctive phrase, read the grouped Guide / Example / Reference / Evidence results, filter only when your information need is already clear, and stop searching once the authoritative contract has been found. The guide also documents keyboard behavior and the boundary between navigation support and scientific judgement.
+
+For a worked navigation exercise, use the [Search → contract walkthrough]({{ '/docs/examples/search-to-contract/' | relative_url }}).
 
 ## Start with your own data
 
