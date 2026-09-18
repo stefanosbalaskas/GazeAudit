@@ -5,6 +5,12 @@ kicker: Example · Interpretation
 permalink: /docs/examples/result-patterns/
 search_category: Example
 search_keywords: result pattern reporting stable sign magnitude fragile incomplete execution synthetic robustness interpretation manuscript wording
+page_type: example
+example_data: "Synthetic"
+example_focus: "Interpretation & reporting"
+example_reuse: "Result-pattern interpretation workflow"
+example_output: "Bounded wording for stable, sensitive, sign-changing, and incomplete audits"
+example_boundary: "Synthetic patterns teach interpretation; they are not empirical priors."
 ---
 
 # Result-pattern reporting example
