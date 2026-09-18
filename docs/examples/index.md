@@ -83,6 +83,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Use grouped search results to route a question into Guide, Example, Reference, or Evidence without turning ranking into a scientific recommendation.</p>
     <p><a href="search-to-contract/">Search → contract →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">13</div>
+    <h3>Trace a function to its evidence boundary</h3>
+    <p>Start from a public symbol and follow its stable deep link into the governed guide, runnable example, visual, and evidence context.</p>
+    <p><a href="function-to-evidence/">Function → evidence →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -99,6 +105,12 @@ Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to
 <strong>Need a fact, not another workflow?</strong>
 Use the <a href="../reference/">Reference hub</a> for API, CLI, evidence vocabulary, provenance, and validation authority. The <a href="reference-lookup-workflow/">reference lookup walkthrough</a> demonstrates when to stop reading procedural material and consult an exact contract instead.
 </div>
+
+## [Function → example → evidence](function-to-evidence/)
+
+Start from `run_specs`, `aoi_probabilities`, and `read_bids_eyetrack`, then follow each symbol through the deep-linkable [API pathways](../reference/api-pathways/) surface. The example shows why a linked frozen case or live contract is contextual evidence rather than a transferable scientific verdict.
+
+**Use this when:** you know a public symbol and want to recover its guide, runnable example, visual, and evidence boundary without searching the site manually.
 
 ## [Search → contract walkthrough](search-to-contract/)
 
