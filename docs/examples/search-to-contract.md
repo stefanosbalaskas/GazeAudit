@@ -5,6 +5,12 @@ kicker: Example · Documentation
 permalink: /docs/examples/search-to-contract/
 search_category: Example
 search_keywords: search grouped results reference guide evidence cli run_specs NaN AOI uncertainty validation contract synthetic walkthrough
+page_type: example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Search-to-authority navigation pattern"
+example_output: "Grouped search path to the relevant documentation authority"
+example_boundary: "Search ranking is navigation support, not method ranking."
 ---
 
 # Search → contract walkthrough
