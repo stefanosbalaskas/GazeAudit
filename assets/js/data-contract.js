@@ -9,13 +9,28 @@
     timestamp: form.querySelector('[data-schema-timestamp]'),
     x: form.querySelector('[data-schema-x]'),
     y: form.querySelector('[data-schema-y]'),
+    sourceId: form.querySelector('[data-schema-source-id]'),
+    coordinateUnit: form.querySelector('[data-schema-coordinate-unit]'),
+    coordinateConvention: form.querySelector('[data-schema-coordinate-convention]'),
+    timestampUnit: form.querySelector('[data-schema-timestamp-unit]'),
+    transformations: form.querySelector('[data-schema-transformations]'),
   };
   const clear = form.querySelector('[data-schema-clear]');
   const code = document.querySelector('[data-schema-code]');
   const copy = document.querySelector('[data-schema-copy]');
   const status = document.querySelector('[data-schema-status]');
+  const record = document.querySelector('[data-schema-record]');
+  const recordCopy = document.querySelector('[data-schema-record-copy]');
 
-  if (Object.values(fields).some((field) => !field) || !clear || !code || !copy || !status) {
+  if (
+    Object.values(fields).some((field) => !field)
+    || !clear
+    || !code
+    || !copy
+    || !status
+    || !record
+    || !recordCopy
+  ) {
     return;
   }
 
@@ -29,6 +44,11 @@
     timestamp: fields.timestamp.value.trim(),
     x: fields.x.value.trim(),
     y: fields.y.value.trim(),
+    sourceId: fields.sourceId.value.trim(),
+    coordinateUnit: fields.coordinateUnit.value.trim(),
+    coordinateConvention: fields.coordinateConvention.value.trim(),
+    timestampUnit: fields.timestampUnit.value.trim(),
+    transformations: fields.transformations.value.trim(),
   });
 
   const buildSnippet = (mapping) => [
@@ -44,6 +64,36 @@
     ')',
   ].join('\n');
 
+  const buildRecord = (mapping) => JSON.stringify(
+    {
+      schema: 'gazeaudit-data-mapping-record-v1',
+      source_id: mapping.sourceId,
+      columns: {
+        participant: mapping.participant,
+        trial: mapping.trial,
+        timestamp: mapping.timestamp,
+        x: mapping.x,
+        y: mapping.y,
+      },
+      units: {
+        coordinates: mapping.coordinateUnit,
+        timestamp: mapping.timestampUnit,
+      },
+      coordinate_convention: mapping.coordinateConvention,
+      pre_mapping_transformations: mapping.transformations,
+    },
+    null,
+    2,
+  );
+
+  const setIncomplete = (message, codeMessage) => {
+    code.textContent = codeMessage;
+    record.textContent = 'Complete all five semantic column mappings to generate the mapping record.';
+    status.textContent = message;
+    copy.disabled = true;
+    recordCopy.disabled = true;
+  };
+
   const render = () => {
     const mapping = current();
     const semanticValues = [
@@ -55,29 +105,34 @@
     ];
 
     if (!mapping.dataVar) {
-      code.textContent = 'Enter a DataFrame variable name to generate code.';
-      status.textContent = 'DataFrame variable is required.';
-      copy.disabled = true;
+      setIncomplete(
+        'DataFrame variable is required.',
+        'Enter a DataFrame variable name to generate code.',
+      );
       return;
     }
 
     if (!pythonIdentifier.test(mapping.dataVar)) {
-      code.textContent = 'Use a valid Python identifier for the DataFrame variable.';
-      status.textContent = 'The DataFrame variable must be a valid Python identifier.';
-      copy.disabled = true;
+      setIncomplete(
+        'The DataFrame variable must be a valid Python identifier.',
+        'Use a valid Python identifier for the DataFrame variable.',
+      );
       return;
     }
 
     if (semanticValues.some((value) => !value)) {
-      code.textContent = 'Complete all five semantic column mappings to generate code.';
-      status.textContent = 'Participant, trial, timestamp, x, and y column names are all required.';
-      copy.disabled = true;
+      setIncomplete(
+        'Participant, trial, timestamp, x, and y column names are all required.',
+        'Complete all five semantic column mappings to generate code.',
+      );
       return;
     }
 
     code.textContent = buildSnippet(mapping);
-    status.textContent = 'Mapping snippet generated. Units and scientific meaning still need to be recorded separately.';
+    record.textContent = buildRecord(mapping);
+    status.textContent = 'Mapping and provenance record generated. Optional provenance fields remain descriptive and are never inferred.';
     copy.disabled = false;
+    recordCopy.disabled = false;
   };
 
   const copyText = async (text) => {
@@ -107,23 +162,33 @@
     fields.timestamp.value = '';
     fields.x.value = '';
     fields.y.value = '';
+    fields.sourceId.value = '';
+    fields.coordinateUnit.value = '';
+    fields.coordinateConvention.value = '';
+    fields.timestampUnit.value = '';
+    fields.transformations.value = '';
     render();
     fields.participant.focus();
   });
 
-  copy.addEventListener('click', async () => {
-    if (copy.disabled) return;
-    try {
-      await copyText(code.textContent);
-      const original = copy.textContent;
-      copy.textContent = 'Copied';
-      window.setTimeout(() => {
-        copy.textContent = original;
-      }, 1400);
-    } catch {
-      status.textContent = 'Copy failed. Select the generated code manually.';
-    }
-  });
+  const wireCopy = (button, source, successLabel) => {
+    button.addEventListener('click', async () => {
+      if (button.disabled) return;
+      try {
+        await copyText(source.textContent);
+        const original = button.textContent;
+        button.textContent = successLabel;
+        window.setTimeout(() => {
+          button.textContent = original;
+        }, 1400);
+      } catch {
+        status.textContent = 'Copy failed. Select the generated content manually.';
+      }
+    });
+  };
+
+  wireCopy(copy, code, 'Copied');
+  wireCopy(recordCopy, record, 'Record copied');
 
   render();
 })();
