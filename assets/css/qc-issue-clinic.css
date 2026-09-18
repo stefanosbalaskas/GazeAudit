@@ -1,0 +1,210 @@
+.qc-clinic-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem .8rem;
+  align-items: baseline;
+  margin: 1rem 0;
+  color: var(--muted);
+}
+
+.qc-clinic-summary strong {
+  color: var(--text);
+}
+
+.qc-clinic-controls {
+  display: grid;
+  grid-template-columns: minmax(16rem, 2fr) minmax(10rem, 1fr) auto;
+  gap: .75rem;
+  align-items: end;
+  margin: 1rem 0 .7rem;
+  padding: .9rem;
+  border: 1px solid var(--border);
+  border-radius: .8rem;
+  background: var(--surface-muted);
+}
+
+.qc-clinic-controls label {
+  display: grid;
+  gap: .32rem;
+  min-width: 0;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.qc-clinic-controls input,
+.qc-clinic-controls select,
+.qc-clinic-controls button {
+  min-height: 2.55rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+}
+
+.qc-clinic-controls input,
+.qc-clinic-controls select {
+  padding: .55rem .65rem;
+}
+
+.qc-clinic-controls button {
+  width: auto;
+  padding: .55rem .8rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.qc-clinic-controls :is(input, select, button):hover {
+  border-color: var(--border-strong);
+}
+
+.qc-clinic-controls :is(input, select, button):focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.qc-clinic-status {
+  margin: .45rem 0 1rem;
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.qc-clinic-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.qc-clinic-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+  scroll-margin-top: 6rem;
+}
+
+.qc-clinic-card[hidden] {
+  display: none;
+}
+
+.qc-clinic-card h2 {
+  margin: .35rem 0 .45rem;
+}
+
+.qc-clinic-card h3 {
+  margin-top: 1rem;
+  font-size: .92rem;
+}
+
+.qc-clinic-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+.qc-clinic-badges > * {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: .16rem .46rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-solid);
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.qc-clinic-badges code {
+  color: var(--text);
+}
+
+.qc-clinic-card details {
+  margin-top: .65rem;
+  border-top: 1px solid var(--border);
+  padding-top: .65rem;
+}
+
+.qc-clinic-card summary {
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.qc-clinic-card summary:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.qc-clinic-card details ul {
+  margin-bottom: 0;
+}
+
+.qc-clinic-boundary,
+.qc-clinic-next {
+  margin-top: .8rem;
+  padding: .75rem;
+  border-left: 3px solid var(--border-strong);
+  background: var(--surface-solid);
+}
+
+.qc-clinic-boundary strong,
+.qc-clinic-next strong {
+  display: block;
+  margin-bottom: .25rem;
+  font-size: .72rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.qc-clinic-boundary p,
+.qc-clinic-next p {
+  margin: 0;
+}
+
+.qc-clinic-empty {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: .8rem;
+  background: var(--surface-muted);
+}
+
+.qc-clinic-empty h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .qc-clinic-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .qc-clinic-controls button {
+    width: 100%;
+  }
+
+  .qc-clinic-badges {
+    align-items: flex-start;
+  }
+}
+
+@media (forced-colors: active) {
+  .qc-clinic-controls,
+  .qc-clinic-controls input,
+  .qc-clinic-controls select,
+  .qc-clinic-controls button,
+  .qc-clinic-card,
+  .qc-clinic-badges > *,
+  .qc-clinic-card details,
+  .qc-clinic-boundary,
+  .qc-clinic-next,
+  .qc-clinic-empty {
+    border-color: CanvasText;
+  }
+
+  .qc-clinic-controls :is(input, select, button):focus-visible,
+  .qc-clinic-card summary:focus-visible {
+    outline-color: Highlight;
+  }
+}
