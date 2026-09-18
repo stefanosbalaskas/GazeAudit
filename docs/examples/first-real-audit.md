@@ -42,7 +42,7 @@ The worked example expects:
 participant,trial,timestamp,x,y,condition,quality
 ```
 
-These are **example-level canonical names**, not a claim that every eye tracker exports the same schema. Rename or map your source columns explicitly before using the workflow.
+These are **example-level canonical names**, not a claim that every eye tracker exports the same schema. Use the [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}) to map your actual source columns explicitly before using the workflow; renaming the vendor columns is not required.
 
 ## Run the built-in demo
 

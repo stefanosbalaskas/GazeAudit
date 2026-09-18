@@ -44,6 +44,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
     <p>Use reference material when the question is factual: a function signature, CLI command, denominator term, source revision, or frozen authority.</p>
     <div class="documentation-compass-links">
       <a href="{{ '/docs/reference/' | relative_url }}">Reference hub</a>
+      <a href="{{ '/docs/data-contract/' | relative_url }}">Data contract</a>
       <a href="{{ '/docs/reference/api-pathways/' | relative_url }}">API pathways</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
     </div>

@@ -1,0 +1,153 @@
+.schema-mapper {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+}
+
+.schema-mapper-help {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.schema-mapper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .8rem;
+}
+
+.schema-mapper-grid label {
+  display: grid;
+  gap: .32rem;
+  min-width: 0;
+}
+
+.schema-mapper-grid label > span {
+  color: var(--text);
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.schema-mapper-grid input {
+  min-height: 2.55rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: .55rem .65rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+}
+
+.schema-mapper-grid small {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
+.schema-mapper-grid input:hover {
+  border-color: var(--border-strong);
+}
+
+.schema-mapper-grid input:focus-visible,
+.schema-mapper-actions button:focus-visible,
+.schema-mapper-output button:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.schema-mapper-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .85rem;
+}
+
+.schema-mapper-actions button,
+.schema-mapper-output button {
+  min-height: 2.4rem;
+  padding: .48rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-size: .76rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.schema-mapper-actions button:hover,
+.schema-mapper-output button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.schema-mapper-output button:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.schema-mapper-output {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+}
+
+.schema-mapper-output-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .8rem;
+  margin-bottom: .65rem;
+}
+
+.schema-mapper-output-head h2 {
+  margin: .08rem 0 0;
+  font-size: 1rem;
+}
+
+.schema-mapper-output pre {
+  margin: .6rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.schema-mapper-output [data-schema-status] {
+  margin: .55rem 0 0;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+@media (max-width: 720px) {
+  .schema-mapper-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .schema-mapper-output-head {
+    display: grid;
+  }
+
+  .schema-mapper-output button,
+  .schema-mapper-actions button {
+    width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .schema-mapper,
+  .schema-mapper-grid input,
+  .schema-mapper-actions button,
+  .schema-mapper-output,
+  .schema-mapper-output button {
+    border-color: CanvasText;
+  }
+
+  .schema-mapper-grid input:focus-visible,
+  .schema-mapper-actions button:focus-visible,
+  .schema-mapper-output button:focus-visible {
+    outline-color: Highlight;
+  }
+}

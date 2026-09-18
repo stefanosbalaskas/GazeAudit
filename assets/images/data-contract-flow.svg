@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">GazeAudit data contract flow</title>
+  <desc id="desc">A source gaze table maps five semantic columns into GazeStudy, then structural preflight reviews data conditions before downstream scientific analysis.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <style>
+    .box{fill:none;stroke:currentColor;stroke-width:2;rx:18}
+    .title{font:700 28px system-ui,sans-serif;fill:currentColor}
+    .label{font:600 19px system-ui,sans-serif;fill:currentColor}
+    .small{font:400 16px system-ui,sans-serif;fill:currentColor}
+    .arrow{fill:none;stroke:currentColor;stroke-width:2.5;marker-end:url(#arrow)}
+    .pill{fill:none;stroke:currentColor;stroke-width:1.5;rx:14}
+  </style>
+
+  <rect class="box" x="40" y="70" width="270" height="275"/>
+  <text class="title" x="70" y="115">Source table</text>
+  <text class="small" x="70" y="150">Keep original vendor / analysis names</text>
+  <rect class="pill" x="70" y="180" width="180" height="36"/>
+  <text class="label" x="90" y="205">participant_id</text>
+  <rect class="pill" x="70" y="226" width="140" height="36"/>
+  <text class="label" x="90" y="251">trial_id</text>
+  <rect class="pill" x="70" y="272" width="130" height="36"/>
+  <text class="label" x="90" y="297">time_ms</text>
+
+  <path class="arrow" d="M320 208 H405"/>
+
+  <rect class="box" x="420" y="40" width="330" height="340"/>
+  <text class="title" x="455" y="88">Semantic mapping</text>
+  <text class="small" x="455" y="120">GazeStudy records five roles</text>
+  <text class="label" x="470" y="165">x</text>
+  <text class="small" x="535" y="165">horizontal coordinate</text>
+  <text class="label" x="470" y="205">y</text>
+  <text class="small" x="535" y="205">vertical coordinate</text>
+  <text class="label" x="470" y="245">timestamp</text>
+  <text class="small" x="600" y="245">numeric time-like column</text>
+  <text class="label" x="470" y="285">participant</text>
+  <text class="small" x="600" y="285">participant identifier</text>
+  <text class="label" x="470" y="325">trial</text>
+  <text class="small" x="535" y="325">trial / analysis-unit identifier</text>
+
+  <path class="arrow" d="M765 208 H850"/>
+
+  <rect class="box" x="865" y="70" width="295" height="130"/>
+  <text class="title" x="900" y="115">Structural preflight</text>
+  <text class="small" x="900" y="150">Review missingness, duplicates,</text>
+  <text class="small" x="900" y="176">identifier gaps, and time order</text>
+
+  <path class="arrow" d="M1012 210 V258"/>
+
+  <rect class="box" x="865" y="275" width="295" height="90"/>
+  <text class="title" x="900" y="320">Downstream analysis</text>
+  <text class="small" x="900" y="348">Uncertainty · sensitivity · robustness</text>
+</svg>

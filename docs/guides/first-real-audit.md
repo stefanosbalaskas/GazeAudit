@@ -64,7 +64,7 @@ The worked executable expects:
   <code>quality</code>
 </div>
 
-These are **example-level canonical names**, not universal vendor fields. If your table differs, rename or map columns explicitly rather than guessing.
+These are **example-level canonical names**, not universal vendor fields. If your table differs, use the [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}) to map the real participant, trial, timestamp, x, and y columns explicitly rather than guessing; renaming the source columns is not required.
 
 ### Quick commands
 
