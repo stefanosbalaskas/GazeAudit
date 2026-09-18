@@ -136,6 +136,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Compare valid construction, missing-column and nonnumeric failures, missing identifiers, duplicate timestamps, decreasing time, and preserved extra columns.</p>
     <p><a href="data-contract-valid-invalid/">Data contract cases →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">21</div>
+    <h3>Audit a changed data mapping</h3>
+    <p>Compare column renames, corrected exports, unit and coordinate conversions, changed trial semantics, and scientific exclusions without rewriting the earlier record.</p>
+    <p><a href="data-mapping-change-audit/">Mapping change audit →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -194,6 +200,12 @@ Run one practical script on deterministic demo data or a canonical eye-tracking 
 Use a synthetic table to see exactly which conditions stop `GazeStudy` construction and which conditions construct successfully but become structural-preflight review evidence.
 
 **Use this when:** you need to understand the boundary between canonical schema validity and contextual structural QC before mapping your own source.
+
+## [Mapping change audit](data-mapping-change-audit/)
+
+Compare before/after mapping records for source-column renames, corrected exports, timestamp conversion, coordinate conversion, changed trial semantics, and reviewer-driven exclusions.
+
+**Use this when:** a canonical table or mapping has changed and you need to decide which provenance, structural-preflight, and downstream records must be rebuilt without erasing the earlier analysis history.
 
 ## [Study preflight](study-preflight/)
 
