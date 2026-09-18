@@ -195,6 +195,95 @@ def _verify_method_index(site_root: Path, *, baseurl: str) -> None:
         raise SystemExit(f"method index failures ({len(failures)}):\n{preview}{extra}")
 
 
+def _verify_example_index(site_root: Path, *, baseurl: str) -> None:
+    example_path = site_root / "assets/example-index.json"
+    try:
+        examples = json.loads(example_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"invalid generated example index: {exc}") from exc
+
+    if not isinstance(examples, list) or len(examples) < 20:
+        raise SystemExit(
+            "unexpected example catalog: "
+            f"{type(examples).__name__}, entries={len(examples) if isinstance(examples, list) else 'n/a'}"
+        )
+
+    required_keys = {
+        "title",
+        "url",
+        "description",
+        "data",
+        "focus",
+        "reuse",
+        "output",
+        "boundary",
+    }
+    allowed_data = {
+        "Synthetic",
+        "Demo or user data",
+        "Software-only",
+        "Documentation-only",
+    }
+    allowed_focus = {
+        "Data & QC",
+        "Measurement uncertainty",
+        "Robustness & sensitivity",
+        "Interpretation & reporting",
+        "Documentation & API",
+        "Environment",
+        "Project lifecycle",
+        "Peer review & publication",
+        "Reproducibility",
+    }
+    urls: set[str] = set()
+    failures: list[str] = []
+    source = site_root / "docs/examples/catalog/index.html"
+
+    for position, item in enumerate(examples):
+        if not isinstance(item, dict):
+            failures.append(f"example {position}: expected object")
+            continue
+        missing = required_keys.difference(item)
+        if missing:
+            failures.append(f"example {position}: missing keys {sorted(missing)}")
+            continue
+
+        for field in required_keys:
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(f"example {position}: {field} must be a non-empty string")
+
+        url = item["url"]
+        if isinstance(url, str):
+            if url in urls:
+                failures.append(f"example {position}: duplicate url {url!r}")
+            urls.add(url)
+            if not url.startswith("/docs/examples/"):
+                failures.append(f"example {position}: invalid url {url!r}")
+            elif not _resolves(site_root, source, url, baseurl):
+                failures.append(f"example {position}: unresolved url {url!r}")
+
+        if item["data"] not in allowed_data:
+            failures.append(f"example {position}: invalid data context {item['data']!r}")
+        if item["focus"] not in allowed_focus:
+            failures.append(f"example {position}: invalid focus {item['focus']!r}")
+
+    if source.is_file():
+        catalog_html = source.read_text(encoding="utf-8")
+        rendered_cards = catalog_html.count("data-example-card")
+        if rendered_cards != len(examples):
+            failures.append(
+                "example catalog card count mismatch: "
+                f"index={len(examples)}, rendered={rendered_cards}"
+            )
+    else:
+        failures.append("example catalog page is missing from generated site")
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = "" if len(failures) <= 30 else f"\n... and {len(failures) - 30} more"
+        raise SystemExit(f"example index failures ({len(failures)}):\n{preview}{extra}")
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -309,10 +398,12 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/landing.css",
         "assets/css/methods.css",
         "assets/css/api-pathways.css",
+        "assets/css/example-catalog.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
         "assets/js/api-symbol-reference.js",
+        "assets/js/example-catalog.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -320,6 +411,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/planner.js",
         "assets/search-index.json",
         "assets/api-symbol-reference.json",
+        "assets/example-index.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -382,6 +474,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         raise SystemExit(f"broken generated-site references ({len(failures)}):\n{preview}{extra}")
 
     _verify_search_index(site_root, baseurl=baseurl)
+    _verify_example_index(site_root, baseurl=baseurl)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
