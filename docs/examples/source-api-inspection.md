@@ -17,7 +17,7 @@ Open the direct symbol route:
 
 [Open `GazeStudy`]({{ '/docs/reference/api-pathways/' | relative_url }}#api-gazestudy)
 
-The enhanced symbol card exposes the currently installed class signature, source module, source line, docstring summary, and import:
+The enhanced symbol card exposes the currently installed class signature, structured parameter contract, return annotation, source module, source line, docstring summary, minimal call shape, and import:
 
 ```python
 from gazeaudit import GazeStudy
@@ -31,7 +31,7 @@ Open:
 
 [Open `run_specs`]({{ '/docs/reference/api-pathways/' | relative_url }}#api-run-specs)
 
-Use the signature to verify which arguments are required and which are keyword-only. Then use **View source** when you need implementation-level confirmation.
+Expand **Parameters & minimal call** to verify which arguments are required, which are keyword-only, the inspected annotations/defaults, the return annotation, and the mechanically generated call shape. Then use **View source** when you need implementation-level confirmation.
 
 For example, the current source-level contract is relevant when asking whether execution failures are silently converted into a status row. The [Evidence vocabulary]({{ '/docs/reference/evidence-vocabulary/' | relative_url }}) explains the audited interpretation boundary; the source link lets you verify the implementation directly.
 
@@ -98,7 +98,10 @@ The website generator records these same categories into a deterministic JSON ar
 |---|---|
 | signature | current Python calling contract for this revision |
 | parameter default | software default, if one exists |
+| Required marker | Python call requirement, not a scientific requirement |
 | annotation | interface/type metadata |
+| return annotation | interface metadata for the returned object |
+| minimal call shape | required call structure with symbolic placeholders, not a runnable analysis by itself |
 | docstring summary | source-authored compact description |
 | source link | implementation location for this documentation revision |
 | pathway backlink | governed documentation context |
@@ -106,4 +109,4 @@ The website generator records these same categories into a deterministic JSON ar
 
 None of those alone establishes that a scientific choice is suitable for a new dataset.
 
-Return to [Read the source-level API reference]({{ '/docs/guides/read-api-reference/' | relative_url }}) for the general rules.
+Continue to [Generated API call contracts]({{ '/docs/examples/api-call-contracts/' | relative_url }}) for a focused exercise on required positional arguments, required keyword-only arguments, all-optional signatures, and return annotations. Return to [Read the source-level API reference]({{ '/docs/guides/read-api-reference/' | relative_url }}) for the general rules.
