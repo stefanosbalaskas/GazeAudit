@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/qc-issue-reference.json
+---
+{{ site.data.qc_issues | jsonify }}
