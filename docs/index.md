@@ -73,6 +73,9 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Set up Python, choose extras, and verify the installed environment | [Install & environment center](install/) |
 | Map my existing table into the canonical GazeStudy contract | [Data Contract & Schema Mapping Center](data-contract/) |
 | Preserve source, units, mapping, and transformation provenance | [Data mapping provenance](guides/data-mapping-provenance/) |
+| Look up a structural-QC issue or diagnostic detail code | [Structural QC Issue Clinic](reference/qc-issue-clinic/) |
+| Triage a `review` state without automatic exclusion | [Structural-QC triage](guides/structural-qc-triage/) |
+| Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
 | Practise auditing a changed mapping without rewriting history | [Mapping change audit](examples/data-mapping-change-audit/) |
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
@@ -171,7 +174,7 @@ Its evidence column is deliberately conservative: frozen real-data cases are lin
 
 ## Data onboarding
 
-Before applying measurement or robustness methods to a new table, map its semantic columns explicitly with `GazeStudy` and run the structural preflight. The [data onboarding guide](guides/data-onboarding/) explains how `audit_study_qc()` reports non-finite coordinates/timestamps, missing identifiers, duplicate within-trial timestamps, and decreasing time order without turning those diagnostics into universal exclusion rules.
+Before applying measurement or robustness methods to a new table, map its semantic columns explicitly with `GazeStudy` and run the structural preflight. The [data onboarding guide](guides/data-onboarding/) explains how `audit_study_qc()` reports non-finite coordinates/timestamps, missing identifiers, duplicate within-trial timestamps, and decreasing time order without turning those diagnostics into universal exclusion rules. If preflight returns `review`, use the [Structural QC Issue Clinic](reference/qc-issue-clinic/) for exact issue/detail-code lookup and the [Structural-QC triage guide](guides/structural-qc-triage/) for the inspection → decision → repair/rerun → reporting sequence.
 
 For a single practical path that continues beyond preflight into robustness outputs and saved evidence, use [First real audit with your own data](guides/first-real-audit/).
 
