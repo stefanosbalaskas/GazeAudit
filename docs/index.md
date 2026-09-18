@@ -28,6 +28,11 @@ Open <a href="guides/first-real-audit/">First real audit with your own data</a> 
 Use <a href="guides/troubleshooting/">Troubleshooting GazeAudit</a> to route the symptom to the environment, source/schema, structural-QC, measurement, specification-execution, endpoint, or provenance layer. Then work through the <a href="examples/failed-audit-recovery/">failed-audit recovery walkthrough</a> to see how a valid technical failure is preserved, repaired, rerun, and reconciled without silently shrinking the denominator.
 </div>
 
+<div class="callout info">
+<strong>Already know the task and just need the exact contract?</strong>
+Use the <a href="reference/">Reference hub</a> for public API contracts, installed CLI commands, evidence/denominator vocabulary, documentation provenance, validation authority, citation, and release identity. The <a href="examples/reference-lookup-workflow/">reference lookup walkthrough</a> shows how to move between those factual references without turning them into scientific decision rules.
+</div>
+
 Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. The search catalog is generated from documentation metadata at build time, so new documented routes do not require a second hand-maintained index.
 
 ## Start here
@@ -56,6 +61,10 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Inspect real validation outcomes | [Case studies](case-studies/) |
 | Create deterministic publication evidence | [Publication audits](guides/publication-audits/) |
 | Connect BIDS, pymovements, pEYES, or custom backends | [Interoperability](guides/interoperability/) |
+| Look up an exact API, CLI, status, provenance, or release contract | [Reference hub](reference/) |
+| Check installed console commands and exact revision-package syntax | [CLI reference](reference/cli-reference/) |
+| Check declared/valid/failure denominator terminology | [Evidence vocabulary](reference/evidence-vocabulary/) |
+| Practise finding an exact contract without rereading a workflow | [Reference lookup walkthrough](examples/reference-lookup-workflow/) |
 | Find the right public function | [API map](reference/api-map/) |
 
 ## Guided next step
@@ -73,6 +82,14 @@ Use [Troubleshooting GazeAudit](guides/troubleshooting/) when execution itself i
 The symptom router separates **invalid before execution**, **valid and successful**, **valid but technically failed**, and **not run** states so troubleshooting cannot silently rewrite the valid denominator. The companion [failed-audit recovery walkthrough](examples/failed-audit-recovery/) follows a fully synthetic `8 declared → 7 valid → 6 initially successful` audit through diagnosis, technical repair, same-branch rerun, and final reconciliation while retaining the original failure event.
 
 If the software ran but the decision history, archive, or reporting boundary is weak, use [Common audit mistakes and repairs](guides/common-audit-mistakes/) instead. Troubleshooting is not a mechanism for choosing a more convenient scientific rule.
+
+## Reference layer
+
+Use the [Reference hub](reference/) when the question is factual rather than procedural: **Which public function? Which installed command? What exactly does this denominator/status term mean? Which revision built the site? Which frozen record is authoritative?**
+
+The reference layer deliberately stays separate from how-to guidance. [CLI reference](reference/cli-reference/) records the commands declared by the package, while [Evidence and denominator vocabulary](reference/evidence-vocabulary/) distinguishes actual runtime fields from audit-ledger terms such as `technical_failure`. The [reference lookup walkthrough](examples/reference-lookup-workflow/) demonstrates that distinction on fully synthetic teaching data.
+
+Reference pages do not choose thresholds, exclusions, endpoints, validity predicates, reviewer amendments, or conclusions. When the question becomes “what sequence should I follow?”, return to a guide or workflow.
 
 ## Researcher workspace
 
@@ -185,6 +202,7 @@ These labels are **protocol-bound records**, not universal properties of the sou
 
 For deeper provenance or publication operations, use the existing authoritative records:
 
+- [Reference hub](reference/) — API, CLI, vocabulary, provenance, validation, citation, and release lookup.
 - [Scientific methods](SCIENTIFIC_METHODS.html)
 - [Validation matrix](VALIDATION_MATRIX.html)
 - [Citation and reuse](CITATION_AND_REUSE.html)
