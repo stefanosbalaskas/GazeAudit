@@ -414,6 +414,149 @@ def _verify_qc_issue_reference(site_root: Path) -> None:
         raise SystemExit(f"QC issue reference failures ({len(failures)}):\n{preview}{extra}")
 
 
+def _verify_readiness_threshold_reference(site_root: Path) -> None:
+    reference_path = site_root / "assets/readiness-threshold-reference.json"
+    try:
+        rules = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated readiness threshold reference: {exc}"
+        ) from exc
+
+    expected_names = {
+        "max_coordinate_issue_fraction",
+        "max_timestamp_issue_fraction",
+        "max_identifier_issue_fraction",
+        "max_duplicate_timestamp_fraction",
+        "max_flagged_trial_fraction",
+        "min_rows_per_trial",
+        "min_trials_per_participant",
+        "require_monotonic_time",
+    }
+    required = {
+        "name",
+        "label",
+        "value_type",
+        "scope",
+        "comparator",
+        "metric",
+        "description",
+        "interpretation",
+        "boundary",
+    }
+
+    if not isinstance(rules, list) or len(rules) != 8:
+        raise SystemExit(
+            "unexpected readiness threshold catalog: "
+            f"{type(rules).__name__}, "
+            f"entries={len(rules) if isinstance(rules, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    names: set[str] = set()
+    type_counts = {"fraction": 0, "integer": 0, "boolean": 0}
+
+    for position, item in enumerate(rules):
+        if not isinstance(item, dict):
+            failures.append(f"readiness rule {position}: expected object")
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                f"readiness rule {position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        name = item["name"]
+        if not isinstance(name, str) or not name:
+            failures.append(
+                f"readiness rule {position}: invalid name {name!r}"
+            )
+        elif name in names:
+            failures.append(
+                f"readiness rule {position}: duplicate name {name!r}"
+            )
+        else:
+            names.add(name)
+
+        value_type = item["value_type"]
+        if value_type not in type_counts:
+            failures.append(
+                f"readiness rule {position}: invalid value_type {value_type!r}"
+            )
+        else:
+            type_counts[value_type] += 1
+
+        if item["scope"] not in {
+            "trial",
+            "participant",
+            "trial + participant",
+        }:
+            failures.append(
+                f"readiness rule {position}: invalid scope {item['scope']!r}"
+            )
+
+        for field in (
+            "label",
+            "comparator",
+            "metric",
+            "description",
+            "interpretation",
+            "boundary",
+        ):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"readiness rule {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+        if value_type in {"fraction", "integer"}:
+            step = item.get("input_step")
+            if not isinstance(step, str) or not step:
+                failures.append(
+                    f"readiness rule {position}: numeric rule requires input_step"
+                )
+
+    if names != expected_names:
+        failures.append(
+            "readiness field names mismatch: "
+            f"expected {sorted(expected_names)}, got {sorted(names)}"
+        )
+
+    expected_types = {"fraction": 5, "integer": 2, "boolean": 1}
+    if type_counts != expected_types:
+        failures.append(
+            "readiness value-type counts mismatch: "
+            f"expected {expected_types}, got {type_counts}"
+        )
+
+    center = site_root / "docs/readiness-policy/index.html"
+    if not center.is_file():
+        failures.append("readiness policy design center is missing")
+    else:
+        rendered = center.read_text(encoding="utf-8").count(
+            "data-readiness-rule"
+        )
+        if rendered != len(rules):
+            failures.append(
+                "readiness rule card count mismatch: "
+                f"index={len(rules)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"readiness threshold reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -501,6 +644,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reference/api-map/index.html",
         "docs/reference/api-pathways/index.html",
         "docs/reference/qc-issue-clinic/index.html",
+        "docs/readiness-policy/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -508,12 +652,14 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/map-your-table/index.html",
         "docs/guides/data-mapping-provenance/index.html",
         "docs/guides/structural-qc-triage/index.html",
+        "docs/guides/readiness-policy-design/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
         "docs/examples/data-contract-valid-invalid/index.html",
         "docs/examples/data-mapping-change-audit/index.html",
         "docs/examples/all-structural-qc-issues/index.html",
+        "docs/examples/readiness-policy-design/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -541,6 +687,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/data-contract.css",
         "assets/css/example-catalog.css",
         "assets/css/qc-issue-clinic.css",
+        "assets/css/readiness-policy.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -548,6 +695,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/data-contract.js",
         "assets/js/example-catalog.js",
         "assets/js/qc-issue-clinic.js",
+        "assets/js/readiness-policy.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -558,6 +706,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/data-mapping-record.schema.json",
         "assets/example-index.json",
         "assets/qc-issue-reference.json",
+        "assets/readiness-threshold-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -623,6 +772,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_search_index(site_root, baseurl=baseurl)
     _verify_example_index(site_root, baseurl=baseurl)
     _verify_qc_issue_reference(site_root)
+    _verify_readiness_threshold_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
