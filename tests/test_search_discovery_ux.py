@@ -121,6 +121,26 @@ def test_search_overlay_preserves_keyboard_result_contract() -> None:
     assert "Selected ${selectedResult + 1} of ${results.length}" in core
 
 
+def test_zero_result_state_offers_recovery_without_scientific_inference() -> None:
+    script = _text("assets/js/search-tools.js")
+    css = _text("assets/css/search-tools.css")
+
+    for contract in (
+        'data-search-reset="kind"',
+        'data-search-reset="query"',
+        "Search all documentation types",
+        "Clear query",
+        "Browse Guides",
+        "Browse Examples",
+        "Browse Reference",
+        "results.addEventListener('click'",
+    ):
+        assert contract in script
+
+    assert ".search-empty-recovery" in css
+    assert ".search-recovery-actions" in css
+
+
 def test_search_result_strings_are_escaped_before_rendering() -> None:
     script = _text("assets/js/search-tools.js")
 
