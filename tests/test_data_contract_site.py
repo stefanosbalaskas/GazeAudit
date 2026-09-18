@@ -193,7 +193,10 @@ def test_schema_mapper_is_local_labelled_and_does_not_infer_scientific_values() 
         "data-schema-y",
         "pythonIdentifier",
         "Complete all five semantic column mappings",
-        "Units and scientific meaning still need to be recorded separately.",
+        (
+            "Mapping and provenance record generated. Optional provenance fields "
+            "remain descriptive and are never inferred."
+        ),
         "navigator.clipboard",
         "document.execCommand('copy')",
         "search",

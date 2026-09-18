@@ -72,7 +72,9 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 |---|---|
 | Set up Python, choose extras, and verify the installed environment | [Install & environment center](install/) |
 | Map my existing table into the canonical GazeStudy contract | [Data Contract & Schema Mapping Center](data-contract/) |
+| Preserve source, units, mapping, and transformation provenance | [Data mapping provenance](guides/data-mapping-provenance/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
+| Practise auditing a changed mapping without rewriting history | [Mapping change audit](examples/data-mapping-change-audit/) |
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
 | Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
 | Find the right guide, example, reference, or evidence page quickly | [Find information fast](guides/find-information-fast/) |
@@ -180,6 +182,7 @@ The examples use synthetic data unless a page explicitly points to a frozen real
 - [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) — five-stage synthetic project from declared route through audit, interpretation, peer-review amendment, separate endpoint record, and final handoff.
 - [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) — synthetic declared/valid/successful denominator accounting, technical failure preservation, causal repair, same-branch rerun, and reconciliation.
 - [Valid, invalid, and reviewable tables](examples/data-contract-valid-invalid/) — learn which schema conditions fail construction and which remain visible as structural-review evidence.
+- [Mapping change audit](examples/data-mapping-change-audit/) — distinguish source-label changes from substantive source, unit, coordinate, grouping, and exclusion changes.
 - [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.

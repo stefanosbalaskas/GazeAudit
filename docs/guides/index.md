@@ -95,6 +95,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Bind participant, trial, timestamp, x, and y to the real source columns, record units, distinguish hard schema errors from review conditions, and preserve mapping provenance.</p>
     <p><a href="map-your-table/">Map your table →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">15</div>
+    <h3>Preserve data-mapping provenance</h3>
+    <p>Record source identity, semantic mappings, units, coordinate convention, pre-mapping transformations, and the consequences of later mapping changes.</p>
+    <p><a href="data-mapping-provenance/">Data mapping provenance →</a></p>
+  </article>
 </div>
 
 ## Environment setup
@@ -154,6 +160,12 @@ Read the files produced by the practical workflow as one evidence bundle: struct
 Translate an existing CSV or pandas table into the vendor-neutral canonical representation without renaming source columns, guessing units, or turning structural observations into silent exclusions. The guide separates constructor failures from preflight review conditions and records the mapping itself as provenance.
 
 For the compact contract and local snippet builder, use the [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}). For synthetic success/failure cases, use [Valid, invalid, and reviewable tables]({{ '/docs/examples/data-contract-valid-invalid/' | relative_url }}).
+
+### [Record data-mapping provenance](data-mapping-provenance/)
+
+Preserve source identity, semantic column mappings, coordinate/timestamp units, coordinate convention, and pre-mapping transformations in a versioned documentation record. The guide separates representation provenance from structural-QC decisions and explains when a mapping change requires renewed construction, preflight, or downstream analysis.
+
+The companion [Mapping change audit]({{ '/docs/examples/data-mapping-change-audit/' | relative_url }}) compares harmless source-label changes with substantive source, unit, coordinate, grouping, and exclusion changes.
 
 ### [Data onboarding and structural preflight](data-onboarding/)
 

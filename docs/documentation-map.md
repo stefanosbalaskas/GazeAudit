@@ -33,6 +33,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
     <p>Use goal-oriented guidance when you already have a study, decision, reviewer request, or blocked workflow to handle.</p>
     <div class="documentation-compass-links">
       <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
+      <a href="{{ '/docs/guides/data-mapping-provenance/' | relative_url }}">Data mapping provenance</a>
       <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
       <a href="{{ '/docs/guides/troubleshooting/' | relative_url }}">Troubleshooting</a>
     </div>
