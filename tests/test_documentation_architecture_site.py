@@ -12,6 +12,7 @@ ARTICLES = ROOT / "docs" / "articles" / "index.md"
 LAYOUT = ROOT / "_layouts" / "default.html"
 CSS = ROOT / "assets" / "css" / "enhancements.css"
 SITE_CHECK = ROOT / "tools" / "check_docs_site.py"
+README = ROOT / "README.md"
 
 
 def _text(path: Path) -> str:
@@ -101,6 +102,9 @@ def test_compass_routes_are_visible_from_hubs_and_navigation() -> None:
     assert layout.count("/docs/documentation-map/") >= 3
     assert "/docs/guides/documentation-authoring/" in layout
     assert "/docs/examples/documentation-intent-routing/" in layout
+
+    readme = _text(README)
+    assert "/docs/documentation-map/" in readme
 
 
 def test_documentation_compass_has_responsive_and_forced_colour_styles() -> None:
