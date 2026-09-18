@@ -53,4 +53,19 @@ jobs:
         run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
 
       - name: Ruff
-        run: ruff check src tests
+        run: ruff check src tests tools/generate_api_symbol_reference.py
+
+      - name: Generate API symbol metadata candidate
+        run: python tools/generate_api_symbol_reference.py --output /tmp/api-symbol-reference.json
+
+      - name: Upload API symbol metadata candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-symbol-reference-candidate
+          path: /tmp/api-symbol-reference.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Verify checked-in API symbol metadata
+        run: cmp /tmp/api-symbol-reference.json assets/api-symbol-reference.json
