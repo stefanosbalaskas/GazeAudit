@@ -35,6 +35,37 @@ Use the <a href="reference/">Reference hub</a> for public API contracts, install
 
 Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. Results are grouped by documentation type so the same topic can expose a Guide, Example, Reference, or Evidence authority without implying that one is scientifically preferred. Use [Find information fast](guides/find-information-fast/) for the keyboard controls, filters, query patterns, and navigation boundary.
 
+## Choose by intent
+
+<div class="documentation-compass compact" aria-label="Documentation routes by reader intent">
+  <article class="documentation-compass-card">
+    <span class="documentation-compass-mode">Learn</span>
+    <h3>Learn by doing</h3>
+    <p>Use Getting Started and bounded synthetic examples.</p>
+    <a href="examples/">Browse learning examples →</a>
+  </article>
+  <article class="documentation-compass-card">
+    <span class="documentation-compass-mode">Do</span>
+    <h3>Complete a task</h3>
+    <p>Use guides, workflows, and troubleshooting for real research work.</p>
+    <a href="guides/">Browse task guides →</a>
+  </article>
+  <article class="documentation-compass-card">
+    <span class="documentation-compass-mode">Look up</span>
+    <h3>Find an exact contract</h3>
+    <p>Use API, CLI, vocabulary, provenance, and validation references.</p>
+    <a href="reference/">Browse reference →</a>
+  </article>
+  <article class="documentation-compass-card">
+    <span class="documentation-compass-mode">Understand</span>
+    <h3>Understand the rationale</h3>
+    <p>Use articles, methods discussion, and bounded case studies.</p>
+    <a href="articles/">Browse explanations →</a>
+  </article>
+</div>
+
+<p><a href="documentation-map/">Open the full Documentation compass →</a></p>
+
 ## Start here
 
 | Goal | Recommended page |
