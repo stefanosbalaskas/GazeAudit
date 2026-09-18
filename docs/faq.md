@@ -43,6 +43,12 @@ No. `review` means that at least one implemented structural condition was detect
 
 A flag is not an automatic imputation, sorting, deduplication, or row/trial/participant exclusion rule.
 
+## Does GazeAudit provide recommended readiness thresholds?
+
+No. Every field in `ReadinessThresholds` is optional and the package deliberately supplies no universal scientific cutoff. Use the [Readiness Policy Design Center]({{ '/docs/readiness-policy/' | relative_url }}) to assemble only criteria justified by your study, and preview the trial/participant cohort consequence before any filtering step.
+
+`ready_under_policy` means the data satisfy the policy you declared; it does not mean universally valid or high-quality data.
+
 ## Is probabilistic AOI membership the probability that the fixation was truly in that AOI?
 
 It is a **model-conditional marginal membership probability**. It describes the fraction of latent true positions sampled under the declared measurement-error model that fall inside the AOI. It should not be interpreted as model-free certainty about the true gaze position.
