@@ -47,6 +47,7 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Start from a known function and trace its governed context | [API pathways](reference/api-pathways/) |
 | Read generated signatures, source links, imports, and pathway backlinks | [Source-level API guide](guides/read-api-reference/) |
 | Practise signature → source → research-context inspection | [Source-level API inspection](examples/source-api-inspection/) |
+| Practise required arguments, returns, and minimal call shapes | [Generated API call contracts](examples/api-call-contracts/) |
 | Practise symbol → example → evidence-boundary navigation | [Function → evidence walkthrough](examples/function-to-evidence/) |
 | Something failed or the audit is blocked | [Troubleshooting GazeAudit](guides/troubleshooting/) |
 | Practise a failure → repair → rerun workflow | [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) |
@@ -143,6 +144,7 @@ The examples use synthetic data unless a page explicitly points to a frozen real
 - [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
+- [Generated API call contracts](examples/api-call-contracts/) — read required positional and keyword-only arguments, return annotations, and mechanically generated minimal call shapes without inventing study values.
 - [AOI boundary uncertainty](examples/aoi-boundary/) — fit a gaze-error model and convert a hard boundary decision into probabilistic membership.
 - [Specification curve](examples/specification-curve/) — summarise an explicit analytical decision space.
 - [Sampling sensitivity](examples/sampling-sensitivity/) — perturb sampling rate and inspect endpoint stability.
