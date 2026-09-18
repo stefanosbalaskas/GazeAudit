@@ -1,6 +1,6 @@
 ---
 title: Documentation compass
-description: Choose GazeAudit documentation by intent: learn a workflow, complete a task, look up an exact contract, or understand the reasoning and evidence boundary.
+description: "Choose GazeAudit documentation by intent: learn a workflow, complete a task, look up an exact contract, or understand the reasoning and evidence boundary."
 kicker: Documentation · Compass
 permalink: /docs/documentation-map/
 search_category: Start
