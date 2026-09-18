@@ -111,7 +111,7 @@ def build_reference() -> dict[str, Any]:
         if obj is None:
             raise ValueError(f"governed symbol is not exported by gazeaudit: {name}")
 
-        signature, parameters, returns = _signature_metadata(obj)
+        signature, _, _ = _signature_metadata(obj)
         source_path, source_line = _source_metadata(obj)
         doc = inspect.getdoc(obj) or ""
         summary = doc.splitlines()[0].strip() if doc else ""
@@ -121,8 +121,6 @@ def build_reference() -> dict[str, Any]:
                 "name": name,
                 "kind": "class" if inspect.isclass(obj) else "function",
                 "signature": signature,
-                "parameters": parameters,
-                "returns": returns,
                 "module": obj.__module__,
                 "source_path": source_path,
                 "source_line": source_line,
