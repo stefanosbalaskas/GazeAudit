@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/endpoint-contract-reference.json
+---
+{{ site.data.endpoint_contract_fields | jsonify }}
