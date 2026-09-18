@@ -65,7 +65,7 @@ def _governed_example_paths() -> list[Path]:
 
 def test_every_worked_example_has_one_governed_contract() -> None:
     paths = _governed_example_paths()
-    assert len(paths) == 30
+    assert len(paths) == 31
 
     for path in paths:
         front = _front_matter(path)
