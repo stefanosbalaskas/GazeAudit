@@ -142,7 +142,7 @@ def build_reference() -> dict[str, Any]:
 
 
 def _serialise(reference: dict[str, Any]) -> str:
-    return json.dumps(reference, indent=2, sort_keys=False, ensure_ascii=False) + "\n"
+    return json.dumps(reference, separators=(",", ":"), sort_keys=False, ensure_ascii=False) + "\n"
 
 
 def write_reference(path: Path = OUTPUT) -> None:
