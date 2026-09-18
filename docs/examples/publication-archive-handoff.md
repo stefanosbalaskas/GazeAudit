@@ -5,6 +5,12 @@ kicker: Example · Publication handoff
 permalink: /docs/examples/publication-archive-handoff/
 search_category: Example
 search_keywords: publication archive handoff manuscript methods results robustness provenance fingerprints reviewer reproducibility example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Publication handoff pattern"
+example_output: "Manuscript/archive evidence map and reproducibility handoff"
+example_boundary: "Archive completeness does not by itself establish scientific validity."
 ---
 
 # Publication and archive handoff example
