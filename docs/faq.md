@@ -49,6 +49,10 @@ No. Every field in `ReadinessThresholds` is optional and the package deliberatel
 
 `ready_under_policy` means the data satisfy the policy you declared; it does not mean universally valid or high-quality data.
 
+## Can I call a result “robust” if most specifications have the same sign?
+
+Not automatically. Direction and magnitude are different properties, and execution completeness comes first. Use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}) and [claim-boundary reporting guide]({{ '/docs/guides/claim-boundary-reporting/' | relative_url }}) to preserve the valid/successful denominator, describe sign and magnitude separately, and avoid turning descriptive sign fractions into posterior probabilities.
+
 ## Is probabilistic AOI membership the probability that the fixation was truly in that AOI?
 
 It is a **model-conditional marginal membership probability**. It describes the fraction of latent true positions sampled under the declared measurement-error model that fall inside the AOI. It should not be interpreted as model-free certainty about the true gaze position.
