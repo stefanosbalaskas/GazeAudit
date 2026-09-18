@@ -3,6 +3,13 @@ title: End-to-end robustness audit
 description: Run a complete synthetic GazeAudit workflow from canonical study construction through specification execution, stability summaries, and sensitivity diagnostics.
 kicker: Example · Complete workflow
 permalink: /docs/examples/end-to-end-robustness/
+search_category: Example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Robustness & sensitivity"
+example_reuse: "Complete audit workflow"
+example_output: "Specification results, stability summaries, and sensitivity diagnostics"
+example_boundary: "Teaching specifications and endpoints must be rebuilt for a real study."
 ---
 
 # End-to-end robustness audit
