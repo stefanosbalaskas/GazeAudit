@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/readiness-threshold-reference.json
+---
+{{ site.data.readiness_thresholds | jsonify }}
