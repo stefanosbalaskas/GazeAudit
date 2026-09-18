@@ -15,6 +15,7 @@ COMPASS = ROOT / "docs" / "documentation-map.md"
 AUTHORING = ROOT / "docs" / "guides" / "documentation-authoring.md"
 README = ROOT / "README.md"
 SITE_CHECK = ROOT / "tools" / "check_docs_site.py"
+SEARCH_INDEX = ROOT / "assets" / "search-index.json"
 
 ALLOWED_DATA = {
     "Synthetic",
@@ -219,6 +220,19 @@ def test_authoring_standard_governs_example_contract_fields() -> None:
         "Do not add an example to a separate manual taxonomy",
     ):
         assert contract in text
+
+
+def test_example_contract_metadata_feeds_site_search() -> None:
+    text = _text(SEARCH_INDEX)
+
+    for field in (
+        "item.example_data",
+        "item.example_focus",
+        "item.example_reuse",
+        "item.example_output",
+        "item.example_boundary",
+    ):
+        assert field in text
 
 
 def test_generated_site_verifier_governs_example_catalog() -> None:
