@@ -210,7 +210,21 @@
     }
     if (!visibleCount) {
       const suffix = activeKind === 'All' ? '' : ` in ${escapeHtml(activeKind)}`;
-      results.innerHTML = `<p class="search-empty">No matching documentation${suffix}. Try another term or choose All.</p>`;
+      const allTypesAction = activeKind === 'All'
+        ? ''
+        : '<button type="button" data-search-reset="kind">Search all documentation types</button>';
+      results.innerHTML = `
+        <div class="search-empty search-empty-recovery">
+          <strong>No matching documentation${suffix}.</strong>
+          <span>Broaden the query, reset the type filter, or browse a documentation hub.</span>
+          <div class="search-recovery-actions">
+            ${allTypesAction}
+            <button type="button" data-search-reset="query">Clear query</button>
+            <a href="${buildUrl('/docs/guides/')}">Browse Guides</a>
+            <a href="${buildUrl('/docs/examples/')}">Browse Examples</a>
+            <a href="${buildUrl('/docs/reference/')}">Browse Reference</a>
+          </div>
+        </div>`;
       return;
     }
 
@@ -354,6 +368,20 @@
     if (!button) return;
     activeKind = 'All';
     input.value = button.dataset.searchQuery;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus({ preventScroll: true });
+  });
+
+  results.addEventListener('click', (event) => {
+    const reset = event.target.closest('[data-search-reset]');
+    if (!reset) return;
+    if (reset.dataset.searchReset === 'kind') {
+      activeKind = 'All';
+    } else if (reset.dataset.searchReset === 'query') {
+      activeKind = 'All';
+      input.value = '';
+    }
+    renderFacets();
     input.dispatchEvent(new Event('input', { bubbles: true }));
     input.focus({ preventScroll: true });
   });
