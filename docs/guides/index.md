@@ -77,6 +77,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Separate release/source identity, Python, optional extras, resolved dependencies, and environment records from the scientific decision log.</p>
     <p><a href="environment-setup/">Environment setup →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">12</div>
+    <h3>Author documentation consistently</h3>
+    <p>Choose a dominant reader intent, structure headings and code examples predictably, preserve scientific boundaries, and wire important new routes into governance.</p>
+    <p><a href="documentation-authoring/">Documentation authoring standard →</a></p>
+  </article>
 </div>
 
 ## Environment setup
