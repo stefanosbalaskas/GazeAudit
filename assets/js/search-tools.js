@@ -22,6 +22,7 @@
     ['Own data', 'first real audit'],
     ['Robustness', 'robustness'],
     ['AOI', 'AOI uncertainty'],
+    ['API', 'run_specs'],
     ['CLI', 'CLI command'],
     ['Denominators', 'declared valid successful'],
     ['Publication', 'publication'],
@@ -58,6 +59,8 @@
   ]);
 
   let index = null;
+  let apiSymbolItems = [];
+  let apiSymbolsLoaded = false;
   let activeKind = 'All';
 
   const escapeHtml = (value) => String(value)
@@ -119,13 +122,52 @@
   quickContainer.innerHTML = quickQueries.map(([label, query]) => `
     <button type="button" class="search-query-chip" data-search-query="${escapeHtml(query)}">${escapeHtml(label)}</button>`).join('');
 
+  const loadApiSymbols = async () => {
+    if (apiSymbolsLoaded) return apiSymbolItems;
+    apiSymbolsLoaded = true;
+    const url = body.dataset.apiSymbolReference;
+    if (!url) return apiSymbolItems;
+
+    try {
+      const response = await fetch(url, { credentials: 'same-origin' });
+      if (!response.ok) return apiSymbolItems;
+      const metadata = await response.json();
+      if (
+        !metadata
+        || metadata.schema !== 'gazeaudit-api-symbol-reference-v1'
+        || !Array.isArray(metadata.symbols)
+      ) return apiSymbolItems;
+
+      apiSymbolItems = metadata.symbols.map((symbol) => ({
+        title: symbol.name,
+        category: 'API symbol',
+        kind: 'Reference',
+        description: symbol.summary || `${symbol.kind} in ${symbol.module}`,
+        keywords: [
+          symbol.name,
+          symbol.signature,
+          symbol.module,
+          symbol.kind,
+          ...(symbol.method_ids || []),
+        ].join(' '),
+        url: `/docs/reference/api-pathways/#${symbol.anchor}`,
+        api_symbol: true,
+      }));
+    } catch (error) {
+      apiSymbolItems = [];
+    }
+    return apiSymbolItems;
+  };
+
   const loadIndex = async () => {
-    if (index) return index;
-    const url = body.dataset.searchIndex;
-    if (!url) return [];
-    const response = await fetch(url, { credentials: 'same-origin' });
-    if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
-    index = await response.json();
+    if (!index) {
+      const url = body.dataset.searchIndex;
+      if (!url) return [];
+      const response = await fetch(url, { credentials: 'same-origin' });
+      if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+      index = await response.json();
+    }
+    await loadApiSymbols();
     return index;
   };
 
@@ -153,7 +195,9 @@
 
   const rankedItems = (query) => {
     const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    let items = index || [];
+    let items = terms.length
+      ? [...(index || []), ...apiSymbolItems]
+      : (index || []);
     if (activeKind !== 'All') {
       items = items.filter((item) => (item.kind || 'Documentation') === activeKind);
     }
