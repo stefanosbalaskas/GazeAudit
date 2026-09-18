@@ -3,8 +3,14 @@ title: Revision response package worked example
 description: A synthetic peer-review response package linking reviewer requests to amendment timing, separate denominators, manuscript edits, and archived revision evidence.
 kicker: Example · Peer review
 permalink: /docs/examples/revision-response-package/
-search_category: Examples
+search_category: Example
 search_keywords: reviewer response package rebuttal revision amendment denominator manuscript change log archive response letter synthetic
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Reviewer-response evidence pattern"
+example_output: "Linked response, amendment, manuscript-change, and archive records"
+example_boundary: "Response structure cannot substitute for justified analysis decisions."
 ---
 
 # Revision response package worked example
