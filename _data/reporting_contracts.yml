@@ -1,0 +1,237 @@
+- id: structural-pass
+  layer: Structural QC
+  kind: Runtime status
+  signal: pass
+  runtime_source: StudyQCReport.status
+  meaning: None of the implemented structural-QC conditions was detected in the canonical representation.
+  denominator: Report the inspected canonical representation and relevant row / participant × trial counts.
+  can_say: Structural preflight detected none of the implemented structural conditions.
+  cannot_say: The dataset is validated, high quality, calibrated accurately, or scientifically valid.
+  methods_template: >-
+    Structural preflight evaluated non-finite coordinates and timestamps, missing canonical identifiers,
+    duplicate participant × trial timestamps, and decreasing within-unit time.
+  results_template: >-
+    Structural preflight returned pass; none of the implemented structural conditions was detected in
+    the canonical representation.
+  limitation_template: >-
+    Structural pass status does not establish calibration, detector, AOI, missingness, measurement-model,
+    or inferential validity.
+  guide_url: /docs/guides/structural-qc-triage/
+  example_url: /docs/examples/study-preflight/
+  api_anchor: api-audit-study-qc
+
+- id: structural-review
+  layer: Structural QC
+  kind: Runtime status
+  signal: review
+  runtime_source: StudyQCReport.status
+  meaning: At least one implemented structural condition was detected and requires contextual inspection.
+  denominator: Preserve affected row counts and group counts separately; do not collapse them into one bad-data count.
+  can_say: Structural preflight detected specified issue families that were inspected against source and preprocessing provenance.
+  cannot_say: Every flagged row, trial, or participant is invalid or should be excluded.
+  methods_template: >-
+    Structural preflight was followed by row/group diagnostic review against source and preprocessing
+    provenance; repair, retention, and exclusion decisions were recorded explicitly.
+  results_template: >-
+    Structural preflight returned review because [issue families] were observed across [row/group
+    denominator]; the affected observations or units were inspected before any decision was applied.
+  limitation_template: >-
+    A review state identifies representation-level conditions, not their cause or an automatic scientific
+    exclusion rule.
+  guide_url: /docs/guides/structural-qc-triage/
+  example_url: /docs/examples/all-structural-qc-issues/
+  api_anchor: api-study-qc-diagnostics
+
+- id: readiness-unassessed
+  layer: Readiness
+  kind: Runtime status
+  signal: unassessed
+  runtime_source: AnalysisReadinessReport.status
+  meaning: No active ReadinessThresholds rule participated in the declared policy.
+  denominator: Report that no active readiness criterion was evaluated; do not imply a retained cohort decision.
+  can_say: No active readiness rule was declared for this policy.
+  cannot_say: All observations, trials, or participants passed readiness.
+  methods_template: >-
+    No structural-readiness threshold was active in the declared policy, so readiness was not assessed.
+  results_template: >-
+    The readiness report returned unassessed because the policy contained no active criteria.
+  limitation_template: >-
+    Unassessed readiness provides no evidence that structural thresholds would be satisfied under another
+    declared policy.
+  guide_url: /docs/guides/readiness-policy-design/
+  example_url: /docs/examples/readiness-policy-design/
+  api_anchor: api-evaluate-analysis-readiness
+
+- id: readiness-ready
+  layer: Readiness
+  kind: Runtime status
+  signal: ready_under_policy
+  runtime_source: AnalysisReadinessReport.status
+  meaning: All evaluated trial and participant units satisfy the active researcher-declared readiness rules.
+  denominator: Report the policy name, active rules, filter scope under consideration, and row/trial/participant cohort impact.
+  can_say: The canonical study satisfies the declared active structural policy.
+  cannot_say: The data are universally high quality, scientifically valid, or safe to publish.
+  methods_template: >-
+    Analysis readiness was evaluated under the declared [policy name] policy after structural-QC review;
+    cohort impact was previewed before any filtering step.
+  results_template: >-
+    Readiness status was ready_under_policy under [policy name]; [row/trial/participant retention] was
+    observed for the declared preview/application scope.
+  limitation_template: >-
+    Readiness is policy-relative and does not establish calibration, detector, AOI, missingness, or
+    inferential validity.
+  guide_url: /docs/guides/readiness-policy-design/
+  example_url: /docs/examples/readiness-policy-design/
+  api_anchor: api-evaluate-analysis-readiness
+
+- id: readiness-review
+  layer: Readiness
+  kind: Runtime status
+  signal: review_under_policy
+  runtime_source: AnalysisReadinessReport.status
+  meaning: At least one evaluated trial or participant unit fails one or more active researcher-declared readiness rules.
+  denominator: Preserve trial-scope and participant-scope cohort consequences separately.
+  can_say: Some units did not satisfy the declared policy and the counterfactual cohort impact was quantified.
+  cannot_say: Failing units must be excluded or that another threshold would be less scientifically valid.
+  methods_template: >-
+    The declared readiness policy was evaluated at trial and participant level, and cohort consequences
+    were inspected before the predeclared application scope was applied.
+  results_template: >-
+    Readiness status was review_under_policy under [policy name]; trial-scope preview retained [denominator],
+    whereas participant-scope preview retained [denominator].
+  limitation_template: >-
+    Policy failure is not an automatic exclusion and remains conditional on the declared criteria and scope.
+  guide_url: /docs/guides/readiness-policy-design/
+  example_url: /docs/examples/readiness-policy-design/
+  api_anchor: api-cohort-impact-preview
+
+- id: robustness-complete-stable
+  layer: Robustness
+  kind: Interpretation pattern
+  signal: complete space; direction and magnitude relatively stable
+  runtime_source: complete branch ledger + effect_stability() summaries
+  meaning: All declared valid branches are accounted for and the realised estimates vary little in both direction and substantive magnitude within the declared space.
+  denominator: Report declared, valid, and successful counts before the estimate distribution.
+  can_say: The observed endpoint changed little across the declared specification space, within the uncertainty dimensions actually represented.
+  cannot_say: Every reasonable analysis would agree, sampling uncertainty is small, or the result is universally robust.
+  methods_template: >-
+    The complete declared specification space was executed against one common endpoint and summarised
+    descriptively across all valid represented branches.
+  results_template: >-
+    Across [N] valid represented specifications, estimates remained [direction] and ranged from [min] to
+    [max], with [median/quantiles] indicating limited variation within the declared space.
+  limitation_template: >-
+    This robustness description is conditional on the declared decision space and does not cover untested
+    analytical, measurement, or sampling uncertainty.
+  guide_url: /docs/guides/reporting-robustness/
+  example_url: /docs/examples/result-patterns/
+  api_anchor: api-effect-stability
+
+- id: robustness-magnitude-sensitive
+  layer: Robustness
+  kind: Interpretation pattern
+  signal: direction stable; magnitude materially variable
+  runtime_source: effect_stability() + study-specific substantive scale
+  meaning: Estimates retain one direction but vary enough in magnitude to change quantitative or substantive interpretation.
+  denominator: Report all valid represented branches and the full estimate range, not only the sign fraction.
+  can_say: Direction was less sensitive than magnitude within the declared specification space.
+  cannot_say: The effect size is robust merely because the sign is stable.
+  methods_template: >-
+    Direction and magnitude stability were evaluated separately across the complete declared specification
+    set.
+  results_template: >-
+    All represented estimates were [direction], but magnitude ranged from [min] to [max], indicating that
+    quantitative interpretation was specification-sensitive.
+  limitation_template: >-
+    Materiality of the magnitude spread requires a study-specific substantive scale fixed independently of
+    the observed robustness pattern.
+  guide_url: /docs/guides/interpret-audit-result/
+  example_url: /docs/examples/result-patterns/
+  api_anchor: api-effect-stability
+
+- id: robustness-sign-sensitive
+  layer: Robustness
+  kind: Interpretation pattern
+  signal: estimates cross the scientific null
+  runtime_source: branch estimates + effect_stability() sign fractions
+  meaning: Positive and negative (or exact-null) estimates occur across defensible represented specifications.
+  denominator: Report the complete represented specification set and positive / negative / exact-null counts or fractions.
+  can_say: The directional conclusion depends on analytical choices represented in the declared audit.
+  cannot_say: The most favourable branch is the correct result, or sign fractions are posterior probabilities.
+  methods_template: >-
+    Direction stability was assessed across the complete declared specification space rather than by
+    selecting one preferred branch.
+  results_template: >-
+    Estimates crossed the scientific null across [N] represented specifications, with [counts/fractions]
+    positive, negative, and exact-null.
+  limitation_template: >-
+    Sign fractions are descriptive properties of the declared specification set, not probabilities about
+    the true effect direction.
+  guide_url: /docs/guides/reporting-robustness/
+  example_url: /docs/examples/decision-to-report/
+  api_anchor: api-effect-stability
+
+- id: robustness-incomplete
+  layer: Robustness
+  kind: Interpretation pattern
+  signal: declared valid branches are missing, failed, or not run
+  runtime_source: declared / valid / successful execution ledger
+  meaning: The original audit denominator is not fully represented by successful endpoint estimates.
+  denominator: Report declared, valid, successful, technical-failure, invalid-before-execution, and not-run counts distinctly.
+  can_say: Available executed branches show [observed pattern], but the audit remains incomplete relative to the declared valid denominator.
+  cannot_say: The missing branches can be removed from the denominator or treated as null/zero estimates.
+  methods_template: >-
+    Every declared branch was retained in the execution ledger, including predeclared-invalid combinations,
+    technical failures, and branches not run.
+  results_template: >-
+    [successful] of [valid] valid specifications produced endpoint estimates; [failure/not-run accounting].
+    The available estimates showed [pattern], but the declared audit remained incomplete.
+  limitation_template: >-
+    Unobserved branch estimates are unknown; robustness cannot be generalised to branches that did not
+    successfully yield the common endpoint.
+  guide_url: /docs/guides/interpret-audit-result/
+  example_url: /docs/examples/failed-audit-recovery/
+  api_anchor: api-run-specs
+
+- id: sensitivity-descriptive
+  layer: Sensitivity
+  kind: Interpretation pattern
+  signal: factor-level or pairwise sensitivity diagnostic
+  runtime_source: marginal_sensitivity() / pairwise_interaction_sensitivity()
+  meaning: Endpoint variation aligns descriptively with declared factor levels or factor combinations in the realised specification set.
+  denominator: Report the specification set used to calculate the sensitivity summary and any imbalance or incompleteness.
+  can_say: A declared factor or pair showed the largest descriptive alignment with observed specification-level variation.
+  cannot_say: The factor caused a percentage of uncertainty or the pairwise diagnostic is an inferential interaction effect.
+  methods_template: >-
+    Marginal and pairwise sensitivity diagnostics were used descriptively to localise variation within the
+    declared specification set.
+  results_template: >-
+    The largest descriptive marginal sensitivity involved [factor], and the strongest non-additive pairwise
+    pattern involved [factor A × factor B].
+  limitation_template: >-
+    These diagnostics are descriptive, can overlap, need not sum to one, and do not provide causal variance
+    decomposition or inferential interaction tests.
+  guide_url: /docs/guides/reporting-robustness/
+  example_url: /docs/examples/decision-to-report/
+  api_anchor: api-marginal-sensitivity
+
+- id: frozen-validation-labels
+  layer: Frozen evidence
+  kind: Protocol-bound evidence label
+  signal: incomplete / robust_negative / materially_fragile
+  runtime_source: frozen validation protocols and validation matrix
+  meaning: These labels are canonical outcomes of specific frozen GazeAudit validation programmes.
+  denominator: Use only the exact protocol/source/execution record for the corresponding frozen case.
+  can_say: The named frozen case had its documented canonical outcome under its fixed protocol.
+  cannot_say: The label applies to a new dataset, synthetic example, different endpoint, or altered protocol.
+  methods_template: >-
+    Validation evidence was interpreted only within the frozen case-specific protocol and source identity.
+  results_template: >-
+    Under the frozen [case] protocol, the canonical outcome was [label]; this statement is restricted to
+    that validation record.
+  limitation_template: >-
+    Frozen labels are not generic runtime statuses, quality grades, or transferable classifications for
+    new studies.
+  guide_url: /docs/VALIDATION_MATRIX.html
+  example_url: /docs/case-studies/
+  api_anchor: ""
