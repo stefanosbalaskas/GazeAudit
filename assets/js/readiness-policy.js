@@ -220,7 +220,9 @@
     rules.forEach(syncRule);
     errors.hidden = true;
     errors.replaceChildren();
-    pythonOutput.textContent = '# Choose a policy name and activate at least one justified criterion.';
+    pythonOutput.textContent = (
+      '# Choose a policy name and activate at least one justified criterion.'
+    );
     jsonOutput.textContent = JSON.stringify(
       {
         schema: 'gazeaudit-readiness-policy-draft-v1',
