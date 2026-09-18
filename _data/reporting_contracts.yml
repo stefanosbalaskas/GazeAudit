@@ -213,7 +213,7 @@
     decomposition or inferential interaction tests.
   guide_url: /docs/guides/reporting-robustness/
   example_url: /docs/examples/decision-to-report/
-  api_anchor: api-marginal-sensitivity
+  api_anchor: ""
 
 - id: frozen-validation-labels
   layer: Frozen evidence
