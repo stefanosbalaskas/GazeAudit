@@ -17,7 +17,7 @@ if str(SRC) not in sys.path:
 
 import gazeaudit  # noqa: E402
 
-SCHEMA = "gazeaudit-api-symbol-reference-v1"
+SCHEMA = "gazeaudit-api-symbol-reference-v2"
 
 
 def _catalog_symbols(path: Path = CATALOG) -> list[tuple[str, str]]:
@@ -74,6 +74,14 @@ def _signature_metadata(obj: Any) -> tuple[str, list[dict[str, Any]], str | None
                 "kind": parameter.kind.name.lower(),
                 "annotation": _annotation_text(parameter.annotation),
                 "default": _default_text(parameter.default),
+                "required": (
+                    parameter.default is inspect.Signature.empty
+                    and parameter.kind
+                    not in {
+                        inspect.Parameter.VAR_POSITIONAL,
+                        inspect.Parameter.VAR_KEYWORD,
+                    }
+                ),
             }
         )
     return (
@@ -81,6 +89,19 @@ def _signature_metadata(obj: Any) -> tuple[str, list[dict[str, Any]], str | None
         parameters,
         _annotation_text(signature.return_annotation),
     )
+
+
+def _minimal_call(name: str, parameters: list[dict[str, Any]]) -> str:
+    arguments: list[str] = []
+    for parameter in parameters:
+        if not parameter["required"]:
+            continue
+        kind = parameter["kind"]
+        if kind in {"positional_only", "positional_or_keyword"}:
+            arguments.append(parameter["name"])
+        elif kind == "keyword_only":
+            arguments.append(f"{parameter['name']}={parameter['name']}")
+    return f"{name}({', '.join(arguments)})"
 
 
 def _source_metadata(obj: Any) -> tuple[str, int]:
@@ -111,7 +132,7 @@ def build_reference() -> dict[str, Any]:
         if obj is None:
             raise ValueError(f"governed symbol is not exported by gazeaudit: {name}")
 
-        signature, _, _ = _signature_metadata(obj)
+        signature, parameters, return_annotation = _signature_metadata(obj)
         source_path, source_line = _source_metadata(obj)
         doc = inspect.getdoc(obj) or ""
         summary = doc.splitlines()[0].strip() if doc else ""
@@ -121,6 +142,9 @@ def build_reference() -> dict[str, Any]:
                 "name": name,
                 "kind": "class" if inspect.isclass(obj) else "function",
                 "signature": signature,
+                "parameters": parameters,
+                "return_annotation": return_annotation,
+                "minimal_call": _minimal_call(name, parameters),
                 "module": obj.__module__,
                 "source_path": source_path,
                 "source_line": source_line,

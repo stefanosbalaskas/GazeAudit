@@ -37,34 +37,72 @@
     if (!target || target.querySelector('[data-api-symbol-detail]')) return;
 
     const methodLinks = symbol.method_ids.map((methodId) => (
-      `<a href="#path-${escapeHtml(methodId)}">${escapeHtml(methodId.replace(/-/g, ' '))}</a>`
+      \`<a href="#path-\${escapeHtml(methodId)}">\${escapeHtml(methodId.replace(/-/g, ' '))}</a>\`
     )).join('');
+
+    const parameters = Array.isArray(symbol.parameters) ? symbol.parameters : [];
+    const parameterRows = parameters.length
+      ? parameters.map((parameter) => {
+        const defaultLabel = parameter.required
+          ? 'Required'
+          : (parameter.default === null ? '—' : parameter.default);
+        return \`
+          <tr>
+            <th scope="row"><code>\${escapeHtml(parameter.name)}</code></th>
+            <td>\${escapeHtml(parameter.kind.replace(/_/g, ' '))}</td>
+            <td><code>\${escapeHtml(parameter.annotation || '—')}</code></td>
+            <td>\${parameter.required
+              ? '<strong>Required</strong>'
+              : \`<code>\${escapeHtml(defaultLabel)}</code>\`}</td>
+          </tr>\`;
+      }).join('')
+      : '<tr><td colspan="4">No parameters.</td></tr>';
 
     const detail = document.createElement('div');
     detail.className = 'api-symbol-detail';
     detail.dataset.apiSymbolDetail = '';
-    detail.innerHTML = `
+    detail.innerHTML = \`
       <div class="api-symbol-detail-head">
         <div>
-          <span class="api-symbol-kind">${escapeHtml(symbol.kind)}</span>
-          <code class="api-symbol-signature">${escapeHtml(symbol.name)}${escapeHtml(symbol.signature)}</code>
+          <span class="api-symbol-kind">\${escapeHtml(symbol.kind)}</span>
+          <code class="api-symbol-signature">\${escapeHtml(symbol.name)}\${escapeHtml(symbol.signature)}</code>
         </div>
-        <a class="api-symbol-source" href="${escapeHtml(sourceUrl(symbol))}">View source</a>
+        <a class="api-symbol-source" href="\${escapeHtml(sourceUrl(symbol))}">View source</a>
       </div>
-      <p class="api-symbol-summary">${escapeHtml(symbol.summary || 'No source summary is available.')}</p>
+      <p class="api-symbol-summary">\${escapeHtml(symbol.summary || 'No source summary is available.')}</p>
       <dl class="api-symbol-meta">
-        <div><dt>Module</dt><dd><code>${escapeHtml(symbol.module)}</code></dd></div>
-        <div><dt>Source</dt><dd><code>${escapeHtml(symbol.source_path)}:${escapeHtml(symbol.source_line)}</code></dd></div>
-        <div><dt>Used by pathways</dt><dd class="api-symbol-pathway-links">${methodLinks}</dd></div>
+        <div><dt>Module</dt><dd><code>\${escapeHtml(symbol.module)}</code></dd></div>
+        <div><dt>Source</dt><dd><code>\${escapeHtml(symbol.source_path)}:\${escapeHtml(symbol.source_line)}</code></dd></div>
+        <div><dt>Returns</dt><dd><code>\${escapeHtml(symbol.return_annotation || 'Not annotated')}</code></dd></div>
+        <div><dt>Used by pathways</dt><dd class="api-symbol-pathway-links">\${methodLinks}</dd></div>
       </dl>
-      <div class="api-symbol-import">
-        <code>${escapeHtml(symbol.import_statement)}</code>
+      <details class="api-symbol-contract">
+        <summary>Parameters &amp; minimal call</summary>
+        <div class="api-symbol-contract-body">
+          <p class="api-symbol-contract-note">Generated from the installed public signature. Placeholder names show call structure; they are not study values or scientific defaults.</p>
+          <div class="api-symbol-parameter-table" role="region" aria-label="Parameter contract for \${escapeHtml(symbol.name)}" tabindex="0">
+            <table>
+              <thead><tr><th>Parameter</th><th>Kind</th><th>Type</th><th>Default</th></tr></thead>
+              <tbody>\${parameterRows}</tbody>
+            </table>
+          </div>
+          <div class="api-symbol-copy-row">
+            <div><span>Minimal call shape</span><code>\${escapeHtml(symbol.minimal_call)}</code></div>
+            <button type="button" data-copy-api-call>Copy call</button>
+          </div>
+        </div>
+      </details>
+      <div class="api-symbol-copy-row api-symbol-import">
+        <div><span>Public import</span><code>\${escapeHtml(symbol.import_statement)}</code></div>
         <button type="button" data-copy-api-import>Copy import</button>
-      </div>`;
+      </div>\`;
 
     target.appendChild(detail);
     detail.querySelector('[data-copy-api-import]')?.addEventListener('click', (event) => {
       copyText(event.currentTarget, symbol.import_statement);
+    });
+    detail.querySelector('[data-copy-api-call]')?.addEventListener('click', (event) => {
+      copyText(event.currentTarget, symbol.minimal_call);
     });
   };
 
@@ -74,7 +112,7 @@
       return response.json();
     })
     .then((metadata) => {
-      if (!metadata || metadata.schema !== 'gazeaudit-api-symbol-reference-v1') {
+      if (!metadata || metadata.schema !== 'gazeaudit-api-symbol-reference-v2') {
         throw new Error('unexpected API symbol metadata schema');
       }
       if (!Array.isArray(metadata.symbols)) throw new Error('API symbol metadata is not an array');

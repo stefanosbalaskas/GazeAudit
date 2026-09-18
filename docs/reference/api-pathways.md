@@ -110,12 +110,17 @@ Each symbol below has a stable fragment identifier. Opening or sharing a symbol 
 When JavaScript is available, each governed symbol above is enhanced from the deterministic API metadata artifact with:
 
 - the exact inspected Python signature;
+- a compact expandable parameter contract with parameter kind, annotation, requiredness, and software default;
+- the inspected return annotation;
+- a mechanically generated **minimal call shape** containing only required arguments;
 - function/class kind and source module;
 - repository-relative source file and first source line;
 - the first source-docstring summary;
 - a direct source link pinned to the documentation build revision;
-- a copyable import statement;
+- copyable public-import and minimal-call snippets;
 - backlinks to every governed method pathway that uses the symbol.
+
+The minimal call is deliberately structural. Placeholder names such as `study`, `endpoint`, or `min_event_duration` are not fabricated study values, and omitting an optional argument from the minimal call does not make its software default scientifically appropriate.
 
 The static symbol, method-family, guide, example, visual, and evidence-boundary links remain available when JavaScript or metadata loading is unavailable. The generated metadata is verified against the installed package in CI, so a signature/source change cannot silently leave the checked reference stale.
 
@@ -129,4 +134,4 @@ For example, a direct link to `run_specs` is:
 
 That link does not make `run_specs` the correct tool for a study. It only resolves the symbol into its governed **Specification-space robustness** context, where you can inspect the guide, runnable example, specification-curve visual, and the exact evidence boundary.
 
-For a worked exercise, continue to [Function → example → evidence]({{ '/docs/examples/function-to-evidence/' | relative_url }}). For broad task-first discovery, use the [Method explorer]({{ '/docs/methods/' | relative_url }}).
+For a worked exercise in reading required arguments, keyword-only requirements, returns, and minimal call shapes, continue to [Generated API call contracts]({{ '/docs/examples/api-call-contracts/' | relative_url }}). For symbol → example → evidence-boundary navigation, use [Function → example → evidence]({{ '/docs/examples/function-to-evidence/' | relative_url }}). For broad task-first discovery, use the [Method explorer]({{ '/docs/methods/' | relative_url }}).

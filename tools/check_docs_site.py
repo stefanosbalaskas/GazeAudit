@@ -284,6 +284,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/install-smoke-check/index.html",
         "docs/guides/read-api-reference/index.html",
         "docs/examples/source-api-inspection/index.html",
+        "docs/examples/api-call-contracts/index.html",
         "docs/reference/cli-reference/index.html",
         "docs/reference/evidence-vocabulary/index.html",
         "docs/reference/core-api-inventory/index.html",
