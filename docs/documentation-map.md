@@ -36,6 +36,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/guides/data-mapping-provenance/' | relative_url }}">Data mapping provenance</a>
       <a href="{{ '/docs/guides/structural-qc-triage/' | relative_url }}">Structural-QC triage</a>
       <a href="{{ '/docs/guides/readiness-policy-design/' | relative_url }}">Readiness policy design</a>
+      <a href="{{ '/docs/guides/claim-boundary-reporting/' | relative_url }}">Claim-boundary reporting</a>
       <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
       <a href="{{ '/docs/guides/troubleshooting/' | relative_url }}">Troubleshooting</a>
     </div>
@@ -50,6 +51,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/data-contract/' | relative_url }}">Data contract</a>
       <a href="{{ '/docs/reference/qc-issue-clinic/' | relative_url }}">Structural QC Issue Clinic</a>
       <a href="{{ '/docs/readiness-policy/' | relative_url }}">Readiness Policy Design Center</a>
+      <a href="{{ '/docs/reporting-center/' | relative_url }}">Results & Reporting Center</a>
       <a href="{{ '/docs/reference/api-pathways/' | relative_url }}">API pathways</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
     </div>
