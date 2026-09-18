@@ -3,8 +3,14 @@ title: Revision reproducibility package worked example
 description: A synthetic executable-style example that scaffolds a reviewer-revision package, records separate submitted and post-review evidence, demonstrates a missing-file failure, and validates the repaired structure.
 kicker: Example · Revision package
 permalink: /docs/examples/reproducibility-package-cli/
-search_category: Examples
+search_category: Example
 search_keywords: reproducibility package cli synthetic reviewer revision scaffold validate manifest response matrix evidence map failure repair
+page_type: example
+example_data: "Synthetic"
+example_focus: "Reproducibility"
+example_reuse: "CLI package workflow"
+example_output: "Validated reviewer-revision package with failure-repair history"
+example_boundary: "Structural package validity is not scientific validation."
 ---
 
 # Revision reproducibility package worked example
