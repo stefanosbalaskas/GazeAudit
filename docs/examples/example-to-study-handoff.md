@@ -5,6 +5,12 @@ kicker: Example · Research handoff
 permalink: /docs/examples/example-to-study-handoff/
 search_category: Example
 search_keywords: example study handoff synthetic own data teaching values defaults thresholds PipelineSpace run_specs decision record adaptation
+page_type: example
+example_data: "Synthetic"
+example_focus: "Project lifecycle"
+example_reuse: "Example-to-study adaptation pattern"
+example_output: "Study-owned decision inventory and handoff record"
+example_boundary: "The walkthrough intentionally does not supply replacement scientific values."
 ---
 
 # Example → study handoff
