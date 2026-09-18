@@ -37,6 +37,12 @@ For pEYES integration on Python 3.12+:
 python -m pip install "gazeaudit[peyes]==0.1.0"
 ```
 
+## `audit_study_qc()` returned `review`. Does that mean I should exclude data?
+
+No. `review` means that at least one implemented structural condition was detected. Inspect the row/group diagnostics and trace them to source/mapping provenance before deciding what they mean for the study. Use the [Structural QC Issue Clinic]({{ '/docs/reference/qc-issue-clinic/' | relative_url }}) for exact issue/detail-code lookup and [Structural-QC triage]({{ '/docs/guides/structural-qc-triage/' | relative_url }}) for the decision workflow.
+
+A flag is not an automatic imputation, sorting, deduplication, or row/trial/participant exclusion rule.
+
 ## Is probabilistic AOI membership the probability that the fixation was truly in that AOI?
 
 It is a **model-conditional marginal membership probability**. It describes the fraction of latent true positions sampled under the declared measurement-error model that fall inside the AOI. It should not be interpreted as model-free certainty about the true gaze position.
