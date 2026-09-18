@@ -113,6 +113,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Follow one synthetic robustness question through Learn → Do → Look up → Understand without collapsing example, guide, reference, and explanation into one page.</p>
     <p><a href="documentation-intent-routing/">Documentation intent routing →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">18</div>
+    <h3>Hand an example into a real study safely</h3>
+    <p>Separate reusable workflow structure from teaching values, then build a study-owned decision inventory, source mapping, endpoint, specification space, and evidence record.</p>
+    <p><a href="example-to-study-handoff/">Example → study handoff →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
