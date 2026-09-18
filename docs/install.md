@@ -54,19 +54,15 @@ PyPA recommends using a virtual environment for third-party packages so project 
 <div class="install-platform-grid">
   <section>
     <h3>Windows</h3>
-    ```powershell
-    py -m venv .venv
-    .venv\Scripts\activate
-    py -m pip install --upgrade pip
-    ```
+    <pre><code class="language-powershell">py -m venv .venv
+.venv\Scripts\activate
+py -m pip install --upgrade pip</code></pre>
   </section>
   <section>
     <h3>macOS / Linux</h3>
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate
-    python3 -m pip install --upgrade pip
-    ```
+    <pre><code class="language-bash">python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip</code></pre>
   </section>
 </div>
 
