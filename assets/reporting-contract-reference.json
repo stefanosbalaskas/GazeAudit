@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/reporting-contract-reference.json
+---
+{{ site.data.reporting_contracts | jsonify }}

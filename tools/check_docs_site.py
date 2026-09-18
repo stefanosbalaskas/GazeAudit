@@ -557,6 +557,163 @@ def _verify_readiness_threshold_reference(site_root: Path) -> None:
         )
 
 
+def _verify_reporting_contract_reference(
+    site_root: Path,
+    *,
+    baseurl: str,
+) -> None:
+    reference_path = site_root / "assets/reporting-contract-reference.json"
+    try:
+        contracts = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated reporting contract reference: {exc}"
+        ) from exc
+
+    expected_runtime_signals = {
+        "pass",
+        "review",
+        "unassessed",
+        "ready_under_policy",
+        "review_under_policy",
+    }
+    allowed_layers = {
+        "Structural QC",
+        "Readiness",
+        "Robustness",
+        "Sensitivity",
+        "Frozen evidence",
+    }
+    allowed_kinds = {
+        "Runtime status",
+        "Interpretation pattern",
+        "Protocol-bound evidence label",
+    }
+    required = {
+        "id",
+        "layer",
+        "kind",
+        "signal",
+        "runtime_source",
+        "meaning",
+        "denominator",
+        "can_say",
+        "cannot_say",
+        "methods_template",
+        "results_template",
+        "limitation_template",
+        "guide_url",
+        "example_url",
+        "api_anchor",
+    }
+
+    if not isinstance(contracts, list) or len(contracts) != 11:
+        raise SystemExit(
+            "unexpected reporting contract catalog: "
+            f"{type(contracts).__name__}, "
+            f"entries={len(contracts) if isinstance(contracts, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    ids: set[str] = set()
+    runtime_signals: set[str] = set()
+    source = site_root / "docs/reporting-center/index.html"
+
+    for position, item in enumerate(contracts):
+        if not isinstance(item, dict):
+            failures.append(f"reporting contract {position}: expected object")
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                f"reporting contract {position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        contract_id = item["id"]
+        if not isinstance(contract_id, str) or not contract_id:
+            failures.append(
+                f"reporting contract {position}: invalid id {contract_id!r}"
+            )
+        elif contract_id in ids:
+            failures.append(
+                f"reporting contract {position}: duplicate id {contract_id!r}"
+            )
+        else:
+            ids.add(contract_id)
+
+        if item["layer"] not in allowed_layers:
+            failures.append(
+                f"reporting contract {position}: invalid layer {item['layer']!r}"
+            )
+        if item["kind"] not in allowed_kinds:
+            failures.append(
+                f"reporting contract {position}: invalid kind {item['kind']!r}"
+            )
+        if item["kind"] == "Runtime status":
+            runtime_signals.add(str(item["signal"]))
+
+        for field in (
+            "signal",
+            "runtime_source",
+            "meaning",
+            "denominator",
+            "can_say",
+            "cannot_say",
+            "methods_template",
+            "results_template",
+            "limitation_template",
+        ):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"reporting contract {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+        for field in ("guide_url", "example_url"):
+            reference = item[field]
+            if not isinstance(reference, str) or not reference.startswith("/"):
+                failures.append(
+                    f"reporting contract {position}: invalid {field} {reference!r}"
+                )
+            elif not _resolves(site_root, source, reference, baseurl):
+                failures.append(
+                    f"reporting contract {position}: unresolved "
+                    f"{field} {reference!r}"
+                )
+
+    if runtime_signals != expected_runtime_signals:
+        failures.append(
+            "reporting runtime signals mismatch: "
+            f"expected {sorted(expected_runtime_signals)}, "
+            f"got {sorted(runtime_signals)}"
+        )
+
+    if source.is_file():
+        html = source.read_text(encoding="utf-8")
+        rendered = html.count('class="reporting-contract-card"')
+        if rendered != len(contracts):
+            failures.append(
+                "reporting contract card count mismatch: "
+                f"index={len(contracts)}, rendered={rendered}"
+            )
+    else:
+        failures.append("reporting center page is missing from generated site")
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"reporting contract reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -645,6 +802,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reference/api-pathways/index.html",
         "docs/reference/qc-issue-clinic/index.html",
         "docs/readiness-policy/index.html",
+        "docs/reporting-center/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -653,6 +811,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/data-mapping-provenance/index.html",
         "docs/guides/structural-qc-triage/index.html",
         "docs/guides/readiness-policy-design/index.html",
+        "docs/guides/claim-boundary-reporting/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -660,6 +819,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/data-mapping-change-audit/index.html",
         "docs/examples/all-structural-qc-issues/index.html",
         "docs/examples/readiness-policy-design/index.html",
+        "docs/examples/reporting-language-rewrite/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -688,6 +848,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/example-catalog.css",
         "assets/css/qc-issue-clinic.css",
         "assets/css/readiness-policy.css",
+        "assets/css/reporting-center.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -696,6 +857,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/example-catalog.js",
         "assets/js/qc-issue-clinic.js",
         "assets/js/readiness-policy.js",
+        "assets/js/reporting-center.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -707,6 +869,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/example-index.json",
         "assets/qc-issue-reference.json",
         "assets/readiness-threshold-reference.json",
+        "assets/reporting-contract-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -773,6 +936,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_example_index(site_root, baseurl=baseurl)
     _verify_qc_issue_reference(site_root)
     _verify_readiness_threshold_reference(site_root)
+    _verify_reporting_contract_reference(site_root, baseurl=baseurl)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")

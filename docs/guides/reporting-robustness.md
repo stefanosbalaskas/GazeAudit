@@ -9,6 +9,8 @@ permalink: /docs/guides/reporting-robustness/
 
 GazeAudit separates **what was varied**, **what happened to the endpoint**, and **what can legitimately be concluded**. This guide turns that separation into manuscript-ready reporting logic without converting descriptive robustness diagnostics into stronger inferential claims.
 
+For a cross-method status/pattern lookup spanning structural QC, readiness, robustness, sensitivity, and frozen evidence, use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}).
+
 ## Report the decision space first
 
 A robustness analysis is interpretable only if the reader can reconstruct the set of defensible alternatives.
