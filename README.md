@@ -2,7 +2,7 @@
 
 **Measurement uncertainty and inferential robustness for eye-tracking research.**
 
-[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
+[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
 
 GazeAudit is a scientific Python package built around one question:
 
@@ -38,6 +38,7 @@ The website is organised by research task rather than only by modules:
 
 | If you want to… | Start here |
 |---|---|
+| choose whether you need a learning example, task guide, exact reference, or explanation | [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) |
 | set up Python, choose extras, and verify the environment | [Install & environment center](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
 | model gaze-position uncertainty | [AOI uncertainty guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/aoi-uncertainty/) |
