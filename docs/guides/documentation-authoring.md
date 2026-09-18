@@ -107,6 +107,32 @@ A worked example should make it possible to answer:
 
 A quick example does not need every one of these as a dedicated heading, but the information should be recoverable from the page.
 
+### Example contract metadata
+
+Every public page with `search_category: Example` must also declare:
+
+```yaml
+page_type: example
+example_data: "Synthetic"
+example_focus: "Robustness & sensitivity"
+example_reuse: "Complete audit workflow"
+example_output: "Specification results and sensitivity summaries"
+example_boundary: "Teaching choices are not study defaults."
+```
+
+The governed values for `example_data` are:
+
+- `Synthetic`;
+- `Demo or user data`;
+- `Software-only`;
+- `Documentation-only`.
+
+The governed `example_focus` vocabulary is deliberately compact: Data & QC, Measurement uncertainty, Robustness & sensitivity, Interpretation & reporting, Documentation & API, Environment, Project lifecycle, Peer review & publication, and Reproducibility.
+
+The shared layout renders these fields as the **Example contract**, while the [Example catalog]({{ '/docs/examples/catalog/' | relative_url }}) generates its cards and filters from the same front matter. Do not add an example to a separate manual taxonomy.
+
+`example_reuse` should identify the transferable structure. `example_output` should describe the artifact or learning output. `example_boundary` should state the strongest nearby inference that the example does **not** license.
+
 ## 6. Keep reference material factual
 
 Reference pages should prioritize:
