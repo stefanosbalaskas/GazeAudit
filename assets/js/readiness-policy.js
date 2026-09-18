@@ -99,6 +99,10 @@
   };
 
   const showErrors = (problems) => {
+    form.querySelectorAll('[aria-invalid="true"]').forEach((control) => {
+      control.removeAttribute('aria-invalid');
+    });
+
     if (!problems.length) {
       errors.hidden = true;
       errors.replaceChildren();
@@ -112,6 +116,9 @@
     problems.forEach((problem) => {
       const item = document.createElement('li');
       if (problem.target) {
+        const target = document.getElementById(problem.target);
+        if (target) target.setAttribute('aria-invalid', 'true');
+
         const link = document.createElement('a');
         link.href = `#${problem.target}`;
         link.textContent = problem.message;
@@ -124,7 +131,7 @@
 
     errors.replaceChildren(strong, list);
     errors.hidden = false;
-    errors.focus?.();
+    errors.focus();
   };
 
   const buildPython = ({ name, thresholds, activeRules }) => {
