@@ -692,7 +692,7 @@ def _verify_reporting_contract_reference(
 
     if source.is_file():
         html = source.read_text(encoding="utf-8")
-        rendered = html.count("data-reporting-contract")
+        rendered = html.count('class="reporting-contract-card"')
         if rendered != len(contracts):
             failures.append(
                 "reporting contract card count mismatch: "
