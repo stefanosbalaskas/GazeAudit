@@ -226,6 +226,7 @@ Use the source-level API pathways for exact current signatures and source links:
 - [`study_qc_diagnostics()`]({{ '/docs/reference/api-pathways/#api-study-qc-diagnostics' | relative_url }})
 - [`build_study_qc_audit()`]({{ '/docs/reference/api-pathways/#api-build-study-qc-audit' | relative_url }})
 - [Structural-QC method pathway]({{ '/docs/reference/api-pathways/#path-structural-qc' | relative_url }})
+- [Machine-readable QC issue catalog]({{ '/assets/qc-issue-reference.json' | relative_url }})
 
 ## Continue from here
 
