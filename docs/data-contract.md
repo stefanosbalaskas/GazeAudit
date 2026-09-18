@@ -105,6 +105,36 @@ This builder generates only the semantic `GazeStudy(...)` mapping. It does **not
       <input id="schema-y" type="text" autocomplete="off" placeholder="e.g. gaze_y_px" data-schema-y>
       <small>Numeric vertical coordinate in the same documented spatial convention.</small>
     </label>
+
+    <label for="schema-source-id">
+      <span>Source identifier <em>(optional)</em></span>
+      <input id="schema-source-id" type="text" autocomplete="off" placeholder="e.g. exports/session_level_long.csv" data-schema-source-id>
+      <small>Path, immutable dataset ID, checksum label, or another project-local source reference. The browser does not inspect the source.</small>
+    </label>
+
+    <label for="schema-coordinate-unit">
+      <span>Coordinate unit <em>(optional)</em></span>
+      <input id="schema-coordinate-unit" type="text" autocomplete="off" placeholder="e.g. pixels" data-schema-coordinate-unit>
+      <small>Free-text unit or spatial scale. The mapper never infers or converts it.</small>
+    </label>
+
+    <label for="schema-coordinate-convention">
+      <span>Coordinate convention <em>(optional)</em></span>
+      <input id="schema-coordinate-convention" type="text" autocomplete="off" placeholder="e.g. origin top-left; x right; y down" data-schema-coordinate-convention>
+      <small>Record origin, axis direction, normalization, or stimulus/display reference when relevant.</small>
+    </label>
+
+    <label for="schema-timestamp-unit">
+      <span>Timestamp unit / origin <em>(optional)</em></span>
+      <input id="schema-timestamp-unit" type="text" autocomplete="off" placeholder="e.g. milliseconds from trial onset" data-schema-timestamp-unit>
+      <small>Free-text unit and origin. No conversion is applied.</small>
+    </label>
+
+    <label class="schema-mapper-wide" for="schema-transformations">
+      <span>Pre-mapping transformations <em>(optional)</em></span>
+      <textarea id="schema-transformations" rows="3" placeholder="e.g. combined binocular channels; converted seconds to milliseconds; sorted only after documented export repair" data-schema-transformations></textarea>
+      <small>Describe transformations already applied before this table became the canonical source.</small>
+    </label>
   </div>
 
   <div class="schema-mapper-actions">
@@ -123,6 +153,48 @@ This builder generates only the semantic `GazeStudy(...)` mapping. It does **not
   <pre><code data-schema-code>Complete all five semantic column mappings to generate code.</code></pre>
   <p data-schema-status role="status" aria-live="polite" aria-atomic="true">No mapping generated yet.</p>
 </div>
+
+<div class="schema-mapper-output" aria-labelledby="schema-record-title">
+  <div class="schema-mapper-output-head">
+    <div>
+      <span class="eyebrow">Mapping provenance</span>
+      <h2 id="schema-record-title">Documentation-side mapping record</h2>
+    </div>
+    <button type="button" data-schema-record-copy disabled>Copy JSON record</button>
+  </div>
+  <pre><code data-schema-record>Complete all five semantic column mappings to generate the mapping record.</code></pre>
+  <p class="schema-mapper-record-note">
+    This JSON is a documentation record, not a GazeAudit runtime object. Optional provenance fields remain empty when you do not provide them; the mapper never guesses.
+  </p>
+</div>
+
+## Mapping record contract
+
+The generated JSON uses a small documentation schema:
+
+```json
+{
+  "schema": "gazeaudit-data-mapping-record-v1",
+  "source_id": "exports/session_level_long.csv",
+  "columns": {
+    "participant": "participant_code",
+    "trial": "stimulus_trial",
+    "timestamp": "recording_time_ms",
+    "x": "screen_x_px",
+    "y": "screen_y_px"
+  },
+  "units": {
+    "coordinates": "pixels",
+    "timestamp": "milliseconds from trial onset"
+  },
+  "coordinate_convention": "origin top-left; x right; y down",
+  "pre_mapping_transformations": "binocular channels combined before canonical table"
+}
+```
+
+The record is descriptive. It does not certify that the mapping is scientifically correct, and it does not hash or inspect your data. If source identity must be immutable, record a project-controlled checksum or persistent dataset identifier in `source_id`.
+
+Continue to [Record data-mapping provenance]({{ '/docs/guides/data-mapping-provenance/' | relative_url }}) for the governance rules and [Mapping change audit]({{ '/docs/examples/data-mapping-change-audit/' | relative_url }}) for a worked comparison of harmless renames versus substantive transformations.
 
 ## Construction failure versus structural review
 
