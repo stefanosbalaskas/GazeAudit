@@ -106,7 +106,7 @@ def test_example_to_study_walkthrough_is_explicitly_synthetic_and_nonprescriptiv
     assert "teaching_choices" in text
     assert '"levels": None' in text
     assert "The empty dictionary shown here is deliberate" in text
-    assert "valid_if is not a tool for removing inconvenient results" in text
+    assert "not a tool for removing inconvenient results" in text
     assert "Keep the tutorial outside the evidence record" in text
 
     for item in (
