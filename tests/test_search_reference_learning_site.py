@@ -61,8 +61,8 @@ def test_search_to_contract_example_is_explicitly_synthetic() -> None:
 def test_search_to_contract_keeps_reference_and_procedure_distinct() -> None:
     text = _read(EXAMPLE)
 
-    assert "**Reference answers “what is the command?”" in text
-    assert "the **Example** answers “how does the workflow fit together?”" in text
+    assert "**Reference** answers “what is the command?”" in text
+    assert "**Example** answers “how does the workflow fit together?”" in text
     assert "There is no universal “best” result" in text
 
 
