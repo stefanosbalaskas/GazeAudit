@@ -49,25 +49,58 @@ def test_search_index_derives_content_kind_from_governed_urls() -> None:
     assert "{{ search_kind }} {{ item.url }}" in template
 
 
-def test_search_discovery_supports_facets_counts_and_research_shortcuts() -> None:
+def test_search_discovery_supports_facets_and_reference_shortcuts() -> None:
     script = _text("assets/js/search-tools.js")
 
     for contract in (
         "data-search-facets",
         "aria-pressed",
         "data-search-kind",
-        "data-search-result-summary",
         "activeKind = 'All'",
-        "matched.slice(0, 12)",
         "first real audit",
         "robustness",
-        "AOI",
+        "AOI uncertainty",
+        "CLI command",
+        "declared valid successful",
         "publication",
     ):
         assert contract in script
 
 
-def test_search_overlay_preserves_core_result_and_keyboard_contract() -> None:
+def test_search_results_are_grouped_by_documentation_kind() -> None:
+    script = _text("assets/js/search-tools.js")
+
+    for contract in (
+        "const groupedItems = (items, maxResults = 12, perGroup = 4)",
+        "const groups = new Map()",
+        "search-result-group",
+        "search-result-group-head",
+        "search-result-group-items",
+        'aria-labelledby="${groupId}"',
+        "group.total",
+        "visibleCount",
+    ):
+        assert contract in script
+
+    assert "escapeHtml(group.kind)" in script
+    assert "group.items.map((item)" in script
+
+
+def test_search_status_is_separate_from_interactive_results() -> None:
+    layout = _text("_layouts/default.html")
+    script = _text("assets/js/search-tools.js")
+    core = _text("assets/js/site.js")
+
+    assert 'data-search-status role="status"' in layout
+    assert 'aria-live="polite"' in layout
+    assert 'aria-atomic="true"' in layout
+    assert 'data-search-results aria-label="Search results"' in layout
+    assert "data-search-results aria-live" not in layout
+    assert "document.querySelector('[data-search-status]')" in script
+    assert "document.querySelector('[data-search-status]')" in core
+
+
+def test_search_overlay_preserves_keyboard_result_contract() -> None:
     script = _text("assets/js/search-tools.js")
     core = _text("assets/js/site.js")
 
@@ -85,6 +118,7 @@ def test_search_overlay_preserves_core_result_and_keyboard_contract() -> None:
     assert "ArrowDown" in core
     assert "ArrowUp" in core
     assert "event.key === 'Enter'" in core
+    assert "Selected ${selectedResult + 1} of ${results.length}" in core
 
 
 def test_search_result_strings_are_escaped_before_rendering() -> None:
@@ -92,7 +126,7 @@ def test_search_result_strings_are_escaped_before_rendering() -> None:
 
     assert "const escapeHtml" in script
     for field in (
-        "item.kind || 'Documentation'",
+        "group.kind",
         "item.category",
         "item.title",
         "item.description",
@@ -100,13 +134,16 @@ def test_search_result_strings_are_escaped_before_rendering() -> None:
         assert f"escapeHtml({field})" in script
 
 
-def test_search_styles_cover_mobile_forced_colours_and_result_context() -> None:
+def test_search_styles_cover_grouping_mobile_and_accessibility_modes() -> None:
     css = _text("assets/css/search-tools.css")
 
     for selector in (
         ".search-facets",
         ".search-query-chip",
-        ".search-result-kind",
+        ".search-result-status",
+        ".search-result-group",
+        ".search-result-group-head",
+        ".search-result-group-items",
         '.search-facet[aria-pressed="true"]',
     ):
         assert selector in css

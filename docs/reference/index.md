@@ -30,6 +30,32 @@ These pages describe public APIs, installed commands, status vocabulary, softwar
 | how to cite or reuse GazeAudit | [Citation & reuse]({{ '/docs/CITATION_AND_REUSE.html' | relative_url }}) | citation and reuse instructions |
 | what shipped in v0.1.0 | [Release notes]({{ '/docs/RELEASE_NOTES_0.1.0.html' | relative_url }}) | stable-release scope |
 
+## Find the right reference faster
+
+If you know the topic but are unsure whether you need a Guide, Example, Reference, or Evidence page, use [Find information fast]({{ '/docs/guides/find-information-fast/' | relative_url }}). The [Search → contract walkthrough]({{ '/docs/examples/search-to-contract/' | relative_url }}) shows the grouped-search route on fully synthetic questions.
+
+## Copy-ready common routes
+
+These compact routes are factual navigation aids. The site automatically adds a **Copy** control to code blocks; copying a route does not make its scientific choices appropriate for a study.
+
+```text
+GazeStudy → audit_study_qc → study_qc_diagnostics → build_study_qc_audit
+```
+
+```text
+PipelineSpace → run_specs → specification_curve → effect_stability
+```
+
+```text
+GaussianGazeErrorModel → aoi_probabilities → compare_hard_probabilistic → expected_dwell
+```
+
+```bash
+gazeaudit-revision-package validate --root revision-package
+```
+
+Use the [API map]({{ '/docs/reference/api-map/' | relative_url }}) or [CLI reference]({{ '/docs/reference/cli-reference/' | relative_url }}) to verify the exact contract behind a copied route.
+
 ## Public API
 
 The [API map]({{ '/docs/reference/api-map/' | relative_url }}) is the practical entry point. It groups the public surface by canonical study representation, structural QC, readiness governance, AOI uncertainty, specification spaces, controlled sensitivity, publication provenance, plotting, BIDS, pymovements, pEYES, and validation-specific tooling.

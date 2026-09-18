@@ -210,6 +210,7 @@
   const dialog = document.querySelector('[data-search-dialog]');
   const searchInput = document.querySelector('[data-site-search]');
   const searchResults = document.querySelector('[data-search-results]');
+  const searchStatus = document.querySelector('[data-search-status]');
   const closeSearch = document.querySelector('[data-search-close]');
   let searchIndex = null;
   let selectedResult = -1;
@@ -247,10 +248,16 @@
         .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))
         .map(({ item }) => item);
     }
+    const totalMatches = items.length;
     items = items.slice(0, 9);
     selectedResult = items.length ? 0 : -1;
+    if (searchStatus) {
+      searchStatus.textContent = totalMatches
+        ? `${totalMatches} ${totalMatches === 1 ? 'result' : 'results'}. Showing ${items.length}.`
+        : 'No matching documentation.';
+    }
     if (!items.length) {
-      searchResults.innerHTML = '<p class="search-empty">No matching documentation. Try a method, dataset, or workflow term.</p>';
+      searchResults.innerHTML = '<p class="search-empty">No matching documentation. Try another term or browse by documentation type.</p>';
       return;
     }
     searchResults.innerHTML = items.map((item, index) => `
@@ -281,6 +288,7 @@
       requestAnimationFrame(() => searchInput.focus());
     } catch (error) {
       if (searchResults) searchResults.innerHTML = '<p class="search-empty">Search index could not be loaded. Use the documentation menu while this page is offline.</p>';
+      if (searchStatus) searchStatus.textContent = 'Search index could not be loaded.';
       if (typeof dialog.showModal === 'function' && !dialog.open) dialog.showModal();
     }
   };
@@ -309,6 +317,10 @@
         selectedResult = (selectedResult + delta + results.length) % results.length;
         results.forEach((result, index) => result.classList.toggle('is-selected', index === selectedResult));
         results[selectedResult].scrollIntoView({ block: 'nearest' });
+        if (searchStatus) {
+          const selectedTitle = results[selectedResult].querySelector('strong')?.textContent || 'result';
+          searchStatus.textContent = `Selected ${selectedResult + 1} of ${results.length}: ${selectedTitle}.`;
+        }
       } else if (event.key === 'Enter' && selectedResult >= 0) {
         event.preventDefault();
         results[selectedResult].click();

@@ -77,6 +77,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Answer API, denominator, exception, non-finite endpoint, CLI, and frozen-label questions by moving through the factual reference layer.</p>
     <p><a href="reference-lookup-workflow/">Reference lookup →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">12</div>
+    <h3>Search from ambiguity to authority</h3>
+    <p>Use grouped search results to route a question into Guide, Example, Reference, or Evidence without turning ranking into a scientific recommendation.</p>
+    <p><a href="search-to-contract/">Search → contract →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -93,6 +99,12 @@ Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to
 <strong>Need a fact, not another workflow?</strong>
 Use the <a href="../reference/">Reference hub</a> for API, CLI, evidence vocabulary, provenance, and validation authority. The <a href="reference-lookup-workflow/">reference lookup walkthrough</a> demonstrates when to stop reading procedural material and consult an exact contract instead.
 </div>
+
+## [Search → contract walkthrough](search-to-contract/)
+
+Start with four ambiguous synthetic questions—`run_specs NaN`, reviewer-revision commands, AOI uncertainty, and `robust_negative`—then use grouped search results to select the documentation type that answers the actual information need.
+
+**Use this when:** you know the topic but are unsure whether you need procedural guidance, runnable context, exact reference, or frozen evidence authority.
 
 ## [Reference lookup walkthrough](reference-lookup-workflow/)
 
