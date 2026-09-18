@@ -58,6 +58,7 @@
   {% if page.page_type == 'api-pathways' %}<link rel="stylesheet" href="{{ '/assets/css/api-pathways.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'install' %}<link rel="stylesheet" href="{{ '/assets/css/install.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'planner' %}<link rel="stylesheet" href="{{ '/assets/css/planner.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'example-catalog' %}<link rel="stylesheet" href="{{ '/assets/css/example-catalog.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -96,6 +97,7 @@
               <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
               <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
               <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+          <a href="{{ '/docs/examples/catalog/' | relative_url }}">Example catalog</a>
               <a href="{{ '/docs/methods/' | relative_url }}">Methods</a>
               <a href="{{ '/docs/plots/' | relative_url }}">Plots</a>
             </div>
@@ -149,6 +151,7 @@
           <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
           <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
           <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+          <a href="{{ '/docs/examples/catalog/' | relative_url }}">Example catalog</a>
           <a href="{{ '/docs/methods/' | relative_url }}">Method explorer</a>
           <a href="{{ '/docs/plots/' | relative_url }}">Plot gallery</a>
         </div>
@@ -218,6 +221,7 @@
             <a href="{{ '/docs/guides/interoperability/' | relative_url }}">Interoperability</a>
 
             <p class="nav-label">Examples</p>
+            <a href="{{ '/docs/examples/catalog/' | relative_url }}">Example catalog</a>
             <a href="{{ '/docs/examples/documentation-intent-routing/' | relative_url }}">Documentation intent routing</a>
             <a href="{{ '/docs/examples/example-to-study-handoff/' | relative_url }}">Example → study handoff</a>
             <a href="{{ '/docs/examples/install-smoke-check/' | relative_url }}">Install smoke check</a>
@@ -274,6 +278,21 @@
             <span class="page-intent-note">{{ page_intent_note }}</span>
             <a href="{{ '/docs/documentation-map/' | relative_url }}">Documentation compass</a>
           </div>
+          {% endif %}
+          {% if page.search_category == 'Example' and page.example_data and page.example_focus and page.example_reuse and page.example_output and page.example_boundary %}
+          <aside class="example-contract" aria-label="Example contract">
+            <div class="example-contract-head">
+              <span>Example contract</span>
+              <a href="{{ '/docs/examples/catalog/' | relative_url }}">Browse catalog</a>
+            </div>
+            <dl>
+              <div><dt>Data</dt><dd>{{ page.example_data }}</dd></div>
+              <div><dt>Focus</dt><dd>{{ page.example_focus }}</dd></div>
+              <div><dt>Reuse</dt><dd>{{ page.example_reuse }}</dd></div>
+              <div><dt>Expected output</dt><dd>{{ page.example_output }}</dd></div>
+              <div class="example-contract-boundary"><dt>Evidence boundary</dt><dd>{{ page.example_boundary }}</dd></div>
+            </dl>
+          </aside>
           {% endif %}
           <div class="doc-tools" role="group" aria-label="Page tools">
             <span class="doc-tools-context">Development docs{% if site.github.build_revision %} · <code>{{ docs_revision_short }}</code>{% endif %}</span>
@@ -344,5 +363,6 @@
   {% if page.page_type == 'landing' %}<script src="{{ '/assets/js/landing.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'methods' %}<script src="{{ '/assets/js/methods.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'planner' %}<script src="{{ '/assets/js/planner.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'example-catalog' %}<script src="{{ '/assets/js/example-catalog.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>
