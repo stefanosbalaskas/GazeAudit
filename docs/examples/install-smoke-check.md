@@ -5,6 +5,12 @@ kicker: Example · Setup
 permalink: /docs/examples/install-smoke-check/
 search_category: Example
 search_keywords: install verify smoke check pip venv version import extras console command environment setup
+page_type: example
+example_data: "Software-only"
+example_focus: "Environment"
+example_reuse: "Installation verification workflow"
+example_output: "Verified package identity, imports, CLI, and environment record"
+example_boundary: "Successful installation does not establish scientific validity."
 ---
 
 # Install → verify → first import
