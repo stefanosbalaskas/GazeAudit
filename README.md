@@ -2,7 +2,7 @@
 
 **Measurement uncertainty and inferential robustness for eye-tracking research.**
 
-[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
+[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) · [Data contract](https://stefanosbalaskas.github.io/GazeAudit/docs/data-contract/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
 
 GazeAudit is a scientific Python package built around one question:
 
@@ -40,6 +40,7 @@ The website is organised by research task rather than only by modules:
 |---|---|
 | choose whether you need a learning example, task guide, exact reference, or explanation | [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) |
 | set up Python, choose extras, and verify the environment | [Install & environment center](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) |
+| map an existing gaze/fixation table into the canonical GazeStudy contract | [Data Contract & Schema Mapping Center](https://stefanosbalaskas.github.io/GazeAudit/docs/data-contract/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
 | browse worked examples by data context and methodological focus | [Example catalog](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/catalog/) |
 | adapt a teaching example to a real study without inheriting demonstration values | [Adapt examples to your study](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/adapt-examples-to-study/) |
