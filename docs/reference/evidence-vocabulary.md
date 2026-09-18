@@ -99,4 +99,4 @@ Use the [validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }})
 
 A passing structural-QC rule, readiness policy, artifact verifier, or revision-package validator establishes only the contract each tool actually checks. It does not establish scientific validity, causal identification, measurement validity, universal robustness, manuscript quality, or publication readiness.
 
-For action-oriented recovery, use [Troubleshooting GazeAudit]({{ '/docs/guides/troubleshooting/' | relative_url }}). For a compact synthetic lookup exercise, use the [reference lookup walkthrough]({{ '/docs/examples/reference-lookup-workflow/' | relative_url }}).
+For action-oriented recovery, use [Troubleshooting GazeAudit]({{ '/docs/guides/troubleshooting/' | relative_url }}). For reporting-language boundaries, use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}). For a compact synthetic lookup exercise, use the [reference lookup walkthrough]({{ '/docs/examples/reference-lookup-workflow/' | relative_url }}).
