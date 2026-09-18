@@ -9,6 +9,8 @@ permalink: /docs/reference/api-map/
 
 This page is a task-oriented map of the public API exposed by `gazeaudit`. Function docstrings remain the source-level reference; the map helps you find the right entry point without scanning the package source.
 
+If you already know a symbol and want its guide, runnable example, visual, evidence boundary, or a stable shareable fragment, use [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}).
+
 ## Canonical study representation and structural QC
 
 | API | Purpose |

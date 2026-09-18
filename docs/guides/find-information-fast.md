@@ -87,6 +87,23 @@ Inside the search dialog:
 
 The selected result is announced through a dedicated live-status region. The result list itself remains ordinary linked content, so it can still be traversed with standard browser and assistive-technology navigation.
 
+## When you already know a public symbol
+
+If you already know a function such as `run_specs`, `aoi_probabilities`, or `read_bids_eyetrack`, skip broad search and open [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}). Each governed symbol has a stable fragment link and inherits the same guide, example, visual, and evidence boundary used by the Method explorer.
+
+Use the symbol deep link as a navigation/bookmark handle, not as evidence that the function is scientifically appropriate for a new study.
+
+## Recover from zero results
+
+A zero-result state should not end the task. The search dialog now offers four recovery paths:
+
+- reset a narrow documentation-type filter back to **All**;
+- clear the query while keeping search open;
+- browse the **Guides** hub;
+- browse **Examples** or **Reference** directly.
+
+If a query returns nothing, broaden the distinctive term before adding more words. For example, try `sampling` before `sampling rate downsampling validation evidence`.
+
 ## When search finds the contract, stop searching
 
 Once you reach a reference page that answers the exact factual question, do not keep browsing merely to find a more convenient interpretation.
