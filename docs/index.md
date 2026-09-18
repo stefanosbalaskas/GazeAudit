@@ -77,6 +77,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Triage a `review` state without automatic exclusion | [Structural-QC triage](guides/structural-qc-triage/) |
 | Design a readiness policy with no hidden threshold defaults | [Readiness Policy Design Center](readiness-policy/) |
 | Practise primary/alternative readiness policy consequences | [Readiness policy design](examples/readiness-policy-design/) |
+| Match evidence states to bounded Methods/Results/limitations wording | [Results Interpretation & Reporting Center](reporting-center/) |
+| Practise rewriting over-strong manuscript claims | [Reporting-language rewrite](examples/reporting-language-rewrite/) |
 | Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
 | Practise auditing a changed mapping without rewriting history | [Mapping change audit](examples/data-mapping-change-audit/) |
