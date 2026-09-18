@@ -89,6 +89,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Start from a public symbol and follow its stable deep link into the governed guide, runnable example, visual, and evidence context.</p>
     <p><a href="function-to-evidence/">Function → evidence →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">14</div>
+    <h3>Inspect the live public interface</h3>
+    <p>Compare generated signatures, revision-pinned source links, local Python introspection, and the research context for three representative public symbols.</p>
+    <p><a href="source-api-inspection/">Source API inspection →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -105,6 +111,12 @@ Start with <a href="../guides/troubleshooting/">Troubleshooting GazeAudit</a> to
 <strong>Need a fact, not another workflow?</strong>
 Use the <a href="../reference/">Reference hub</a> for API, CLI, evidence vocabulary, provenance, and validation authority. The <a href="reference-lookup-workflow/">reference lookup walkthrough</a> demonstrates when to stop reading procedural material and consult an exact contract instead.
 </div>
+
+## [Source-level API inspection](source-api-inspection/)
+
+Use `GazeStudy`, `run_specs`, and `aoi_probabilities` to practise reading generated signatures, following revision-pinned source links, copying public imports, and comparing website metadata with local `inspect` output.
+
+**Use this when:** you know the symbol and want to verify the exact callable interface before moving into a research workflow.
 
 ## [Function → example → evidence](function-to-evidence/)
 
