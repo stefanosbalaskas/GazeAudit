@@ -2,6 +2,13 @@
 title: Specification curve example
 description: Summarise synthetic multiverse results with ordered estimates, sign stability, and factor sensitivity.
 kicker: Example · Analytical robustness
+search_category: Example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Robustness & sensitivity"
+example_reuse: "Specification-curve workflow"
+example_output: "Ordered estimates, sign stability, and factor sensitivity summaries"
+example_boundary: "Synthetic specifications illustrate mechanics; they are not recommended defaults."
 ---
 
 # Specification curve example
