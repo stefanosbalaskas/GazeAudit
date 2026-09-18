@@ -154,6 +154,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Compare primary and alternative synthetic threshold policies, preserve trial/participant denominators, and translate policy-relative readiness into bounded reporting.</p>
     <p><a href="readiness-policy-design/">Readiness policy design →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">24</div>
+    <h3>Rewrite over-strong manuscript claims</h3>
+    <p>Repair seven synthetic structural-QC, readiness, robustness, sensitivity, execution, and frozen-evidence overclaims using evidence objects, denominators, and limitations.</p>
+    <p><a href="reporting-language-rewrite/">Reporting-language rewrite →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -248,6 +254,12 @@ Run a complete 12-specification synthetic audit from `GazeStudy` construction th
 Work through a fully synthetic audit with **8 declared combinations, 7 valid specifications, and 6 initially successful executions**. The example preserves one predeclared-invalid combination outside the valid denominator, records one valid technical failure, diagnoses a branch-specific processor defect, reruns the same branch after a causal technical repair, and retains both the original failure and repaired execution in history.
 
 **Use this when:** a declared audit stops or returns an incomplete result and you need to distinguish scientific validity from technical execution before changing anything.
+
+## [Reporting-language rewrite](reporting-language-rewrite/)
+
+Start from seven synthetic over-claims and repair them by naming the actual evidence object, preserving the correct denominator, separating runtime status from interpretation, and adding the limitation that bounds the claim.
+
+**Use this when:** the analysis is complete but the manuscript sentence sounds stronger than the evidence object actually supports.
 
 ## [Result-pattern reporting](result-patterns/)
 
