@@ -1,0 +1,83 @@
+- name: endpoint_name
+  label: Endpoint name
+  value_type: text
+  required: true
+  purpose: Stable human-readable label for the scientific endpoint.
+  boundary: A label identifies the endpoint but does not define its scientific meaning by itself.
+
+- name: scientific_quantity
+  label: Scientific quantity
+  value_type: textarea
+  required: true
+  purpose: Plain-language statement of the quantity every valid specification must estimate.
+  boundary: If this quantity changes across branches, the branches do not belong in one common-endpoint robustness summary.
+
+- name: unit
+  label: Unit or scale
+  value_type: text
+  required: true
+  purpose: Unit or dimensionless scale of the returned scalar estimate.
+  boundary: Units must be consistent across branches; software does not infer or convert scientific units.
+
+- name: contrast_direction
+  label: Contrast / direction
+  value_type: textarea
+  required: true
+  purpose: Define subtraction order, comparison direction, reference category, or sign convention where relevant.
+  boundary: Reversing a contrast changes sign and can change the scientific interpretation even when the absolute magnitude is unchanged.
+
+- name: analysis_unit
+  label: Analysis unit and aggregation
+  value_type: textarea
+  required: true
+  purpose: State whether the scalar is built from samples, fixations/events, trials, participants, condition means, or another aggregation.
+  boundary: Changing weighting or aggregation can change the estimand even when variable names remain unchanged.
+
+- name: population_denominator
+  label: Population / denominator
+  value_type: textarea
+  required: true
+  purpose: Define which observations or units are eligible to contribute to the endpoint before specification-specific processing.
+  boundary: Silent denominator changes make across-specification estimates non-comparable.
+
+- name: missingness_policy
+  label: Missing / unavailable endpoint inputs
+  value_type: textarea
+  required: true
+  purpose: State how missing or unavailable inputs are represented before the endpoint calculation.
+  boundary: Missing values must not be silently converted to zero or removed without the declared rule.
+
+- name: nonfinite_policy
+  label: Non-finite endpoint policy
+  value_type: textarea
+  required: true
+  purpose: State whether NaN or infinity is considered an endpoint-contract failure and how that failure remains visible.
+  boundary: run_specs() float-coerces endpoint outputs but does not itself reject NaN or infinity.
+
+- name: transformation
+  label: Transformation / scaling
+  value_type: textarea
+  required: false
+  purpose: Record log transforms, normalization, standardization, rate conversion, or other transformations applied to the endpoint.
+  boundary: A transformation changes the numerical scale and must remain consistent across branches being compared.
+
+- name: scientific_null
+  label: Scientific null / reference value
+  value_type: text
+  required: false
+  purpose: Record the null or reference value when direction or recovery is interpreted relative to one.
+  boundary: GazeAudit does not infer the scientifically meaningful null from the observed estimates.
+
+- name: required_inputs
+  label: Required input fields / objects
+  value_type: textarea
+  required: true
+  purpose: List the processed columns, events, probabilities, durations, conditions, or model outputs the endpoint requires.
+  boundary: A branch missing a required input is an execution/evidence problem, not permission to substitute another endpoint.
+
+- name: interpretation_boundary
+  label: Interpretation boundary
+  value_type: textarea
+  required: true
+  purpose: State what the endpoint does not measure and which broader claims it cannot support on its own.
+  boundary: Endpoint clarity constrains interpretation but does not establish construct validity.
