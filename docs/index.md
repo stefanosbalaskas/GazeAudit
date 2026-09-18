@@ -75,6 +75,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Preserve source, units, mapping, and transformation provenance | [Data mapping provenance](guides/data-mapping-provenance/) |
 | Look up a structural-QC issue or diagnostic detail code | [Structural QC Issue Clinic](reference/qc-issue-clinic/) |
 | Triage a `review` state without automatic exclusion | [Structural-QC triage](guides/structural-qc-triage/) |
+| Design a readiness policy with no hidden threshold defaults | [Readiness Policy Design Center](readiness-policy/) |
+| Practise primary/alternative readiness policy consequences | [Readiness policy design](examples/readiness-policy-design/) |
 | Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
 | Practise auditing a changed mapping without rewriting history | [Mapping change audit](examples/data-mapping-change-audit/) |

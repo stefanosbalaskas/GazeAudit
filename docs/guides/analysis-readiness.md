@@ -8,6 +8,8 @@ kicker: Guide
 
 GazeAudit can turn structural QC findings into an **auditable readiness policy**, without pretending that one package-wide threshold defines a scientifically valid eye-tracking dataset.
 
+For policy design before code, use the [Readiness Policy Design Center]({{ '/docs/readiness-policy/' | relative_url }}). For methodological guidance on rationale sources, timing, trial/participant scope, policy comparison, denominator governance, and reporting, use [Design and audit readiness policies]({{ '/docs/guides/readiness-policy-design/' | relative_url }}).
+
 The design is deliberately two-stage:
 
 1. **evaluate and preview** — declare thresholds, summarize participant/trial QC, and inspect the cohort that would remain;

@@ -148,6 +148,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Use one synthetic table to trigger all five issue families and all ten current detail-code types, then practise diagnosis, decision recording, rerun scope, reporting, and limitations.</p>
     <p><a href="all-structural-qc-issues/">All structural-QC issues →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">23</div>
+    <h3>Design a readiness policy before filtering</h3>
+    <p>Compare primary and alternative synthetic threshold policies, preserve trial/participant denominators, and translate policy-relative readiness into bounded reporting.</p>
+    <p><a href="readiness-policy-design/">Readiness policy design →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -218,6 +224,12 @@ Compare before/after mapping records for source-column renames, corrected export
 Exercise all five current issue families and all ten diagnostic detail-code types in one deterministic table. The example keeps row counts, group counts, issue families, and diagnostic records distinct and includes bounded Methods/Results/limitations wording.
 
 **Use this when:** `status == "review"` is clear but you want to understand exactly how the individual issue/detail codes behave before triaging a real dataset.
+
+## [Readiness policy design](readiness-policy-design/)
+
+Declare a synthetic primary and alternative readiness policy, reproduce their trial- and participant-scope cohort consequences, and practise reporting the policy/status/denominator without treating teaching cutoffs as recommendations.
+
+**Use this when:** structural QC is understood and you need to learn how a declared readiness policy changes cohort retention before any actual filtering step.
 
 ## [Study preflight](study-preflight/)
 

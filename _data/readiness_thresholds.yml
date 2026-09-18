@@ -1,0 +1,86 @@
+- name: max_coordinate_issue_fraction
+  label: Maximum coordinate-issue fraction
+  value_type: fraction
+  scope: trial + participant
+  comparator: "≤"
+  metric: coordinate_issue_fraction
+  description: Maximum fraction of rows with a non-finite mapped x or y coordinate.
+  interpretation: A trial or participant unit fails when its coordinate-issue fraction is greater than the declared limit.
+  boundary: The package does not supply or recommend a universal acceptable fraction.
+  input_step: "0.01"
+
+- name: max_timestamp_issue_fraction
+  label: Maximum timestamp-issue fraction
+  value_type: fraction
+  scope: trial + participant
+  comparator: "≤"
+  metric: timestamp_issue_fraction
+  description: Maximum fraction of rows with a non-finite mapped timestamp.
+  interpretation: A trial or participant unit fails when its timestamp-issue fraction is greater than the declared limit.
+  boundary: Missing or infinite timestamps are not equivalent to time zero, and the package does not choose a universal limit.
+  input_step: "0.01"
+
+- name: max_identifier_issue_fraction
+  label: Maximum identifier-issue fraction
+  value_type: fraction
+  scope: trial + participant
+  comparator: "≤"
+  metric: identifier_issue_fraction
+  description: Maximum fraction of rows missing the mapped participant or trial identifier.
+  interpretation: A trial or participant unit fails when its identifier-issue fraction is greater than the declared limit.
+  boundary: The threshold does not authorize inventing missing participant or trial identifiers.
+  input_step: "0.01"
+
+- name: max_duplicate_timestamp_fraction
+  label: Maximum duplicate-timestamp fraction
+  value_type: fraction
+  scope: trial + participant
+  comparator: "≤"
+  metric: duplicate_timestamp_fraction
+  description: Maximum fraction of rows participating in a repeated finite participant × trial × timestamp key.
+  interpretation: A trial or participant unit fails when its duplicate-timestamp fraction is greater than the declared limit.
+  boundary: Equal timestamps are a representation condition, not automatic proof of duplicated scientific observations.
+  input_step: "0.01"
+
+- name: max_flagged_trial_fraction
+  label: Maximum flagged-trial fraction
+  value_type: fraction
+  scope: participant
+  comparator: "≤"
+  metric: flagged_trial_fraction
+  description: Maximum fraction of a participant's trial units that fail the active trial-level readiness rules.
+  interpretation: Participant evaluation uses the fraction of trial units that fail the currently declared trial-level rules.
+  boundary: This is downstream of the active trial policy; changing trial rules can change the flagged-trial fraction.
+  input_step: "0.01"
+
+- name: min_rows_per_trial
+  label: Minimum rows per trial
+  value_type: integer
+  scope: trial
+  comparator: "≥"
+  metric: n_rows
+  description: Minimum number of rows required in each participant × trial unit.
+  interpretation: A trial unit fails when its row count is below the declared minimum.
+  boundary: Row count is not a device-independent duration or sampling-quality measure.
+  input_step: "1"
+
+- name: min_trials_per_participant
+  label: Minimum trials per participant
+  value_type: integer
+  scope: participant
+  comparator: "≥"
+  metric: n_trials
+  description: Minimum number of trial units required for each participant.
+  interpretation: A participant unit fails when its trial count is below the declared minimum.
+  boundary: A minimum trial count must come from the study design or analysis rationale, not from this software.
+  input_step: "1"
+
+- name: require_monotonic_time
+  label: Require monotonic finite time
+  value_type: boolean
+  scope: trial + participant
+  comparator: required
+  metric: decreasing_time / decreasing_time_trials
+  description: Require finite timestamps not to decrease in observed row order within trial units.
+  interpretation: When active, a trial fails if finite time decreases; a participant fails if any of its trial units has decreasing finite time.
+  boundary: Activating this rule does not imply that sorting is the appropriate repair for a decreasing-time condition.

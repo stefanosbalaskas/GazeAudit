@@ -43,6 +43,7 @@ The website is organised by research task rather than only by modules:
 | map an existing gaze/fixation table into the canonical GazeStudy contract | [Data Contract & Schema Mapping Center](https://stefanosbalaskas.github.io/GazeAudit/docs/data-contract/) |
 | preserve source/mapping/unit/transformation provenance | [Data mapping provenance guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/data-mapping-provenance/) |
 | interpret and triage structural-QC review flags | [Structural QC Issue Clinic](https://stefanosbalaskas.github.io/GazeAudit/docs/reference/qc-issue-clinic/) |
+| declare readiness thresholds and preview cohort impact before filtering | [Readiness Policy Design Center](https://stefanosbalaskas.github.io/GazeAudit/docs/readiness-policy/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
 | browse worked examples by data context and methodological focus | [Example catalog](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/catalog/) |
 | adapt a teaching example to a real study without inheriting demonstration values | [Adapt examples to your study](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/adapt-examples-to-study/) |
