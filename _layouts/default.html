@@ -60,6 +60,7 @@
   {% if page.page_type == 'planner' %}<link rel="stylesheet" href="{{ '/assets/css/planner.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'example-catalog' %}<link rel="stylesheet" href="{{ '/assets/css/example-catalog.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'data-contract' %}<link rel="stylesheet" href="{{ '/assets/css/data-contract.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'qc-issue-clinic' %}<link rel="stylesheet" href="{{ '/assets/css/qc-issue-clinic.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -96,6 +97,7 @@
               <a href="{{ '/docs/' | relative_url }}">Documentation</a>
               <a href="{{ '/docs/documentation-map/' | relative_url }}">Documentation compass</a>
               <a href="{{ '/docs/data-contract/' | relative_url }}">Data contract</a>
+              <a href="{{ '/docs/reference/qc-issue-clinic/' | relative_url }}">QC issue clinic</a>
               <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
               <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
               <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
@@ -199,6 +201,7 @@
             <a href="{{ '/docs/' | relative_url }}">Documentation hub</a>
             <a href="{{ '/docs/documentation-map/' | relative_url }}">Documentation compass</a>
             <a href="{{ '/docs/data-contract/' | relative_url }}">Data contract & schema mapping</a>
+            <a href="{{ '/docs/reference/qc-issue-clinic/' | relative_url }}">Structural QC issue clinic</a>
             <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
@@ -219,6 +222,7 @@
             <a href="{{ '/docs/guides/map-your-table/' | relative_url }}">Map your table</a>
             <a href="{{ '/docs/guides/data-mapping-provenance/' | relative_url }}">Data mapping provenance</a>
             <a href="{{ '/docs/guides/data-onboarding/' | relative_url }}">Data onboarding</a>
+            <a href="{{ '/docs/guides/structural-qc-triage/' | relative_url }}">Structural QC triage</a>
             <a href="{{ '/docs/guides/analysis-readiness/' | relative_url }}">Analysis readiness</a>
             <a href="{{ '/docs/guides/aoi-uncertainty/' | relative_url }}">AOI uncertainty</a>
             <a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification spaces</a>
@@ -234,6 +238,7 @@
             <a href="{{ '/docs/examples/first-real-audit/' | relative_url }}">First real audit example</a>
             <a href="{{ '/docs/examples/data-contract-valid-invalid/' | relative_url }}">Data contract cases</a>
             <a href="{{ '/docs/examples/data-mapping-change-audit/' | relative_url }}">Mapping change audit</a>
+            <a href="{{ '/docs/examples/all-structural-qc-issues/' | relative_url }}">All structural QC issues</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
             <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
             <a href="{{ '/docs/examples/decision-to-report/' | relative_url }}">Decision-to-report example</a>
@@ -373,5 +378,6 @@
   {% if page.page_type == 'planner' %}<script src="{{ '/assets/js/planner.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'example-catalog' %}<script src="{{ '/assets/js/example-catalog.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'data-contract' %}<script src="{{ '/assets/js/data-contract.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'qc-issue-clinic' %}<script src="{{ '/assets/js/qc-issue-clinic.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>
