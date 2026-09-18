@@ -211,6 +211,12 @@ Move from completed robustness outputs to bounded scientific interpretation. The
 
 For a side-by-side worked comparison, use the [result-pattern reporting example](../examples/result-patterns/).
 
+### [Claim-boundary reporting](claim-boundary-reporting/)
+
+Move from structural-QC, readiness, robustness, sensitivity, or frozen validation evidence to bounded manuscript language by identifying the evidence object, preserving its denominator, separating runtime status from researcher interpretation, and attaching the correct limitation.
+
+Use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}) for searchable copy-ready contracts and the [Reporting-language rewrite]({{ '/docs/examples/reporting-language-rewrite/' | relative_url }}) exercise for overclaim repairs.
+
 ### [Reporting robustness](reporting-robustness/)
 
 Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
