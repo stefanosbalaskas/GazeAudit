@@ -186,6 +186,16 @@ search_keywords: useful query terms here
 
 Choose a stable permalink. Search keywords should include likely task language and exact public terms where useful; do not stuff unrelated keywords.
 
+The shared site layout also uses `search_category` to expose a compact **page-intent cue** for core documentation types:
+
+- `Example` → **Learn**;
+- `Guide` or `Workflow` → **Do**;
+- `Reference` → **Look up**;
+- `Article` → **Understand**;
+- `Case study` or `Evidence` → **Evidence**.
+
+Choose the category that matches the page's dominant purpose. Do not select a category merely to obtain a preferred visual badge.
+
 ## 12. Link instead of duplicating authority
 
 Before copying a definition, command, outcome, or workflow rule into another page, ask whether a single authoritative home already exists.
