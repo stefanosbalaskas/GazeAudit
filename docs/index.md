@@ -71,6 +71,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Goal | Recommended page |
 |---|---|
 | Set up Python, choose extras, and verify the installed environment | [Install & environment center](install/) |
+| Map my existing table into the canonical GazeStudy contract | [Data Contract & Schema Mapping Center](data-contract/) |
+| Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
 | Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
 | Find the right guide, example, reference, or evidence page quickly | [Find information fast](guides/find-information-fast/) |
@@ -96,7 +98,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Run a software-only installation smoke check | [Install → verify → first import](examples/install-smoke-check/) |
 | Build and export a transparent audit route from study conditions | [Audit planner](planner/) |
 | Map a research question to methods, public functions, examples, plots, and evidence | [Method explorer](methods/) |
-| Map a vendor table and inspect structural QC | [Data onboarding and structural preflight](guides/data-onboarding/) |
+| Map a vendor table into GazeStudy | [Map your table](guides/map-your-table/) |
+| Inspect structural QC after mapping | [Data onboarding and structural preflight](guides/data-onboarding/) |
 | Declare participant/trial readiness policies and preview cohort impact | [Analysis-readiness governance](guides/analysis-readiness/) |
 | Browse reproducible code-generated figures | [Plot gallery](plots/) |
 | Run one complete robustness audit | [End-to-end robustness example](examples/end-to-end-robustness/) |
@@ -176,6 +179,7 @@ The examples use synthetic data unless a page explicitly points to a frozen real
 
 - [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) — five-stage synthetic project from declared route through audit, interpretation, peer-review amendment, separate endpoint record, and final handoff.
 - [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) — synthetic declared/valid/successful denominator accounting, technical failure preservation, causal repair, same-branch rerun, and reconciliation.
+- [Valid, invalid, and reviewable tables](examples/data-contract-valid-invalid/) — learn which schema conditions fail construction and which remain visible as structural-review evidence.
 - [First real audit](examples/first-real-audit/) — CSV-oriented project template with structural-QC provenance, complete specification execution, and saved robustness tables.
 - `python examples/study_preflight.py` — inspect a deliberately flagged canonical study before downstream analysis.
 - [End-to-end robustness audit](examples/end-to-end-robustness/) — canonical study → declared specification space → complete execution → stability and sensitivity diagnostics.
