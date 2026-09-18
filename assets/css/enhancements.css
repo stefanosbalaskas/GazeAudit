@@ -430,3 +430,76 @@
     outline-offset: 2px;
   }
 }
+
+
+/* Page-level documentation intent */
+.page-intent-cue {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem .7rem;
+  align-items: center;
+  margin: -.35rem 0 1rem;
+  padding: .65rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.page-intent-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.65rem;
+  padding: .2rem .48rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-solid);
+  color: var(--text);
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.page-intent-note {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.page-intent-cue a {
+  flex: 0 0 auto;
+  font-weight: 750;
+}
+
+.page-intent-cue:focus-within {
+  border-color: var(--accent);
+}
+
+@media (max-width: 620px) {
+  .page-intent-cue {
+    display: grid;
+    align-items: start;
+  }
+
+  .page-intent-badge {
+    width: max-content;
+  }
+
+  .page-intent-cue a {
+    width: max-content;
+  }
+}
+
+@media (forced-colors: active) {
+  .page-intent-cue,
+  .page-intent-badge {
+    border-color: CanvasText;
+  }
+
+  .page-intent-cue:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
