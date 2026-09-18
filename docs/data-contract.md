@@ -192,7 +192,7 @@ The generated JSON uses a small documentation schema:
 }
 ```
 
-The record is descriptive. It does not certify that the mapping is scientifically correct, and it does not hash or inspect your data. If source identity must be immutable, record a project-controlled checksum or persistent dataset identifier in `source_id`.
+The record is descriptive. It does not certify that the mapping is scientifically correct, and it does not hash or inspect your data. Its machine-readable structure is governed by the [data-mapping record JSON Schema]({{ '/assets/data-mapping-record.schema.json' | relative_url }}). If source identity must be immutable, record a project-controlled checksum or persistent dataset identifier in `source_id`.
 
 Continue to [Record data-mapping provenance]({{ '/docs/guides/data-mapping-provenance/' | relative_url }}) for the governance rules and [Mapping change audit]({{ '/docs/examples/data-mapping-change-audit/' | relative_url }}) for a worked comparison of harmless renames versus substantive transformations.
 
