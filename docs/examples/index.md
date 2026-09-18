@@ -107,6 +107,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <p>Create an isolated environment, install the public release, verify package identity, check representative imports, inspect one signature, and record the resolved environment.</p>
     <p><a href="install-smoke-check/">Install smoke check →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">17</div>
+    <h3>Route one topic by reader intent</h3>
+    <p>Follow one synthetic robustness question through Learn → Do → Look up → Understand without collapsing example, guide, reference, and explanation into one page.</p>
+    <p><a href="documentation-intent-routing/">Documentation intent routing →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
