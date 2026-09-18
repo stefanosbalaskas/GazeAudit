@@ -142,6 +142,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Compare column renames, corrected exports, unit and coordinate conversions, changed trial semantics, and scientific exclusions without rewriting the earlier record.</p>
     <p><a href="data-mapping-change-audit/">Mapping change audit →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">22</div>
+    <h3>Exercise every structural-QC issue family</h3>
+    <p>Use one synthetic table to trigger all five issue families and all ten current detail-code types, then practise diagnosis, decision recording, rerun scope, reporting, and limitations.</p>
+    <p><a href="all-structural-qc-issues/">All structural-QC issues →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -206,6 +212,12 @@ Use a synthetic table to see exactly which conditions stop `GazeStudy` construct
 Compare before/after mapping records for source-column renames, corrected exports, timestamp conversion, coordinate conversion, changed trial semantics, and reviewer-driven exclusions.
 
 **Use this when:** a canonical table or mapping has changed and you need to decide which provenance, structural-preflight, and downstream records must be rebuilt without erasing the earlier analysis history.
+
+## [All structural-QC issues in one synthetic table](all-structural-qc-issues/)
+
+Exercise all five current issue families and all ten diagnostic detail-code types in one deterministic table. The example keeps row counts, group counts, issue families, and diagnostic records distinct and includes bounded Methods/Results/limitations wording.
+
+**Use this when:** `status == "review"` is clear but you want to understand exactly how the individual issue/detail codes behave before triaging a real dataset.
 
 ## [Study preflight](study-preflight/)
 
