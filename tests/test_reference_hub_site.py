@@ -24,6 +24,7 @@ def test_reference_hub_has_directory_route_and_task_lookup() -> None:
     assert "Use Reference when you already know **what you are trying to do**" in text
     for route in (
         "/docs/reference/api-map/",
+        "/docs/reference/api-pathways/",
         "/docs/reference/core-api-inventory/",
         "/docs/reference/cli-reference/",
         "/docs/reference/evidence-vocabulary/",
@@ -113,6 +114,7 @@ def test_reference_routes_are_available_without_navigation_javascript() -> None:
     for route in (
         "/docs/reference/",
         "/docs/reference/api-map/",
+        "/docs/reference/api-pathways/",
         "/docs/reference/cli-reference/",
         "/docs/reference/evidence-vocabulary/",
     ):
