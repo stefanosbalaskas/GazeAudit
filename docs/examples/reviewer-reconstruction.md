@@ -5,6 +5,12 @@ kicker: Example · Review readiness
 permalink: /docs/examples/reviewer-reconstruction/
 search_category: Example
 search_keywords: reviewer reconstruction manuscript readiness archive methods results limitations execution denominator robustness synthetic example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Reviewer reconstruction workflow"
+example_output: "Reconstructed claim path plus missing-evidence diagnosis"
+example_boundary: "The synthetic archive is for review practice, not empirical validation."
 ---
 
 # Reviewer reconstruction worked example
