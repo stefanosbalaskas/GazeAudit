@@ -89,6 +89,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Reuse workflow structure while rebuilding teaching values, endpoints, AOIs, QC rules, specification levels, and evidence claims as study-owned decisions.</p>
     <p><a href="adapt-examples-to-study/">Adapt examples to your study →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">14</div>
+    <h3>Map your table into the canonical data contract</h3>
+    <p>Bind participant, trial, timestamp, x, and y to the real source columns, record units, distinguish hard schema errors from review conditions, and preserve mapping provenance.</p>
+    <p><a href="map-your-table/">Map your table →</a></p>
+  </article>
 </div>
 
 ## Environment setup
@@ -142,6 +148,12 @@ Follow the research record from source data and researcher-owned decisions throu
 Read the files produced by the practical workflow as one evidence bundle: structural QC and fingerprints, every declared specification, the specification curve, effect-stability summaries, and marginal and pairwise sensitivity outputs. The guide separates what each artifact describes from conclusions it cannot establish.
 
 ## Data onboarding
+
+### [Map your table into GazeStudy](map-your-table/)
+
+Translate an existing CSV or pandas table into the vendor-neutral canonical representation without renaming source columns, guessing units, or turning structural observations into silent exclusions. The guide separates constructor failures from preflight review conditions and records the mapping itself as provenance.
+
+For the compact contract and local snippet builder, use the [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}). For synthetic success/failure cases, use [Valid, invalid, and reviewable tables]({{ '/docs/examples/data-contract-valid-invalid/' | relative_url }}).
 
 ### [Data onboarding and structural preflight](data-onboarding/)
 
@@ -248,14 +260,15 @@ Understand the division of responsibility between GazeAudit and Eye-Tracking-BID
 ## A practical sequence
 
 1. [Project starter](project-starter/) — create the study structure.
-2. [Researcher audit checklist](researcher-audit-checklist/) — declare and govern decisions.
-3. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
-4. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
-5. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
-6. [Troubleshooting GazeAudit](troubleshooting/) — diagnose a blocked or failed workflow without rewriting scientific choices.
-7. [Failed-audit recovery](../examples/failed-audit-recovery/) — practise preserving a valid technical failure and reconciling a causal repair.
-8. [Common audit mistakes](common-audit-mistakes/) — diagnose research-record failures before interpretation.
-9. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
+2. [Map your table](map-your-table/) — bind the source columns and units to the canonical data contract.
+3. [Researcher audit checklist](researcher-audit-checklist/) — declare and govern decisions.
+4. [Decision log template](audit-decision-log-template/) — preserve those decisions and amendments.
+5. [First real audit](first-real-audit/) — run the practical CSV-to-evidence path.
+6. [Audit output bundle](audit-output-bundle/) — understand what each artifact establishes.
+7. [Troubleshooting GazeAudit](troubleshooting/) — diagnose a blocked or failed workflow without rewriting scientific choices.
+8. [Failed-audit recovery](../examples/failed-audit-recovery/) — practise preserving a valid technical failure and reconciling a causal repair.
+9. [Common audit mistakes](common-audit-mistakes/) — diagnose research-record failures before interpretation.
+10. [Interpret an audit result](interpret-audit-result/) — separate completeness, direction, magnitude, and unresolved uncertainty.
 10. [Result-pattern example](../examples/result-patterns/) — compare four synthetic evidence patterns and bounded wording.
 11. [Decision-to-report example](../examples/decision-to-report/) — practise bounded interpretation on the deterministic 12-branch exercise.
 12. [Manuscript readiness](manuscript-readiness/) — test whether the claim and evidence can be reconstructed independently.
