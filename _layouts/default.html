@@ -6,6 +6,31 @@
   {% assign docs_revision = site.github.build_revision | default: 'local-build' %}
   {% assign docs_revision_short = docs_revision | slice: 0, 8 %}
   {% assign docs_source_ref = site.github.build_revision | default: 'main' %}
+  {% assign page_intent = '' %}
+  {% assign page_intent_note = '' %}
+  {% case page.search_category %}
+    {% when 'Example' %}
+      {% assign page_intent = 'Learn' %}
+      {% assign page_intent_note = 'Teaching example; adapt the workflow, not demonstration values.' %}
+    {% when 'Guide' %}
+      {% assign page_intent = 'Do' %}
+      {% assign page_intent_note = 'Task guidance; study-specific scientific decisions remain yours.' %}
+    {% when 'Workflow' %}
+      {% assign page_intent = 'Do' %}
+      {% assign page_intent_note = 'Workflow guidance; declare study-specific choices before execution.' %}
+    {% when 'Reference' %}
+      {% assign page_intent = 'Look up' %}
+      {% assign page_intent_note = 'Exact contract or terminology; reference is not a scientific recommendation.' %}
+    {% when 'Article' %}
+      {% assign page_intent = 'Understand' %}
+      {% assign page_intent_note = 'Conceptual explanation; use a guide or example when you need a procedure.' %}
+    {% when 'Case study' %}
+      {% assign page_intent = 'Evidence' %}
+      {% assign page_intent_note = 'Protocol-bound evidence context; outcomes are not universal properties.' %}
+    {% when 'Evidence' %}
+      {% assign page_intent = 'Evidence' %}
+      {% assign page_intent_note = 'Authoritative or bounded evidence; preserve its stated denominator and scope.' %}
+  {% endcase %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
@@ -177,6 +202,7 @@
 
             <p class="nav-label">Guides</p>
             <a href="{{ '/docs/guides/documentation-authoring/' | relative_url }}">Documentation authoring</a>
+            <a href="{{ '/docs/guides/adapt-examples-to-study/' | relative_url }}">Adapt examples to your study</a>
             <a href="{{ '/docs/guides/environment-setup/' | relative_url }}">Environment setup</a>
             <a href="{{ '/docs/guides/project-starter/' | relative_url }}">Project starter</a>
             <a href="{{ '/docs/guides/researcher-audit-checklist/' | relative_url }}">Researcher checklist</a>
@@ -193,6 +219,7 @@
 
             <p class="nav-label">Examples</p>
             <a href="{{ '/docs/examples/documentation-intent-routing/' | relative_url }}">Documentation intent routing</a>
+            <a href="{{ '/docs/examples/example-to-study-handoff/' | relative_url }}">Example → study handoff</a>
             <a href="{{ '/docs/examples/install-smoke-check/' | relative_url }}">Install smoke check</a>
             <a href="{{ '/docs/examples/first-real-audit/' | relative_url }}">First real audit example</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
@@ -241,6 +268,13 @@
         <article class="doc-article">
           <nav class="breadcrumbs" aria-label="Breadcrumb" data-breadcrumbs></nav>
           {% if page.kicker %}<p class="page-kicker">{{ page.kicker }}</p>{% endif %}
+          {% if page_intent != '' %}
+          <div class="page-intent-cue" role="note" aria-label="Documentation intent">
+            <span class="page-intent-badge">{{ page_intent }}</span>
+            <span class="page-intent-note">{{ page_intent_note }}</span>
+            <a href="{{ '/docs/documentation-map/' | relative_url }}">Documentation compass</a>
+          </div>
+          {% endif %}
           <div class="doc-tools" role="group" aria-label="Page tools">
             <span class="doc-tools-context">Development docs{% if site.github.build_revision %} · <code>{{ docs_revision_short }}</code>{% endif %}</span>
             <div class="doc-tools-actions">
