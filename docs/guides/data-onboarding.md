@@ -164,6 +164,8 @@ It intentionally returns `status == "review"` so users can see how issue codes a
 
 ## 10. Inspect actionable row and group diagnostics
 
+If you need to look up a specific issue or detail code, open the [Structural QC Issue Clinic]({{ '/docs/reference/qc-issue-clinic/' | relative_url }}). If you need the full inspection → decision → repair/rerun → reporting procedure, use [Structural-QC triage]({{ '/docs/guides/structural-qc-triage/' | relative_url }}).
+
 Summary counts are useful, but they do not tell you which observations triggered the flag. `study_qc_diagnostics()` returns a deterministic long-form table with stable diagnostic IDs:
 
 ```python
