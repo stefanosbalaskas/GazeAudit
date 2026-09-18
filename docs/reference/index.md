@@ -22,6 +22,7 @@ These pages describe public APIs, installed commands, status vocabulary, softwar
 | I need to know… | Open | What it is authoritative for |
 |---|---|---|
 | which public function fits a task | [API map]({{ '/docs/reference/api-map/' | relative_url }}) | task → public API mapping and bounded purpose |
+| where a public symbol is used in guides/examples/plots/evidence | [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}) | symbol → governed method context with stable deep links |
 | every core public symbol in one compact inventory | [Core API inventory]({{ '/docs/reference/core-api-inventory/' | relative_url }}) | compact public-surface lookup |
 | which command is actually installed and what its boundary is | [CLI reference]({{ '/docs/reference/cli-reference/' | relative_url }}) | console entry points declared by the package |
 | what “declared”, “valid”, “technical failure”, or a frozen outcome label means | [Evidence vocabulary]({{ '/docs/reference/evidence-vocabulary/' | relative_url }}) | terminology and denominator semantics |
@@ -59,6 +60,8 @@ Use the [API map]({{ '/docs/reference/api-map/' | relative_url }}) or [CLI refer
 ## Public API
 
 The [API map]({{ '/docs/reference/api-map/' | relative_url }}) is the practical entry point. It groups the public surface by canonical study representation, structural QC, readiness governance, AOI uncertainty, specification spaces, controlled sensitivity, publication provenance, plotting, BIDS, pymovements, pEYES, and validation-specific tooling.
+
+The [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}) page is the contextual entry point when you already know a symbol. It gives that symbol a stable deep link and connects its governed method family to the corresponding guide, runnable example, visual, and evidence boundary.
 
 The [core API inventory]({{ '/docs/reference/core-api-inventory/' | relative_url }}) is intentionally denser. Use it when you already know the symbol family and need a compact lookup rather than workflow guidance.
 
