@@ -140,12 +140,19 @@ def test_mapping_change_example_is_synthetic_and_preserves_history() -> None:
     for contract in (
         "mapping record itself does not compare data values",
         "Mapping provenance and scientific decision provenance are complementary.",
-        "It cannot decide whether a change is harmless, required, scientifically material, or outcome-informed.",
+        (
+            "It cannot decide whether a change is harmless, required, scientifically "
+            "material, or outcome-informed."
+        ),
         "do not rewrite the old record",
     ):
         assert contract in text
 
-    assert "| scientific exclusion | yes | yes | full affected scientific record + decision provenance |" in text
+    exclusion_row = (
+        "| scientific exclusion | yes | yes | "
+        "full affected scientific record + decision provenance |"
+    )
+    assert exclusion_row in text
 
 
 def test_mapping_provenance_controls_are_accessible_and_responsive() -> None:
