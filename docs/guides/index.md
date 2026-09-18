@@ -83,6 +83,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Choose a dominant reader intent, structure headings and code examples predictably, preserve scientific boundaries, and wire important new routes into governance.</p>
     <p><a href="documentation-authoring/">Documentation authoring standard →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">13</div>
+    <h3>Move from example to real study</h3>
+    <p>Reuse workflow structure while rebuilding teaching values, endpoints, AOIs, QC rules, specification levels, and evidence claims as study-owned decisions.</p>
+    <p><a href="adapt-examples-to-study/">Adapt examples to your study →</a></p>
+  </article>
 </div>
 
 ## Environment setup
