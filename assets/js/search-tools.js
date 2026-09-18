@@ -134,7 +134,7 @@
       const metadata = await response.json();
       if (
         !metadata
-        || metadata.schema !== 'gazeaudit-api-symbol-reference-v1'
+        || metadata.schema !== 'gazeaudit-api-symbol-reference-v2'
         || !Array.isArray(metadata.symbols)
       ) return apiSymbolItems;
 
@@ -142,12 +142,25 @@
         title: symbol.name,
         category: 'API symbol',
         kind: 'Reference',
-        description: symbol.summary || `${symbol.kind} in ${symbol.module}`,
+        description: [
+          symbol.minimal_call,
+          `returns ${symbol.return_annotation || 'unannotated'}`,
+          symbol.summary || `${symbol.kind} in ${symbol.module}`,
+        ].join(' · '),
         keywords: [
           symbol.name,
           symbol.signature,
+          symbol.minimal_call,
+          symbol.return_annotation || '',
           symbol.module,
           symbol.kind,
+          ...(symbol.parameters || []).flatMap((parameter) => [
+            parameter.name,
+            parameter.kind,
+            parameter.annotation || '',
+            parameter.default || '',
+            parameter.required ? 'required' : 'optional',
+          ]),
           ...(symbol.method_ids || []),
         ].join(' '),
         url: `/docs/reference/api-pathways/#${symbol.anchor}`,
