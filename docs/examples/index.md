@@ -97,6 +97,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
   </article>
   <article class="card">
     <div class="card-icon" aria-hidden="true">15</div>
+    <h3>Read a generated call contract</h3>
+    <p>Practise required positional arguments, required keyword-only arguments, all-optional signatures, return annotations, and minimal call shapes without inventing study values.</p>
+    <p><a href="api-call-contracts/">API call contracts →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">16</div>
     <h3>Verify a fresh installation</h3>
     <p>Create an isolated environment, install the public release, verify package identity, check representative imports, inspect one signature, and record the resolved environment.</p>
     <p><a href="install-smoke-check/">Install smoke check →</a></p>
