@@ -33,7 +33,7 @@ Use <a href="guides/troubleshooting/">Troubleshooting GazeAudit</a> to route the
 Use the <a href="reference/">Reference hub</a> for public API contracts, installed CLI commands, evidence/denominator vocabulary, documentation provenance, validation authority, citation, and release identity. The <a href="examples/reference-lookup-workflow/">reference lookup walkthrough</a> shows how to move between those factual references without turning them into scientific decision rules.
 </div>
 
-Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. The search catalog is generated from documentation metadata at build time, so new documented routes do not require a second hand-maintained index.
+Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples, evidence pages, and reference material. Results are grouped by documentation type so the same topic can expose a Guide, Example, Reference, or Evidence authority without implying that one is scientifically preferred. Use [Find information fast](guides/find-information-fast/) for the keyboard controls, filters, query patterns, and navigation boundary.
 
 ## Start here
 
@@ -41,6 +41,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 |---|---|
 | I am unsure what the project should do next | [What should I do next?](guides/what-next/) |
 | Follow one project from planning through final handoff | [Project lifecycle walkthrough](examples/project-lifecycle-walkthrough/) |
+| Find the right guide, example, reference, or evidence page quickly | [Find information fast](guides/find-information-fast/) |
+| Practise search → documentation type → authority | [Search → contract walkthrough](examples/search-to-contract/) |
 | Something failed or the audit is blocked | [Troubleshooting GazeAudit](guides/troubleshooting/) |
 | Practise a failure → repair → rerun workflow | [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) |
 | Apply GazeAudit to my own canonical CSV | [First real audit guide](guides/first-real-audit/) |
