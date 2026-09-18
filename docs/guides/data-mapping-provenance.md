@@ -11,7 +11,7 @@ search_keywords: data mapping provenance manifest source identity units coordina
 
 Use this guide after you know which source columns map to `GazeStudy` and before the mapping becomes an undocumented assumption inside analysis code.
 
-The [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}) can generate a compact JSON record alongside the constructor snippet. That record is intentionally **documentation-side provenance**. It does not become a new GazeAudit runtime object, inspect the source file, or certify the scientific meaning of the mapping.
+The [Data Contract & Schema Mapping Center]({{ '/docs/data-contract/' | relative_url }}) can generate a compact JSON record alongside the constructor snippet. Its structure is governed by the [data-mapping record JSON Schema]({{ '/assets/data-mapping-record.schema.json' | relative_url }}). That record is intentionally **documentation-side provenance**. It does not become a new GazeAudit runtime object, inspect the source file, or certify the scientific meaning of the mapping.
 
 ## 1. Record the source identity you actually control
 
