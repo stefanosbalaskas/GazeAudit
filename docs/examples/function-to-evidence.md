@@ -5,6 +5,12 @@ kicker: Example · Reference
 permalink: /docs/examples/function-to-evidence/
 search_category: Example
 search_keywords: api symbol function deep link example plot evidence boundary run_specs aoi_probabilities read_bids_eyetrack synthetic navigation
+page_type: example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Symbol-to-context navigation pattern"
+example_output: "Function-to-guide-example-visual-evidence route"
+example_boundary: "Linked validation evidence remains protocol-bound."
 ---
 
 # Function → example → evidence

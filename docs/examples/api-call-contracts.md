@@ -5,6 +5,12 @@ kicker: Example · API contracts
 permalink: /docs/examples/api-call-contracts/
 search_category: Example
 search_keywords: api call contract parameters required keyword-only returns minimal call run_specs make_peyes_detector simulate_known_aoi_effect synthetic
+page_type: example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Interface-reading pattern"
+example_output: "Interpreted parameter, return, and minimal-call contracts"
+example_boundary: "Software-call structure does not choose scientific values."
 ---
 
 # Generated API call contracts

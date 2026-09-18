@@ -79,6 +79,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Read generated signatures, source links, imports, and pathway backlinks | [Source-level API guide](guides/read-api-reference/) |
 | Practise signature → source → research-context inspection | [Source-level API inspection](examples/source-api-inspection/) |
 | Practise required arguments, returns, and minimal call shapes | [Generated API call contracts](examples/api-call-contracts/) |
+| Browse every example by data context, focus, output, and boundary | [Example catalog](examples/catalog/) |
+| Practise choosing the right learning example | [Choose the right example](examples/choose-the-right-example/) |
 | Adapt a synthetic workflow without inheriting its teaching values | [Adapt examples to your study](guides/adapt-examples-to-study/) |
 | Practise the example → real-study handoff | [Example → study handoff](examples/example-to-study-handoff/) |
 | Practise symbol → example → evidence-boundary navigation | [Function → evidence walkthrough](examples/function-to-evidence/) |

@@ -6,6 +6,11 @@ page_type: example
 permalink: /docs/examples/reference-lookup-workflow/
 search_category: Example
 search_keywords: reference lookup api cli status denominator valid_if run_specs non finite frozen labels synthetic example
+example_data: "Documentation-only"
+example_focus: "Documentation & API"
+example_reuse: "Reference lookup pattern"
+example_output: "Authoritative API, CLI, denominator, or evidence lookup route"
+example_boundary: "Reference lookup states contracts; it does not choose research decisions."
 ---
 
 # Reference lookup walkthrough

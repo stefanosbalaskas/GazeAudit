@@ -3,8 +3,14 @@ title: First real audit example
 description: Run one practical GazeAudit script on deterministic demo data or a canonical eye-tracking CSV and save structural-QC provenance plus robustness tables.
 kicker: Example · Own data
 permalink: /docs/examples/first-real-audit/
-search_category: Examples
+search_category: Example
 search_keywords: csv own data practical executable tutorial audit qc robustness pipeline output
+page_type: example
+example_data: "Demo or user data"
+example_focus: "Data & QC"
+example_reuse: "Project template"
+example_output: "Structural-QC provenance and robustness tables"
+example_boundary: "Demo choices must be replaced or justified before use on a real study."
 ---
 
 # First real audit example

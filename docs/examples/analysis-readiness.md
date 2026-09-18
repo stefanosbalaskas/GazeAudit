@@ -2,6 +2,13 @@
 title: Analysis-readiness example
 permalink: /docs/examples/analysis-readiness/
 kicker: Example
+search_category: Example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Data & QC"
+example_reuse: "Readiness workflow"
+example_output: "Readiness diagnostics and cohort-impact summary"
+example_boundary: "Teaching workflow; readiness rules remain study-owned."
 ---
 
 # Analysis-readiness example

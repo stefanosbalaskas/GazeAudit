@@ -3,8 +3,14 @@ title: Decision-to-report worked example
 description: Use the deterministic synthetic robustness demo to practice declaring analytical choices, reading the complete 12-specification pattern, and translating it into bounded reporting language.
 kicker: Example · Interpretation
 permalink: /docs/examples/decision-to-report/
-search_category: Examples
+search_category: Example
 search_keywords: worked example interpretation reporting decision log specification robustness sign magnitude manuscript results synthetic audit
+page_type: example
+example_data: "Synthetic"
+example_focus: "Interpretation & reporting"
+example_reuse: "Interpretation workflow"
+example_output: "Bounded reporting language tied to a complete synthetic audit"
+example_boundary: "Synthetic result patterns are not empirical evidence for another study."
 ---
 
 # Decision-to-report worked example

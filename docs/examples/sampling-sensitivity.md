@@ -2,6 +2,13 @@
 title: Sampling sensitivity example
 description: Downsample a synthetic GazeStudy to controlled target rates and inspect endpoint stability.
 kicker: Example · Sensitivity analysis
+search_category: Example
+page_type: example
+example_data: "Synthetic"
+example_focus: "Robustness & sensitivity"
+example_reuse: "Sampling sensitivity workflow"
+example_output: "Endpoint stability across controlled target sampling rates"
+example_boundary: "Synthetic target rates do not define acceptable sampling for another study."
 ---
 
 # Sampling sensitivity example

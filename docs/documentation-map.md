@@ -21,6 +21,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
     <div class="documentation-compass-links">
       <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
       <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+      <a href="{{ '/docs/examples/catalog/' | relative_url }}">Example catalog</a>
       <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
       <a href="{{ '/docs/guides/adapt-examples-to-study/' | relative_url }}">Adapt examples safely</a>
     </div>

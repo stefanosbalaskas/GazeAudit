@@ -3,7 +3,14 @@ title: Study preflight example
 description: Run structural QC, inspect row/group diagnostics, record decisions, and preserve deterministic provenance.
 kicker: Example · Data QC
 permalink: /docs/examples/study-preflight/
+search_category: Example
 search_keywords: preflight StudyQCAudit StudyQCDecision diagnostics provenance fingerprint artifact
+page_type: example
+example_data: "Synthetic"
+example_focus: "Data & QC"
+example_reuse: "Structural-preflight workflow"
+example_output: "Structural QC diagnostics, decision record, and provenance"
+example_boundary: "Structural QC flags are not automatic scientific exclusions."
 ---
 
 # Study preflight example

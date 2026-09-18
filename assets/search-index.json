@@ -31,7 +31,7 @@ layout: null
     {% elsif item.url contains '/docs/workspace/' or item.url contains '/docs/planner/' or item.url contains '/docs/getting-started' or item.url contains '/docs/faq' %}
       {% assign search_kind = 'Start' %}
     {% endif %}
-    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ search_description }} {{ search_kind }} {{ item.url }}{% endcapture %}
+    {% capture search_keywords %}{{ item.search_keywords | default: '' }} {{ item.title }} {{ search_description }} {{ search_kind }} {{ item.url }} {{ item.example_data | default: '' }} {{ item.example_focus | default: '' }} {{ item.example_reuse | default: '' }} {{ item.example_output | default: '' }} {{ item.example_boundary | default: '' }}{% endcapture %}
     {"title":{{ item.title | jsonify }},"category":{{ search_category | jsonify }},"kind":{{ search_kind | jsonify }},"url":{{ item.url | jsonify }},"description":{{ search_description | jsonify }},"keywords":{{ search_keywords | strip | jsonify }}}
     {% assign first_item = false %}
   {% endif %}

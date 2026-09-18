@@ -4,8 +4,13 @@ description: Synthetic peer-review scenarios showing clarification, correction, 
 kicker: Worked revision scenarios
 page_type: example
 permalink: /docs/examples/revision-round-scenarios/
-search_category: Examples
+search_category: Example
 search_keywords: reviewer revision scenarios rebuttal response amendment correction sensitivity endpoint failed branch denominator package synthetic peer review
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Revision routing scenarios"
+example_output: "Scenario-specific clarification, correction, amendment, and handoff routes"
+example_boundary: "Scenario routes are teaching cases, not editorial rules."
 ---
 
 # Revision-round routing scenarios

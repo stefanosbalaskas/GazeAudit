@@ -1,0 +1,19 @@
+---
+layout: null
+permalink: /assets/example-index.json
+---
+[
+{% assign governed_examples = site.pages | where: "search_category", "Example" | sort: "title" %}
+{% for example in governed_examples %}
+  {
+    "title": {{ example.title | jsonify }},
+    "url": {{ example.url | jsonify }},
+    "description": {{ example.description | default: example.title | jsonify }},
+    "data": {{ example.example_data | jsonify }},
+    "focus": {{ example.example_focus | jsonify }},
+    "reuse": {{ example.example_reuse | jsonify }},
+    "output": {{ example.example_output | jsonify }},
+    "boundary": {{ example.example_boundary | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+]

@@ -3,8 +3,14 @@ title: Revision-package quickstart
 description: Synthetic end-to-end quickstart for creating, populating, validating, and handing off a reviewer-revision provenance package with the real GazeAudit CLI.
 kicker: Example · Peer review
 permalink: /docs/examples/revision-package-quickstart/
-search_category: Examples
+search_category: Example
 search_keywords: revision package quickstart reviewer response cli amendment denominator evidence map validate synthetic
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Revision-package workflow"
+example_output: "Created, populated, and structurally validated revision package"
+example_boundary: "Package validity establishes provenance structure, not scientific validity."
 ---
 
 # Revision-package quickstart

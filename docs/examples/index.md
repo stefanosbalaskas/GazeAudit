@@ -8,6 +8,11 @@ kicker: Examples
 
 These examples are intentionally small. Demonstration datasets are **synthetic unless stated otherwise**; project-oriented examples are explicit about which parts must be replaced with study-specific decisions.
 
+<div class="callout tip">
+<strong>Want to browse every governed example?</strong>
+Use the <a href="catalog/">Example catalog</a> to filter by data context and methodological focus. Every example now carries the same contract: data, focus, reusable element, expected output, and evidence boundary. The <a href="choose-the-right-example/">Choose the right example</a> walkthrough shows how to use those fields without turning catalog filtering into method selection.
+</div>
+
 ## Choose by task
 
 <div class="card-grid">
@@ -118,6 +123,12 @@ These examples are intentionally small. Demonstration datasets are **synthetic u
     <h3>Hand an example into a real study safely</h3>
     <p>Separate reusable workflow structure from teaching values, then build a study-owned decision inventory, source mapping, endpoint, specification space, and evidence record.</p>
     <p><a href="example-to-study-handoff/">Example → study handoff →</a></p>
+  </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">19</div>
+    <h3>Choose the right learning example</h3>
+    <p>Use data context, focus, reusable element, expected output, and evidence boundary to choose learning material without treating catalog matches as scientific recommendations.</p>
+    <p><a href="choose-the-right-example/">Choose the right example →</a></p>
   </article>
 </div>
 

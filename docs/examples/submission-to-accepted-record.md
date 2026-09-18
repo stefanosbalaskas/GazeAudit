@@ -3,8 +3,14 @@ title: Submission-to-accepted-record worked example
 description: A synthetic end-to-end revision example that preserves submitted evidence, reviewer-requested amendments, response records, version changes, and the final editor-facing archive as separate temporal layers.
 kicker: Example · Final handoff
 permalink: /docs/examples/submission-to-accepted-record/
-search_category: Examples
+search_category: Example
 search_keywords: submission revision accepted record resubmission reviewer amendment response manifest editor archive synthetic example final handoff
+page_type: example
+example_data: "Synthetic"
+example_focus: "Peer review & publication"
+example_reuse: "Submission-to-handoff workflow"
+example_output: "Temporally separated submitted, amended, and final editor-facing records"
+example_boundary: "Revision chronology preserves provenance; it does not certify scientific correctness."
 ---
 
 # Submission-to-accepted-record worked example
