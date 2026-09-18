@@ -101,6 +101,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Record source identity, semantic mappings, units, coordinate convention, pre-mapping transformations, and the consequences of later mapping changes.</p>
     <p><a href="data-mapping-provenance/">Data mapping provenance →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">16</div>
+    <h3>Triage structural-QC review flags</h3>
+    <p>Move from issue code to row/group diagnostics, source inspection, researcher-owned decisions, representation repair, rerun scope, endpoint dependence, and bounded reporting.</p>
+    <p><a href="structural-qc-triage/">Structural-QC triage →</a></p>
+  </article>
 </div>
 
 ## Environment setup
@@ -170,6 +176,12 @@ The companion [Mapping change audit]({{ '/docs/examples/data-mapping-change-audi
 ### [Data onboarding and structural preflight](data-onboarding/)
 
 Map vendor or analysis tables into `GazeStudy`, inspect structural QC, and separate import/ordering problems from scientific quality decisions before running uncertainty or robustness analyses.
+
+### [Structural-QC triage](structural-qc-triage/)
+
+Use row/group diagnostics to trace each structural flag to source and mapping provenance, classify the condition before deciding, preserve researcher-owned actions, rebuild evidence after a representation repair, and report counts without collapsing row/group denominators.
+
+For exact issue/detail-code lookup, use the [Structural QC Issue Clinic]({{ '/docs/reference/qc-issue-clinic/' | relative_url }}). For a complete synthetic exercise, use [All structural-QC issues in one table]({{ '/docs/examples/all-structural-qc-issues/' | relative_url }}).
 
 ### [Analysis-readiness governance](analysis-readiness/)
 
