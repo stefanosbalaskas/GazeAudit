@@ -44,6 +44,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Find the right guide, example, reference, or evidence page quickly | [Find information fast](guides/find-information-fast/) |
 | Practise search → documentation type → authority | [Search → contract walkthrough](examples/search-to-contract/) |
 | Start from a known function and trace its governed context | [API pathways](reference/api-pathways/) |
+| Read generated signatures, source links, imports, and pathway backlinks | [Source-level API guide](guides/read-api-reference/) |
+| Practise signature → source → research-context inspection | [Source-level API inspection](examples/source-api-inspection/) |
 | Practise symbol → example → evidence-boundary navigation | [Function → evidence walkthrough](examples/function-to-evidence/) |
 | Something failed or the audit is blocked | [Troubleshooting GazeAudit](guides/troubleshooting/) |
 | Practise a failure → repair → rerun workflow | [Failed-audit recovery walkthrough](examples/failed-audit-recovery/) |

@@ -19,6 +19,9 @@ The page is generated from the same `_data/methods.yml` catalog that powers the 
 A pathway tells you where a public function appears in the governed documentation. It does not decide whether the method, threshold, exclusion, endpoint, perturbation, or evidence claim is appropriate for a particular study.
 </div>
 
+{% assign api_source_ref = site.github.build_revision | default: 'main' %}
+<div data-api-pathways data-api-symbol-reference="{{ '/assets/api-symbol-reference.json' | relative_url }}" data-api-source-base="https://github.com/stefanosbalaskas/GazeAudit/blob/{{ api_source_ref }}">
+
 ## Jump by method family
 
 <nav class="api-pathway-jumps" aria-label="API pathway families">
@@ -99,6 +102,22 @@ Each symbol below has a stable fragment identifier. Opening or sharing a symbol 
   </div>
 </section>
 {% endfor %}
+
+</div>
+
+## Source-level details
+
+When JavaScript is available, each governed symbol above is enhanced from the deterministic API metadata artifact with:
+
+- the exact inspected Python signature;
+- function/class kind and source module;
+- repository-relative source file and first source line;
+- the first source-docstring summary;
+- a direct source link pinned to the documentation build revision;
+- a copyable import statement;
+- backlinks to every governed method pathway that uses the symbol.
+
+The static symbol, method-family, guide, example, visual, and evidence-boundary links remain available when JavaScript or metadata loading is unavailable. The generated metadata is verified against the installed package in CI, so a signature/source change cannot silently leave the checked reference stale.
 
 ## How to use a symbol link
 
