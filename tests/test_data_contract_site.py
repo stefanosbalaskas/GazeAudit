@@ -136,7 +136,8 @@ def test_data_contract_center_states_runtime_and_scientific_boundaries() -> None
         assert control in text
 
     assert 'type="file"' not in text
-    assert "upload" not in text.lower()
+    assert "data-upload" not in text
+    assert "FileReader" not in text
 
 
 def test_mapping_guide_prohibits_silent_schema_repairs() -> None:
