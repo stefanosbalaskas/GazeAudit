@@ -58,6 +58,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/reference/qc-issue-clinic/' | relative_url }}">Structural QC Issue Clinic</a>
       <a href="{{ '/docs/readiness-policy/' | relative_url }}">Readiness Policy Design Center</a>
       <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+      <a href="{{ '/docs/sampling-missingness/' | relative_url }}">Sampling & missingness</a>
       <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
       <a href="{{ '/docs/reporting-center/' | relative_url }}">Results & Reporting Center</a>
       <a href="{{ '/docs/endpoint-contract/' | relative_url }}">Endpoint contract</a>
