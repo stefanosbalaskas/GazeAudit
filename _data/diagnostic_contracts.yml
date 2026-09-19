@@ -1,0 +1,104 @@
+- id: specification-curve
+  family: Specification results
+  function: specification_curve
+  question: How are the represented finite endpoint estimates distributed across specifications?
+  input_contract: A non-empty results table containing the chosen estimate column, coercible to finite numeric values.
+  output_fields: ordered copy of all input columns; rows sorted ascending by estimate using stable mergesort
+  interpretation: Read the curve as an ordering of represented specification estimates, preserving branch metadata alongside the endpoint.
+  do_not_infer: Do not treat the ordering as a model ranking, optimization result, posterior distribution, or permission to select the most favourable branch.
+  reporting_template: "Across [N] represented specifications, the ordered endpoint estimates ranged from [min] to [max]; the curve was used to inspect variation rather than choose a preferred pipeline."
+  limitation_template: "The curve describes only the represented finite specifications and does not quantify sampling or posterior uncertainty."
+  api_anchor: api-specification-curve
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/specification-curve-code.svg
+
+- id: effect-stability
+  family: Specification results
+  function: effect_stability
+  question: What are the descriptive location, spread, empirical quantiles, and sign fractions of represented estimates relative to a declared null?
+  input_contract: A non-empty results table with finite endpoint estimates; null defaults in software to 0.0 but must be scientifically justified when interpreted.
+  output_fields: n_specifications, median_estimate, mean_estimate, min_estimate, max_estimate, q025, q975, positive_fraction, negative_fraction, exact_null_fraction, sign_stability
+  interpretation: Separate direction from magnitude; empirical q025/q975 summarize the realised specification estimates and sign_stability is the largest observed sign/null fraction.
+  do_not_infer: q025/q975 are not confidence or credible intervals; sign fractions are not posterior probabilities; the software default null is not a scientific recommendation.
+  reporting_template: "Across [N] represented specifications, estimates ranged from [min] to [max] with median [median]; [positive/negative/null] fractions were [values] relative to the declared null [null]."
+  limitation_template: "These are descriptive across-specification summaries conditional on the declared space, not inferential uncertainty intervals."
+  api_anchor: api-effect-stability
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/specification-curve-code.svg
+
+- id: marginal-sensitivity
+  family: Specification results
+  function: marginal_sensitivity
+  question: Which declared factor levels align most strongly with endpoint variation in the represented specification set?
+  input_contract: Finite endpoint results plus factor-column names present in the results table.
+  output_fields: factor, n_levels, marginal_eta2, level_mean_range; rows sorted by marginal_eta2 then level_mean_range descending
+  interpretation: Use marginal_eta2 and level_mean_range as descriptive screening summaries for where result variation is associated with factor levels.
+  do_not_infer: Marginal eta-squared values are not causal variance shares, can overlap, and need not sum to one when factors are dependent, interacting, incomplete, or unbalanced.
+  reporting_template: "Descriptive marginal sensitivity was largest for [factor], with marginal_eta2 [value] and a level-mean range of [range] in the represented specification set."
+  limitation_template: "Marginal sensitivity is descriptive and does not establish causal attribution or a partition of total scientific uncertainty."
+  api_anchor: api-marginal-sensitivity
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/factor-sensitivity.svg
+
+- id: pairwise-interaction-sensitivity
+  family: Specification results
+  function: pairwise_interaction_sensitivity
+  question: Which factor pairs show the largest non-additive descriptive variation in represented cell means?
+  input_contract: Finite endpoint results plus at least two factor columns for non-empty pairwise output; missing factor columns raise.
+  output_fields: factor_a, factor_b, n_cells, interaction_ratio, max_abs_interaction; fewer than two factors returns an empty table with these columns
+  interpretation: Compare observed cell means with the additive prediction from factor-level means to screen for non-additive specification patterns.
+  do_not_infer: The ratio is not a fitted factorial interaction test, p-value, causal interaction, or exclusive variance decomposition; pairwise ratios can overlap and need not sum to one.
+  reporting_template: "The strongest descriptive pairwise pattern involved [factor A × factor B], with interaction_ratio [value] and maximum absolute non-additive deviation [value]."
+  limitation_template: "Pairwise sensitivity is a screening diagnostic for the represented multiverse and is not an inferential interaction model."
+  api_anchor: api-pairwise-interaction-sensitivity
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/factor-sensitivity.svg
+
+- id: spatial-sensitivity
+  family: Controlled perturbation
+  function: spatial_sensitivity_curve
+  question: How do AOI-related quantities change as the standard-deviation scale of the declared Gaussian gaze-error model is perturbed?
+  input_contract: Finite n×2 points, AOIs, a Gaussian error model, at least one non-negative sd_scale, optional finite non-negative durations, positive draws, and optional deterministic RNG/seed.
+  output_fields: sd_scale, aoi, expected_fixation_count, mean_flip_probability, mean_boundary_risk, and expected_dwell when durations are supplied
+  interpretation: Treat sd_scale as an explicit measurement-error perturbation while the systematic bias remains unchanged unless separately altered outside this curve.
+  do_not_infer: A scaled error model is not an estimate of a different physical tracker or proof that the perturbation values are empirically plausible.
+  reporting_template: "Across declared spatial-error scales [values], [AOI metric] changed from [range], with the perturbation applied to the error-model standard deviation rather than to observed gaze coordinates."
+  limitation_template: "The curve is conditional on the Gaussian error-model family, declared scales, AOIs, Monte Carlo settings, and validation evidence."
+  api_anchor: api-spatial-sensitivity-curve
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/factor-sensitivity.svg
+
+- id: sampling-sensitivity
+  family: Controlled perturbation
+  function: sampling_sensitivity_curve
+  question: How does one finite endpoint change when existing gaze samples are retained nearest to declared lower-rate target grids?
+  input_contract: A time-ordered GazeStudy, at least one finite positive target rate, timestamp unit ms or s, and an endpoint returning one finite scalar.
+  output_fields: target_hz, n_rows, retained_fraction, estimate
+  interpretation: Read target_hz as a controlled representation perturbation; downsample_gaze retains nearest existing samples and does not interpolate gaze coordinates.
+  do_not_infer: The curve does not simulate how another physical eye tracker would have measured the trial and does not estimate device accuracy at the target rate.
+  reporting_template: "The endpoint was evaluated after nearest-sample downsampling to [rates] Hz; retained fractions were [values] and endpoint estimates ranged from [min] to [max]."
+  limitation_template: "Sampling sensitivity describes this deterministic representation perturbation, not a hardware-equivalence experiment."
+  api_anchor: api-sampling-sensitivity-curve
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/sampling-sensitivity-code.svg
+
+- id: missingness-sensitivity
+  family: Controlled perturbation
+  function: missingness_sensitivity_curve
+  question: How does one finite endpoint change as controlled MCAR or blockwise gaze-coordinate missingness is injected?
+  input_contract: A GazeStudy, at least one fraction between 0 and 1, mechanism mcar or block, an endpoint returning one finite scalar, and optional deterministic RNG/seed.
+  output_fields: requested_fraction, mechanism, observed_missing_fraction, n_missing, estimate
+  interpretation: Separate requested injected fraction from observed total missing fraction because pre-existing missingness can contribute to the latter.
+  do_not_infer: MCAR and block mechanisms are benchmark perturbations, not claims that real study missingness follows those mechanisms.
+  reporting_template: "Under controlled [mechanism] missingness fractions [values], observed missingness and the declared endpoint were tracked jointly rather than treating the perturbation as natural missing-data evidence."
+  limitation_template: "The curve is conditional on the synthetic missingness mechanism and does not identify the true mechanism of missing gaze in the study."
+  api_anchor: api-missingness-sensitivity-curve
+  guide_url: /docs/guides/diagnostic-interpretation/
+  example_url: /docs/examples/diagnostic-interpretation/
+  plot_url: /assets/plots/missingness-sensitivity-code.svg
