@@ -59,7 +59,10 @@
     }
 
     const strong = document.createElement('strong');
-    strong.textContent = `Complete ${problems.length} required endpoint field${problems.length === 1 ? '' : 's'}:`;
+    strong.textContent = (
+      `Complete ${problems.length} required endpoint `
+      + `field${problems.length === 1 ? '' : 's'}:`
+    );
     const list = document.createElement('ul');
 
     problems.forEach((problem) => {
