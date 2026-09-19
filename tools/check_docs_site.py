@@ -1150,6 +1150,205 @@ def _verify_execution_state_reference(site_root: Path) -> None:
         )
 
 
+def _verify_diagnostic_contract_reference(
+    site_root: Path,
+    *,
+    baseurl: str,
+) -> None:
+    reference_path = site_root / "assets/diagnostic-contract-reference.json"
+    try:
+        diagnostics = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated diagnostic contract reference: {exc}"
+        ) from exc
+
+    expected_functions = {
+        "specification_curve",
+        "effect_stability",
+        "marginal_sensitivity",
+        "pairwise_interaction_sensitivity",
+        "spatial_sensitivity_curve",
+        "sampling_sensitivity_curve",
+        "missingness_sensitivity_curve",
+    }
+    expected_anchors = {
+        "api-specification-curve",
+        "api-effect-stability",
+        "api-marginal-sensitivity",
+        "api-pairwise-interaction-sensitivity",
+        "api-spatial-sensitivity-curve",
+        "api-sampling-sensitivity-curve",
+        "api-missingness-sensitivity-curve",
+    }
+    allowed_families = {
+        "Specification results",
+        "Controlled perturbation",
+    }
+    required = {
+        "id",
+        "family",
+        "function",
+        "question",
+        "input_contract",
+        "output_fields",
+        "interpretation",
+        "do_not_infer",
+        "reporting_template",
+        "limitation_template",
+        "api_anchor",
+        "guide_url",
+        "example_url",
+        "plot_url",
+    }
+
+    if not isinstance(diagnostics, list) or len(diagnostics) != 7:
+        raise SystemExit(
+            "unexpected diagnostic contract catalog: "
+            f"{type(diagnostics).__name__}, "
+            f"entries={len(diagnostics) if isinstance(diagnostics, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    ids: set[str] = set()
+    functions: set[str] = set()
+    anchors: set[str] = set()
+    family_counts = {
+        "Specification results": 0,
+        "Controlled perturbation": 0,
+    }
+    source = site_root / "docs/diagnostics/index.html"
+
+    for position, item in enumerate(diagnostics):
+        if not isinstance(item, dict):
+            failures.append(f"diagnostic {position}: expected object")
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                f"diagnostic {position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        diagnostic_id = item["id"]
+        if not isinstance(diagnostic_id, str) or not diagnostic_id:
+            failures.append(
+                f"diagnostic {position}: invalid id {diagnostic_id!r}"
+            )
+        elif diagnostic_id in ids:
+            failures.append(
+                f"diagnostic {position}: duplicate id {diagnostic_id!r}"
+            )
+        else:
+            ids.add(diagnostic_id)
+
+        function = item["function"]
+        if not isinstance(function, str) or not function:
+            failures.append(
+                f"diagnostic {position}: invalid function {function!r}"
+            )
+        elif function in functions:
+            failures.append(
+                f"diagnostic {position}: duplicate function {function!r}"
+            )
+        else:
+            functions.add(function)
+
+        anchor = item["api_anchor"]
+        if not isinstance(anchor, str) or not anchor:
+            failures.append(
+                f"diagnostic {position}: invalid api_anchor {anchor!r}"
+            )
+        else:
+            anchors.add(anchor)
+
+        family = item["family"]
+        if family not in allowed_families:
+            failures.append(
+                f"diagnostic {position}: invalid family {family!r}"
+            )
+        else:
+            family_counts[family] += 1
+
+        for field in (
+            "question",
+            "input_contract",
+            "output_fields",
+            "interpretation",
+            "do_not_infer",
+            "reporting_template",
+            "limitation_template",
+        ):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"diagnostic {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+        for field in ("guide_url", "example_url", "plot_url"):
+            reference = item[field]
+            if not isinstance(reference, str) or not reference.startswith("/"):
+                failures.append(
+                    f"diagnostic {position}: invalid {field} {reference!r}"
+                )
+            elif not _resolves(site_root, source, reference, baseurl):
+                failures.append(
+                    f"diagnostic {position}: unresolved "
+                    f"{field} {reference!r}"
+                )
+
+    if functions != expected_functions:
+        failures.append(
+            "diagnostic functions mismatch: "
+            f"expected {sorted(expected_functions)}, got {sorted(functions)}"
+        )
+
+    if anchors != expected_anchors:
+        failures.append(
+            "diagnostic API anchors mismatch: "
+            f"expected {sorted(expected_anchors)}, got {sorted(anchors)}"
+        )
+
+    expected_counts = {
+        "Specification results": 4,
+        "Controlled perturbation": 3,
+    }
+    if family_counts != expected_counts:
+        failures.append(
+            "diagnostic family counts mismatch: "
+            f"expected {expected_counts}, got {family_counts}"
+        )
+
+    if source.is_file():
+        html = source.read_text(encoding="utf-8")
+        rendered = html.count('class="diagnostic-contract-card"')
+        if rendered != len(diagnostics):
+            failures.append(
+                "diagnostic card count mismatch: "
+                f"index={len(diagnostics)}, rendered={rendered}"
+            )
+        for anchor in expected_anchors:
+            if f"#{anchor}" not in html:
+                failures.append(
+                    f"diagnostic center is missing API link for {anchor}"
+                )
+    else:
+        failures.append("diagnostic center is missing from generated site")
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"diagnostic contract reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -1242,6 +1441,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/endpoint-contract/index.html",
         "docs/specification-declaration/index.html",
         "docs/execution-ledger/index.html",
+        "docs/diagnostics/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -1254,6 +1454,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/endpoint-definition/index.html",
         "docs/guides/specification-declaration/index.html",
         "docs/guides/execution-ledger-recovery/index.html",
+        "docs/guides/diagnostic-interpretation/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -1265,6 +1466,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/endpoint-drift-audit/index.html",
         "docs/examples/specification-denominator-audit/index.html",
         "docs/examples/execution-ledger-reconciliation/index.html",
+        "docs/examples/diagnostic-interpretation/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -1297,6 +1499,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/endpoint-contract.css",
         "assets/css/specification-declaration.css",
         "assets/css/execution-ledger.css",
+        "assets/css/diagnostics.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -1309,6 +1512,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/endpoint-contract.js",
         "assets/js/specification-declaration.js",
         "assets/js/execution-ledger.js",
+        "assets/js/diagnostics.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -1324,6 +1528,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/endpoint-contract-reference.json",
         "assets/specification-declaration-reference.json",
         "assets/execution-state-reference.json",
+        "assets/diagnostic-contract-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -1394,6 +1599,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_endpoint_contract_reference(site_root)
     _verify_specification_declaration_reference(site_root)
     _verify_execution_state_reference(site_root)
+    _verify_diagnostic_contract_reference(site_root, baseurl=baseurl)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
