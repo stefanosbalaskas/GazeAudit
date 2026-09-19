@@ -255,6 +255,12 @@ Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue cod
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
 
+## [Declared → valid → successful](specification-denominator-audit/)
+
+Declare eight synthetic combinations, reject two through a fixed pre-execution validity rule, preserve one valid technical failure, and report the execution summary as 5 successful / 6 valid rather than silently shrinking the denominator.
+
+**Use this when:** you need to separate Cartesian declaration, scientific validity, and technical execution outcomes before interpreting a specification curve.
+
 ## [Endpoint drift audit](endpoint-drift-audit/)
 
 Compare nine synthetic endpoint scenarios to decide when a branch preserves the declared scientific quantity and when it changes contrast direction, unit, weighting, outcome family, missingness meaning, or temporal evidence layer.
