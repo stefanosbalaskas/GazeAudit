@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/aoi-uncertainty-reference.json
+---
+{{ site.data.aoi_uncertainty_contracts | jsonify }}
