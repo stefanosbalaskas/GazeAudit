@@ -85,6 +85,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Preserve failures, non-finite endpoints, not-run branches, and repair lineage | [Execution Ledger & Recovery Center](execution-ledger/) |
 | Practise branch vs attempt reconciliation after repairs | [Failure → repair → reconciliation](examples/execution-ledger-reconciliation/) |
 | Interpret specification curves, stability, and sensitivity diagnostics | [Robustness Diagnostics & Sensitivity Interpretation Center](robustness-diagnostics/) |
+| Design controlled sampling and added-missingness perturbations | [Sampling & Missingness Sensitivity Center](sampling-missingness/) |
+| Practise sampling/missingness denominators and reproducibility | [Sampling & missingness design audit](examples/sampling-missingness-design-audit/) |
 | Practise diagnostic interpretation with exact synthetic outputs | [Diagnostic interpretation walkthrough](examples/robustness-diagnostic-walkthrough/) |
 | Declare an independently justified categorical recovery rule | [Conclusion Rule Design Center](conclusion-rule/) |
 | Practise conclusion-rule edge cases and threshold semantics | [Conclusion-rule edge cases](examples/conclusion-rule-edge-cases/) |
