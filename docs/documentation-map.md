@@ -59,6 +59,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/endpoint-contract/' | relative_url }}">Endpoint contract</a>
       <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
       <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
+      <a href="{{ '/docs/diagnostics/' | relative_url }}">Robustness diagnostics</a>
       <a href="{{ '/docs/reference/api-pathways/' | relative_url }}">API pathways</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
     </div>
