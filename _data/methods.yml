@@ -75,6 +75,8 @@
     - run_specs
     - specification_curve
     - effect_stability
+    - marginal_sensitivity
+    - pairwise_interaction_sensitivity
   guide_url: /docs/guides/specification-space/
   guide_label: Specification-space guide
   example_url: /docs/examples/end-to-end-robustness/
@@ -84,7 +86,7 @@
   evidence_url: /docs/case-studies/gazebase-incomplete/
   evidence_label: GazeBase frozen case
   evidence_note: The frozen GazeBase programme stopped at its predeclared completeness gate rather than forcing a robustness conclusion.
-  keywords: robustness multiverse pipeline specification curve effect stability choices gazebase
+  keywords: robustness multiverse pipeline specification curve effect stability marginal pairwise interaction sensitivity choices gazebase
 
 - id: sampling-sensitivity
   phase: Sensitivity
