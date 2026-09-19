@@ -1,0 +1,89 @@
+- id: missingness-mask
+  label: Locate observed coordinate missingness
+  family: Observed missingness
+  function_name: missingness_mask
+  api_anchor: api-missingness-mask
+  question: Which rows currently lack a finite x or y gaze coordinate?
+  operation: Returns a Boolean mask that is true whenever either mapped gaze coordinate is non-finite.
+  input_contract: A GazeStudy with mapped x and y columns.
+  output_contract: One Boolean value per canonical row.
+  randomness: None.
+  preserves: Does not mutate the study or infer why gaze is missing.
+  when_use: Describe the observed representation before adding any synthetic perturbation.
+  when_not: Do not use the mask as an automatic row, trial, or participant exclusion rule.
+  boundary: Missing-coordinate presence is descriptive evidence, not a missing-data mechanism diagnosis.
+
+- id: summarize-missingness
+  label: Summarize observed coordinate missingness
+  family: Observed missingness
+  function_name: summarize_missingness
+  api_anchor: api-summarize-missingness
+  question: How much coordinate missingness is present in the current canonical representation?
+  operation: Counts total rows, rows with either coordinate missing, complete rows, and the total-row missing fraction.
+  input_contract: A GazeStudy; missingness is defined by non-finite x or y.
+  output_contract: n_rows, n_missing, missing_fraction, and n_complete.
+  randomness: None.
+  preserves: Does not impute, interpolate, delete, or classify the cause of missingness.
+  when_use: Establish the observed baseline before controlled missingness perturbation.
+  when_not: Do not interpret the summary as evidence for MCAR, MAR, MNAR, device failure, or participant disengagement.
+  boundary: The summary quantifies the represented loss only.
+
+- id: downsample-gaze
+  label: Downsample the recorded stream
+  family: Sampling perturbation
+  function_name: downsample_gaze
+  api_anchor: api-downsample-gaze
+  question: What representation results when existing samples are retained near a regular lower-rate target grid?
+  operation: Within each participant × trial stream, retains existing rows nearest to a regular target grid and keeps unique source positions.
+  input_contract: Positive finite target_hz, timestamp_unit equal to ms or s, finite non-decreasing timestamps.
+  output_contract: A new GazeStudy containing a subset of existing source rows.
+  randomness: None.
+  preserves: Does not interpolate gaze coordinates and does not mutate the original study.
+  when_use: Stress-test an endpoint against controlled lower-rate representations of the same recorded stream.
+  when_not: Do not claim the output reproduces another physical tracker, sensor noise process, calibration, firmware, or timing jitter.
+  boundary: The function changes representation by row retention; it does not create new observations or simulate hardware.
+
+- id: sampling-sensitivity-curve
+  label: Evaluate a sampling sensitivity curve
+  family: Sampling sensitivity
+  function_name: sampling_sensitivity_curve
+  api_anchor: api-sampling-sensitivity-curve
+  question: How does one common finite scalar endpoint change across declared target sampling representations?
+  operation: Applies downsample_gaze independently at each target rate, evaluates the same endpoint, and records retention plus the estimate.
+  input_contract: A non-empty declared target-rate sequence, one common endpoint, and explicit timestamp unit.
+  output_contract: target_hz, n_rows, retained_fraction, and estimate.
+  randomness: None.
+  preserves: Target-rate order is preserved; endpoint output must be finite.
+  when_use: Controlled one-dimensional sampling sensitivity when the scientific endpoint remains fixed.
+  when_not: Do not call the curve a cross-device validation or treat retained_fraction as achieved hardware fidelity.
+  boundary: Target rates are analytical perturbation labels; the function does not infer the source device's true effective sampling process.
+
+- id: inject-missingness
+  label: Inject controlled gaze missingness
+  family: Missingness perturbation
+  function_name: inject_missingness
+  api_anchor: api-inject-missingness
+  question: How can additional controlled gaze loss be introduced without mutating the original study?
+  operation: Masks x and y on a rounded fraction of currently complete rows using either mcar or block benchmark perturbation.
+  input_contract: Fraction in [0, 1], explicit mcar or block mechanism, and optional deterministic generator/seed.
+  output_contract: A new GazeStudy with additional NaN coordinates and optional reason-column provenance.
+  randomness: Seeded when rng is supplied; equal inputs and seed are reproducible.
+  preserves: Existing missing gaze remains missing; only currently complete rows are candidates for added masking.
+  when_use: Benchmark sensitivity to controlled random or within-stream block loss.
+  when_not: Do not claim mcar or block is the empirical causal mechanism merely because it is used as a perturbation.
+  boundary: The requested fraction applies to currently complete rows, not necessarily to the full-row denominator.
+
+- id: missingness-sensitivity-curve
+  label: Evaluate a missingness sensitivity curve
+  family: Missingness sensitivity
+  function_name: missingness_sensitivity_curve
+  api_anchor: api-missingness-sensitivity-curve
+  question: How does one common finite scalar endpoint change as controlled additional gaze loss increases?
+  operation: For each declared fraction, derives a child seed, injects one perturbation under the chosen mechanism, evaluates the endpoint, and summarizes realized total missingness.
+  input_contract: Non-empty fraction sequence, explicit mcar or block mechanism, one common endpoint, and optional root generator/seed.
+  output_contract: requested_fraction, mechanism, observed_missing_fraction, n_missing, and estimate.
+  randomness: One seeded perturbation per fraction per function call; repeated perturbation distributions require an explicit outer replication design.
+  preserves: Same root seed and inputs reproduce the same curve.
+  when_use: Controlled missingness sensitivity with explicit mechanism and reproducible seed.
+  when_not: Do not interpret a single curve as a sampling distribution, confidence interval, missingness-mechanism test, or imputation analysis.
+  boundary: requested_fraction and observed_missing_fraction can differ because native missingness is preserved and the request is applied only to complete rows.
