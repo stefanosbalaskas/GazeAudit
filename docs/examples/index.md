@@ -178,6 +178,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Separate branch identity from attempt history while preserving a technical failure, non-finite endpoint, valid not-run branch, and successful repair reruns.</p>
     <p><a href="execution-ledger-reconciliation/">Failure → repair → reconciliation →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">28</div>
+    <h3>Interpret robustness diagnostics without overclaiming</h3>
+    <p>Move through finite-estimate validation, specification ordering, effect stability, marginal sensitivity, pairwise sensitivity, plot examples, incomplete execution, and bounded reporting.</p>
+    <p><a href="robustness-diagnostic-walkthrough/">Diagnostic interpretation →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -278,6 +284,12 @@ Declare eight synthetic combinations, reject two through a fixed pre-execution v
 Compare nine synthetic endpoint scenarios to decide when a branch preserves the declared scientific quantity and when it changes contrast direction, unit, weighting, outcome family, missingness meaning, or temporal evidence layer.
 
 **Use this when:** a specification space is technically runnable but you need to confirm that every branch still estimates the same scalar scientific endpoint.
+
+## [Diagnostic interpretation walkthrough](robustness-diagnostic-walkthrough/)
+
+Interpret one deterministic eight-specification result table through specification ordering, effect stability, marginal sensitivity, pairwise sensitivity, reproducible plot routes, an incomplete-execution contrast, and bounded Methods/Results/limitations wording.
+
+**Use this when:** the robustness analysis already ran and you need to understand what each diagnostic literally supports before writing the scientific conclusion.
 
 ## [End-to-end robustness audit](end-to-end-robustness/)
 
