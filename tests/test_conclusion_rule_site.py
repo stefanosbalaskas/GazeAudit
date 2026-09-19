@@ -253,7 +253,7 @@ def test_center_has_no_hidden_scientific_defaults() -> None:
     assert "reference effect and tolerances must be justified independently" in center
     assert "relative_tolerance cannot be used when reference_effect is zero" in js
 
-    assert "require_sign=\${pythonValue(values.require_sign)}" in js
+    assert "require_sign=${pythonValue(values.require_sign)}" in js
     assert "minimum_recovery_fraction=" in js
 
     assert 'value="0.9"' not in center
