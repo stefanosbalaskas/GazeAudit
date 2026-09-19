@@ -166,6 +166,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Distinguish acceptable upstream specification variation from reversed contrasts, unit mismatches, changed aggregation, different outcome families, silent missing-to-zero, and non-finite endpoint evidence.</p>
     <p><a href="endpoint-drift-audit/">Endpoint drift audit →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">26</div>
+    <h3>Preserve declared, valid, and successful denominators</h3>
+    <p>Work through an 8 declared → 6 valid → 5 successful synthetic audit with two predeclared-invalid combinations and one valid technical failure.</p>
+    <p><a href="specification-denominator-audit/">Declared → valid → successful →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
