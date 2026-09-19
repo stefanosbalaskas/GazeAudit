@@ -49,7 +49,7 @@ Two consequences follow:
 1. if the processor or endpoint raises, the exception propagates; `run_specs()` does **not** create a `technical_failure` row for you;
 2. `float(...)` accepts values such as `NaN` and infinity, so `run_specs()` itself does **not** enforce finiteness.
 
-If finiteness is part of the endpoint contract, check it explicitly in the audited wrapper before interpretation. The [failed-audit recovery walkthrough]({{ '/docs/examples/failed-audit-recovery/' | relative_url }}) demonstrates one explicit ledger pattern.
+If finiteness is part of the endpoint contract, check it explicitly in the audited wrapper before interpretation. The [Execution Ledger & Recovery Center]({{ '/docs/execution-ledger/' | relative_url }}) defines the documentation-side execution states and attempt record, while the [failed-audit recovery walkthrough]({{ '/docs/examples/failed-audit-recovery/' | relative_url }}) demonstrates one explicit ledger pattern.
 
 ## Denominator terms
 
