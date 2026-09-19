@@ -163,7 +163,7 @@ Then continue with the [reporting robustness guide]({{ '/docs/guides/reporting-r
 
 ## Worked comparison
 
-For four synthetic patterns that make the differences between complete/stable, magnitude-sensitive, sign-sensitive, and incomplete evidence concrete, use the [result-pattern reporting example]({{ '/docs/examples/result-patterns/' | relative_url }}).
+For four synthetic patterns that make the differences between complete/stable, magnitude-sensitive, sign-sensitive, and incomplete evidence concrete, use the [result-pattern reporting example]({{ '/docs/examples/result-patterns/' | relative_url }}). For a function-by-function walkthrough with exact synthetic stability and sensitivity values plus plot routes, use the [Diagnostic interpretation walkthrough]({{ '/docs/examples/robustness-diagnostic-walkthrough/' | relative_url }}).
 
 ## Interpretation boundary
 
