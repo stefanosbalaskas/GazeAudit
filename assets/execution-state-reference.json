@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/execution-state-reference.json
+---
+{{ site.data.execution_states | jsonify }}
