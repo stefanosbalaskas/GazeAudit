@@ -79,6 +79,12 @@ No. More draws reduce Monte Carlo simulation error under a fixed model. They do 
 
 A `PipelineSpace` is a deterministic declaration of analytical choices and their levels. It can represent detector families, QC rules, AOI approaches, missing-data rules, or other defensible decisions. `run_specs()` executes the valid combinations against one common scalar endpoint.
 
+## Does `run_specs()` reject NaN or infinite endpoint values?
+
+No. `run_specs()` converts the endpoint result with `float(...)`, and Python permits `NaN` and infinity as floating-point values. A non-finite endpoint is therefore not automatically rejected, is not a zero/null effect, and should remain visible in the audit record.
+
+If the declared endpoint contract requires finite estimates, enforce that explicitly in the endpoint or audited wrapper. Use the [Endpoint Definition & Handoff Center]({{ '/docs/endpoint-contract/' | relative_url }}) and [endpoint definition guide]({{ '/docs/guides/endpoint-definition/' | relative_url }}) to record that policy before execution.
+
 ## Is a specification curve a way to choose the best pipeline?
 
 No. The curve is intended to expose how estimates vary across the complete declared decision space. Selecting the most favourable specification after seeing the curve would undermine the robustness audit.
