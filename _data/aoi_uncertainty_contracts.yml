@@ -1,0 +1,87 @@
+- id: error-model
+  title: Measurement-error model
+  source: GaussianGazeErrorModel
+  question: What measurement assumption generates the latent true-position draws?
+  can_say: The fitted or constructed model encodes systematic x/y bias and residual spatial uncertainty under its declared Gaussian assumptions.
+  cannot_say: The model is the uniquely correct physical description of tracker error at every participant, session, location, or time point.
+  reporting: Report validation source, error definition, model family, bias/covariance or radial-error approximation, n_validation, grouping, and known limitations.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-gaussiangazeerrormodel
+
+- id: membership-probability
+  title: Probabilistic AOI membership
+  source: aoi_probabilities()
+  question: Under the declared measurement model, what fraction of latent true-position draws fall inside each AOI?
+  can_say: Each AOI column is a model-conditional marginal membership probability for that observation.
+  cannot_say: The value is model-free certainty that the fixation truly belongs to the AOI.
+  reporting: Report the error model, AOI geometry, draws, RNG strategy, grouping where relevant, and include_outside choice.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-aoi-probabilities
+
+- id: overlap-outside
+  title: Overlap and outside semantics
+  source: aoi_probabilities() / hard_aoi_membership()
+  question: How should overlapping AOIs and the outside column be interpreted?
+  can_say: AOI memberships are marginal; overlapping AOIs can both contain the same latent point, while outside is the probability of belonging to none of the supplied AOIs.
+  cannot_say: AOI columns must sum to one or outside equals one minus the sum of AOI probabilities.
+  reporting: State whether AOIs overlap and whether outside was retained; do not renormalize marginal probabilities into exclusive categories unless that is a separate declared model.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-aoi-probabilities
+
+- id: monte-carlo
+  title: Monte Carlo precision
+  source: aoi_probabilities()
+  question: What does increasing the draw count change?
+  can_say: More draws reduce Monte Carlo simulation error under the same fixed measurement-error model and RNG design.
+  cannot_say: More draws make the underlying error model more scientifically valid or remove model misspecification.
+  reporting: Report draw count and deterministic seed/RNG strategy, and distinguish simulation precision from measurement-model sensitivity.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-aoi-probabilities
+
+- id: boundary-risk
+  title: Hard-versus-probabilistic boundary diagnostics
+  source: compare_hard_probabilistic() / summarize_aoi_risk()
+  question: Where is deterministic AOI assignment most fragile under the declared error model?
+  can_say: Flip probability quantifies model-conditional disagreement with the observed hard membership; boundary risk is highest near a 50/50 membership probability.
+  cannot_say: A high-risk observation is automatically invalid or should be excluded.
+  reporting: Report the descriptive threshold if summarize_aoi_risk() is used and keep any exclusion/retention decision separate.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-compare-hard-probabilistic
+
+- id: expected-endpoints
+  title: Uncertainty-weighted endpoints
+  source: expected_dwell() / expected_fixation_count()
+  question: How can probabilistic membership propagate into dwell or count endpoints?
+  can_say: Durations or event counts are weighted by model-conditional AOI membership probabilities to produce an expected endpoint under the declared model.
+  cannot_say: The weighted endpoint is a direct observation of latent truth or is automatically preferable to a hard-assignment endpoint.
+  reporting: Preserve endpoint units, AOI identity, probability model, duration/event denominator, and hard-versus-probabilistic comparison where scientifically relevant.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/#plot-aoi-probability-profile
+  api_anchor: api-expected-dwell
+
+- id: grouped-coverage
+  title: Grouped measurement models
+  source: GroupedGaussianGazeErrorModel
+  question: How should participant/session/device-specific uncertainty be handled?
+  can_say: A grouped model can assign a declared Gaussian error model to each predeclared group, and every supplied observation must map to a known model key.
+  cannot_say: Missing groups can be silently pooled or mapped to a convenient fallback model.
+  reporting: Report the grouping variable(s), model coverage, validation counts, and how unmapped or missing groups were handled before analysis.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: ""
+  api_anchor: ""
+
+- id: spatial-sensitivity
+  title: Error-model sensitivity
+  source: scale_error_model() / spatial_sensitivity_curve()
+  question: How does the common AOI endpoint respond when the assumed spatial-error magnitude is perturbed?
+  can_say: The controlled curve describes endpoint sensitivity across explicitly declared error-model scaling values.
+  cannot_say: The scaling curve identifies the true tracker precision or validates the base Gaussian model.
+  reporting: Report the base model, scale values, bias/SD scaling choice, draws, seed, endpoint, and interpretation range.
+  guide_path: /docs/guides/aoi-uncertainty/
+  plot_path: /docs/plots/
+  api_anchor: api-spatial-sensitivity-curve
