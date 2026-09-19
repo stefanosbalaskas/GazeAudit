@@ -395,6 +395,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 
 **Use this when:** sampling rate is a plausible source of inferential sensitivity.
 
+## [Sampling & missingness design audit](sampling-missingness-design-audit/)
+
+Reproduce exact nearest-row downsampling, deterministic MCAR/block perturbations, native-missingness preservation, requested-versus-observed denominators, one-draw-per-fraction curve semantics, and bounded reporting.
+
+**Use this when:** sampling representation or added gaze loss is a planned controlled sensitivity analysis and you need to keep device simulation, missingness mechanism, and reproducibility claims separate.
+
 ## Suggested learning path
 
 1. Start with the [first real audit](first-real-audit/) when you want to adapt GazeAudit to your own canonical CSV.
