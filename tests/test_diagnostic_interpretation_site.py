@@ -386,7 +386,10 @@ def test_diagnostic_guide_and_example_preserve_interpretation_boundaries() -> No
         "0.7142857143",
         "0.2571428571",
         "0.0285714286",
-        "6 successful / 7 valid" if False else "100",
+        "100 Hz",
+        "50 Hz",
+        "6 rows",
+        "3 rows",
         "Do not infer that real missingness is MCAR.",
         "Reuse boundary",
     ):
