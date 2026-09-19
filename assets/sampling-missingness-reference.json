@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/sampling-missingness-reference.json
+---
+{{ site.data.sampling_missingness_contracts | jsonify }}
