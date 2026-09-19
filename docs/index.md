@@ -84,6 +84,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Practise declared → valid → successful denominator accounting | [Declared → valid → successful](examples/specification-denominator-audit/) |
 | Preserve failures, non-finite endpoints, not-run branches, and repair lineage | [Execution Ledger & Recovery Center](execution-ledger/) |
 | Practise branch vs attempt reconciliation after repairs | [Failure → repair → reconciliation](examples/execution-ledger-reconciliation/) |
+| Interpret specification summaries and controlled perturbation curves | [Robustness Diagnostics & Sensitivity Center](diagnostics/) |
+| Practise exact diagnostic outputs and interpretation boundaries | [Diagnostic interpretation](examples/diagnostic-interpretation/) |
 | Practise detecting endpoint drift across specifications | [Endpoint drift audit](examples/endpoint-drift-audit/) |
 | Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
