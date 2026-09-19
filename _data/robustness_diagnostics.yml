@@ -1,0 +1,77 @@
+- id: execution-completeness
+  title: Execution completeness
+  question: Is the declared valid denominator fully represented before robustness summaries are interpreted?
+  source: execution ledger + specification declaration
+  output_kind: prerequisite
+  key_fields: declared count; valid count; successful count; failure/not-run/non-finite states
+  plot_id: ""
+  api_anchor: ""
+  can_answer: Whether robustness diagnostics have a complete valid execution denominator.
+  cannot_answer: Whether the observed endpoint is scientifically important or whether a missing branch would have changed the conclusion.
+  next_path: /docs/execution-ledger/
+  reporting: Report successful / valid first and preserve every unresolved valid branch state.
+
+- id: specification-curve
+  title: Specification curve
+  question: How does the common endpoint vary across successfully represented valid specifications?
+  source: specification_curve()
+  output_kind: ordered branch table
+  key_fields: spec_id; declared factor columns; estimate
+  plot_id: specification-curve
+  api_anchor: api-specification-curve
+  can_answer: The observed ordering, range, sign changes, clusters, and branch metadata across represented estimates.
+  cannot_answer: Which specification is scientifically best, whether an estimate is statistically significant, or whether missing branches can be ignored.
+  next_path: /docs/plots/#plot-specification-curve
+  reporting: Describe the full represented range and branch denominator before discussing factor patterns.
+
+- id: effect-stability
+  title: Effect stability summary
+  question: How dispersed are the represented endpoint estimates and how often do they fall above, below, or exactly at the declared null?
+  source: effect_stability()
+  output_kind: descriptive summary
+  key_fields: n_specifications; median_estimate; mean_estimate; min_estimate; max_estimate; q025; q975; positive_fraction; negative_fraction; exact_null_fraction; sign_stability
+  plot_id: specification-curve
+  api_anchor: api-effect-stability
+  can_answer: Descriptive magnitude spread and sign concentration across the represented specification estimates.
+  cannot_answer: Confidence intervals, posterior probabilities, statistical significance, or universal robustness.
+  next_path: /docs/guides/reporting-robustness/
+  reporting: Call q025/q975 empirical specification quantiles and sign fractions descriptive branch proportions.
+
+- id: marginal-sensitivity
+  title: Marginal factor sensitivity
+  question: Which declared factor levels align most strongly with observed endpoint variation?
+  source: marginal_sensitivity()
+  output_kind: descriptive factor table
+  key_fields: factor; n_levels; marginal_eta2; level_mean_range
+  plot_id: factor-sensitivity
+  api_anchor: ""
+  can_answer: Which declared factor has the largest descriptive between-level alignment with endpoint variation.
+  cannot_answer: Causal attribution, unique variance decomposition, or a set of shares that must sum to one.
+  next_path: /docs/plots/#plot-factor-sensitivity
+  reporting: Describe factors as associated with or aligned with variation, not as causing a percentage of uncertainty.
+
+- id: pairwise-sensitivity
+  title: Pairwise non-additive sensitivity
+  question: Which declared factor pairs show the strongest descriptive departure from an additive specification pattern?
+  source: pairwise_interaction_sensitivity()
+  output_kind: descriptive pair table
+  key_fields: factor_a; factor_b; n_cells; interaction_ratio; max_abs_interaction
+  plot_id: ""
+  api_anchor: ""
+  can_answer: Which factor pair shows the largest descriptive non-additive pattern in the represented branch means.
+  cannot_answer: An inferential interaction effect, p-value, causal interaction, or factorial-model substitute.
+  next_path: /docs/guides/reporting-robustness/
+  reporting: Use non-additive descriptive pattern language and report imbalance/incompleteness where relevant.
+
+- id: controlled-sensitivity
+  title: Controlled one-dimensional sensitivity
+  question: How does one common endpoint change as one declared perturbation dimension is varied deliberately?
+  source: spatial_sensitivity_curve() / sampling_sensitivity_curve() / missingness_sensitivity_curve()
+  output_kind: controlled perturbation curve
+  key_fields: perturbation value; endpoint/diagnostic value; preserved endpoint identity
+  plot_id: missingness-sensitivity
+  api_anchor: api-spatial-sensitivity-curve
+  can_answer: The endpoint trajectory across the explicitly declared perturbation values.
+  cannot_answer: What a different physical tracker would have measured, causal effects of missingness, or general robustness outside the perturbation range.
+  next_path: /docs/plots/
+  reporting: State the perturbation values and distinguish controlled representation sensitivity from specification-space choice.
