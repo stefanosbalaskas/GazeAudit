@@ -37,6 +37,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/guides/structural-qc-triage/' | relative_url }}">Structural-QC triage</a>
       <a href="{{ '/docs/guides/readiness-policy-design/' | relative_url }}">Readiness policy design</a>
       <a href="{{ '/docs/guides/claim-boundary-reporting/' | relative_url }}">Claim-boundary reporting</a>
+      <a href="{{ '/docs/guides/endpoint-definition/' | relative_url }}">Endpoint definition</a>
       <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
       <a href="{{ '/docs/guides/troubleshooting/' | relative_url }}">Troubleshooting</a>
     </div>
