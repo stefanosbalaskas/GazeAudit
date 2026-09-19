@@ -9,6 +9,7 @@
   const factorTemplate = form.querySelector('[data-spec-factor-template]');
   const addFactor = form.querySelector('[data-spec-add-factor]');
   const validityMode = form.querySelector('[data-spec-validity-mode]');
+  const validityRule = document.getElementById('spec-validity_rule');
   const clearButton = form.querySelector('[data-spec-clear]');
   const errors = document.querySelector('[data-spec-errors]');
   const status = document.querySelector('[data-spec-status]');
@@ -40,6 +41,17 @@
       const button = card.querySelector('[data-spec-remove-factor]');
       if (button) button.disabled = cards.length === 1;
     });
+  };
+
+  const syncValidityMode = () => {
+    const needsPredicate = validityMode.value === 'predicate_required';
+    validityRule.disabled = !needsPredicate;
+    validityRule.required = needsPredicate;
+
+    if (!needsPredicate) {
+      validityRule.value = '';
+      validityRule.removeAttribute('aria-invalid');
+    }
   };
 
   const parseLevels = (raw, type) => {
@@ -328,6 +340,8 @@
     }
   };
 
+  validityMode.addEventListener('change', syncValidityMode);
+
   addFactor.addEventListener('click', () => {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = factorTemplate.innerHTML.replaceAll(
@@ -381,6 +395,7 @@
     }
 
     validityMode.value = 'all_valid';
+    syncValidityMode();
     nextFactorIndex = 2;
     updateRemoveButtons();
 
@@ -417,5 +432,6 @@
     });
   });
 
+  syncValidityMode();
   updateRemoveButtons();
 })();
