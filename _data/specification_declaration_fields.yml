@@ -1,0 +1,62 @@
+- name: space_name
+  label: Specification-space name
+  value_type: text
+  required: true
+  purpose: Stable project label for the declared analytical decision space.
+  boundary: A name identifies the space but does not justify any factor or level.
+
+- name: scientific_question
+  label: Robustness question
+  value_type: textarea
+  required: true
+  purpose: State what uncertainty or analytical-decision question the specification space is intended to examine.
+  boundary: The space should answer a declared robustness question rather than search for a favourable result.
+
+- name: endpoint_reference
+  label: Endpoint declaration reference
+  value_type: text
+  required: true
+  purpose: Link or project identifier for the endpoint declaration shared by every valid specification.
+  boundary: Referencing an endpoint record does not prove every processor branch actually preserves it.
+
+- name: decision_timing
+  label: Decision timing
+  value_type: text
+  required: true
+  purpose: Record when the factor set, levels, and validity rules were fixed relative to outcome inspection.
+  boundary: Post-result or reviewer-requested additions must remain temporally visible.
+
+- name: validity_mode
+  label: Validity-rule mode
+  value_type: choice
+  required: true
+  purpose: Declare whether every Cartesian combination is scientifically admissible or whether a pre-execution validity predicate is required.
+  boundary: Technical failure after execution is not the same as invalid-before-execution.
+
+- name: validity_rule
+  label: Pre-execution validity rule
+  value_type: textarea
+  required: false
+  purpose: Describe any combinations that must be rejected before execution and why.
+  boundary: Outcome-informed rejection after estimates are visible must not be rewritten as a predeclared validity rule.
+
+- name: reference_specification
+  label: Reference specification
+  value_type: textarea
+  required: false
+  purpose: Record a prespecified reference branch when the study uses one for orientation or comparison.
+  boundary: A reference specification is not automatically scientifically superior to the other valid branches.
+
+- name: failure_policy
+  label: Execution-failure policy
+  value_type: textarea
+  required: true
+  purpose: State how valid branches that raise, return unavailable inputs, or yield non-finite endpoints remain visible in the audit.
+  boundary: Valid technical failures must not silently disappear from the valid denominator.
+
+- name: interpretation_boundary
+  label: Interpretation boundary
+  value_type: textarea
+  required: true
+  purpose: State which decisions or uncertainty dimensions are outside the declared space.
+  boundary: Stability inside the declared space cannot be generalized automatically to choices that were never represented.
