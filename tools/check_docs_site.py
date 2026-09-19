@@ -1150,6 +1150,160 @@ def _verify_execution_state_reference(site_root: Path) -> None:
         )
 
 
+def _verify_robustness_diagnostic_reference(
+    site_root: Path,
+    *,
+    baseurl: str,
+) -> None:
+    reference_path = site_root / "assets/robustness-diagnostic-reference.json"
+    try:
+        diagnostics = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated robustness diagnostic reference: {exc}"
+        ) from exc
+
+    expected_ids = {
+        "execution-completeness",
+        "specification-curve",
+        "effect-stability",
+        "marginal-sensitivity",
+        "pairwise-sensitivity",
+        "controlled-sensitivity",
+    }
+    allowed_kinds = {
+        "prerequisite",
+        "ordered branch table",
+        "descriptive summary",
+        "descriptive factor table",
+        "descriptive pair table",
+        "controlled perturbation curve",
+    }
+    required = {
+        "id",
+        "title",
+        "question",
+        "source",
+        "output_kind",
+        "key_fields",
+        "plot_id",
+        "api_anchor",
+        "can_answer",
+        "cannot_answer",
+        "next_path",
+        "reporting",
+    }
+
+    if not isinstance(diagnostics, list) or len(diagnostics) != 6:
+        raise SystemExit(
+            "unexpected robustness diagnostic catalog: "
+            f"{type(diagnostics).__name__}, "
+            f"entries={len(diagnostics) if isinstance(diagnostics, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    ids: set[str] = set()
+    source_page = site_root / "docs/robustness-diagnostics/index.html"
+
+    for position, item in enumerate(diagnostics):
+        if not isinstance(item, dict):
+            failures.append(
+                f"robustness diagnostic {position}: expected object"
+            )
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                f"robustness diagnostic {position}: "
+                f"missing keys {sorted(missing)}"
+            )
+            continue
+
+        diagnostic_id = item["id"]
+        if not isinstance(diagnostic_id, str) or not diagnostic_id:
+            failures.append(
+                f"robustness diagnostic {position}: "
+                f"invalid id {diagnostic_id!r}"
+            )
+        elif diagnostic_id in ids:
+            failures.append(
+                f"robustness diagnostic {position}: "
+                f"duplicate id {diagnostic_id!r}"
+            )
+        else:
+            ids.add(diagnostic_id)
+
+        if item["output_kind"] not in allowed_kinds:
+            failures.append(
+                f"robustness diagnostic {position}: "
+                f"invalid output_kind {item['output_kind']!r}"
+            )
+
+        for field in (
+            "title",
+            "question",
+            "source",
+            "key_fields",
+            "can_answer",
+            "cannot_answer",
+            "next_path",
+            "reporting",
+        ):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"robustness diagnostic {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+        next_path = item["next_path"]
+        if isinstance(next_path, str):
+            if not next_path.startswith("/"):
+                failures.append(
+                    f"robustness diagnostic {position}: "
+                    f"invalid next_path {next_path!r}"
+                )
+            elif not _resolves(
+                site_root,
+                source_page,
+                next_path,
+                baseurl,
+            ):
+                failures.append(
+                    f"robustness diagnostic {position}: "
+                    f"unresolved next_path {next_path!r}"
+                )
+
+    if ids != expected_ids:
+        failures.append(
+            "robustness diagnostic ids mismatch: "
+            f"expected {sorted(expected_ids)}, got {sorted(ids)}"
+        )
+
+    if not source_page.is_file():
+        failures.append("robustness diagnostics center is missing")
+    else:
+        html = source_page.read_text(encoding="utf-8")
+        rendered = html.count('class="robustness-diagnostic-card"')
+        if rendered != len(diagnostics):
+            failures.append(
+                "robustness diagnostic card count mismatch: "
+                f"index={len(diagnostics)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"robustness diagnostic reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -1242,6 +1396,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/endpoint-contract/index.html",
         "docs/specification-declaration/index.html",
         "docs/execution-ledger/index.html",
+        "docs/robustness-diagnostics/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -1254,6 +1409,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/endpoint-definition/index.html",
         "docs/guides/specification-declaration/index.html",
         "docs/guides/execution-ledger-recovery/index.html",
+        "docs/guides/robustness-diagnostics/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -1265,6 +1421,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/endpoint-drift-audit/index.html",
         "docs/examples/specification-denominator-audit/index.html",
         "docs/examples/execution-ledger-reconciliation/index.html",
+        "docs/examples/robustness-diagnostic-walkthrough/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -1297,6 +1454,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/endpoint-contract.css",
         "assets/css/specification-declaration.css",
         "assets/css/execution-ledger.css",
+        "assets/css/robustness-diagnostics.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -1309,6 +1467,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/endpoint-contract.js",
         "assets/js/specification-declaration.js",
         "assets/js/execution-ledger.js",
+        "assets/js/robustness-diagnostics.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -1324,6 +1483,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/endpoint-contract-reference.json",
         "assets/specification-declaration-reference.json",
         "assets/execution-state-reference.json",
+        "assets/robustness-diagnostic-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -1394,6 +1554,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_endpoint_contract_reference(site_root)
     _verify_specification_declaration_reference(site_root)
     _verify_execution_state_reference(site_root)
+    _verify_robustness_diagnostic_reference(site_root, baseurl=baseurl)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
