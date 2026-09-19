@@ -226,6 +226,19 @@
     }
 
     if (
+      state === 'successful'
+      && (errorType || errorMessage || prior || repair)
+    ) {
+      problems.push({
+        target: fields.errorMessage.id,
+        message: (
+          'Successful execution must not contain an execution error, '
+          + 'prior attempt, or repair reference.'
+        ),
+      });
+    }
+
+    if (
       state === 'technical_failure'
       && !errorType
       && !errorMessage
@@ -253,6 +266,16 @@
         message: (
           'Non-finite endpoint requires NaN, Infinity, +Infinity, '
           + 'or -Infinity.'
+        ),
+      });
+    }
+
+    if (state === 'non_finite_endpoint' && errorType) {
+      problems.push({
+        target: fields.errorType.id,
+        message: (
+          'Non-finite endpoint is an endpoint value state, not an '
+          + 'exception type.'
         ),
       });
     }
@@ -291,7 +314,29 @@
           message: 'Successful repair rerun requires a repair record reference.',
         });
       }
+      if (prior && prior === fields.attempt.value.trim()) {
+        problems.push({
+          target: fields.prior.id,
+          message: (
+            'Prior attempt ID must differ from the new repair-rerun attempt ID.'
+          ),
+        });
+      }
+      if (errorType || errorMessage) {
+        problems.push({
+          target: fields.errorMessage.id,
+          message: (
+            'Successful repair rerun must not retain an active execution error.'
+          ),
+        });
+      }
     }
+
+    const parsedEstimate = (
+      state === 'successful' || state === 'repair_rerun_success'
+        ? Number(estimate)
+        : estimate || null
+    );
 
     const record = {
       schema: 'gazeaudit-execution-attempt-v1',
@@ -303,7 +348,7 @@
       temporal_evidence_layer: fields.layer.value.trim() || null,
       factor_values: factors.values,
       source_software_reference: fields.source.value.trim() || null,
-      estimate: estimate || null,
+      estimate: parsedEstimate,
       error_type: errorType || null,
       error_or_not_run_reason: errorMessage || null,
       prior_attempt_id: prior || null,
