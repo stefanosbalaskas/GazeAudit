@@ -1,0 +1,83 @@
+- id: invalid-before-execution
+  label: Invalid before execution
+  phase: Pre-execution
+  kind: Documentation classification
+  signal: invalid_before_execution
+  valid_denominator: excluded
+  attempted: false
+  estimate_state: not_applicable
+  meaning: A declared combination is rejected by a scientific validity rule fixed before processor or endpoint execution.
+  record: Preserve the full factor combination, the pre-execution rule, its rationale, and declaration timing.
+  next_step: Keep the branch in the declared-space record but outside the valid execution denominator.
+  reporting_template: "[I] of [D] declared combinations were invalid before execution under the predeclared validity rule; [V] combinations remained valid."
+  boundary: Do not use this state retrospectively for a branch that failed technically or produced an inconvenient endpoint.
+
+- id: successful
+  label: Successful execution
+  phase: Execution
+  kind: Documentation classification
+  signal: successful
+  valid_denominator: included
+  attempted: true
+  estimate_state: finite_expected
+  meaning: A valid branch completes the declared processing and endpoint contract and yields an estimate accepted by the surrounding audited workflow.
+  record: Preserve branch identity, attempt identity, factor levels, endpoint reference, estimate, source/software identity, and timing.
+  next_step: Include the represented estimate in the appropriate robustness summaries while retaining the complete valid denominator.
+  reporting_template: "[S] of [V] valid specifications successfully produced the declared endpoint."
+  boundary: Success establishes execution under the declared contract; it does not establish scientific validity, preferred-model status, or robustness by itself.
+
+- id: technical-failure
+  label: Technical failure
+  phase: Execution
+  kind: Documentation classification
+  signal: technical_failure
+  valid_denominator: included
+  attempted: true
+  estimate_state: unavailable
+  meaning: A valid branch is attempted but the processor or endpoint raises before a normal endpoint result can be retained.
+  record: Preserve branch and attempt identity, exception type/message, failing layer, input/software identity, and whether outcomes were already inspected.
+  next_step: Diagnose the causal technical defect; if repaired, rerun the same scientific branch and retain both attempts.
+  reporting_template: "[F] valid specification(s) failed technically and remained in the valid denominator; the original failure record was retained."
+  boundary: Core run_specs() propagates the exception; technical_failure is audit/recovery vocabulary, not a run_specs() enum.
+
+- id: non-finite-endpoint
+  label: Non-finite endpoint
+  phase: Endpoint
+  kind: Documentation classification
+  signal: non_finite_endpoint
+  valid_denominator: included
+  attempted: true
+  estimate_state: non_finite
+  meaning: A valid attempted branch returns NaN or infinity under the endpoint calculation.
+  record: Preserve the exact non-finite value, branch/attempt identity, endpoint inputs relevant to diagnosis, and the declared non-finite policy.
+  next_step: Diagnose empty groups, missing contrasts, zero denominators, upstream non-finite values, or another endpoint-contract problem without converting the value to zero.
+  reporting_template: "[N] valid specification(s) returned a non-finite endpoint and were not interpreted as null effects."
+  boundary: float(...) accepts NaN and infinity, so core run_specs() does not automatically classify this state for you.
+
+- id: not-run
+  label: Not run
+  phase: Execution
+  kind: Documentation classification
+  signal: not_run
+  valid_denominator: included_when_valid
+  attempted: false
+  estimate_state: unavailable
+  meaning: A branch that belongs to the declared record was not attempted for an explicit external or workflow reason.
+  record: Preserve whether the branch was scientifically valid, the reason it was not attempted, timing, and the intended rerun or closure decision.
+  next_step: Do not relabel a valid not-run branch as invalid or successful; resolve it or report the incomplete valid denominator.
+  reporting_template: "[R] valid specification(s) were not run; the reason and resulting incompleteness remained explicit."
+  boundary: Not-run is audit vocabulary, not a package runtime status and not evidence of a null or failed effect.
+
+- id: repair-rerun-success
+  label: Successful repair rerun
+  phase: Recovery
+  kind: Documentation event
+  signal: repair_rerun_success
+  valid_denominator: same_branch
+  attempted: true
+  estimate_state: finite_expected
+  meaning: The same scientifically valid branch is rerun after a causal technical repair and now produces an accepted endpoint.
+  record: Preserve the new attempt ID, prior failed attempt ID, repair record, unchanged scientific branch identity, estimate, and before/after software or representation identity where relevant.
+  next_step: Use the reconciled current branch result for downstream summaries while retaining the historical failure event in the audit trail.
+  reporting_template: "After a technical repair that did not change the scientific branch, the same specification was rerun successfully; the original failure event remained in the execution history."
+  boundary: A successful rerun does not erase the original failure and must not conceal any scientific change introduced during the repair.

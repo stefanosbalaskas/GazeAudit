@@ -990,6 +990,166 @@ def _verify_specification_declaration_reference(site_root: Path) -> None:
         )
 
 
+def _verify_execution_state_reference(site_root: Path) -> None:
+    reference_path = site_root / "assets/execution-state-reference.json"
+    try:
+        states = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated execution state reference: {exc}"
+        ) from exc
+
+    expected_signals = {
+        "invalid_before_execution",
+        "successful",
+        "technical_failure",
+        "non_finite_endpoint",
+        "not_run",
+        "repair_rerun_success",
+    }
+    allowed_phases = {
+        "Pre-execution",
+        "Execution",
+        "Endpoint",
+        "Recovery",
+    }
+    allowed_kinds = {
+        "Documentation classification",
+        "Documentation event",
+    }
+    allowed_denominators = {
+        "excluded",
+        "included",
+        "included_when_valid",
+        "same_branch",
+    }
+    required = {
+        "id",
+        "label",
+        "phase",
+        "kind",
+        "signal",
+        "valid_denominator",
+        "attempted",
+        "estimate_state",
+        "meaning",
+        "record",
+        "next_step",
+        "reporting_template",
+        "boundary",
+    }
+
+    if not isinstance(states, list) or len(states) != 6:
+        raise SystemExit(
+            "unexpected execution state catalog: "
+            f"{type(states).__name__}, "
+            f"entries={len(states) if isinstance(states, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    signals: set[str] = set()
+    ids: set[str] = set()
+
+    for position, item in enumerate(states):
+        if not isinstance(item, dict):
+            failures.append(f"execution state {position}: expected object")
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                f"execution state {position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        state_id = item["id"]
+        if not isinstance(state_id, str) or not state_id:
+            failures.append(
+                f"execution state {position}: invalid id {state_id!r}"
+            )
+        elif state_id in ids:
+            failures.append(
+                f"execution state {position}: duplicate id {state_id!r}"
+            )
+        else:
+            ids.add(state_id)
+
+        signal = item["signal"]
+        if not isinstance(signal, str) or not signal:
+            failures.append(
+                f"execution state {position}: invalid signal {signal!r}"
+            )
+        elif signal in signals:
+            failures.append(
+                f"execution state {position}: duplicate signal {signal!r}"
+            )
+        else:
+            signals.add(signal)
+
+        if item["phase"] not in allowed_phases:
+            failures.append(
+                f"execution state {position}: invalid phase {item['phase']!r}"
+            )
+        if item["kind"] not in allowed_kinds:
+            failures.append(
+                f"execution state {position}: invalid kind {item['kind']!r}"
+            )
+        if item["valid_denominator"] not in allowed_denominators:
+            failures.append(
+                "execution state "
+                f"{position}: invalid denominator {item['valid_denominator']!r}"
+            )
+        if not isinstance(item["attempted"], bool):
+            failures.append(
+                f"execution state {position}: attempted must be boolean"
+            )
+
+        for field in (
+            "label",
+            "estimate_state",
+            "meaning",
+            "record",
+            "next_step",
+            "reporting_template",
+            "boundary",
+        ):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"execution state {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+    if signals != expected_signals:
+        failures.append(
+            "execution state signals mismatch: "
+            f"expected {sorted(expected_signals)}, got {sorted(signals)}"
+        )
+
+    center = site_root / "docs/execution-ledger/index.html"
+    if not center.is_file():
+        failures.append("execution ledger center is missing")
+    else:
+        html = center.read_text(encoding="utf-8")
+        rendered = html.count('class="execution-state-card"')
+        if rendered != len(states):
+            failures.append(
+                "execution state card count mismatch: "
+                f"index={len(states)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"execution state reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -1081,6 +1241,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reporting-center/index.html",
         "docs/endpoint-contract/index.html",
         "docs/specification-declaration/index.html",
+        "docs/execution-ledger/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -1092,6 +1253,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/claim-boundary-reporting/index.html",
         "docs/guides/endpoint-definition/index.html",
         "docs/guides/specification-declaration/index.html",
+        "docs/guides/execution-ledger-recovery/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -1102,6 +1264,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/reporting-language-rewrite/index.html",
         "docs/examples/endpoint-drift-audit/index.html",
         "docs/examples/specification-denominator-audit/index.html",
+        "docs/examples/execution-ledger-reconciliation/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -1133,6 +1296,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/reporting-center.css",
         "assets/css/endpoint-contract.css",
         "assets/css/specification-declaration.css",
+        "assets/css/execution-ledger.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -1144,6 +1308,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/reporting-center.js",
         "assets/js/endpoint-contract.js",
         "assets/js/specification-declaration.js",
+        "assets/js/execution-ledger.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -1158,6 +1323,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/reporting-contract-reference.json",
         "assets/endpoint-contract-reference.json",
         "assets/specification-declaration-reference.json",
+        "assets/execution-state-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -1227,6 +1393,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_reporting_contract_reference(site_root, baseurl=baseurl)
     _verify_endpoint_contract_reference(site_root)
     _verify_specification_declaration_reference(site_root)
+    _verify_execution_state_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")

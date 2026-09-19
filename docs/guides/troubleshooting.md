@@ -153,7 +153,7 @@ print("valid denominator:", len(valid_specs))
 
 Then record the exact failing specification and exception before changing code.
 
-The companion [failed-audit recovery example]({{ '/docs/examples/failed-audit-recovery/' | relative_url }}) shows a synthetic `6 successful / 7 valid` run and a provenance-preserving repair.
+The companion [failed-audit recovery example]({{ '/docs/examples/failed-audit-recovery/' | relative_url }}) shows a synthetic `6 successful / 7 valid` run and a provenance-preserving repair. Use the [Execution Ledger & Recovery Center]({{ '/docs/execution-ledger/' | relative_url }}) when you need a stable documentation-side state vocabulary and linked attempt records across failure, repair, and rerun.
 
 ## 6. Endpoint is non-finite or undefined
 

@@ -172,6 +172,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Work through an 8 declared → 6 valid → 5 successful synthetic audit with two predeclared-invalid combinations and one valid technical failure.</p>
     <p><a href="specification-denominator-audit/">Declared → valid → successful →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">27</div>
+    <h3>Reconcile failure, repair, and rerun history</h3>
+    <p>Separate branch identity from attempt history while preserving a technical failure, non-finite endpoint, valid not-run branch, and successful repair reruns.</p>
+    <p><a href="execution-ledger-reconciliation/">Failure → repair → reconciliation →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -254,6 +260,12 @@ Declare a synthetic primary and alternative readiness policy, reproduce their tr
 Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue codes, and export a compact QC table. The synthetic example deliberately contains one missing coordinate and a repeated timestamp.
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
+
+## [Failure → repair → reconciliation](execution-ledger-reconciliation/)
+
+Follow an eight-branch synthetic audit from initial execution through one technical failure, one non-finite endpoint, one valid not-run branch, two same-branch repair reruns, and a reconciled current state of 6 successful / 7 valid without counting historical attempts as new scientific specifications.
+
+**Use this when:** a branch has been repaired, retried, deferred, or left unresolved and you need to preserve both current results and execution history.
 
 ## [Declared → valid → successful](specification-denominator-audit/)
 

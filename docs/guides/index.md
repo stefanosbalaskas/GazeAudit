@@ -201,6 +201,12 @@ Fit global or grouped gaze-error models, propagate spatial uncertainty into AOI 
 
 ## Analytical robustness
 
+### [Execution ledger and recovery](execution-ledger-recovery/)
+
+Preserve branch identity separately from attempt identity, keep valid technical failures/non-finite/not-run states in the correct denominator, link causal repairs to same-branch reruns, reconcile current branch state without deleting historical failures, and report recovery without inflating or shrinking the specification denominator.
+
+Use the [Execution Ledger & Recovery Center]({{ '/docs/execution-ledger/' | relative_url }}) for the governed state reference and attempt-record builder, then work through [Failure → repair → reconciliation]({{ '/docs/examples/execution-ledger-reconciliation/' | relative_url }}).
+
 ### [Specification-space declaration and validity](specification-declaration/)
 
 Declare the robustness question, endpoint reference, factor set, typed levels, rationale, timing, pre-execution validity rule, reference branch, failure policy, and interpretation boundary before estimates are visible.
