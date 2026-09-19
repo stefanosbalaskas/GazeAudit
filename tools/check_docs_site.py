@@ -1304,6 +1304,139 @@ def _verify_robustness_diagnostic_reference(
         )
 
 
+def _verify_conclusion_rule_reference(site_root: Path) -> None:
+    reference_path = site_root / "assets/conclusion-rule-reference.json"
+    try:
+        fields = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated conclusion rule reference: {exc}"
+        ) from exc
+
+    expected_names = {
+        "rule_name",
+        "reference_type",
+        "reference_effect",
+        "reference_rationale",
+        "relative_tolerance",
+        "absolute_tolerance",
+        "tolerance_rationale",
+        "require_sign",
+        "minimum_recovery_fraction",
+        "decision_timing",
+        "interpretation_boundary",
+    }
+    expected_required = expected_names - {
+        "relative_tolerance",
+        "absolute_tolerance",
+    }
+    allowed_types = {"text", "textarea", "number", "choice"}
+    required_keys = {
+        "name",
+        "label",
+        "value_type",
+        "required",
+        "purpose",
+        "boundary",
+    }
+
+    if not isinstance(fields, list) or len(fields) != 11:
+        raise SystemExit(
+            "unexpected conclusion rule field catalog: "
+            f"{type(fields).__name__}, "
+            f"entries={len(fields) if isinstance(fields, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    names: set[str] = set()
+    required_names: set[str] = set()
+
+    for position, item in enumerate(fields):
+        if not isinstance(item, dict):
+            failures.append(
+                f"conclusion rule field {position}: expected object"
+            )
+            continue
+
+        missing = required_keys.difference(item)
+        if missing:
+            failures.append(
+                f"conclusion rule field {position}: "
+                f"missing keys {sorted(missing)}"
+            )
+            continue
+
+        name = item["name"]
+        if not isinstance(name, str) or not name:
+            failures.append(
+                f"conclusion rule field {position}: invalid name {name!r}"
+            )
+        elif name in names:
+            failures.append(
+                f"conclusion rule field {position}: duplicate name {name!r}"
+            )
+        else:
+            names.add(name)
+
+        if item["value_type"] not in allowed_types:
+            failures.append(
+                f"conclusion rule field {position}: "
+                f"invalid value_type {item['value_type']!r}"
+            )
+
+        required = item["required"]
+        if not isinstance(required, bool):
+            failures.append(
+                f"conclusion rule field {position}: required must be boolean"
+            )
+        elif required and isinstance(name, str):
+            required_names.add(name)
+
+        for field in ("label", "purpose", "boundary"):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"conclusion rule field {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+    if names != expected_names:
+        failures.append(
+            "conclusion rule field names mismatch: "
+            f"expected {sorted(expected_names)}, got {sorted(names)}"
+        )
+
+    if required_names != expected_required:
+        failures.append(
+            "conclusion rule required fields mismatch: "
+            f"expected {sorted(expected_required)}, "
+            f"got {sorted(required_names)}"
+        )
+
+    center = site_root / "docs/conclusion-rule/index.html"
+    if not center.is_file():
+        failures.append("conclusion rule center is missing")
+    else:
+        html = center.read_text(encoding="utf-8")
+        rendered = html.count('class="conclusion-rule-field"')
+        if rendered != len(fields):
+            failures.append(
+                "conclusion rule field card count mismatch: "
+                f"index={len(fields)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"conclusion rule reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -1397,6 +1530,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/specification-declaration/index.html",
         "docs/execution-ledger/index.html",
         "docs/robustness-diagnostics/index.html",
+        "docs/conclusion-rule/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -1410,6 +1544,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/specification-declaration/index.html",
         "docs/guides/execution-ledger-recovery/index.html",
         "docs/guides/robustness-diagnostics/index.html",
+        "docs/guides/conclusion-rule-design/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -1422,6 +1557,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/specification-denominator-audit/index.html",
         "docs/examples/execution-ledger-reconciliation/index.html",
         "docs/examples/robustness-diagnostic-walkthrough/index.html",
+        "docs/examples/conclusion-rule-edge-cases/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -1455,6 +1591,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/specification-declaration.css",
         "assets/css/execution-ledger.css",
         "assets/css/robustness-diagnostics.css",
+        "assets/css/conclusion-rule.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -1468,6 +1605,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/specification-declaration.js",
         "assets/js/execution-ledger.js",
         "assets/js/robustness-diagnostics.js",
+        "assets/js/conclusion-rule.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -1484,6 +1622,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/specification-declaration-reference.json",
         "assets/execution-state-reference.json",
         "assets/robustness-diagnostic-reference.json",
+        "assets/conclusion-rule-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -1555,6 +1694,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_specification_declaration_reference(site_root)
     _verify_execution_state_reference(site_root)
     _verify_robustness_diagnostic_reference(site_root, baseurl=baseurl)
+    _verify_conclusion_rule_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")

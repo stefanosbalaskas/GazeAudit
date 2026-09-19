@@ -1,0 +1,76 @@
+- name: rule_name
+  label: Rule name
+  value_type: text
+  required: true
+  purpose: Stable project label for the declared conclusion/recovery rule.
+  boundary: A name identifies the rule but does not justify its scientific thresholds.
+
+- name: reference_type
+  label: Reference-effect type
+  value_type: choice
+  required: true
+  purpose: State whether the reference is known truth or an independently justified real-data reference.
+  boundary: A reference derived from the same robustness estimates is circular and must not be used to validate those estimates.
+
+- name: reference_effect
+  label: Reference effect
+  value_type: number
+  required: true
+  purpose: Finite scientific reference value against which branch-level recovery is evaluated.
+  boundary: GazeAudit does not infer this value from the robustness results.
+
+- name: reference_rationale
+  label: Reference rationale
+  value_type: textarea
+  required: true
+  purpose: Record the independent source and interpretation of the reference effect.
+  boundary: Provenance cannot rescue a circular or scientifically inappropriate reference.
+
+- name: relative_tolerance
+  label: Relative tolerance
+  value_type: number
+  required: false
+  purpose: Optional maximum relative error from the reference effect.
+  boundary: Relative tolerance cannot be evaluated when the reference effect is zero.
+
+- name: absolute_tolerance
+  label: Absolute tolerance
+  value_type: number
+  required: false
+  purpose: Optional maximum absolute error in the endpoint's declared unit.
+  boundary: At least one of absolute or relative tolerance is required; when both are present, both must be satisfied.
+
+- name: tolerance_rationale
+  label: Tolerance rationale
+  value_type: textarea
+  required: true
+  purpose: Explain why the declared error tolerance is scientifically acceptable.
+  boundary: Tolerances chosen after seeing the branch estimates are outcome-informed decision rules.
+
+- name: require_sign
+  label: Require sign recovery
+  value_type: choice
+  required: true
+  purpose: Explicitly declare whether recovered branches must have the same direction as the non-zero reference effect.
+  boundary: Sign recovery does not establish statistical significance or substantive importance.
+
+- name: minimum_recovery_fraction
+  label: Minimum recovery fraction
+  value_type: number
+  required: true
+  purpose: Fraction of represented specifications that must satisfy the branch-level recovery rule for the summary classification.
+  boundary: The fraction must be justified before result inspection and applies only to the supplied represented specification set.
+
+- name: decision_timing
+  label: Decision timing
+  value_type: text
+  required: true
+  purpose: Record when the reference and rule were fixed relative to robustness-result inspection.
+  boundary: Post-result or reviewer-requested rules must remain temporally visible rather than being relabelled as prespecified.
+
+- name: interpretation_boundary
+  label: Interpretation boundary
+  value_type: textarea
+  required: true
+  purpose: State what a recovered or fragile classification does not establish.
+  boundary: The summary classification is conditional on the reference, rule, endpoint, and represented specification space.

@@ -184,6 +184,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Move through finite-estimate validation, specification ordering, effect stability, marginal sensitivity, pairwise sensitivity, plot examples, incomplete execution, and bounded reporting.</p>
     <p><a href="robustness-diagnostic-walkthrough/">Diagnostic interpretation →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">29</div>
+    <h3>Test conclusion-rule edge cases</h3>
+    <p>Exercise missing and invalid tolerances, dual-tolerance conjunction, sign recovery, zero references, threshold equality, circular references, and incomplete execution.</p>
+    <p><a href="conclusion-rule-edge-cases/">Conclusion-rule edge cases →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -284,6 +290,12 @@ Declare eight synthetic combinations, reject two through a fixed pre-execution v
 Compare nine synthetic endpoint scenarios to decide when a branch preserves the declared scientific quantity and when it changes contrast direction, unit, weighting, outcome family, missingness meaning, or temporal evidence layer.
 
 **Use this when:** a specification space is technically runnable but you need to confirm that every branch still estimates the same scalar scientific endpoint.
+
+## [Conclusion-rule edge cases](conclusion-rule-edge-cases/)
+
+Exercise the exact runtime contract for conclusion recovery using fully synthetic references and estimates: no-tolerance failure, invalid thresholds, dual-tolerance AND semantics, sign rules, zero-reference behavior, recovery-threshold equality, circular-reference misuse, and execution completeness.
+
+**Use this when:** a categorical reference-based recovery rule is scientifically justified and you need to understand its edge cases before applying it.
 
 ## [Diagnostic interpretation walkthrough](robustness-diagnostic-walkthrough/)
 

@@ -86,6 +86,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Practise branch vs attempt reconciliation after repairs | [Failure → repair → reconciliation](examples/execution-ledger-reconciliation/) |
 | Interpret specification curves, stability, and sensitivity diagnostics | [Robustness Diagnostics & Sensitivity Interpretation Center](robustness-diagnostics/) |
 | Practise diagnostic interpretation with exact synthetic outputs | [Diagnostic interpretation walkthrough](examples/robustness-diagnostic-walkthrough/) |
+| Declare an independently justified categorical recovery rule | [Conclusion Rule Design Center](conclusion-rule/) |
+| Practise conclusion-rule edge cases and threshold semantics | [Conclusion-rule edge cases](examples/conclusion-rule-edge-cases/) |
 | Practise detecting endpoint drift across specifications | [Endpoint drift audit](examples/endpoint-drift-audit/) |
 | Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |

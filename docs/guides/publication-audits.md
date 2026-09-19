@@ -15,6 +15,8 @@ The goal is not to make a result immutable by policy. The goal is to make later 
 
 A `ConclusionRule` can define recovery using relative/absolute effect-error tolerance, direction recovery, and a minimum across-specification recovery fraction.
 
+Use the [Conclusion Rule Design Center]({{ '/docs/conclusion-rule/' | relative_url }}) and [Design conclusion-recovery rules]({{ '/docs/guides/conclusion-rule-design/' | relative_url }}) when a categorical reference-based rule is scientifically justified. The documentation builder intentionally supplies no scientific threshold defaults.
+
 ```python
 from gazeaudit import ConclusionRule
 

@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/conclusion-rule-reference.json
+---
+{{ site.data.conclusion_rule_fields | jsonify }}

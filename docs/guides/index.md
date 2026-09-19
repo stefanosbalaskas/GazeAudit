@@ -241,6 +241,12 @@ Move from structural-QC, readiness, robustness, sensitivity, or frozen validatio
 
 Use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}) for searchable copy-ready contracts and the [Reporting-language rewrite]({{ '/docs/examples/reporting-language-rewrite/' | relative_url }}) exercise for overclaim repairs.
 
+### [Design conclusion-recovery rules](conclusion-rule-design/)
+
+Declare an independently defined reference effect, one or two justified error tolerances, an explicit sign rule, minimum recovery fraction, timing, and interpretation boundary before using a categorical recovery classification.
+
+Use the [Conclusion Rule Design Center]({{ '/docs/conclusion-rule/' | relative_url }}) for a no-default declaration, then the [Conclusion-rule edge cases]({{ '/docs/examples/conclusion-rule-edge-cases/' | relative_url }}) exercise for zero-reference, dual-tolerance, sign, and threshold-equality behavior.
+
 ### [Reporting robustness](reporting-robustness/)
 
 Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
