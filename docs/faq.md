@@ -127,6 +127,8 @@ No. It retains existing samples nearest an ideal target grid and does not interp
 
 A `ConclusionRule` is a predeclared recovery criterion that can combine effect-error tolerance, direction recovery, and a minimum across-specification recovery fraction. It is most straightforward in known-truth benchmarks. For real-data analyses, any reference effect must be independently defined and justified; GazeAudit does not infer it.
 
+The Python dataclass currently defaults to `require_sign=True` and `minimum_recovery_fraction=0.90`, but these are **software defaults, not universal scientific recommendations**. The [Conclusion Rule Design Center]({{ '/docs/conclusion-rule/' | relative_url }}) therefore requires those choices explicitly and supplies no scientific default values.
+
 ## What are the three canonical validation outcomes?
 
 Under their frozen protocols:
