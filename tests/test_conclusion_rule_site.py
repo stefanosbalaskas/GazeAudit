@@ -257,7 +257,10 @@ def test_center_has_no_hidden_scientific_defaults() -> None:
     assert "minimum_recovery_fraction=" in js
 
     assert 'value="0.9"' not in center
-    assert 'value="true"' not in center
+    assert '<option value="true">Yes — same sign required</option>' in center
+    assert '<option value="false">No — tolerance only</option>' in center
+    assert 'value="true" selected' not in center
+    assert 'value="false" selected' not in center
 
 
 def test_builder_is_accessible_and_validates_rule_contract() -> None:
