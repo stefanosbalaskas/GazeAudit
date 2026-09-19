@@ -267,6 +267,12 @@ Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue cod
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
 
+## [Diagnostic interpretation](diagnostic-interpretation/)
+
+Use a four-specification synthetic truth table to reproduce exact specification-curve, effect-stability, marginal, and pairwise diagnostics, then keep controlled sampling, missingness, and seeded spatial-error perturbations in a separate evidence family.
+
+**Use this when:** execution is reconciled and you need to understand exactly what each robustness/sensitivity diagnostic supports—and what it does not.
+
 ## [Failure → repair → reconciliation](execution-ledger-reconciliation/)
 
 Follow an eight-branch synthetic audit from initial execution through one technical failure, one non-finite endpoint, one valid not-run branch, two same-branch repair reruns, and a reconciled current state of 6 successful / 7 valid without counting historical attempts as new scientific specifications.
