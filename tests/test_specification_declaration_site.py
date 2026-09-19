@@ -244,6 +244,8 @@ def test_builder_enforces_unique_names_typed_levels_and_rationale() -> None:
         "needs a rationale",
         "data-spec-add-factor",
         "data-spec-remove-factor",
+        "validityRule.disabled = !needsPredicate",
+        "validityRule.required = needsPredicate",
         "aria-invalid",
         "errors.focus()",
     ):
