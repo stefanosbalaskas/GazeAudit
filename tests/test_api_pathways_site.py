@@ -69,7 +69,7 @@ def test_api_pathways_reuses_all_governed_method_context_fields() -> None:
 def test_governed_catalog_symbols_are_unique_for_stable_fragments() -> None:
     functions = _catalog_functions(_read(CATALOG))
 
-    assert len(functions) == 36
+    assert len(functions) == 38
     assert len(functions) == len(set(functions))
     fragments = [f"api-{name.lower().replace('_', '-')}" for name in functions]
     assert len(fragments) == len(set(fragments))
