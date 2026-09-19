@@ -17,6 +17,8 @@ Use this page after `audit_study_qc()` returns `status == "review"` or when you 
 GazeAudit reports structural conditions that deserve inspection. It does not infer their cause, silently repair them, assign a universal severity score, or convert them into automatic row/trial/participant exclusions.
 </div>
 
+Structural preflight evaluates a bounded set of implemented representation conditions; it is not a complete measurement-quality or scientific-validity assessment.
+
 The governed catalog below is the documentation authority for the five currently implemented issue families. CI regression tests bind it to the live diagnostic output so a runtime change cannot silently leave the clinic stale.
 
 <div class="qc-clinic-summary">
