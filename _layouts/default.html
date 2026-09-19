@@ -68,6 +68,7 @@
   {% if page.page_type == 'execution-ledger' %}<link rel="stylesheet" href="{{ '/assets/css/execution-ledger.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'robustness-diagnostics' %}<link rel="stylesheet" href="{{ '/assets/css/robustness-diagnostics.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'conclusion-rule' %}<link rel="stylesheet" href="{{ '/assets/css/conclusion-rule.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'sampling-missingness' %}<link rel="stylesheet" href="{{ '/assets/css/sampling-missingness.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -110,6 +111,7 @@
               <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
               <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
               <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+              <a href="{{ '/docs/sampling-missingness/' | relative_url }}">Sampling & missingness</a>
               <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
               <a href="{{ '/docs/reporting-center/' | relative_url }}">Reporting center</a>
               <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
@@ -195,6 +197,7 @@
           <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
           <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
           <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+              <a href="{{ '/docs/sampling-missingness/' | relative_url }}">Sampling & missingness</a>
           <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
           <a href="{{ '/docs/reference/cli-reference/' | relative_url }}">CLI reference</a>
           <a href="{{ '/docs/reference/evidence-vocabulary/' | relative_url }}">Evidence vocabulary</a>
@@ -230,6 +233,7 @@
             <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
             <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
             <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+              <a href="{{ '/docs/sampling-missingness/' | relative_url }}">Sampling & missingness</a>
             <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
             <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
@@ -290,6 +294,7 @@
             <a href="{{ '/docs/examples/aoi-boundary/' | relative_url }}">AOI boundary example</a>
             <a href="{{ '/docs/examples/specification-curve/' | relative_url }}">Specification curve</a>
             <a href="{{ '/docs/examples/sampling-sensitivity/' | relative_url }}">Sampling sensitivity</a>
+            <a href="{{ '/docs/examples/sampling-missingness-design-audit/' | relative_url }}">Sampling & missingness design audit</a>
 
             <p class="nav-label">Research workflows</p>
             <a href="{{ '/docs/workflows/' | relative_url }}">Workflow map</a>
@@ -429,5 +434,6 @@
   {% if page.page_type == 'execution-ledger' %}<script src="{{ '/assets/js/execution-ledger.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'robustness-diagnostics' %}<script src="{{ '/assets/js/robustness-diagnostics.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'conclusion-rule' %}<script src="{{ '/assets/js/conclusion-rule.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'sampling-missingness' %}<script src="{{ '/assets/js/sampling-missingness.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>
