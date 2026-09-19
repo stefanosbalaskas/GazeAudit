@@ -229,6 +229,12 @@ Interpret execution completeness, specification curves, effect-stability summari
 
 Use the [Robustness Diagnostics & Sensitivity Interpretation Center]({{ '/docs/robustness-diagnostics/' | relative_url }}) for a compact output-by-output reference, then practise the full sequence in the [Diagnostic interpretation walkthrough]({{ '/docs/examples/robustness-diagnostic-walkthrough/' | relative_url }}).
 
+### [Design sampling and missingness sensitivity](sampling-missingness-sensitivity/)
+
+Separate observed missingness from controlled added loss, design lower-rate row-retention perturbations without implying hardware simulation, declare deterministic seeds and any outer replication, and report requested versus realized representation loss with one common endpoint.
+
+Use the [Sampling & Missingness Sensitivity Center]({{ '/docs/sampling-missingness/' | relative_url }}) for runtime-contract lookup and a no-default plan builder, then practise the denominator and reproducibility rules in the [Sampling & missingness design audit]({{ '/docs/examples/sampling-missingness-design-audit/' | relative_url }}).
+
 ### [Interpret an audit result](interpret-audit-result/)
 
 Move from completed robustness outputs to bounded scientific interpretation. The guide starts with the declared execution denominator, then separates direction stability from magnitude sensitivity, treats marginal/pairwise summaries as descriptive rather than causal, records untested uncertainty dimensions, and maps each evidence pattern to an appropriate next action.
