@@ -172,6 +172,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Work through an 8 declared → 6 valid → 5 successful synthetic audit with two predeclared-invalid combinations and one valid technical failure.</p>
     <p><a href="specification-denominator-audit/">Declared → valid → successful →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">27</div>
+    <h3>Reconcile failure, repair, and rerun history</h3>
+    <p>Separate branch identity from attempt history while preserving a technical failure, non-finite endpoint, valid not-run branch, and successful repair reruns.</p>
+    <p><a href="execution-ledger-reconciliation/">Failure → repair → reconciliation →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
