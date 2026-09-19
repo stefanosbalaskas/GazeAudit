@@ -169,7 +169,8 @@ def test_endpoint_center_has_no_prefilled_scientific_values() -> None:
         text,
         flags=re.DOTALL,
     )
-    assert len(value_controls) == 12
+    # Liquid renders these two source templates across the 12 governed fields.
+    assert len(value_controls) == 2
     assert all(" value=" not in control for control in value_controls)
 
 
