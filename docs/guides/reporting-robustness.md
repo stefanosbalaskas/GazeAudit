@@ -110,6 +110,10 @@ When both layers are relevant, report them separately:
 
 This separation is central to GazeAudit's design.
 
+## Categorical recovery requires an independent rule
+
+If a study needs a categorical recovery decision rather than descriptive robustness reporting, define the reference effect, tolerance(s), sign rule, and across-specification recovery threshold independently of the observed robustness pattern. Use the [Conclusion Rule Design Center]({{ '/docs/conclusion-rule/' | relative_url }}) rather than translating sign fractions or empirical quantiles into an ad hoc pass/fail rule.
+
 ## Do not universalise protocol-bound validation labels
 
 The package's frozen labels—`incomplete`, `robust_negative`, and `materially_fragile`—belong to specific validation protocols. They are not generic thresholds that should be copied into unrelated studies.
