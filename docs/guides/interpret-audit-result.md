@@ -94,6 +94,8 @@ The map below is deliberately **descriptive rather than classificatory**. It hel
 
 These paths are not named outcome classes and should not be used to relabel the frozen GazeAudit case studies.
 
+Before factor-level interpretation, use the [Robustness Diagnostics & Sensitivity Center]({{ '/docs/diagnostics/' | relative_url }}) to verify the exact summary contract, empirical-quantile boundary, and controlled-perturbation distinction.
+
 ## Step 5 · Inspect marginal and pairwise sensitivity conservatively
 
 Use marginal summaries to ask whether estimate distributions differ across levels of one declared analytical factor. Use pairwise summaries to inspect whether combinations of factors align with additional variation.
