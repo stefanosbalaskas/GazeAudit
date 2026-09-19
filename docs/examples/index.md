@@ -285,6 +285,12 @@ Compare nine synthetic endpoint scenarios to decide when a branch preserves the 
 
 **Use this when:** a specification space is technically runnable but you need to confirm that every branch still estimates the same scalar scientific endpoint.
 
+## [Diagnostic interpretation walkthrough](robustness-diagnostic-walkthrough/)
+
+Interpret one deterministic eight-specification result table through specification ordering, effect stability, marginal sensitivity, pairwise sensitivity, reproducible plot routes, an incomplete-execution contrast, and bounded Methods/Results/limitations wording.
+
+**Use this when:** the robustness analysis already ran and you need to understand what each diagnostic literally supports before writing the scientific conclusion.
+
 ## [End-to-end robustness audit](end-to-end-robustness/)
 
 Run a complete 12-specification synthetic audit from `GazeStudy` construction through `PipelineSpace`, `run_specs()`, specification ordering, effect stability, marginal sensitivity, and pairwise interaction diagnostics.
