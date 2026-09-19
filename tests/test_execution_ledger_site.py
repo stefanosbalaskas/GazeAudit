@@ -116,7 +116,7 @@ def test_execution_states_are_documentation_vocabulary() -> None:
 
     center = _text(CENTER)
     assert "These execution-state labels are documentation/audit vocabulary." in center
-    assert "It does not create `technical_failure`" in center
+    assert "It does not create <code>technical_failure</code>" in center
 
 
 def test_run_specs_success_rows_do_not_invent_status_fields() -> None:
@@ -264,8 +264,9 @@ def test_reconciliation_example_preserves_branch_and_attempt_denominators() -> N
         "1 non-finite endpoint",
         "1 valid not-run branch",
         "6 successful / 7 valid",
-        "S04 / A01 / technical_failure",
-        "S04 / A02 / repair_rerun_success",
+        '"branch_id": "S04"',
+        '"execution_state": "technical_failure"',
+        '"execution_state": "repair_rerun_success"',
         "nine historical records/events associated with seven valid branches",
         "Reuse boundary",
     ):
