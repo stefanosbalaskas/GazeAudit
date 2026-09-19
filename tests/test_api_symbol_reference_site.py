@@ -40,14 +40,14 @@ def test_checked_api_symbol_metadata_matches_installed_package() -> None:
     )
 
 
-def test_api_symbol_metadata_has_36_unique_governed_symbols() -> None:
+def test_api_symbol_metadata_has_38_unique_governed_symbols() -> None:
     metadata = _metadata()
     symbols = metadata["symbols"]
 
     assert metadata["schema"] == "gazeaudit-api-symbol-reference-v2"
-    assert metadata["symbol_count"] == 36
+    assert metadata["symbol_count"] == 38
     assert isinstance(symbols, list)
-    assert len(symbols) == 36
+    assert len(symbols) == 38
 
     names = [symbol["name"] for symbol in symbols]
     anchors = [symbol["anchor"] for symbol in symbols]
