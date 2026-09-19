@@ -1437,6 +1437,141 @@ def _verify_conclusion_rule_reference(site_root: Path) -> None:
         )
 
 
+def _verify_sampling_missingness_reference(site_root: Path) -> None:
+    reference_path = site_root / "assets/sampling-missingness-reference.json"
+    try:
+        contracts = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated sampling/missingness reference: {exc}"
+        ) from exc
+
+    expected_ids = {
+        "missingness-mask",
+        "summarize-missingness",
+        "downsample-gaze",
+        "sampling-sensitivity-curve",
+        "inject-missingness",
+        "missingness-sensitivity-curve",
+    }
+    allowed_families = {
+        "Observed missingness",
+        "Sampling perturbation",
+        "Sampling sensitivity",
+        "Missingness perturbation",
+        "Missingness sensitivity",
+    }
+    required = {
+        "id",
+        "label",
+        "family",
+        "function_name",
+        "api_anchor",
+        "question",
+        "operation",
+        "input_contract",
+        "output_contract",
+        "randomness",
+        "preserves",
+        "when_use",
+        "when_not",
+        "boundary",
+    }
+
+    if not isinstance(contracts, list) or len(contracts) != 6:
+        raise SystemExit(
+            "unexpected sampling/missingness contract catalog: "
+            f"{type(contracts).__name__}, "
+            f"entries={len(contracts) if isinstance(contracts, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    ids: set[str] = set()
+
+    for position, item in enumerate(contracts):
+        if not isinstance(item, dict):
+            failures.append(
+                f"sampling/missingness contract {position}: expected object"
+            )
+            continue
+
+        missing = required.difference(item)
+        if missing:
+            failures.append(
+                "sampling/missingness contract "
+                f"{position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        contract_id = item["id"]
+        if not isinstance(contract_id, str) or not contract_id:
+            failures.append(
+                "sampling/missingness contract "
+                f"{position}: invalid id {contract_id!r}"
+            )
+        elif contract_id in ids:
+            failures.append(
+                "sampling/missingness contract "
+                f"{position}: duplicate id {contract_id!r}"
+            )
+        else:
+            ids.add(contract_id)
+
+        if item["family"] not in allowed_families:
+            failures.append(
+                "sampling/missingness contract "
+                f"{position}: invalid family {item['family']!r}"
+            )
+
+        api_anchor = item["api_anchor"]
+        if (
+            not isinstance(api_anchor, str)
+            or not api_anchor.startswith("api-")
+        ):
+            failures.append(
+                "sampling/missingness contract "
+                f"{position}: invalid API anchor {api_anchor!r}"
+            )
+
+        for field in required - {"id", "family", "api_anchor"}:
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    "sampling/missingness contract "
+                    f"{position}: {field} must be a non-empty string"
+                )
+
+    if ids != expected_ids:
+        failures.append(
+            "sampling/missingness contract IDs mismatch: "
+            f"expected {sorted(expected_ids)}, got {sorted(ids)}"
+        )
+
+    center = site_root / "docs/sampling-missingness/index.html"
+    if not center.is_file():
+        failures.append("sampling/missingness center is missing")
+    else:
+        rendered = center.read_text(encoding="utf-8").count(
+            'class="sampling-contract-card"'
+        )
+        if rendered != len(contracts):
+            failures.append(
+                "sampling/missingness card count mismatch: "
+                f"index={len(contracts)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"sampling/missingness reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -1531,6 +1666,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/execution-ledger/index.html",
         "docs/robustness-diagnostics/index.html",
         "docs/conclusion-rule/index.html",
+        "docs/sampling-missingness/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -1545,6 +1681,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/execution-ledger-recovery/index.html",
         "docs/guides/robustness-diagnostics/index.html",
         "docs/guides/conclusion-rule-design/index.html",
+        "docs/guides/sampling-missingness-sensitivity/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -1558,6 +1695,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/execution-ledger-reconciliation/index.html",
         "docs/examples/robustness-diagnostic-walkthrough/index.html",
         "docs/examples/conclusion-rule-edge-cases/index.html",
+        "docs/examples/sampling-missingness-design-audit/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -1592,6 +1730,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/execution-ledger.css",
         "assets/css/robustness-diagnostics.css",
         "assets/css/conclusion-rule.css",
+        "assets/css/sampling-missingness.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -1606,6 +1745,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/execution-ledger.js",
         "assets/js/robustness-diagnostics.js",
         "assets/js/conclusion-rule.js",
+        "assets/js/sampling-missingness.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -1623,6 +1763,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/execution-state-reference.json",
         "assets/robustness-diagnostic-reference.json",
         "assets/conclusion-rule-reference.json",
+        "assets/sampling-missingness-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -1695,6 +1836,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_execution_state_reference(site_root)
     _verify_robustness_diagnostic_reference(site_root, baseurl=baseurl)
     _verify_conclusion_rule_reference(site_root)
+    _verify_sampling_missingness_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
