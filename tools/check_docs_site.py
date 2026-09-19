@@ -714,6 +714,138 @@ def _verify_reporting_contract_reference(
         )
 
 
+def _verify_endpoint_contract_reference(site_root: Path) -> None:
+    reference_path = site_root / "assets/endpoint-contract-reference.json"
+    try:
+        fields = json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"invalid generated endpoint contract reference: {exc}"
+        ) from exc
+
+    expected_names = {
+        "endpoint_name",
+        "scientific_quantity",
+        "unit",
+        "contrast_direction",
+        "analysis_unit",
+        "population_denominator",
+        "missingness_policy",
+        "nonfinite_policy",
+        "transformation",
+        "scientific_null",
+        "required_inputs",
+        "interpretation_boundary",
+    }
+    expected_required = expected_names - {
+        "transformation",
+        "scientific_null",
+    }
+    allowed_types = {"text", "textarea"}
+    required_keys = {
+        "name",
+        "label",
+        "value_type",
+        "required",
+        "purpose",
+        "boundary",
+    }
+
+    if not isinstance(fields, list) or len(fields) != 12:
+        raise SystemExit(
+            "unexpected endpoint field catalog: "
+            f"{type(fields).__name__}, "
+            f"entries={len(fields) if isinstance(fields, list) else 'n/a'}"
+        )
+
+    failures: list[str] = []
+    names: set[str] = set()
+    required_names: set[str] = set()
+
+    for position, item in enumerate(fields):
+        if not isinstance(item, dict):
+            failures.append(f"endpoint field {position}: expected object")
+            continue
+
+        missing = required_keys.difference(item)
+        if missing:
+            failures.append(
+                f"endpoint field {position}: missing keys {sorted(missing)}"
+            )
+            continue
+
+        name = item["name"]
+        if not isinstance(name, str) or not name:
+            failures.append(
+                f"endpoint field {position}: invalid name {name!r}"
+            )
+        elif name in names:
+            failures.append(
+                f"endpoint field {position}: duplicate name {name!r}"
+            )
+        else:
+            names.add(name)
+
+        value_type = item["value_type"]
+        if value_type not in allowed_types:
+            failures.append(
+                f"endpoint field {position}: invalid value_type {value_type!r}"
+            )
+
+        required = item["required"]
+        if not isinstance(required, bool):
+            failures.append(
+                f"endpoint field {position}: required must be boolean"
+            )
+        elif required and isinstance(name, str):
+            required_names.add(name)
+
+        for field in ("label", "purpose", "boundary"):
+            if not isinstance(item[field], str) or not item[field].strip():
+                failures.append(
+                    f"endpoint field {position}: "
+                    f"{field} must be a non-empty string"
+                )
+
+    if names != expected_names:
+        failures.append(
+            "endpoint field names mismatch: "
+            f"expected {sorted(expected_names)}, got {sorted(names)}"
+        )
+
+    if required_names != expected_required:
+        failures.append(
+            "endpoint required fields mismatch: "
+            f"expected {sorted(expected_required)}, "
+            f"got {sorted(required_names)}"
+        )
+
+    center = site_root / "docs/endpoint-contract/index.html"
+    if not center.is_file():
+        failures.append("endpoint contract center is missing")
+    else:
+        rendered = center.read_text(encoding="utf-8").count(
+            'class="endpoint-field-card"'
+        )
+        if rendered != len(fields):
+            failures.append(
+                "endpoint field card count mismatch: "
+                f"index={len(fields)}, rendered={rendered}"
+            )
+
+    if failures:
+        preview = "\n".join(failures[:30])
+        extra = (
+            ""
+            if len(failures) <= 30
+            else f"\n... and {len(failures) - 30} more"
+        )
+        raise SystemExit(
+            f"endpoint contract reference failures "
+            f"({len(failures)}):\n{preview}{extra}"
+        )
+
+
 def _verify_planner_index(site_root: Path, *, baseurl: str) -> None:
     planner_path = site_root / "assets/planner-index.json"
     method_path = site_root / "assets/method-index.json"
@@ -803,6 +935,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/reference/qc-issue-clinic/index.html",
         "docs/readiness-policy/index.html",
         "docs/reporting-center/index.html",
+        "docs/endpoint-contract/index.html",
         "docs/install/index.html",
         "docs/guides/environment-setup/index.html",
         "docs/guides/documentation-authoring/index.html",
@@ -812,6 +945,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/guides/structural-qc-triage/index.html",
         "docs/guides/readiness-policy-design/index.html",
         "docs/guides/claim-boundary-reporting/index.html",
+        "docs/guides/endpoint-definition/index.html",
         "docs/examples/install-smoke-check/index.html",
         "docs/examples/documentation-intent-routing/index.html",
         "docs/examples/example-to-study-handoff/index.html",
@@ -820,6 +954,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "docs/examples/all-structural-qc-issues/index.html",
         "docs/examples/readiness-policy-design/index.html",
         "docs/examples/reporting-language-rewrite/index.html",
+        "docs/examples/endpoint-drift-audit/index.html",
         "docs/examples/catalog/index.html",
         "docs/examples/choose-the-right-example/index.html",
         "docs/guides/read-api-reference/index.html",
@@ -849,6 +984,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/css/qc-issue-clinic.css",
         "assets/css/readiness-policy.css",
         "assets/css/reporting-center.css",
+        "assets/css/endpoint-contract.css",
         "assets/css/install.css",
         "assets/css/planner.css",
         "assets/js/site.js",
@@ -858,6 +994,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/js/qc-issue-clinic.js",
         "assets/js/readiness-policy.js",
         "assets/js/reporting-center.js",
+        "assets/js/endpoint-contract.js",
         "assets/js/install-builder.js",
         "assets/js/gallery.js",
         "assets/js/landing.js",
@@ -870,6 +1007,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
         "assets/qc-issue-reference.json",
         "assets/readiness-threshold-reference.json",
         "assets/reporting-contract-reference.json",
+        "assets/endpoint-contract-reference.json",
         "assets/method-index.json",
         "assets/planner-index.json",
         "assets/plots/specification-curve-code.svg",
@@ -937,6 +1075,7 @@ def verify_site(site_root: Path, *, baseurl: str = "/GazeAudit") -> None:
     _verify_qc_issue_reference(site_root)
     _verify_readiness_threshold_reference(site_root)
     _verify_reporting_contract_reference(site_root, baseurl=baseurl)
+    _verify_endpoint_contract_reference(site_root)
     _verify_method_index(site_root, baseurl=baseurl)
     _verify_planner_index(site_root, baseurl=baseurl)
     print(f"DOCS SITE VERIFY: PASS ({len(html_files)} HTML pages)")
