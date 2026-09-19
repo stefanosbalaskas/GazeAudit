@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/diagnostic-contract-reference.json
+---
+{{ site.data.diagnostic_contracts | jsonify }}
