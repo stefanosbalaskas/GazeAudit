@@ -123,7 +123,7 @@ def test_run_specs_returns_one_float_coerced_row_per_valid_spec() -> None:
     assert len(results) == 3
     assert results["spec_id"].tolist() == [0, 1, 2]
     assert results["estimate"].tolist() == [11.0, 21.0, 12.0]
-    assert all(isinstance(value, float) for value in results["estimate"])
+    assert np.issubdtype(results["estimate"].dtype, np.floating)
 
 
 def test_run_specs_preserves_nan_endpoint_without_automatic_rejection() -> None:
