@@ -223,6 +223,12 @@ Use the [Endpoint Definition & Handoff Center]({{ '/docs/endpoint-contract/' | r
 
 Turn defensible analytical decisions into an explicit `PipelineSpace`, reject invalid combinations before execution, and summarise endpoint stability without selecting a preferred specification after the fact.
 
+### [Interpret robustness and sensitivity diagnostics](diagnostic-interpretation/)
+
+Read specification curves, effect stability, marginal/pairwise sensitivity, and controlled spatial/sampling/missingness curves according to their actual software contracts. Keep empirical specification quantiles distinct from confidence intervals, sensitivity ratios distinct from causal variance shares, and controlled perturbations distinct from claims about another physical tracker or the study's true missingness mechanism.
+
+Use the [Robustness Diagnostics & Sensitivity Center]({{ '/docs/diagnostics/' | relative_url }}) for exact contract lookup and [Diagnostic interpretation]({{ '/docs/examples/diagnostic-interpretation/' | relative_url }}) for deterministic synthetic outputs.
+
 ### [Interpret an audit result](interpret-audit-result/)
 
 Move from completed robustness outputs to bounded scientific interpretation. The guide starts with the declared execution denominator, then separates direction stability from magnitude sensitivity, treats marginal/pairwise summaries as descriptive rather than causal, records untested uncertainty dimensions, and maps each evidence pattern to an appropriate next action.
