@@ -54,7 +54,7 @@ def _blocks() -> list[str]:
 
 def _field(block: str, name: str) -> str:
     match = re.search(
-        rf"^  {re.escape(name)}: (.*)$",
+        rf"^(?:- |  ){re.escape(name)}: (.*)$",
         block,
         flags=re.MULTILINE,
     )
