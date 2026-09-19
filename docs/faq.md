@@ -123,6 +123,16 @@ A specification space usually represents discrete, scientifically defensible ana
 
 No. It retains existing samples nearest an ideal target grid and does not interpolate coordinates. It is a controlled representation perturbation of the recorded stream, not a physical simulation of how another device would have measured the trial.
 
+## Is a requested missingness fraction the same as the final missing fraction?
+
+Not necessarily. `inject_missingness()` applies the requested fraction only to rows whose mapped gaze coordinates are currently complete. Native missingness is preserved, and rounding also matters. `missingness_sensitivity_curve()` therefore reports both `requested_fraction` and total `observed_missing_fraction`.
+
+Use the [Sampling & Missingness Sensitivity Center]({{ '/docs/sampling-missingness/' | relative_url }}) for the exact denominator contract.
+
+## Does one missingness sensitivity curve provide a distribution at each fraction?
+
+No. One `missingness_sensitivity_curve()` call derives one child seed per requested fraction and creates one perturbation realization at each fraction. If random-realization variability is scientifically relevant, declare an explicit outer replication design and preserve every root seed/replicate. Do not reinterpret a single curve as a confidence interval or Monte Carlo distribution.
+
 ## What is a `ConclusionRule`?
 
 A `ConclusionRule` is a predeclared recovery criterion that can combine effect-error tolerance, direction recovery, and a minimum across-specification recovery fraction. It is most straightforward in known-truth benchmarks. For real-data analyses, any reference effect must be independently defined and justified; GazeAudit does not infer it.
