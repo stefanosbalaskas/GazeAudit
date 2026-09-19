@@ -101,6 +101,16 @@ Preserve both attempts and reconcile one current state for the branch. Use the [
 
 No. The curve is intended to expose how estimates vary across the complete declared decision space. Selecting the most favourable specification after seeing the curve would undermine the robustness audit.
 
+## Are `effect_stability()` q025/q975 values confidence intervals?
+
+No. They are the empirical 2.5th and 97.5th percentiles of the **represented specification estimates**. They do not have repeated-sampling coverage or posterior-probability semantics. Likewise, positive/negative fractions are not posterior probabilities that the true effect has a particular sign.
+
+Use the [Robustness Diagnostics & Sensitivity Center]({{ '/docs/diagnostics/' | relative_url }}) and [diagnostic interpretation guide]({{ '/docs/guides/diagnostic-interpretation/' | relative_url }}) for the exact output/interpretation boundaries.
+
+## Do marginal sensitivity ratios need to sum to one?
+
+No. `marginal_sensitivity()` is a descriptive screening diagnostic. In dependent, constrained, incomplete, unbalanced, or interacting specification spaces, the same realised endpoint variation can align with several factors, so marginal eta-squared values can overlap and need not sum to one. They are not causal variance shares.
+
 ## What does `effect_stability()` tell me?
 
 It provides descriptive summaries of estimates across specifications: count, mean, median, range, empirical 2.5%/97.5% quantiles, positive/negative/exact-null fractions, and descriptive sign stability. It does not replace a formal inferential model and the sign fractions are not posterior probabilities.
