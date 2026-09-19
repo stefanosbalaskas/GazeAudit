@@ -49,6 +49,7 @@ The website is organised by research task rather than only by modules:
 | declare specification factors, levels, validity, timing, and failure policy | [Specification Space Declaration Center](https://stefanosbalaskas.github.io/GazeAudit/docs/specification-declaration/) |
 | preserve branch failures, non-finite endpoints, not-run states, and repair/rerun lineage | [Execution Ledger & Recovery Center](https://stefanosbalaskas.github.io/GazeAudit/docs/execution-ledger/) |
 | interpret specification curves, stability, sensitivity, and reproducible diagnostic plots | [Robustness Diagnostics & Sensitivity Interpretation Center](https://stefanosbalaskas.github.io/GazeAudit/docs/robustness-diagnostics/) |
+| design controlled sampling and gaze-missingness perturbations without implying hardware or missingness-mechanism truth | [Sampling & Missingness Sensitivity Center](https://stefanosbalaskas.github.io/GazeAudit/docs/sampling-missingness/) |
 | declare an independently justified conclusion-recovery rule without hidden scientific defaults | [Conclusion Rule Design Center](https://stefanosbalaskas.github.io/GazeAudit/docs/conclusion-rule/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
 | browse worked examples by data context and methodological focus | [Example catalog](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/catalog/) |
