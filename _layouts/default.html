@@ -67,6 +67,7 @@
   {% if page.page_type == 'specification-declaration' %}<link rel="stylesheet" href="{{ '/assets/css/specification-declaration.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'execution-ledger' %}<link rel="stylesheet" href="{{ '/assets/css/execution-ledger.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'robustness-diagnostics' %}<link rel="stylesheet" href="{{ '/assets/css/robustness-diagnostics.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'conclusion-rule' %}<link rel="stylesheet" href="{{ '/assets/css/conclusion-rule.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -109,6 +110,7 @@
               <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
               <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
               <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+              <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
               <a href="{{ '/docs/reporting-center/' | relative_url }}">Reporting center</a>
               <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
               <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
@@ -193,6 +195,7 @@
           <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
           <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
           <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+          <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
           <a href="{{ '/docs/reference/cli-reference/' | relative_url }}">CLI reference</a>
           <a href="{{ '/docs/reference/evidence-vocabulary/' | relative_url }}">Evidence vocabulary</a>
           <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation</a>
@@ -227,6 +230,7 @@
             <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
             <a href="{{ '/docs/execution-ledger/' | relative_url }}">Execution ledger</a>
             <a href="{{ '/docs/robustness-diagnostics/' | relative_url }}">Robustness diagnostics</a>
+            <a href="{{ '/docs/conclusion-rule/' | relative_url }}">Conclusion rule</a>
             <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
@@ -256,6 +260,7 @@
             <a href="{{ '/docs/guides/specification-declaration/' | relative_url }}">Specification declaration</a>
             <a href="{{ '/docs/guides/execution-ledger-recovery/' | relative_url }}">Execution ledger & recovery</a>
             <a href="{{ '/docs/guides/robustness-diagnostics/' | relative_url }}">Read robustness diagnostics</a>
+            <a href="{{ '/docs/guides/conclusion-rule-design/' | relative_url }}">Conclusion rule design</a>
             <a href="{{ '/docs/guides/reporting-robustness/' | relative_url }}">Reporting robustness</a>
             <a href="{{ '/docs/guides/claim-boundary-reporting/' | relative_url }}">Claim-boundary reporting</a>
             <a href="{{ '/docs/guides/publication-audits/' | relative_url }}">Publication audits</a>
@@ -276,6 +281,7 @@
             <a href="{{ '/docs/examples/specification-denominator-audit/' | relative_url }}">Declared → valid → successful</a>
             <a href="{{ '/docs/examples/execution-ledger-reconciliation/' | relative_url }}">Failure → repair → reconciliation</a>
             <a href="{{ '/docs/examples/robustness-diagnostic-walkthrough/' | relative_url }}">Diagnostic interpretation walkthrough</a>
+            <a href="{{ '/docs/examples/conclusion-rule-edge-cases/' | relative_url }}">Conclusion-rule edge cases</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
             <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
             <a href="{{ '/docs/examples/decision-to-report/' | relative_url }}">Decision-to-report example</a>
@@ -422,5 +428,6 @@
   {% if page.page_type == 'specification-declaration' %}<script src="{{ '/assets/js/specification-declaration.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'execution-ledger' %}<script src="{{ '/assets/js/execution-ledger.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'robustness-diagnostics' %}<script src="{{ '/assets/js/robustness-diagnostics.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'conclusion-rule' %}<script src="{{ '/assets/js/conclusion-rule.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>
