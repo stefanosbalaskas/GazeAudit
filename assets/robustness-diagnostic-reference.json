@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/robustness-diagnostic-reference.json
+---
+{{ site.data.robustness_diagnostics | jsonify }}
