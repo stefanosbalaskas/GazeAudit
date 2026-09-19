@@ -160,6 +160,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Repair seven synthetic structural-QC, readiness, robustness, sensitivity, execution, and frozen-evidence overclaims using evidence objects, denominators, and limitations.</p>
     <p><a href="reporting-language-rewrite/">Reporting-language rewrite →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">25</div>
+    <h3>Audit endpoint drift before comparing branches</h3>
+    <p>Distinguish acceptable upstream specification variation from reversed contrasts, unit mismatches, changed aggregation, different outcome families, silent missing-to-zero, and non-finite endpoint evidence.</p>
+    <p><a href="endpoint-drift-audit/">Endpoint drift audit →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
