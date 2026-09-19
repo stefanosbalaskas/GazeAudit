@@ -114,6 +114,8 @@ It does **not** establish:
 
 ## Combine sampling with missingness
 
+For a complete methodological treatment, use the [Sampling & Missingness Sensitivity Center]({{ '/docs/sampling-missingness/' | relative_url }}), [design guide]({{ '/docs/guides/sampling-missingness-sensitivity/' | relative_url }}), and [sampling & missingness design audit]({{ '/docs/examples/sampling-missingness-design-audit/' | relative_url }}).
+
 Sampling and missingness can interact. GazeAudit therefore provides separate missingness perturbation utilities rather than treating all row loss as equivalent to lower sampling rate.
 
 Use `inject_missingness()`, `missingness_mask()`, or `missingness_sensitivity_curve()` when dropout or structured missingness is the scientific concern. Keep the perturbation mechanism explicit in the analysis record.
