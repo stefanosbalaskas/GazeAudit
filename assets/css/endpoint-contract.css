@@ -1,0 +1,239 @@
+.endpoint-builder {
+  margin: 1.2rem 0;
+}
+
+.endpoint-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.endpoint-field-card {
+  display: grid;
+  gap: .55rem;
+  min-width: 0;
+  padding: .9rem;
+  border: 1px solid var(--border);
+  border-radius: .8rem;
+  background: var(--surface-muted);
+}
+
+.endpoint-field-head {
+  display: flex;
+  gap: .7rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.endpoint-field-head > span:first-child {
+  display: grid;
+  gap: .2rem;
+}
+
+.endpoint-field-head strong {
+  font-size: .92rem;
+}
+
+.endpoint-required,
+.endpoint-optional {
+  flex: 0 0 auto;
+  padding: .13rem .42rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .64rem;
+  font-weight: 800;
+}
+
+.endpoint-field-purpose,
+.endpoint-field-boundary {
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+
+.endpoint-field-card input,
+.endpoint-field-card textarea {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: .52rem .62rem;
+  border: 1px solid var(--border);
+  border-radius: .52rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.endpoint-field-card textarea {
+  min-height: 5.2rem;
+}
+
+.endpoint-field-boundary {
+  padding-top: .5rem;
+  border-top: 1px solid var(--border);
+}
+
+.endpoint-field-boundary strong {
+  display: block;
+  margin-bottom: .15rem;
+  color: var(--text);
+  font-size: .66rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.endpoint-finite-guard {
+  margin: 1rem 0 0;
+  padding: .9rem;
+  border: 1px solid var(--border);
+  border-radius: .8rem;
+  background: var(--surface-muted);
+}
+
+.endpoint-finite-guard legend {
+  padding: 0 .35rem;
+  font-weight: 800;
+}
+
+.endpoint-finite-guard label {
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+}
+
+.endpoint-finite-guard input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: .15rem;
+}
+
+.endpoint-finite-guard p {
+  margin: .45rem 0 0 1.55rem;
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+.endpoint-builder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-top: 1rem;
+}
+
+.endpoint-builder-actions button,
+.endpoint-output-grid button {
+  min-height: 2.45rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.endpoint-builder-actions button:hover,
+.endpoint-output-grid button:hover:not(:disabled) {
+  border-color: var(--border-strong);
+}
+
+.endpoint-builder-actions button:focus-visible,
+.endpoint-output-grid button:focus-visible,
+.endpoint-field-card :is(input, textarea):focus-visible,
+.endpoint-finite-guard input:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.endpoint-output-grid button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.endpoint-builder-errors {
+  margin: 1rem 0;
+  padding: .85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: .7rem;
+  background: var(--surface-muted);
+}
+
+.endpoint-builder-errors strong {
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.endpoint-builder-errors ul {
+  margin-bottom: 0;
+}
+
+.endpoint-builder-status {
+  margin: .75rem 0 1rem;
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.endpoint-output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.endpoint-output-grid > article {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+}
+
+.endpoint-output-grid h2 {
+  margin-top: 0;
+  font-size: 1.05rem;
+}
+
+.endpoint-output-grid p {
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.endpoint-output-grid pre {
+  max-height: 34rem;
+  overflow: auto;
+}
+
+@media (max-width: 820px) {
+  .endpoint-field-grid,
+  .endpoint-output-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .endpoint-field-head {
+    flex-direction: column;
+  }
+}
+
+@media (forced-colors: active) {
+  .endpoint-field-card,
+  .endpoint-required,
+  .endpoint-optional,
+  .endpoint-field-card input,
+  .endpoint-field-card textarea,
+  .endpoint-finite-guard,
+  .endpoint-builder-actions button,
+  .endpoint-output-grid > article,
+  .endpoint-output-grid button,
+  .endpoint-builder-errors {
+    border-color: CanvasText;
+  }
+
+  .endpoint-builder-actions button:focus-visible,
+  .endpoint-output-grid button:focus-visible,
+  .endpoint-field-card :is(input, textarea):focus-visible,
+  .endpoint-finite-guard input:focus-visible {
+    outline-color: Highlight;
+  }
+}

@@ -27,6 +27,7 @@ These pages describe public APIs, installed commands, status vocabulary, softwar
 | what a structural-QC issue/detail code means | [Structural QC Issue Clinic]({{ '/docs/reference/qc-issue-clinic/' | relative_url }}) | issue family, diagnostic scope/detail, inspection route, and non-exclusion boundary |
 | what each readiness threshold field evaluates | [Readiness threshold reference]({{ '/assets/readiness-threshold-reference.json' | relative_url }}) | machine-readable scope, metric, comparison, and interpretation boundary for all eight fields |
 | what a status/pattern licenses me to report | [Reporting contract reference]({{ '/assets/reporting-contract-reference.json' | relative_url }}) | machine-readable claim, denominator, limitation, and route contracts |
+| what must stay fixed for one common scalar endpoint | [Endpoint field reference]({{ '/assets/endpoint-contract-reference.json' | relative_url }}) | machine-readable endpoint declaration fields and scientific boundaries |
 | which public function fits a task | [API map]({{ '/docs/reference/api-map/' | relative_url }}) | task → public API mapping and bounded purpose |
 | where a public symbol is used in guides/examples/plots/evidence | [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}) | symbol → governed method context with stable deep links |
 | how to read generated signatures, source links, and imports | [Read the source-level API reference]({{ '/docs/guides/read-api-reference/' | relative_url }}) | interface metadata and source-inspection guidance |

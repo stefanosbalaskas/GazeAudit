@@ -160,6 +160,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Repair seven synthetic structural-QC, readiness, robustness, sensitivity, execution, and frozen-evidence overclaims using evidence objects, denominators, and limitations.</p>
     <p><a href="reporting-language-rewrite/">Reporting-language rewrite →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">25</div>
+    <h3>Audit endpoint drift before comparing branches</h3>
+    <p>Distinguish acceptable upstream specification variation from reversed contrasts, unit mismatches, changed aggregation, different outcome families, silent missing-to-zero, and non-finite endpoint evidence.</p>
+    <p><a href="endpoint-drift-audit/">Endpoint drift audit →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -242,6 +248,12 @@ Declare a synthetic primary and alternative readiness policy, reproduce their tr
 Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue codes, and export a compact QC table. The synthetic example deliberately contains one missing coordinate and a repeated timestamp.
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
+
+## [Endpoint drift audit](endpoint-drift-audit/)
+
+Compare nine synthetic endpoint scenarios to decide when a branch preserves the declared scientific quantity and when it changes contrast direction, unit, weighting, outcome family, missingness meaning, or temporal evidence layer.
+
+**Use this when:** a specification space is technically runnable but you need to confirm that every branch still estimates the same scalar scientific endpoint.
 
 ## [End-to-end robustness audit](end-to-end-robustness/)
 

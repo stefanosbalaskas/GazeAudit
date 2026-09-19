@@ -201,6 +201,12 @@ Fit global or grouped gaze-error models, propagate spatial uncertainty into AOI 
 
 ## Analytical robustness
 
+### [Endpoint definition and invariance](endpoint-definition/)
+
+Define the one scalar scientific quantity that every valid specification must estimate, including its unit, contrast direction, analysis unit, denominator, missing/non-finite behavior, transformations, required inputs, and interpretation boundary.
+
+Use the [Endpoint Definition & Handoff Center]({{ '/docs/endpoint-contract/' | relative_url }}) to build a documentation-side declaration, then practise compatibility decisions in the [Endpoint drift audit]({{ '/docs/examples/endpoint-drift-audit/' | relative_url }}).
+
 ### [Specification spaces](specification-space/)
 
 Turn defensible analytical decisions into an explicit `PipelineSpace`, reject invalid combinations before execution, and summarise endpoint stability without selecting a preferred specification after the fact.
