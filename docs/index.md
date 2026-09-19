@@ -80,6 +80,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Match evidence states to bounded Methods/Results/limitations wording | [Results Interpretation & Reporting Center](reporting-center/) |
 | Practise rewriting over-strong manuscript claims | [Reporting-language rewrite](examples/reporting-language-rewrite/) |
 | Declare the common scalar endpoint before building a multiverse | [Endpoint Definition & Handoff Center](endpoint-contract/) |
+| Declare factors, levels, timing, validity, and failure policy before execution | [Specification Space Declaration Center](specification-declaration/) |
+| Practise declared → valid → successful denominator accounting | [Declared → valid → successful](examples/specification-denominator-audit/) |
 | Practise detecting endpoint drift across specifications | [Endpoint drift audit](examples/endpoint-drift-audit/) |
 | Practise every current structural-QC issue/detail code | [All structural-QC issues](examples/all-structural-qc-issues/) |
 | Practise valid, invalid, and reviewable table cases | [Data contract example](examples/data-contract-valid-invalid/) |
