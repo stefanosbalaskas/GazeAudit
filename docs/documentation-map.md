@@ -55,6 +55,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/readiness-policy/' | relative_url }}">Readiness Policy Design Center</a>
       <a href="{{ '/docs/reporting-center/' | relative_url }}">Results & Reporting Center</a>
       <a href="{{ '/docs/endpoint-contract/' | relative_url }}">Endpoint contract</a>
+      <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
       <a href="{{ '/docs/reference/api-pathways/' | relative_url }}">API pathways</a>
       <a href="{{ '/docs/VALIDATION_MATRIX.html' | relative_url }}">Validation matrix</a>
     </div>
