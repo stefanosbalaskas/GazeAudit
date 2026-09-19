@@ -339,7 +339,7 @@ The earlier failure remains in history.
 
 ## Current state and historical events are different
 
-A branch can have more than one attempt.
+**Attempt rows are not the specification denominator.** A branch can have more than one attempt.
 
 Example:
 
