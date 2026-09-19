@@ -45,6 +45,7 @@ The website is organised by research task rather than only by modules:
 | interpret and triage structural-QC review flags | [Structural QC Issue Clinic](https://stefanosbalaskas.github.io/GazeAudit/docs/reference/qc-issue-clinic/) |
 | declare readiness thresholds and preview cohort impact before filtering | [Readiness Policy Design Center](https://stefanosbalaskas.github.io/GazeAudit/docs/readiness-policy/) |
 | translate audit evidence into bounded Methods, Results, and limitation wording | [Results Interpretation & Reporting Center](https://stefanosbalaskas.github.io/GazeAudit/docs/reporting-center/) |
+| declare one common scalar endpoint before executing a specification space | [Endpoint Definition & Handoff Center](https://stefanosbalaskas.github.io/GazeAudit/docs/endpoint-contract/) |
 | run the smallest uncertainty-aware AOI example | [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) |
 | browse worked examples by data context and methodological focus | [Example catalog](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/catalog/) |
 | adapt a teaching example to a real study without inheriting demonstration values | [Adapt examples to your study](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/adapt-examples-to-study/) |
