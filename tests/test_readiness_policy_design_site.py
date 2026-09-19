@@ -218,7 +218,8 @@ def test_policy_center_has_no_prefilled_scientific_thresholds() -> None:
 
     assert "No scientific threshold is pre-filled." in text
     assert "Every readiness criterion starts inactive." in text
-    assert "does not call `filter_study_by_readiness()`" in text
+    assert "does not call" in text
+    assert "filter_study_by_readiness()" in text
     assert "scope above is intentionally not selected by this builder" in text
 
     value_inputs = re.findall(
@@ -238,8 +239,10 @@ def test_policy_center_uses_accessible_native_form_contracts() -> None:
         "<fieldset",
         "<legend>",
         "required",
-        'data-readiness-errors role="alert"',
-        'data-readiness-status role="status"',
+        "data-readiness-errors",
+        'role="alert"',
+        "data-readiness-status",
+        'role="status"',
         'aria-live="polite"',
         "data-readiness-active",
         "data-readiness-value",

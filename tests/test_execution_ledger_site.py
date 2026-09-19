@@ -50,7 +50,7 @@ def _catalog_blocks() -> list[str]:
 
 def _field(block: str, name: str) -> str:
     match = re.search(
-        rf"^  {re.escape(name)}: (.+)$",
+        rf"^(?:- |  ){re.escape(name)}: (.+)$",
         block,
         flags=re.MULTILINE,
     )
@@ -191,12 +191,17 @@ def test_attempt_builder_enforces_state_compatibility_without_execution() -> Non
 
     for contract in (
         "Successful execution requires a finite numeric estimate.",
+        "Successful execution must not contain an execution error,",
         "Technical failure requires an error type or error message.",
         "Technical failure must not contain a scientific estimate.",
         "Non-finite endpoint requires NaN, Infinity, +Infinity,",
+        "Non-finite endpoint is an endpoint value state, not an",
         "Not-run state requires an explicit reason.",
         "Successful repair rerun requires the prior attempt ID.",
         "Successful repair rerun requires a repair record reference.",
+        "Prior attempt ID must differ from the new repair-rerun attempt ID.",
+        "Successful repair rerun must not retain an active execution error.",
+        "const parsedEstimate = (",
         "Factor values must use one factor=value pair per line.",
         "aria-invalid",
         "errors.focus()",
