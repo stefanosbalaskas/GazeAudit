@@ -58,6 +58,8 @@ This is preferable to running every combination and discarding inconvenient rows
 
 ## 4. Use one common scientific endpoint
 
+Before implementation, record the endpoint's scientific quantity, unit, contrast direction, analysis unit/aggregation, eligible denominator, missing-input behavior, non-finite behavior, transformations, required inputs, and interpretation boundary. The [Endpoint Definition & Handoff Center]({{ '/docs/endpoint-contract/' | relative_url }}) provides a no-default declaration builder, and [Endpoint definition and invariance]({{ '/docs/guides/endpoint-definition/' | relative_url }}) explains how to distinguish upstream specification variation from endpoint drift.
+
 `run_specs()` evaluates every valid specification and collects one scalar estimate.
 
 ```python
