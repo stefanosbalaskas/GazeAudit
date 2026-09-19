@@ -40,6 +40,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/guides/endpoint-definition/' | relative_url }}">Endpoint definition</a>
       <a href="{{ '/docs/guides/specification-declaration/' | relative_url }}">Specification declaration</a>
       <a href="{{ '/docs/guides/execution-ledger-recovery/' | relative_url }}">Execution ledger & recovery</a>
+      <a href="{{ '/docs/guides/diagnostic-interpretation/' | relative_url }}">Diagnostic interpretation</a>
       <a href="{{ '/docs/workflows/' | relative_url }}">Workflows</a>
       <a href="{{ '/docs/guides/troubleshooting/' | relative_url }}">Troubleshooting</a>
     </div>
