@@ -9,7 +9,7 @@ permalink: /docs/guides/reporting-robustness/
 
 GazeAudit separates **what was varied**, **what happened to the endpoint**, and **what can legitimately be concluded**. This guide turns that separation into manuscript-ready reporting logic without converting descriptive robustness diagnostics into stronger inferential claims.
 
-For a cross-method status/pattern lookup spanning structural QC, readiness, robustness, sensitivity, and frozen evidence, use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}).
+For the exact input/output and interpretation boundary of specification curves, effect stability, marginal/pairwise sensitivity, and controlled spatial/sampling/missingness curves, use the [Robustness Diagnostics & Sensitivity Center]({{ '/docs/diagnostics/' | relative_url }}). For a cross-method status/pattern lookup spanning structural QC, readiness, robustness, sensitivity, and frozen evidence, use the [Results Interpretation & Reporting Center]({{ '/docs/reporting-center/' | relative_url }}).
 
 ## Report the decision space first
 
