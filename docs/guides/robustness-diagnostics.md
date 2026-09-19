@@ -252,6 +252,8 @@ Do not mix these automatically with a discrete factorial specification space.
 
 Report them as controlled sensitivity analyses with their own perturbation range.
 
+For the complete perturbation contract—including native missingness, requested-versus-observed denominators, seeds, one-draw-per-fraction semantics, replication, and reporting—use [Design sampling and missingness sensitivity]({{ '/docs/guides/sampling-missingness-sensitivity/' | relative_url }}) and the [Sampling & Missingness Sensitivity Center]({{ '/docs/sampling-missingness/' | relative_url }}).
+
 ## 11. Sampling sensitivity is not another hardware experiment
 
 `downsample_gaze()` and sampling-sensitivity functions operate on the recorded stream.
