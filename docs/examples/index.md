@@ -261,6 +261,12 @@ Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue cod
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
 
+## [Failure → repair → reconciliation](execution-ledger-reconciliation/)
+
+Follow an eight-branch synthetic audit from initial execution through one technical failure, one non-finite endpoint, one valid not-run branch, two same-branch repair reruns, and a reconciled current state of 6 successful / 7 valid without counting historical attempts as new scientific specifications.
+
+**Use this when:** a branch has been repaired, retried, deferred, or left unresolved and you need to preserve both current results and execution history.
+
 ## [Declared → valid → successful](specification-denominator-audit/)
 
 Declare eight synthetic combinations, reject two through a fixed pre-execution validity rule, preserve one valid technical failure, and report the execution summary as 5 successful / 6 valid rather than silently shrinking the denominator.
