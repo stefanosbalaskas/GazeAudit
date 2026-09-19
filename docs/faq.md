@@ -101,6 +101,12 @@ Preserve both attempts and reconcile one current state for the branch. Use the [
 
 No. The curve is intended to expose how estimates vary across the complete declared decision space. Selecting the most favourable specification after seeing the curve would undermine the robustness audit.
 
+## Do the 2.5% and 97.5% values from `effect_stability()` form a confidence interval?
+
+No. They are empirical quantiles of the represented specification estimates. They do not have repeated-sampling coverage and are not Bayesian credible intervals. Likewise, positive/negative fractions are branch proportions rather than posterior probabilities.
+
+Use the [Robustness Diagnostics & Sensitivity Interpretation Center]({{ '/docs/robustness-diagnostics/' | relative_url }}) and [Read robustness diagnostics]({{ '/docs/guides/robustness-diagnostics/' | relative_url }}) for the denominator, plot, and reporting boundaries.
+
 ## What does `effect_stability()` tell me?
 
 It provides descriptive summaries of estimates across specifications: count, mean, median, range, empirical 2.5%/97.5% quantiles, positive/negative/exact-null fractions, and descriptive sign stability. It does not replace a formal inferential model and the sign fractions are not posterior probabilities.
