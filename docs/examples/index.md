@@ -249,6 +249,12 @@ Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue cod
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
 
+## [Endpoint drift audit](endpoint-drift-audit/)
+
+Compare nine synthetic endpoint scenarios to decide when a branch preserves the declared scientific quantity and when it changes contrast direction, unit, weighting, outcome family, missingness meaning, or temporal evidence layer.
+
+**Use this when:** a specification space is technically runnable but you need to confirm that every branch still estimates the same scalar scientific endpoint.
+
 ## [End-to-end robustness audit](end-to-end-robustness/)
 
 Run a complete 12-specification synthetic audit from `GazeStudy` construction through `PipelineSpace`, `run_specs()`, specification ordering, effect stability, marginal sensitivity, and pairwise interaction diagnostics.
