@@ -1,0 +1,291 @@
+.spec-declaration-builder {
+  margin: 1.2rem 0;
+}
+
+.spec-declaration-section {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+}
+
+.spec-declaration-section > h2,
+.spec-section-head h2 {
+  margin-top: 0;
+}
+
+.spec-declaration-field-grid,
+.spec-factor-grid,
+.spec-output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.spec-declaration-field {
+  display: grid;
+  gap: .5rem;
+  min-width: 0;
+  padding: .8rem;
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+  background: var(--surface-solid);
+}
+
+.spec-declaration-field-head,
+.spec-section-head {
+  display: flex;
+  gap: .7rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.spec-declaration-field-head > span:first-child {
+  display: grid;
+  gap: .18rem;
+}
+
+.spec-required,
+.spec-optional {
+  flex: 0 0 auto;
+  padding: .12rem .4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .63rem;
+  font-weight: 800;
+}
+
+.spec-field-purpose,
+.spec-field-boundary,
+.spec-validity-note {
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+
+.spec-declaration-field input,
+.spec-declaration-field textarea,
+.spec-factor-card input,
+.spec-factor-card textarea,
+.spec-factor-card select,
+.spec-validity-mode select {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: .52rem .62rem;
+  border: 1px solid var(--border);
+  border-radius: .52rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+}
+
+.spec-declaration-field textarea,
+.spec-factor-card textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.spec-field-boundary {
+  padding-top: .48rem;
+  border-top: 1px solid var(--border);
+}
+
+.spec-field-boundary strong {
+  display: block;
+  margin-bottom: .12rem;
+  color: var(--text);
+  font-size: .66rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.spec-section-head p {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.spec-section-head button,
+.spec-declaration-actions button,
+.spec-remove-factor,
+.spec-output-grid button {
+  min-height: 2.45rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.spec-section-head button:hover,
+.spec-declaration-actions button:hover,
+.spec-remove-factor:hover:not(:disabled),
+.spec-output-grid button:hover:not(:disabled) {
+  border-color: var(--border-strong);
+}
+
+.spec-factor-list {
+  display: grid;
+  gap: .8rem;
+  margin-top: .85rem;
+}
+
+.spec-factor-card {
+  min-width: 0;
+  padding: .85rem;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  background: var(--surface-solid);
+}
+
+.spec-factor-card legend {
+  padding: 0 .35rem;
+  font-weight: 800;
+}
+
+.spec-factor-grid label {
+  display: grid;
+  gap: .3rem;
+  color: var(--muted);
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.spec-factor-wide {
+  grid-column: 1 / -1;
+}
+
+.spec-remove-factor {
+  margin-top: .75rem;
+}
+
+.spec-remove-factor:disabled,
+.spec-output-grid button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.spec-validity-mode {
+  display: grid;
+  gap: .3rem;
+  max-width: 44rem;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.spec-validity-note {
+  margin-bottom: 0;
+}
+
+.spec-declaration-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-top: 1rem;
+}
+
+.spec-builder-errors {
+  margin: 1rem 0;
+  padding: .85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: .7rem;
+  background: var(--surface-muted);
+}
+
+.spec-builder-errors strong {
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.spec-builder-errors ul {
+  margin-bottom: 0;
+}
+
+.spec-builder-status {
+  margin: .75rem 0 1rem;
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.spec-output-grid {
+  margin: 1rem 0 1.5rem;
+}
+
+.spec-output-grid > article {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface-muted);
+}
+
+.spec-output-grid h2 {
+  margin-top: 0;
+  font-size: 1.05rem;
+}
+
+.spec-output-grid p {
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.spec-output-grid pre {
+  max-height: 36rem;
+  overflow: auto;
+}
+
+.spec-declaration-builder :is(input, textarea, select, button):focus-visible,
+.spec-output-grid button:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@media (max-width: 860px) {
+  .spec-declaration-field-grid,
+  .spec-factor-grid,
+  .spec-output-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spec-factor-wide {
+    grid-column: auto;
+  }
+
+  .spec-declaration-field-head,
+  .spec-section-head {
+    flex-direction: column;
+  }
+}
+
+@media (forced-colors: active) {
+  .spec-declaration-section,
+  .spec-declaration-field,
+  .spec-required,
+  .spec-optional,
+  .spec-declaration-field input,
+  .spec-declaration-field textarea,
+  .spec-factor-card,
+  .spec-factor-card input,
+  .spec-factor-card textarea,
+  .spec-factor-card select,
+  .spec-validity-mode select,
+  .spec-section-head button,
+  .spec-declaration-actions button,
+  .spec-remove-factor,
+  .spec-builder-errors,
+  .spec-output-grid > article,
+  .spec-output-grid button {
+    border-color: CanvasText;
+  }
+
+  .spec-declaration-builder :is(input, textarea, select, button):focus-visible,
+  .spec-output-grid button:focus-visible {
+    outline-color: Highlight;
+  }
+}
