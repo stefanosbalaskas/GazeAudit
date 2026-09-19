@@ -178,6 +178,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Separate branch identity from attempt history while preserving a technical failure, non-finite endpoint, valid not-run branch, and successful repair reruns.</p>
     <p><a href="execution-ledger-reconciliation/">Failure → repair → reconciliation →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">28</div>
+    <h3>Interpret robustness diagnostics without overclaiming</h3>
+    <p>Reproduce exact effect-stability, marginal, pairwise, sampling, missingness, and seeded spatial-sensitivity behavior on synthetic data.</p>
+    <p><a href="diagnostic-interpretation/">Diagnostic interpretation →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
