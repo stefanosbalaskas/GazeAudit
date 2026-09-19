@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/specification-declaration-reference.json
+---
+{{ site.data.specification_declaration_fields | jsonify }}

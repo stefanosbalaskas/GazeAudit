@@ -85,6 +85,12 @@ No. `run_specs()` converts the endpoint result with `float(...)`, and Python per
 
 If the declared endpoint contract requires finite estimates, enforce that explicitly in the endpoint or audited wrapper. Use the [Endpoint Definition & Handoff Center]({{ '/docs/endpoint-contract/' | relative_url }}) and [endpoint definition guide]({{ '/docs/guides/endpoint-definition/' | relative_url }}) to record that policy before execution.
 
+## What is the difference between declared, valid, and successful specifications?
+
+**Declared** means every Cartesian combination represented by the factor levels in `PipelineSpace`. **Valid** means the subset that survives a scientific `valid_if` rule fixed before execution. **Successful** means a valid branch completed the processor/endpoint contract.
+
+A valid technical failure remains in the valid denominator. For example, `5 successful / 6 valid` must not be rewritten as `5 / 5`. Use the [Specification Space Declaration Center]({{ '/docs/specification-declaration/' | relative_url }}) and [Declared → valid → successful]({{ '/docs/examples/specification-denominator-audit/' | relative_url }}) exercise for the complete workflow.
+
 ## Is a specification curve a way to choose the best pipeline?
 
 No. The curve is intended to expose how estimates vary across the complete declared decision space. Selecting the most favourable specification after seeing the curve would undermine the robustness audit.

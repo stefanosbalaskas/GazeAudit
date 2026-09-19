@@ -201,6 +201,12 @@ Fit global or grouped gaze-error models, propagate spatial uncertainty into AOI 
 
 ## Analytical robustness
 
+### [Specification-space declaration and validity](specification-declaration/)
+
+Declare the robustness question, endpoint reference, factor set, typed levels, rationale, timing, pre-execution validity rule, reference branch, failure policy, and interpretation boundary before estimates are visible.
+
+Use the [Specification Space Declaration Center]({{ '/docs/specification-declaration/' | relative_url }}) to build the declaration interactively, then the [Declared → valid → successful]({{ '/docs/examples/specification-denominator-audit/' | relative_url }}) example to practise denominator accounting.
+
 ### [Endpoint definition and invariance](endpoint-definition/)
 
 Define the one scalar scientific quantity that every valid specification must estimate, including its unit, contrast direction, analysis unit, denominator, missing/non-finite behavior, transformations, required inputs, and interpretation boundary.

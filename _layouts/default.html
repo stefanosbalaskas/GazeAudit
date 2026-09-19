@@ -64,6 +64,7 @@
   {% if page.page_type == 'readiness-policy' %}<link rel="stylesheet" href="{{ '/assets/css/readiness-policy.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'reporting-center' %}<link rel="stylesheet" href="{{ '/assets/css/reporting-center.css' | relative_url }}">{% endif %}
   {% if page.page_type == 'endpoint-contract' %}<link rel="stylesheet" href="{{ '/assets/css/endpoint-contract.css' | relative_url }}">{% endif %}
+  {% if page.page_type == 'specification-declaration' %}<link rel="stylesheet" href="{{ '/assets/css/specification-declaration.css' | relative_url }}">{% endif %}
   <script>
     (function () {
       try {
@@ -104,6 +105,8 @@
               <a href="{{ '/docs/readiness-policy/' | relative_url }}">Readiness policy</a>
               <a href="{{ '/docs/reporting-center/' | relative_url }}">Reporting center</a>
               <a href="{{ '/docs/endpoint-contract/' | relative_url }}">Endpoint contract</a>
+          <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
+              <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
               <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
               <a href="{{ '/docs/guides/' | relative_url }}">Guides</a>
               <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
@@ -215,6 +218,7 @@
             <a href="{{ '/docs/readiness-policy/' | relative_url }}">Readiness policy design</a>
             <a href="{{ '/docs/reporting-center/' | relative_url }}">Results & reporting</a>
             <a href="{{ '/docs/endpoint-contract/' | relative_url }}">Endpoint definition</a>
+            <a href="{{ '/docs/specification-declaration/' | relative_url }}">Specification declaration</a>
             <a href="{{ '/docs/install/' | relative_url }}">Install & environment</a>
             <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
             <a href="{{ '/docs/getting-started/' | relative_url }}">Getting started</a>
@@ -241,6 +245,7 @@
             <a href="{{ '/docs/guides/aoi-uncertainty/' | relative_url }}">AOI uncertainty</a>
             <a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification spaces</a>
             <a href="{{ '/docs/guides/endpoint-definition/' | relative_url }}">Endpoint definition</a>
+            <a href="{{ '/docs/guides/specification-declaration/' | relative_url }}">Specification declaration</a>
             <a href="{{ '/docs/guides/reporting-robustness/' | relative_url }}">Reporting robustness</a>
             <a href="{{ '/docs/guides/claim-boundary-reporting/' | relative_url }}">Claim-boundary reporting</a>
             <a href="{{ '/docs/guides/publication-audits/' | relative_url }}">Publication audits</a>
@@ -258,6 +263,7 @@
             <a href="{{ '/docs/examples/readiness-policy-design/' | relative_url }}">Readiness policy design</a>
             <a href="{{ '/docs/examples/reporting-language-rewrite/' | relative_url }}">Reporting-language rewrite</a>
             <a href="{{ '/docs/examples/endpoint-drift-audit/' | relative_url }}">Endpoint drift audit</a>
+            <a href="{{ '/docs/examples/specification-denominator-audit/' | relative_url }}">Declared → valid → successful</a>
             <a href="{{ '/docs/examples/study-preflight/' | relative_url }}">Study preflight</a>
             <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
             <a href="{{ '/docs/examples/decision-to-report/' | relative_url }}">Decision-to-report example</a>
@@ -401,5 +407,6 @@
   {% if page.page_type == 'readiness-policy' %}<script src="{{ '/assets/js/readiness-policy.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'reporting-center' %}<script src="{{ '/assets/js/reporting-center.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'endpoint-contract' %}<script src="{{ '/assets/js/endpoint-contract.js' | relative_url }}" defer></script>{% endif %}
+  {% if page.page_type == 'specification-declaration' %}<script src="{{ '/assets/js/specification-declaration.js' | relative_url }}" defer></script>{% endif %}
 </body>
 </html>

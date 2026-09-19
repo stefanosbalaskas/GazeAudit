@@ -166,6 +166,12 @@ Use the <a href="catalog/">Example catalog</a> to filter by data context and met
     <p>Distinguish acceptable upstream specification variation from reversed contrasts, unit mismatches, changed aggregation, different outcome families, silent missing-to-zero, and non-finite endpoint evidence.</p>
     <p><a href="endpoint-drift-audit/">Endpoint drift audit →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">26</div>
+    <h3>Preserve declared, valid, and successful denominators</h3>
+    <p>Work through an 8 declared → 6 valid → 5 successful synthetic audit with two predeclared-invalid combinations and one valid technical failure.</p>
+    <p><a href="specification-denominator-audit/">Declared → valid → successful →</a></p>
+  </article>
 </div>
 
 <div class="callout info">
@@ -248,6 +254,12 @@ Declare a synthetic primary and alternative readiness policy, reproduce their tr
 Create a canonical `GazeStudy`, run `audit_study_qc()`, inspect stable issue codes, and export a compact QC table. The synthetic example deliberately contains one missing coordinate and a repeated timestamp.
 
 **Use this when:** you are onboarding a new table and want a transparent structural check before measurement or robustness analysis.
+
+## [Declared → valid → successful](specification-denominator-audit/)
+
+Declare eight synthetic combinations, reject two through a fixed pre-execution validity rule, preserve one valid technical failure, and report the execution summary as 5 successful / 6 valid rather than silently shrinking the denominator.
+
+**Use this when:** you need to separate Cartesian declaration, scientific validity, and technical execution outcomes before interpreting a specification curve.
 
 ## [Endpoint drift audit](endpoint-drift-audit/)
 

@@ -25,6 +25,8 @@ Do not add arbitrary choices merely to enlarge the multiverse. Each level should
 
 ## 2. Declare the space
 
+Before constructing `PipelineSpace`, record the robustness question, endpoint reference, factors, typed levels, rationale, decision timing, validity-rule mode, failure policy, and untested uncertainty dimensions. The [Specification Space Declaration Center]({{ '/docs/specification-declaration/' | relative_url }}) generates a no-default declaration and preserves the declared Cartesian count separately from the valid execution denominator.
+
 ```python
 from gazeaudit import PipelineSpace
 
