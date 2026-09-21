@@ -545,8 +545,6 @@ def test_pedrotti_verifier_fails_closed_on_caught_exception(
 def test_pedrotti_verified_protocol_fail_closed_guards(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    packaged = pe.load_pedrotti_protocol()
-
     monkeypatch.setattr(
         pe,
         "canonical_json",
