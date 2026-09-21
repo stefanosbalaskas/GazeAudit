@@ -1,7 +1,7 @@
 {
   "schema": "gazeaudit-install-reference-v1",
   "name": "gazeaudit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "requires_python": ">=3.10",
   "tested_python_versions": [
     "3.10",

@@ -6,12 +6,10 @@ on:
       expected_version:
         description: Exact stable version to publish
         required: true
-        default: '0.1.0'
         type: string
       expected_tag:
         description: Exact qualified release tag to publish
         required: true
-        default: 'v0.1.0'
         type: string
 
 permissions:
@@ -30,8 +28,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       EXPECTED_VERSION: ${{ inputs.expected_version }}
       EXPECTED_TAG: ${{ inputs.expected_tag }}
-      GITHUB_MANIFEST: release/0.1.0-publication.json
-      EXTERNAL_PLAN: release/0.1.0-external-publication.json
+      GITHUB_MANIFEST: release/${{ inputs.expected_version }}-publication.json
+      EXTERNAL_PLAN: release/${{ inputs.expected_version }}-external-publication.json
     steps:
       - name: Checkout publication control plane
         uses: actions/checkout@v7
@@ -52,8 +50,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["GITHUB_MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           python tools/external_publication_gate.py \
@@ -88,8 +87,9 @@ jobs:
           set -euo pipefail
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["GITHUB_MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           test "$(git -C tagged-source rev-parse HEAD)" = "$expected_commit"
@@ -121,8 +121,9 @@ jobs:
           gh release download "$EXPECTED_TAG" --dir github-release
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["GITHUB_MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           python tools/external_publication_gate.py \
@@ -133,8 +134,8 @@ jobs:
             --expected-tag "$EXPECTED_TAG" \
             --expected-commit "$expected_commit" \
             --dist-dir github-release
-          cmp tagged-source/dist/gazeaudit-0.1.0-py3-none-any.whl github-release/gazeaudit-0.1.0-py3-none-any.whl
-          cmp tagged-source/dist/gazeaudit-0.1.0.tar.gz github-release/gazeaudit-0.1.0.tar.gz
+          cmp "tagged-source/dist/gazeaudit-${EXPECTED_VERSION}-py3-none-any.whl" "github-release/gazeaudit-${EXPECTED_VERSION}-py3-none-any.whl"
+          cmp "tagged-source/dist/gazeaudit-${EXPECTED_VERSION}.tar.gz" "github-release/gazeaudit-${EXPECTED_VERSION}.tar.gz"
 
       - name: Archive exact PyPI payload
         uses: actions/upload-artifact@v7
@@ -160,8 +161,8 @@ jobs:
     env:
       EXPECTED_VERSION: ${{ inputs.expected_version }}
       EXPECTED_TAG: ${{ inputs.expected_tag }}
-      GITHUB_MANIFEST: release/0.1.0-publication.json
-      EXTERNAL_PLAN: release/0.1.0-external-publication.json
+      GITHUB_MANIFEST: release/${{ inputs.expected_version }}-publication.json
+      EXTERNAL_PLAN: release/${{ inputs.expected_version }}-external-publication.json
     steps:
       - name: Checkout publication control plane
         uses: actions/checkout@v7
@@ -183,8 +184,9 @@ jobs:
           set -euo pipefail
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["GITHUB_MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           python tools/external_publication_gate.py \

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from importlib.metadata import version
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +33,7 @@ def test_generated_install_metadata_has_expected_package_contract() -> None:
 
     assert metadata["schema"] == "gazeaudit-install-reference-v1"
     assert metadata["name"] == "gazeaudit"
-    assert metadata["version"] == "0.1.0"
+    assert metadata["version"] == version("gazeaudit")
     assert metadata["requires_python"] == ">=3.10"
     assert metadata["tested_python_versions"] == ["3.10", "3.11", "3.12", "3.13"]
     assert metadata["dependencies"] == [

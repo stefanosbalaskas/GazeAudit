@@ -7,6 +7,28 @@ state containing this entry is not, by itself, evidence that `v0.1.0` has been t
 that a GitHub Release, PyPI distribution, DOI, or archival deposit exists. Those are
 separate publication actions performed only after the release-candidate gate succeeds.
 
+## 0.2.0 — 2026-09-21
+
+### Scientific and software qualification
+
+- Reach 100% executable statement coverage across the GazeAudit Python package.
+- Qualify the complete test matrix on Python 3.10, 3.11, 3.12, and 3.13.
+- Expand deterministic fail-closed tests for source intake, provenance, archive
+  verification, execution contracts, missingness, AOI uncertainty, freeze records,
+  reporting, readiness, and publication infrastructure.
+- Preserve the frozen GazeBase, Korthals, and Pedrotti scientific outcomes without
+  changing estimators, cohorts, thresholds, endpoints, protocols, or interpretation
+  rules.
+- Normalize Korthals v2 companion paths for portable Windows/POSIX execution.
+
+### Release engineering
+
+- Generalize GitHub Release and PyPI workflows so new releases are version-driven
+  rather than hard-coded to the historical 0.1.0 publication files.
+- Preserve exact-tag rebuilding, checksum verification, clean-wheel installation,
+  GitHub Release round-trip verification, and PyPI Trusted Publishing.
+- Require one source distribution and one universal wheel for the qualified payload.
+
 ## 0.1.0 — 2026-09-14
 
 ### Scientific MVP

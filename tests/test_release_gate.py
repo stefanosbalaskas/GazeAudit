@@ -21,25 +21,25 @@ def _run_gate(*args: str) -> subprocess.CompletedProcess[str]:
 def test_current_stable_metadata_is_release_eligible() -> None:
     result = _run_gate(
         "--expected-version",
-        "0.1.0",
+        "0.2.0",
         "--require-stable",
         "--require-changelog-entry",
     )
     assert result.returncode == 0, result.stderr
-    assert "eligible metadata for 0.1.0" in result.stdout
+    assert "eligible metadata for 0.2.0" in result.stdout
 
 
 def test_current_stable_metadata_matches_v010_tag_contract() -> None:
     result = _run_gate(
         "--expected-version",
-        "0.1.0",
+        "0.2.0",
         "--tag",
-        "v0.1.0",
+        "v0.2.0",
         "--require-stable",
         "--require-changelog-entry",
     )
     assert result.returncode == 0, result.stderr
-    assert "eligible metadata for 0.1.0" in result.stdout
+    assert "eligible metadata for 0.2.0" in result.stdout
 
 
 def test_stable_release_fixture_passes_exact_version_tag_and_changelog_gate(
