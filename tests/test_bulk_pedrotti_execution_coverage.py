@@ -1,19 +1,19 @@
 from __future__ import annotations
 
+import dataclasses
 import json
+import pathlib
 import runpy
-from dataclasses import replace
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 
 import gazeaudit.pedrotti_execution as pe
-from gazeaudit.pedrotti_source import psource.PedrottiSourceIntake
+import gazeaudit.pedrotti_source as psource
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = runpy.run_path(str(ROOT / "tests" / "test_pedrotti_execution.py"))
 _trial = BASE["_trial"]
 _synthetic_prepared = BASE["_synthetic_prepared"]
@@ -75,7 +75,7 @@ def _source_frame() -> pd.DataFrame:
 
 
 def test_prepare_execution_data_full_positive_path(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(pe.pd, "read_csv", lambda *args, **kwargs: _source_frame())
@@ -86,8 +86,8 @@ def test_prepare_execution_data_full_positive_path(
     assert prepared.source_identity["scientific_endpoint_evaluated_before_preparation"] is False
 
 
-def test_prepare_execution_data_type_and_source_guards(tmp_path: Path) -> None:
-    with pytest.raises(TypeError, match="psource.PedrottiSourceIntake"):
+def test_prepare_execution_data_type_and_source_guards(tmp_path: pathlib.Path) -> None:
+    with pytest.raises(TypeError, match="PedrottiSourceIntake"):
         pe.prepare_pedrotti_execution_data(tmp_path, object())  # type: ignore[arg-type]
 
     with pytest.raises(FileNotFoundError, match="source_dir"):
@@ -95,7 +95,7 @@ def test_prepare_execution_data_type_and_source_guards(tmp_path: Path) -> None:
 
 
 def test_prepare_execution_data_rejects_unstable_stimulus_and_count_drift(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     unstable = _source_frame()
@@ -173,7 +173,7 @@ def test_locked_prepared_positive_and_identity_failure(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     base = _synthetic_prepared(participants=36)
-    prepared = replace(base, source_identity=_locked_shape_identity())
+    prepared = dataclasses.replace(base, source_identity=_locked_shape_identity())
     lock = _lock_for(prepared)
     monkeypatch.setattr(pe, "verify_pedrotti_source_lock", lambda _doc=None: lock)
     assert pe._verify_locked_prepared(prepared, lock_document=lock) is prepared
@@ -182,7 +182,7 @@ def test_locked_prepared_positive_and_identity_failure(
     bad_identity["source_file_count"] = -1
     with pytest.raises(ValueError, match="differs from source lock"):
         pe._verify_locked_prepared(
-            replace(prepared, source_identity=bad_identity),
+            dataclasses.replace(prepared, source_identity=bad_identity),
             lock_document=lock,
         )
 
@@ -477,7 +477,7 @@ def test_environment_snapshot_guardrails(text: str) -> None:
 
 
 def test_writer_public_guards(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     with pytest.raises(TypeError, match="PedrottiScientificExecution"):
@@ -522,13 +522,13 @@ def test_writer_public_guards(
         )
 
 
-def test_reveal_rejects_invalid_archive(tmp_path: Path) -> None:
+def test_reveal_rejects_invalid_archive(tmp_path: pathlib.Path) -> None:
     with pytest.raises(ValueError, match="failed locked verification"):
         pe.reveal_pedrotti_locked_execution(tmp_path)
 
 
 def test_checksum_and_json_parsers(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     checksum = tmp_path / "SHA256SUMS"
     checksum.write_text("bad\n", encoding="utf-8")
