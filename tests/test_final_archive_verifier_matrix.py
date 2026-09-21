@@ -285,6 +285,29 @@ def _build_pedrotti_base(
         execution_context=_p_context(),
         environment_text="numpy==2.5.3\npandas==2.3.3\n",
     )
+
+    source_path = root / "source_identity.json"
+    source = _read(source_path)
+    source["numeric_trial_count"] = 1728
+    _write(source_path, source)
+
+    execution_path = root / "execution_manifest.json"
+    execution_document = _read(execution_path)
+    execution_document["numeric_trial_count"] = 1728
+    execution_core = dict(execution_document)
+    execution_core.pop("execution_fingerprint", None)
+    execution_document["execution_fingerprint"] = fingerprint(execution_core)
+    _write(execution_path, execution_document)
+
+    artifact_path = root / "artifact_manifest.json"
+    artifact = _read(artifact_path)
+    artifact["execution_fingerprint"] = execution_document["execution_fingerprint"]
+    artifact_core = dict(artifact)
+    artifact_core.pop("artifact_manifest_fingerprint", None)
+    artifact["artifact_manifest_fingerprint"] = fingerprint(artifact_core)
+    _write(artifact_path, artifact)
+
+    _refresh_p_checksums(root)
     monkeypatch.undo()
     return root, execution
 
@@ -307,6 +330,11 @@ def test_pedrotti_archive_semantic_rejection_matrix(
         pe,
         "verify_pedrotti_source_lock",
         lambda: copy.deepcopy(fake_lock),
+    )
+    monkeypatch.setattr(
+        pe,
+        "PEDROTTI_LOCKED_SOURCE_MANIFEST_FINGERPRINT",
+        source_fingerprint,
     )
     monkeypatch.setattr(
         pe,
