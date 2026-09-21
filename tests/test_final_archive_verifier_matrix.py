@@ -301,6 +301,10 @@ def _build_pedrotti_base(
     artifact_path = root / "artifact_manifest.json"
     artifact = _read(artifact_path)
     artifact["execution_fingerprint"] = execution_document["execution_fingerprint"]
+    artifact["files"] = pe._flat_file_records(
+        root,
+        excluded={"artifact_manifest.json", "SHA256SUMS"},
+    )
     artifact_core = dict(artifact)
     artifact_core.pop("artifact_manifest_fingerprint", None)
     artifact["artifact_manifest_fingerprint"] = provenance.fingerprint(artifact_core)
