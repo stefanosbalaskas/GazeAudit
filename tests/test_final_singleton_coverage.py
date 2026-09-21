@@ -201,10 +201,15 @@ def test_freeze_verifier_hits_forbidden_scientific_token_branch(
     verifier,
 ) -> None:
     root = builder(tmp_path, monkeypatch)
+    token = (
+        '"classification"'
+        if module is pfreeze
+        else '"hard_effect"'
+    )
     monkeypatch.setattr(
         module,
         "canonical_json",
-        lambda _value: '"hard_effect"',
+        lambda _value: token,
     )
     assert verifier(root) is False
 
