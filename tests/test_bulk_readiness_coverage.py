@@ -1,19 +1,19 @@
 from __future__ import annotations
 
+import dataclasses
 import json
+import pathlib
 import runpy
-from dataclasses import replace
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 
 import gazeaudit.readiness as readiness
-from gazeaudit.study_qc import build_study_qc_audit
+import gazeaudit.study_qc as study_qc
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 def _demo() -> dict[str, object]:
@@ -24,7 +24,7 @@ def _demo() -> dict[str, object]:
 
 
 def _rewrite_artifact(
-    root: Path,
+    root: pathlib.Path,
     mutate,
 ) -> dict[str, object]:
     path = root / "analysis_readiness_artifacts.json"
@@ -41,10 +41,10 @@ def _rewrite_artifact(
 
 
 def _write_artifacts(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     *,
     with_repair: bool = True,
-) -> tuple[Path, object, object]:
+) -> tuple[pathlib.Path, object, object]:
     demo = _demo()
     report = demo["readiness"]
     comparison = demo["repair_comparison"]
@@ -153,7 +153,7 @@ def test_cohort_preview_and_filter_guardrails(
 
     no_pass = report.participant_summary.copy()
     no_pass["passes_thresholds"] = False
-    forced = replace(report, participant_summary=no_pass)
+    forced = dataclasses.replace(report, participant_summary=no_pass)
     monkeypatch.setattr(
         readiness,
         "_require_readiness_report",
@@ -308,11 +308,11 @@ def test_repair_comparison_verifier_guardrails(
     bad_manifest = dict(comparison.manifest)
     bad_manifest["software"] = "bad"
     assert not readiness.verify_repair_comparison(
-        replace(comparison, manifest=bad_manifest)
+        dataclasses.replace(comparison, manifest=bad_manifest)
     )
 
     assert not readiness.verify_repair_comparison(
-        replace(comparison, metrics=None)  # type: ignore[arg-type]
+        dataclasses.replace(comparison, metrics=None)  # type: ignore[arg-type]
     )
 
 
@@ -336,20 +336,20 @@ def test_readiness_report_verifier_guardrails(
     bad_manifest = dict(report.manifest)
     bad_manifest["software"] = "bad"
     assert not readiness.verify_analysis_readiness_report(
-        replace(report, manifest=bad_manifest)
+        dataclasses.replace(report, manifest=bad_manifest)
     )
 
     assert not readiness.verify_analysis_readiness_report(
-        replace(report, trial_summary=None)  # type: ignore[arg-type]
+        dataclasses.replace(report, trial_summary=None)  # type: ignore[arg-type]
     )
 
 
 def test_write_artifacts_rejects_invalid_repair(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     demo = _demo()
     comparison = demo["repair_comparison"]
-    bad = replace(
+    bad = dataclasses.replace(
         comparison,
         manifest={
             **comparison.manifest,
@@ -365,7 +365,7 @@ def test_write_artifacts_rejects_invalid_repair(
 
 
 def test_artifact_verifier_requires_manifest_and_schema(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     assert not readiness.verify_analysis_readiness_artifacts(tmp_path)
 
@@ -378,7 +378,7 @@ def test_artifact_verifier_requires_manifest_and_schema(
 
 
 def test_artifact_verifier_checks_outer_fingerprint(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     path = root / "analysis_readiness_artifacts.json"
@@ -389,7 +389,7 @@ def test_artifact_verifier_checks_outer_fingerprint(
 
 
 def test_artifact_verifier_checks_file_set_and_repair_pairing(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     _rewrite_artifact(
@@ -407,7 +407,7 @@ def test_artifact_verifier_checks_file_set_and_repair_pairing(
 
 
 def test_artifact_verifier_checks_file_existence_size_and_digest(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     (root / "trial_readiness.csv").unlink()
@@ -435,7 +435,7 @@ def test_artifact_verifier_checks_file_existence_size_and_digest(
 
 
 def _refresh_descriptor(
-    root: Path,
+    root: pathlib.Path,
     filename: str,
 ) -> None:
     payload = (root / filename).read_bytes()
@@ -450,7 +450,7 @@ def _refresh_descriptor(
 
 
 def test_artifact_verifier_checks_embedded_readiness_manifest(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     path = root / "analysis_readiness.json"
@@ -460,7 +460,7 @@ def test_artifact_verifier_checks_embedded_readiness_manifest(
 
 
 def test_artifact_verifier_binds_readiness_fingerprint(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
 
@@ -475,7 +475,7 @@ def test_artifact_verifier_binds_readiness_fingerprint(
 
 
 def test_artifact_verifier_checks_repair_manifest_and_fingerprint(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     repair_path = root / "repair_comparison.json"
@@ -495,7 +495,7 @@ def test_artifact_verifier_checks_repair_manifest_and_fingerprint(
 
 
 def test_artifact_verifier_fails_closed_on_invalid_json(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     root, _, _ = _write_artifacts(tmp_path)
     (root / "analysis_readiness_artifacts.json").write_text(
@@ -570,7 +570,7 @@ def test_participant_unit_labels_and_public_type_guards() -> None:
     with pytest.raises(TypeError, match="AnalysisReadinessReport"):
         readiness._require_readiness_report(object())  # type: ignore[arg-type]
 
-    tampered = replace(
+    tampered = dataclasses.replace(
         demo["readiness"],
         manifest={
             **demo["readiness"].manifest,
