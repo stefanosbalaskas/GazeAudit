@@ -4,7 +4,6 @@ import copy
 import json
 import runpy
 from contextlib import nullcontext
-from importlib.metadata import version
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -13,13 +12,9 @@ import pandas as pd
 import pytest
 
 import gazeaudit.korthals_execution_v2 as ev2
+import gazeaudit.korthals_source_lock as lock_module
 import gazeaudit.korthals_v2 as kv2
-from gazeaudit.korthals_source_lock import (
-    KORTHALS_SOURCE_LOCK_FINGERPRINT,
-    load_korthals_source_lock,
-)
-from gazeaudit.provenance import canonical_json, fingerprint
-
+import gazeaudit.provenance as provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 V2 = runpy.run_path(str(ROOT / "tests" / "test_korthals_v2.py"))
@@ -42,7 +37,7 @@ class _JsonResource:
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def joinpath(self, _name: str) -> "_JsonResource":
+    def joinpath(self, _name: str) -> _JsonResource:
         return self
 
     def read_text(self, *, encoding: str) -> str:
@@ -54,7 +49,7 @@ def _rehash_manifest(document: dict[str, object]) -> dict[str, object]:
     output = copy.deepcopy(document)
     core = dict(output)
     core.pop("source_manifest_fingerprint", None)
-    output["source_manifest_fingerprint"] = fingerprint(core)
+    output["source_manifest_fingerprint"] = provenance.fingerprint(core)
     return output
 
 
@@ -509,7 +504,7 @@ def _write_v2_intake(
 def _rewrite_json(path: Path, mutate) -> None:
     document = json.loads(path.read_text(encoding="utf-8"))
     mutate(document)
-    path.write_text(canonical_json(document) + "\n", encoding="utf-8")
+    path.write_text(provenance.canonical_json(document) + "\n", encoding="utf-8")
 
 
 def _refresh_v2_integrity(root: Path) -> None:
@@ -528,8 +523,8 @@ def _refresh_v2_integrity(root: Path) -> None:
     ]
     core = dict(manifest)
     core.pop("artifact_manifest_fingerprint", None)
-    manifest["artifact_manifest_fingerprint"] = fingerprint(core)
-    manifest_path.write_text(canonical_json(manifest) + "\n", encoding="utf-8")
+    manifest["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
+    manifest_path.write_text(provenance.canonical_json(manifest) + "\n", encoding="utf-8")
     targets = sorted(
         path
         for path in root.iterdir()
@@ -709,7 +704,7 @@ def test_execution_v2_context_final_guards(
 ) -> None:
     prepared = _synthetic_prepared()
     context = _execution_context(prepared)
-    lock = load_korthals_source_lock()
+    lock = lock_module.load_korthals_source_lock()
 
     monkeypatch.setattr(
         ev2,
