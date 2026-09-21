@@ -25,13 +25,13 @@ def test_release_metadata_is_stable_alpha_candidate() -> None:
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     release = (ROOT / "docs" / "RELEASE.md").read_text(encoding="utf-8")
 
-    assert 'version = "0.1.0"' in pyproject
-    assert 'version = "0.1.0.dev20"' not in pyproject
+    assert 'version = "0.2.0"' in pyproject
+    assert 'version = "0.2.0.dev20"' not in pyproject
     assert '"Development Status :: 3 - Alpha"' in pyproject
     assert "Development Status :: 2 - Pre-Alpha" not in pyproject
     assert "pre-alpha" not in readme.lower()
-    assert "## 0.1.0 — 2026-09-14" in changelog
-    assert "stable `0.1.0` candidate metadata" in release
+    assert "## 0.2.0 — 2026-09-21" in changelog
+    assert "stable `0.2.0` candidate metadata" in release
     assert "does not, by itself" in release
 
 

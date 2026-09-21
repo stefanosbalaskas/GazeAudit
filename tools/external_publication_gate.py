@@ -89,7 +89,7 @@ def validate(
             raise ValueError("unexpected Zenodo publication mode")
         if zenodo.get("resource_type") != "software":
             raise ValueError("Zenodo resource type must be software")
-        if zenodo.get("metadata_source") != "CITATION.cff@v0.1.0":
+        if zenodo.get("metadata_source") != f"CITATION.cff@{expected_tag}":
             raise ValueError("unexpected Zenodo metadata source")
         sdist = payload["sdist"]
         if zenodo.get("single_file") != sdist["filename"]:

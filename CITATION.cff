@@ -5,9 +5,8 @@ type: software
 authors:
   - family-names: Balaskas
     given-names: Stefanos
-version: "0.1.0"
-date-released: "2026-09-14"
-doi: "10.5281/zenodo.22757340"
+version: "0.2.0"
+date-released: "2026-09-21"
 repository-code: "https://github.com/stefanosbalaskas/GazeAudit"
 url: "https://github.com/stefanosbalaskas/GazeAudit"
 license: MIT

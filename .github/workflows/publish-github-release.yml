@@ -6,12 +6,10 @@ on:
       expected_version:
         description: Exact stable version to publish
         required: true
-        default: '0.1.0'
         type: string
       expected_tag:
         description: Exact existing qualified tag to publish
         required: true
-        default: 'v0.1.0'
         type: string
 
 permissions:
@@ -30,7 +28,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       EXPECTED_VERSION: ${{ inputs.expected_version }}
       EXPECTED_TAG: ${{ inputs.expected_tag }}
-      MANIFEST: release/0.1.0-publication.json
+      MANIFEST: release/${{ inputs.expected_version }}-publication.json
     steps:
       - name: Checkout publication control plane
         uses: actions/checkout@v7
@@ -51,8 +49,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           python tools/publication_gate.py \
@@ -87,8 +86,9 @@ jobs:
           set -euo pipefail
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           test "$(git -C tagged-source rev-parse HEAD)" = "$expected_commit"
@@ -122,7 +122,7 @@ jobs:
             --verify-tag \
             --draft \
             --title "GazeAudit $EXPECTED_VERSION" \
-            --notes-file docs/RELEASE_NOTES_0.1.0.md
+            --notes-file docs/RELEASE_NOTES_${EXPECTED_VERSION}.md
 
       - name: Download and verify draft release assets
         shell: bash
@@ -134,8 +134,9 @@ jobs:
           gh release download "$EXPECTED_TAG" --dir release-verify
           expected_commit="$(python - <<'PY'
           import json
+          import os
           from pathlib import Path
-          print(json.loads(Path('release/0.1.0-publication.json').read_text())['source_commit'])
+          print(json.loads(Path(os.environ["MANIFEST"]).read_text())['source_commit'])
           PY
           )"
           python tools/publication_gate.py \
