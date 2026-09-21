@@ -226,6 +226,14 @@ def test_pedrotti_freeze_rejects_extra_manifest_key(
     assert not pfreeze.verify_pedrotti_source_freeze_artifacts(root)
 
 
+def test_korthals_source_intake_rejects_unexpected_top_level_file(
+    tmp_path: Path,
+) -> None:
+    _intake, root = _valid_k_intake(tmp_path)
+    (root / "unexpected.txt").write_text("x", encoding="utf-8")
+    assert not ks.verify_korthals_source_intake_artifacts(root)
+
+
 def test_korthals_source_intake_rejects_invalid_source_manifest(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
