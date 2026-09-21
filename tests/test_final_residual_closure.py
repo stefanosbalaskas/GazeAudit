@@ -18,7 +18,6 @@ import gazeaudit.pedrotti_execution as pe
 import gazeaudit.pedrotti_freeze as pf
 import gazeaudit.readiness as readiness
 
-
 ROOT = Path(__file__).resolve().parents[1]
 K = runpy.run_path(str(ROOT / "tests" / "test_bulk_korthals_execution_coverage.py"))
 P = runpy.run_path(str(ROOT / "tests" / "test_bulk_pedrotti_execution_coverage.py"))
