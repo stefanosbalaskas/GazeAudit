@@ -43,6 +43,18 @@ def test_gazebase_to_pandas_requires_dataframe_result() -> None:
         ge._to_pandas_frame(_BadPandas(), "demo")
 
 
+def test_gazebase_to_pandas_successful_converter() -> None:
+    expected = pd.DataFrame({"x": [1.0]})
+
+    class GoodPandas:
+        def to_pandas(self) -> pd.DataFrame:
+            return expected
+
+    result = ge._to_pandas_frame(GoodPandas(), "demo")
+    pd.testing.assert_frame_equal(result, expected)
+    assert result is not expected
+
+
 def test_korthals_prepare_post_filter_and_validation_guards(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -161,6 +173,27 @@ def test_korthals_endpoint_missing_participant_guard(
         ke._endpoint_weights(data)
 
 
+def test_pedrotti_locked_execution_delegates_after_lock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    prepared = _p_synthetic()
+    sentinel = object()
+    monkeypatch.setattr(
+        pe,
+        "_verify_locked_prepared",
+        lambda value, **kwargs: value,
+    )
+    monkeypatch.setattr(
+        pe,
+        "run_pedrotti_scientific_execution",
+        lambda value, **kwargs: sentinel,
+    )
+    assert (
+        pe.run_pedrotti_locked_scientific_execution(prepared)
+        is sentinel
+    )
+
+
 def test_pedrotti_trial_duration_and_locked_entrypoint(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -262,6 +295,43 @@ def test_pedrotti_missingness_position_remaining_paths(
             replicate=1,
             root_seed=1,
         )
+
+
+def test_pedrotti_writer_overwrite_removes_existing_archive(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    execution = _p_execution36()
+    monkeypatch.setattr(
+        pe,
+        "_verify_locked_prepared",
+        lambda value, **kwargs: value,
+    )
+    monkeypatch.setattr(
+        pe,
+        "verify_pedrotti_locked_execution_artifacts",
+        lambda _root: True,
+    )
+    root = tmp_path / "overwrite"
+    root.mkdir()
+    old = root / "old.txt"
+    old.write_text("old", encoding="utf-8")
+    pe.write_pedrotti_locked_execution_artifacts(
+        execution,
+        root,
+        execution_context={
+            "schema": "gazeaudit-pedrotti-execution-context-v1",
+            "execution_commit": "a" * 40,
+            "workflow_ref": pe.PEDROTTI_EXECUTION_WORKFLOW,
+            "github_run_id": 1,
+            "runner_os": "Linux",
+            "runner_arch": "X64",
+            "python": "3.12.14",
+        },
+        environment_text="numpy==2.5.3\npandas==2.3.3\n",
+        overwrite=True,
+    )
+    assert not old.exists()
 
 
 def test_pedrotti_archive_verifier_remaining_identity_branches(
