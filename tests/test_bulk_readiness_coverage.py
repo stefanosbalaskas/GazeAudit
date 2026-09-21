@@ -94,7 +94,7 @@ def test_evaluate_readiness_rejects_invalid_threshold_and_qc_audit(
             qc_audit=object(),  # type: ignore[arg-type]
         )
 
-    audit = build_study_qc_audit(study)
+    audit = study_qc.build_study_qc_audit(study)
     monkeypatch.setattr(
         readiness,
         "verify_study_qc_audit",
@@ -111,7 +111,7 @@ def test_evaluate_readiness_rejects_invalid_threshold_and_qc_audit(
 def test_evaluate_readiness_rejects_audit_from_other_study() -> None:
     demo = _demo()
     other = demo["repaired"]
-    wrong_audit = build_study_qc_audit(other)
+    wrong_audit = study_qc.build_study_qc_audit(other)
 
     with pytest.raises(ValueError, match="different canonical study"):
         readiness.evaluate_analysis_readiness(
