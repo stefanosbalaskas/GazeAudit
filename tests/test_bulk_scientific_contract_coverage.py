@@ -1307,9 +1307,8 @@ def test_qc_artifact_verifier_checks_payload_hash(
         else "X"
         + payload[1:]
     )
-    target.write_text(
-        replacement,
-        encoding="utf-8",
+    target.write_bytes(
+        replacement.encode("utf-8")
     )
 
     assert len(
