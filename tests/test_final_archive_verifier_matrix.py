@@ -9,9 +9,9 @@ from pathlib import Path
 import pytest
 
 import gazeaudit.korthals_execution_v2 as kv2e
+import gazeaudit.korthals_source_lock as lock_module
 import gazeaudit.pedrotti_execution as pe
-from gazeaudit.korthals_source_lock import load_korthals_source_lock
-from gazeaudit.provenance import canonical_json, fingerprint
+import gazeaudit.provenance as provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +32,7 @@ def _read(path: Path) -> dict[str, object]:
 
 
 def _write(path: Path, value: object) -> None:
-    path.write_text(canonical_json(value) + "\n", encoding="utf-8")
+    path.write_text(provenance.canonical_json(value) + "\n", encoding="utf-8")
 
 
 def _refresh_k_manifest(root: Path) -> None:
@@ -40,7 +40,7 @@ def _refresh_k_manifest(root: Path) -> None:
     document = _read(path)
     core = dict(document)
     core.pop("artifact_manifest_fingerprint", None)
-    document["artifact_manifest_fingerprint"] = fingerprint(core)
+    document["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
     _write(path, document)
 
 
@@ -49,7 +49,7 @@ def _refresh_k_execution(root: Path) -> None:
     document = _read(path)
     core = dict(document)
     core.pop("execution_fingerprint", None)
-    document["execution_fingerprint"] = fingerprint(core)
+    document["execution_fingerprint"] = provenance.fingerprint(core)
     _write(path, document)
 
 
@@ -58,7 +58,7 @@ def _refresh_p_execution(root: Path) -> None:
     document = _read(path)
     core = dict(document)
     core.pop("execution_fingerprint", None)
-    document["execution_fingerprint"] = fingerprint(core)
+    document["execution_fingerprint"] = provenance.fingerprint(core)
     _write(path, document)
 
 
@@ -67,7 +67,7 @@ def _refresh_p_artifact(root: Path) -> None:
     document = _read(path)
     core = dict(document)
     core.pop("artifact_manifest_fingerprint", None)
-    document["artifact_manifest_fingerprint"] = fingerprint(core)
+    document["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
     _write(path, document)
 
 
@@ -96,7 +96,7 @@ def test_korthals_v2_archive_semantic_rejection_matrix(
     )
     assert kv2e.verify_korthals_execution_artifacts_v2(base)
 
-    lock = load_korthals_source_lock()
+    lock = lock_module.load_korthals_source_lock()
     monkeypatch.setattr(
         kv2e,
         "_validated_execution_context_v2",
@@ -296,7 +296,7 @@ def _build_pedrotti_base(
     execution_document["numeric_trial_count"] = 1728
     execution_core = dict(execution_document)
     execution_core.pop("execution_fingerprint", None)
-    execution_document["execution_fingerprint"] = fingerprint(execution_core)
+    execution_document["execution_fingerprint"] = provenance.fingerprint(execution_core)
     _write(execution_path, execution_document)
 
     artifact_path = root / "artifact_manifest.json"
@@ -304,7 +304,7 @@ def _build_pedrotti_base(
     artifact["execution_fingerprint"] = execution_document["execution_fingerprint"]
     artifact_core = dict(artifact)
     artifact_core.pop("artifact_manifest_fingerprint", None)
-    artifact["artifact_manifest_fingerprint"] = fingerprint(artifact_core)
+    artifact["artifact_manifest_fingerprint"] = provenance.fingerprint(artifact_core)
     _write(artifact_path, artifact)
 
     _refresh_p_checksums(root)
