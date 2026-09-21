@@ -22,7 +22,6 @@ from gazeaudit.scientific_benchmark import condition_dwell_effect
 from gazeaudit.study import GazeStudy
 from gazeaudit.uncertainty import GaussianGazeErrorModel
 
-
 COMMIT = "f" * 40
 
 
