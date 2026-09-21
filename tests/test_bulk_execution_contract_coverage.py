@@ -77,6 +77,7 @@ class _FakeResource:
 def test_gazebase_protocol_loader_and_verifier_guards(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    document = copy.deepcopy(gb.load_gazebase_protocol())
     monkeypatch.setattr(
         gb.resources,
         "files",
@@ -101,7 +102,6 @@ def test_gazebase_protocol_loader_and_verifier_guards(
             }
         )
 
-    document = copy.deepcopy(GB_FIX["load_gazebase_protocol"]())
     protocol = document["protocol"]
     protocol["detector_space"]["post_hoc_retuning_allowed"] = True
     document["protocol_fingerprint"] = gb.fingerprint(protocol)
@@ -442,7 +442,9 @@ def test_gazebase_small_provenance_helpers() -> None:
     assert gb._reference_label(1) == "fixation"
 
     assert gb._sample_columns(types.SimpleNamespace()) == set()
-    assert gb._sample_columns(types.SimpleNamespace(columns=["x", 2])) == {"x", "2"}
+    assert gb._sample_columns(
+        types.SimpleNamespace(samples=types.SimpleNamespace(columns=["x", 2]))
+    ) == {"x", "2"}
 
     with pytest.raises(TypeError, match="expose to_pandas"):
         gb._to_pandas_frame(object(), "value")
@@ -476,6 +478,7 @@ def test_gazebase_small_provenance_helpers() -> None:
 def test_korthals_protocol_loader_and_verifier_guards(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    protocol = copy.deepcopy(ke.load_korthals_protocol())
     monkeypatch.setattr(
         ke.resources,
         "files",
@@ -487,7 +490,6 @@ def test_korthals_protocol_loader_and_verifier_guards(
     with pytest.raises(ValueError, match="generic protocol verification"):
         ke.verify_korthals_protocol({})
 
-    protocol = copy.deepcopy(K_FIX["load_korthals_protocol"]())
     protocol["monte_carlo"]["draws"] = 1
     core = dict(protocol)
     core.pop("protocol_fingerprint")
@@ -573,6 +575,7 @@ def test_korthals_normalize_aligned_data_guardrails() -> None:
         ke._normalize_aligned_data(missing_trial)
 
     noninteger = base.copy()
+    noninteger["trial_number"] = noninteger["trial_number"].astype(float)
     noninteger.loc[0, "trial_number"] = 1.5
     with pytest.raises(ValueError, match="integer-valued"):
         ke._normalize_aligned_data(noninteger)
@@ -626,6 +629,7 @@ def test_korthals_normalize_validations_guardrails() -> None:
         ke._normalize_validations(negative)
 
     fractional = base.copy()
+    fractional["validation_nr"] = fractional["validation_nr"].astype(float)
     fractional.loc[0, "validation_nr"] = 1.5
     with pytest.raises(ValueError, match="integer-valued"):
         ke._normalize_validations(fractional)
@@ -654,13 +658,13 @@ def test_korthals_mapping_sampling_and_metadata_guardrails() -> None:
     trial = trial.sort_values("trial_time")
     trial.loc[trial.index[1], "trial_time"] = trial.iloc[0]["trial_time"]
     with pytest.raises(ValueError, match="strictly increasing"):
-        ke._sample_trial_to_grid(trial)
+        ke._downsample_trial_50hz(trial)
 
     sparse = data.loc[data["trial_number"].eq(1)].iloc[[0, -1]].copy()
     sparse.iloc[0, sparse.columns.get_loc("trial_time")] = 0.0
     sparse.iloc[1, sparse.columns.get_loc("trial_time")] = 0.1
     with pytest.raises(ValueError, match="duplicate source samples"):
-        ke._sample_trial_to_grid(sparse)
+        ke._downsample_trial_50hz(sparse)
 
     missing = data.drop(columns="target_speed")
     with pytest.raises(ValueError, match="endpoint data is missing"):
