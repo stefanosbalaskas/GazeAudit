@@ -50,11 +50,21 @@ def test_korthals_prepare_post_filter_and_validation_guards(
     excluded_id = str(
         protocol["dataset"]["author_directed_exclusion"]["participant_id"]
     )
-    frame = _k_aligned(participants=(excluded_id,))
+    frame = _k_aligned(participants=(excluded_id,)).iloc[:2].copy()
     start = int(
         protocol["dataset"]["author_directed_exclusion"]["trial_number_start"]
     )
-    frame["trial_number"] = start
+    end = int(
+        protocol["dataset"]["author_directed_exclusion"]["trial_number_end"]
+    )
+    assert start + 1 <= end
+    frame["trial_number"] = [start, start + 1]
+    frame["target_type"] = ["moving_circle", "jumping_circle"]
+    monkeypatch.setattr(
+        ke,
+        "_normalize_aligned_data",
+        lambda _frame: frame.copy(),
+    )
     monkeypatch.setattr(ke, "_require_complete_trial_pairing", lambda _frame: None)
     with pytest.raises(ValueError, match="remain after filtering"):
         ke.prepare_korthals_aligned_data(
@@ -189,7 +199,7 @@ def test_pedrotti_missingness_zero_and_negative_numerator_paths(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     trial = _p_trial()
-    native = pe._trial_rate_with_added_missingness(
+    native = pe._trial_rate_missingness(
         trial,
         mechanism="mcar_within_trial",
         fraction=0.0,
@@ -213,7 +223,7 @@ def test_pedrotti_missingness_zero_and_negative_numerator_paths(
         ),
     )
     with pytest.raises(RuntimeError, match="negative path numerator"):
-        pe._trial_rate_with_added_missingness(
+        pe._trial_rate_missingness(
             bad,
             mechanism="mcar_within_trial",
             fraction=0.5,
@@ -287,7 +297,7 @@ def test_pedrotti_archive_verifier_remaining_identity_branches(
         execution,
         root,
         execution_context=context,
-        environment_text="numpy==2.5.3\npandas==3.0.6\n",
+        environment_text="numpy==2.5.3\npandas==2.3.3\n",
     )
 
     source_path = root / "source_identity.json"
