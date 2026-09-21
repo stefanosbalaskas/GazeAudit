@@ -1,0 +1,63 @@
+{
+  "schema": "gazeaudit-external-publication-verification-v1",
+  "version": "0.2.0",
+  "tag": "v0.2.0",
+  "source_commit": "8820ba5242b28d270571da1121b86f74f316b764",
+  "source_tree": "0c441bebe03c398a5fe8d0df42e27234d83524b9",
+  "verified_date": "2026-09-21",
+  "github_release": {
+    "status": "published_verified",
+    "url": "https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.2.0",
+    "release_id": 393289380,
+    "publication_run_id": 35653555413,
+    "payload_artifact_id": 10662684283,
+    "payload_artifact_sha256": "81085c379597b60fc81b207ed6a89e868caf1049d084a89d6287e0abae1d15e8",
+    "wheel": {
+      "filename": "gazeaudit-0.2.0-py3-none-any.whl",
+      "size_bytes": 216463,
+      "sha256": "8dc971d1fa50b6ccb756b2ab37dfb83133a460282b286db97d2b8514b0a72f2f"
+    },
+    "sdist": {
+      "filename": "gazeaudit-0.2.0.tar.gz",
+      "size_bytes": 918267,
+      "sha256": "df89592e6cdc6c2c322fa7ccf075b58b813dac35f19bf2bd68c64d64c29343b4"
+    }
+  },
+  "pypi": {
+    "status": "published_verified",
+    "project": "gazeaudit",
+    "version": "0.2.0",
+    "url": "https://pypi.org/project/gazeaudit/0.2.0/",
+    "authentication": "trusted-publishing-oidc",
+    "publication_run_id": 35655365017,
+    "publication_job_id": 106517607505,
+    "payload_artifact_id": 10664665057,
+    "payload_artifact_sha256": "dbcf991910860779ed9c9a11d52df28c7c9b1330a6632e965c3cec78e7d3661a",
+    "wheel": {
+      "filename": "gazeaudit-0.2.0-py3-none-any.whl",
+      "size_bytes": 216463,
+      "sha256": "8dc971d1fa50b6ccb756b2ab37dfb83133a460282b286db97d2b8514b0a72f2f"
+    },
+    "sdist": {
+      "filename": "gazeaudit-0.2.0.tar.gz",
+      "size_bytes": 918267,
+      "sha256": "df89592e6cdc6c2c322fa7ccf075b58b813dac35f19bf2bd68c64d64c29343b4"
+    },
+    "clean_install_verification": {
+      "platform": "win32",
+      "python": "3.12",
+      "result": "success",
+      "installed_version": "0.2.0",
+      "package_import": "success",
+      "public_pypi_only": true
+    }
+  },
+  "zenodo": {
+    "status": "not_published_in_this_tranche"
+  },
+  "scientific_record": {
+    "gazebase": "incomplete",
+    "korthals": "robust_negative",
+    "pedrotti": "materially_fragile"
+  }
+}
