@@ -10,7 +10,6 @@ import gazeaudit.korthals_source as ks
 import gazeaudit.pedrotti_source as ps
 import gazeaudit.provenance as provenance
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = runpy.run_path(str(ROOT / "tests" / "test_final_source_closure.py"))
 KS_BASE = runpy.run_path(str(ROOT / "tests" / "test_korthals_source.py"))
