@@ -343,6 +343,7 @@ def test_korthals_authoritative_scope_guard_matrix() -> None:
         ks._scope_authoritative_task_trials(pd.DataFrame())
 
     frame = _tutorial_frame()
+    frame["trial_number"] = frame["trial_number"].astype(float)
     frame.loc[0, "trial_number"] = 1.5
     with pytest.raises(ValueError, match="finite and integer-valued"):
         ks._scope_authoritative_task_trials(frame)
@@ -852,6 +853,8 @@ def test_pedrotti_participant_file_guard_matrix(tmp_path: Path) -> None:
         ("TIMESTAMP", np.inf, "invalid TIMESTAMP"),
     ]:
         bad = base.copy()
+        if field == "TRIAL_INDEX":
+            bad[field] = bad[field].astype(object)
         bad.loc[0, field] = value
         _write_participant(path, bad)
         with pytest.raises(ValueError, match=message):
