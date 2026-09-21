@@ -251,6 +251,38 @@ def test_korthals_v2_protocol_frozen_guardrail_failure(
         kv2.verify_korthals_protocol_v2(bad)
 
 
+def test_korthals_v2_zero_trial_ambiguous_metadata_guard(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import builtins
+
+    aligned = _k_aligned(participants=("p1",))
+    validations = _k_validation(participants=("p1",))
+    original_zip = builtins.zip
+    calls = 0
+
+    def injected_zip(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        values = list(original_zip(*args, **kwargs))
+        if calls == 1:
+            values.append(("ghost-participant", 999))
+        return iter(values)
+
+    monkeypatch.setattr(
+        kv2,
+        "zip",
+        injected_zip,
+        raising=False,
+    )
+
+    with pytest.raises(ValueError, match="ambiguous metadata"):
+        kv2.prepare_korthals_aligned_data_v2(
+            aligned,
+            validations,
+        )
+
+
 def test_korthals_v2_zero_finite_incomplete_cell_guard(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
