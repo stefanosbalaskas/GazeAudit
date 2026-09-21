@@ -777,6 +777,16 @@ def test_cohort_impact_requires_metric_columns() -> None:
         )
 
 
+def test_repair_comparison_requires_columns() -> None:
+    with pytest.raises(
+        ValueError,
+        match="repair comparison is missing columns",
+    ):
+        plotting.plot_repair_comparison(
+            pd.DataFrame()
+        )
+
+
 def test_repair_comparison_requires_selected_metric() -> None:
     frame = pd.DataFrame(
         {
@@ -839,6 +849,45 @@ def test_gaze_trajectory_reports_patch_import_error(
             "timestamp": [0.0],
         }
     )
+
+    class FakeFigure:
+        def colorbar(
+            self,
+            *args,
+            **kwargs,
+        ) -> None:
+            return None
+
+    class FakeAxes:
+        def plot(
+            self,
+            *args,
+            **kwargs,
+        ) -> None:
+            return None
+
+        def scatter(
+            self,
+            *args,
+            **kwargs,
+        ) -> object:
+            return object()
+
+        def __getattr__(
+            self,
+            _name: str,
+        ):
+            return lambda *args, **kwargs: None
+
+    monkeypatch.setattr(
+        plotting,
+        "_new_axes",
+        lambda **kwargs: (
+            FakeFigure(),
+            FakeAxes(),
+        ),
+    )
+
     original = builtins.__import__
 
     def guarded_import(
@@ -848,7 +897,11 @@ def test_gaze_trajectory_reports_patch_import_error(
         fromlist=(),
         level=0,
     ):
-        if name == "matplotlib.patches":
+        if (
+            name == "matplotlib.patches"
+            and "Circle" in fromlist
+            and "Rectangle" in fromlist
+        ):
             raise ImportError(
                 "blocked for test"
             )
