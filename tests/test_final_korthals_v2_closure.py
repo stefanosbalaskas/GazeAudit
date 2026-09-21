@@ -190,15 +190,21 @@ def test_v2_prepare_internal_fail_closed_paths(
     excluded_id = str(
         protocol["dataset"]["author_directed_exclusion"]["participant_id"]
     )
-    exclusion = _aligned_fixture(participants=(excluded_id,))
+    exclusion = _aligned_fixture(participants=(excluded_id,)).iloc[:2].copy()
     start = int(
         protocol["dataset"]["author_directed_exclusion"]["trial_number_start"]
     )
     end = int(
         protocol["dataset"]["author_directed_exclusion"]["trial_number_end"]
     )
-    exclusion["trial_number"] = start
-    assert start <= end
+    assert start + 1 <= end
+    exclusion["trial_number"] = [start, start + 1]
+    exclusion["target_type"] = ["moving_circle", "jumping_circle"]
+    monkeypatch.setattr(
+        kv2,
+        "_normalize_aligned_data",
+        lambda _frame: exclusion.copy(),
+    )
     monkeypatch.setattr(
         kv2,
         "_require_complete_trial_pairing",
@@ -256,6 +262,21 @@ def test_v2_prepare_zero_trial_metadata_guards(
         kv2,
         "_require_complete_trial_pairing",
         lambda _frame: None,
+    )
+    monkeypatch.setattr(
+        kv2,
+        "_validation_trial_mapping",
+        lambda data, _validations: {
+            (str(row.participant_id), int(row.trial_number)): (1, 0.0)
+            for row in data[["participant_id", "trial_number"]]
+            .drop_duplicates()
+            .itertuples(index=False)
+        },
+    )
+    monkeypatch.setattr(
+        kv2,
+        "_downsample_trial_50hz",
+        lambda trial: trial.iloc[[0]].copy(),
     )
     with pytest.raises(ValueError, match="one frozen metadata identity"):
         kv2.prepare_korthals_aligned_data_v2(
