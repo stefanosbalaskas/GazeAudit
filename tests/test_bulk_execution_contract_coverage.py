@@ -16,7 +16,6 @@ import gazeaudit.korthals_execution as ke
 import gazeaudit.korthals_execution_v2 as kev2
 import gazeaudit.study as study_module
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 GB_FIX = runpy.run_path(str(ROOT / "tests" / "test_gazebase_execution.py"))
 K_FIX = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution.py"))
@@ -236,7 +235,6 @@ def test_gazebase_dataset_adapter_requires_reference_labels(
             pass
 
         def to_study(self, recording):
-            frame = recording.samples.iloc[:1]
             return study_module.GazeStudy(
                 pd.DataFrame(
                     {
