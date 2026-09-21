@@ -10,19 +10,18 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from gazeaudit.gazebase_execution import (
-    GAZEBASE_ARCHIVE_MD5,
-    GAZEBASE_DETECTORS,
-    PreparedGazeBaseData,
-)
 import gazeaudit.gazebase_failure as gazebase_failure
 import gazeaudit.gazebase_partitioned as partitioned
 import gazeaudit.korthals_execution_archive_v2 as archive_v2
 import gazeaudit.pedrotti_execution as pedrotti_execution
 import gazeaudit.pedrotti_freeze_cli as pedrotti_freeze_cli
 import gazeaudit.sensitivity as sensitivity
+from gazeaudit.gazebase_execution import (
+    GAZEBASE_ARCHIVE_MD5,
+    GAZEBASE_DETECTORS,
+    PreparedGazeBaseData,
+)
 from gazeaudit.study import GazeStudy
-
 
 COMMIT = "c" * 40
 
