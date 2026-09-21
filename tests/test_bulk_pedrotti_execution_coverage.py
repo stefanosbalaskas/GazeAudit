@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 
 import gazeaudit.pedrotti_execution as pe
-from gazeaudit.pedrotti_source import PedrottiSourceIntake
+from gazeaudit.pedrotti_source import psource.PedrottiSourceIntake
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,8 +39,8 @@ def test_make_trial_validation_guards(args, message: str) -> None:
         pe.make_pedrotti_trial(*args)
 
 
-def _intake() -> PedrottiSourceIntake:
-    return PedrottiSourceIntake(
+def _intake() -> psource.PedrottiSourceIntake:
+    return psource.PedrottiSourceIntake(
         source_manifest={"source_manifest_fingerprint": "s" * 64},
         intake_summary={
             "participant_count": 1,
@@ -87,7 +87,7 @@ def test_prepare_execution_data_full_positive_path(
 
 
 def test_prepare_execution_data_type_and_source_guards(tmp_path: Path) -> None:
-    with pytest.raises(TypeError, match="PedrottiSourceIntake"):
+    with pytest.raises(TypeError, match="psource.PedrottiSourceIntake"):
         pe.prepare_pedrotti_execution_data(tmp_path, object())  # type: ignore[arg-type]
 
     with pytest.raises(FileNotFoundError, match="source_dir"):
@@ -335,10 +335,46 @@ def test_execution_classifier_all_boundaries() -> None:
     protocol = pe._verified_protocol(None)
     sampling, missing = _classify_rows()
 
-    assert pe._classify_execution(np.nan, sampling, missing, _families(1.0), protocol) == "incomplete"
-    assert pe._classify_execution(0.0, sampling, missing, _families(1.0), protocol) == "indeterminate_reference_zero"
-    assert pe._classify_execution(1.0, sampling[:-1], missing, _families(1.0), protocol) == "incomplete"
-    assert pe._classify_execution(1.0, sampling, missing, _families(1.0)[:-1], protocol) == "incomplete"
+    assert (
+        pe._classify_execution(
+            np.nan,
+            sampling,
+            missing,
+            _families(1.0),
+            protocol,
+        )
+        == "incomplete"
+    )
+    assert (
+        pe._classify_execution(
+            0.0,
+            sampling,
+            missing,
+            _families(1.0),
+            protocol,
+        )
+        == "indeterminate_reference_zero"
+    )
+    assert (
+        pe._classify_execution(
+            1.0,
+            sampling[:-1],
+            missing,
+            _families(1.0),
+            protocol,
+        )
+        == "incomplete"
+    )
+    assert (
+        pe._classify_execution(
+            1.0,
+            sampling,
+            missing,
+            _families(1.0)[:-1],
+            protocol,
+        )
+        == "incomplete"
+    )
 
     bad = [dict(row) for row in sampling]
     bad[0].pop("estimate")
@@ -357,13 +393,31 @@ def test_execution_classifier_all_boundaries() -> None:
     assert pe._classify_execution(1.0, bad, missing, _families(1.0), protocol) == "incomplete"
 
     assert pe._classify_execution(1.0, sampling, missing, _families(None), protocol) == "incomplete"
-    assert pe._classify_execution(1.0, sampling, missing, _families(np.nan), protocol) == "incomplete"
+    assert (
+        pe._classify_execution(
+            1.0,
+            sampling,
+            missing,
+            _families(np.nan),
+            protocol,
+        )
+        == "incomplete"
+    )
     assert pe._classify_execution(1.0, sampling, missing, _families(2.0), protocol) == "incomplete"
 
     minimum = float(protocol["interpretation"]["minimum_family_recovery"])
     fragile = float(protocol["interpretation"]["material_fragility_ceiling"])
     assert pe._classify_execution(1.0, sampling, missing, _families(minimum), protocol) == "robust"
-    assert pe._classify_execution(1.0, sampling, missing, _families(fragile), protocol) == "materially_fragile"
+    assert (
+        pe._classify_execution(
+            1.0,
+            sampling,
+            missing,
+            _families(fragile),
+            protocol,
+        )
+        == "materially_fragile"
+    )
 
     middle = (minimum + fragile) / 2.0
     assert pe._classify_execution(1.0, sampling, missing, _families(middle), protocol) == "mixed"
