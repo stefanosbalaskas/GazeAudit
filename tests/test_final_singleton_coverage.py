@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import builtins
 import copy
 import json
 import runpy
