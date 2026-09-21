@@ -490,14 +490,10 @@ def test_korthals_protocol_loader_and_verifier_guards(
     with pytest.raises(ValueError, match="generic protocol verification"):
         ke.verify_korthals_protocol({})
 
-    protocol["monte_carlo"]["draws"] = 1
-    core = dict(protocol)
-    core.pop("protocol_fingerprint")
-    protocol["protocol_fingerprint"] = ke.fingerprint(core)
     monkeypatch.setattr(
         ke,
         "KORTHALS_PROTOCOL_FINGERPRINT",
-        protocol["protocol_fingerprint"],
+        "0" * 64,
     )
     with pytest.raises(ValueError, match="frozen guardrails"):
         ke.verify_korthals_protocol(protocol)
@@ -666,11 +662,12 @@ def test_korthals_mapping_sampling_and_metadata_guardrails() -> None:
     with pytest.raises(ValueError, match="duplicate source samples"):
         ke._downsample_trial_50hz(sparse)
 
-    missing = data.drop(columns="target_speed")
+    endpoint_data = _k_prepared().data.copy()
+    missing = endpoint_data.drop(columns="target_speed")
     with pytest.raises(ValueError, match="endpoint data is missing"):
         ke._trial_metadata(missing)
 
-    inconsistent = data.copy()
+    inconsistent = endpoint_data.copy()
     extra = inconsistent.iloc[[0]].copy()
     extra["target_type"] = "jumping_circle"
     inconsistent = pd.concat([inconsistent, extra], ignore_index=True)
