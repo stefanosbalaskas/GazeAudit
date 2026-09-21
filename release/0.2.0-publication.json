@@ -1,0 +1,46 @@
+{
+    "schema":  "gazeaudit-publication-manifest-v1",
+    "version":  "0.2.0",
+    "tag":  "v0.2.0",
+    "tag_object_sha":  "8138b341d9052f7097d75e3babcc6f4228e14dd9",
+    "source_commit":  "8820ba5242b28d270571da1121b86f74f316b764",
+    "source_tree":  "0c441bebe03c398a5fe8d0df42e27234d83524b9",
+    "release_notes":  "docs/RELEASE_NOTES_0.2.0.md",
+    "distributions":  {
+                          "wheel":  {
+                                        "filename":  "gazeaudit-0.2.0-py3-none-any.whl",
+                                        "sha256":  "8dc971d1fa50b6ccb756b2ab37dfb83133a460282b286db97d2b8514b0a72f2f",
+                                        "size_bytes":  216463
+                                    },
+                          "sdist":  {
+                                        "filename":  "gazeaudit-0.2.0.tar.gz",
+                                        "sha256":  "df89592e6cdc6c2c322fa7ccf075b58b813dac35f19bf2bd68c64d64c29343b4",
+                                        "size_bytes":  918267
+                                    }
+                      },
+    "qualification":  {
+                          "exact_main":  {
+                                             "tests_run_id":  35650348659,
+                                             "interoperability_run_id":  35650348618,
+                                             "distribution_run_id":  35650348579,
+                                             "plot_gallery_run_id":  35650348574,
+                                             "docs_site_run_id":  35650348533
+                                         },
+                          "pre_tag":  {
+                                          "run_id":  35651337883
+                                      },
+                          "tag_bound":  {
+                                            "run_id":  35652101486
+                                        }
+                      },
+    "scientific_record":  {
+                              "gazebase":  "incomplete",
+                              "korthals":  "robust_negative",
+                              "pedrotti":  "materially_fragile"
+                          },
+    "publication_scope":  {
+                              "github_release":  true,
+                              "pypi":  false,
+                              "doi_or_archival_registry":  false
+                          }
+}
