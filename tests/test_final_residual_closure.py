@@ -101,6 +101,114 @@ def test_korthals_prepare_post_filter_and_validation_guards(
         )
 
 
+def test_korthals_post_filter_exact_branches(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    protocol = ke.load_korthals_protocol()
+    excluded_id = str(
+        protocol["dataset"]["author_directed_exclusion"]["participant_id"]
+    )
+    validations = _k_validation(participants=(excluded_id,))
+    start = int(
+        protocol["dataset"]["author_directed_exclusion"]["trial_number_start"]
+    )
+    end = int(
+        protocol["dataset"]["author_directed_exclusion"]["trial_number_end"]
+    )
+
+    empty_after = _k_aligned(participants=(excluded_id,)).iloc[:2].copy()
+    empty_after["trial_number"] = [start, min(start + 1, end)]
+    empty_after["target_type"] = ["moving_circle", "jumping_circle"]
+
+    monkeypatch.setattr(
+        ke,
+        "_normalize_aligned_data",
+        lambda _frame: empty_after.copy(),
+    )
+    monkeypatch.setattr(
+        ke,
+        "_require_complete_trial_pairing",
+        lambda _frame: None,
+    )
+    with pytest.raises(ValueError, match="remain after filtering"):
+        ke.prepare_korthals_aligned_data(
+            empty_after,
+            validations,
+        )
+
+    monkeypatch.undo()
+    one_type_after = _k_aligned(participants=("p1",)).copy()
+    normalized = ke._normalize_aligned_data(one_type_after)
+    original_pairing = ke._require_complete_trial_pairing
+
+    monkeypatch.setattr(
+        ke,
+        "_require_complete_trial_pairing",
+        lambda _frame: None,
+    )
+    monkeypatch.setattr(
+        ke,
+        "_normalize_aligned_data",
+        lambda _frame: normalized.copy(),
+    )
+    protocol = copy.deepcopy(protocol)
+    protocol["dataset"]["author_directed_exclusion"] = {
+        "participant_id": "p1",
+        "trial_number_start": 2,
+        "trial_number_end": 2,
+    }
+    monkeypatch.setattr(
+        ke,
+        "verify_korthals_protocol",
+        lambda _document=None: protocol,
+    )
+    with pytest.raises(ValueError, match="both frozen target types"):
+        ke.prepare_korthals_aligned_data(
+            one_type_after.loc[one_type_after["trial_number"].isin([1, 2])].copy(),
+            _k_validation(participants=("p1",)),
+        )
+    monkeypatch.setattr(
+        ke,
+        "_require_complete_trial_pairing",
+        original_pairing,
+    )
+
+
+def test_korthals_duplicate_retained_validation_group_guard(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    aligned = _k_aligned(participants=("p1",))
+    validations = _k_validation(participants=("p1",))
+    normalized_validations = ke._normalize_validations(validations)
+    duplicated = pd.concat(
+        [normalized_validations, normalized_validations.iloc[[0]]],
+        ignore_index=True,
+    )
+
+    monkeypatch.setattr(
+        ke,
+        "_normalize_validations",
+        lambda _frame: duplicated.copy(),
+    )
+
+    original_mapping = ke._validation_trial_mapping
+
+    def mapping(data: pd.DataFrame, _validations: pd.DataFrame):
+        return original_mapping(data, normalized_validations)
+
+    monkeypatch.setattr(
+        ke,
+        "_validation_trial_mapping",
+        mapping,
+    )
+
+    with pytest.raises(ValueError, match="validation groups must be unique"):
+        ke.prepare_korthals_aligned_data(
+            aligned,
+            validations,
+        )
+
+
 def test_korthals_sampling_remaining_guards(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -133,6 +241,117 @@ def test_korthals_sampling_remaining_guards(
     )
     sampled = ke._downsample_trial_50hz(late)
     assert len(sampled) == 2
+
+
+def test_korthals_v1_archive_semantic_rejection_matrix(
+    tmp_path: Path,
+) -> None:
+    execution = _k_execution()
+    base = tmp_path / "k-v1-base"
+    ke.write_korthals_execution_artifacts(
+        execution,
+        base,
+    )
+    assert ke.verify_korthals_execution_artifacts(base)
+
+    def clone(name: str) -> Path:
+        import shutil
+
+        target = tmp_path / name
+        shutil.copytree(base, target)
+        return target
+
+    def write_json(path: Path, value: object) -> None:
+        path.write_text(
+            ke.canonical_json(value) + "\n",
+            encoding="utf-8",
+        )
+
+    def refresh_manifest(root: Path) -> None:
+        path = root / "artifact_manifest.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        core = dict(document)
+        core.pop("artifact_manifest_fingerprint", None)
+        document["artifact_manifest_fingerprint"] = ke.fingerprint(core)
+        write_json(path, document)
+
+    def refresh_execution(root: Path) -> None:
+        path = root / "execution_manifest.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        core = dict(document)
+        core.pop("execution_fingerprint", None)
+        document["execution_fingerprint"] = ke.fingerprint(core)
+        write_json(path, document)
+
+    root = clone("v1-manifest-fingerprint")
+    path = root / "artifact_manifest.json"
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["artifact_manifest_fingerprint"] = "0" * 64
+    write_json(path, document)
+    assert not ke.verify_korthals_execution_artifacts(root)
+
+    root = clone("v1-protocol")
+    path = root / "artifact_manifest.json"
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["protocol_fingerprint"] = "wrong"
+    write_json(path, document)
+    refresh_manifest(root)
+    assert not ke.verify_korthals_execution_artifacts(root)
+
+    root = clone("v1-execution-fingerprint")
+    path = root / "execution_manifest.json"
+    document = json.loads(path.read_text(encoding="utf-8"))
+    document["execution_fingerprint"] = "0" * 64
+    write_json(path, document)
+    assert not ke.verify_korthals_execution_artifacts(root)
+
+    for name, field, value in [
+        ("v1-manifest-exec", "execution_fingerprint", "wrong"),
+        ("v1-classification", "classification", "wrong"),
+    ]:
+        root = clone(name)
+        path = root / "artifact_manifest.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document[field] = value
+        write_json(path, document)
+        refresh_manifest(root)
+        assert not ke.verify_korthals_execution_artifacts(root)
+
+    for name, field, value in [
+        ("v1-source-protocol", "protocol_fingerprint", "wrong"),
+        ("v1-source-commit", "companion_commit", "wrong"),
+    ]:
+        root = clone(name)
+        source_path = root / "source_identity.json"
+        source = json.loads(source_path.read_text(encoding="utf-8"))
+        source[field] = value
+        write_json(source_path, source)
+
+        execution_path = root / "execution_manifest.json"
+        execution_document = json.loads(
+            execution_path.read_text(encoding="utf-8")
+        )
+        execution_document["source_identity"] = source
+        write_json(execution_path, execution_document)
+        refresh_execution(root)
+
+        manifest_path = root / "artifact_manifest.json"
+        manifest = json.loads(
+            manifest_path.read_text(encoding="utf-8")
+        )
+        manifest["execution_fingerprint"] = json.loads(
+            execution_path.read_text(encoding="utf-8")
+        )["execution_fingerprint"]
+        write_json(manifest_path, manifest)
+        refresh_manifest(root)
+        assert not ke.verify_korthals_execution_artifacts(root)
+
+    root = clone("v1-source-mismatch")
+    source_path = root / "source_identity.json"
+    source = json.loads(source_path.read_text(encoding="utf-8"))
+    source["fixture"] = "changed"
+    write_json(source_path, source)
+    assert not ke.verify_korthals_execution_artifacts(root)
 
 
 def test_korthals_writer_overwrite_and_verifier_remaining_paths(
