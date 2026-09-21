@@ -238,7 +238,7 @@ def test_gazebase_dataset_adapter_requires_reference_labels(
 
         def to_study(self, recording):
             frame = recording.samples.iloc[:1]
-            return GazeStudy(
+            return study_module.GazeStudy(
                 pd.DataFrame(
                     {
                         "x": [0.0],
