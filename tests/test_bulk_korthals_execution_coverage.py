@@ -12,7 +12,6 @@ import pytest
 
 import gazeaudit.korthals_execution as ke
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution.py"))
 _aligned_fixture = BASE["_aligned_fixture"]
@@ -93,8 +92,6 @@ def test_prepare_rejects_validation_group_mismatch_and_duplicate(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     prepared = _prepared()
-    data = prepared.data.copy()
-    validations = prepared.validation_groups.copy()
 
     monkeypatch.setattr(
         ke,
@@ -324,7 +321,13 @@ def test_prepared_identity_guard_matrix() -> None:
     identity = dict(prepared.source_identity)
     identity["protocol_fingerprint"] = "wrong"
     with pytest.raises(ValueError, match="frozen protocol"):
-        ke._validate_prepared_identity(dataclasses.replace(prepared, source_identity=identity), protocol)
+        ke._validate_prepared_identity(
+            dataclasses.replace(
+                prepared,
+                source_identity=identity,
+            ),
+            protocol,
+        )
 
     identity = dict(prepared.source_identity)
     identity["companion_commit"] = "wrong"
