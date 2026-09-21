@@ -50,6 +50,9 @@ def test_protocol_verification_rejects_generic_and_frozen_drift(
     monkeypatch.undo()
     bad = json.loads(ke.canonical_json(protocol))
     bad["case_study_id"] = "wrong"
+    core = dict(bad)
+    core.pop("protocol_fingerprint", None)
+    bad["protocol_fingerprint"] = ke.fingerprint(core)
     with pytest.raises(ValueError, match="frozen guardrails"):
         ke.verify_korthals_protocol(bad)
 
@@ -133,6 +136,7 @@ def test_normalize_aligned_data_guard_matrix() -> None:
         ke._normalize_aligned_data(bad)
 
     bad = base.copy()
+    bad["trial_number"] = bad["trial_number"].astype(float)
     bad.loc[0, "trial_number"] = 1.5
     with pytest.raises(ValueError, match="integer-valued"):
         ke._normalize_aligned_data(bad)
@@ -198,6 +202,7 @@ def test_normalize_validations_guard_matrix() -> None:
 
     for column in ("validation_nr", "first_trial", "last_trial"):
         bad = base.copy()
+        bad[column] = bad[column].astype(float)
         bad.loc[0, column] = 1.5
         with pytest.raises(ValueError, match="integer-valued"):
             ke._normalize_validations(bad)
