@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import dataclasses
+import functools
 import json
+import pathlib
 import runpy
-from dataclasses import replace
-from functools import lru_cache
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,7 @@ import pytest
 import gazeaudit.korthals_execution as ke
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution.py"))
 _aligned_fixture = BASE["_aligned_fixture"]
 _validation_fixture = BASE["_validation_fixture"]
@@ -27,7 +27,7 @@ def _prepared() -> ke.PreparedKorthalsData:
     )
 
 
-@lru_cache(maxsize=1)
+@functools.lru_cache(maxsize=1)
 def _execution() -> ke.KorthalsAOIExecution:
     return ke.run_korthals_aoi_execution(_prepared())
 
@@ -324,23 +324,23 @@ def test_prepared_identity_guard_matrix() -> None:
     identity = dict(prepared.source_identity)
     identity["protocol_fingerprint"] = "wrong"
     with pytest.raises(ValueError, match="frozen protocol"):
-        ke._validate_prepared_identity(replace(prepared, source_identity=identity), protocol)
+        ke._validate_prepared_identity(dataclasses.replace(prepared, source_identity=identity), protocol)
 
     identity = dict(prepared.source_identity)
     identity["companion_commit"] = "wrong"
     with pytest.raises(ValueError, match="companion commit"):
-        ke._validate_prepared_identity(replace(prepared, source_identity=identity), protocol)
+        ke._validate_prepared_identity(dataclasses.replace(prepared, source_identity=identity), protocol)
 
     with pytest.raises(ValueError, match="missing columns"):
         ke._validate_prepared_identity(
-            replace(prepared, data=prepared.data.drop(columns="error_group")),
+            dataclasses.replace(prepared, data=prepared.data.drop(columns="error_group")),
             protocol,
         )
 
     bad_type = prepared.data.copy()
     bad_type["target_type"] = "moving_circle"
     with pytest.raises(ValueError, match="unexpected target types"):
-        ke._validate_prepared_identity(replace(prepared, data=bad_type), protocol)
+        ke._validate_prepared_identity(dataclasses.replace(prepared, data=bad_type), protocol)
 
     bad_protocol = json.loads(ke.canonical_json(protocol))
     bad_protocol["validation"]["n_validation_points"] = 8
@@ -379,7 +379,7 @@ def test_korthals_classification_boundaries() -> None:
 
 
 def test_writer_public_guards(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     with pytest.raises(TypeError, match="KorthalsAOIExecution"):
@@ -402,13 +402,13 @@ def test_writer_public_guards(
         ke.write_korthals_execution_artifacts(execution, tmp_path / "self-check")
 
 
-def _write_archive(tmp_path: Path) -> Path:
+def _write_archive(tmp_path: pathlib.Path) -> pathlib.Path:
     root = tmp_path / "archive"
     ke.write_korthals_execution_artifacts(_execution(), root)
     return root
 
 
-def _rewrite_manifest(root: Path, mutate) -> None:
+def _rewrite_manifest(root: pathlib.Path, mutate) -> None:
     path = root / "artifact_manifest.json"
     document = json.loads(path.read_text(encoding="utf-8"))
     mutate(document)
@@ -419,7 +419,7 @@ def _rewrite_manifest(root: Path, mutate) -> None:
 
 
 def test_execution_artifact_verifier_guard_matrix(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     assert not ke.verify_korthals_execution_artifacts(tmp_path / "missing")
 
@@ -458,7 +458,7 @@ def test_execution_artifact_verifier_guard_matrix(
     assert not ke.verify_korthals_execution_artifacts(root)
 
 
-def test_checksum_parser_guardrails(tmp_path: Path) -> None:
+def test_checksum_parser_guardrails(tmp_path: pathlib.Path) -> None:
     path = tmp_path / "SHA256SUMS"
     path.write_text("\n" + "a" * 64 + "  file.txt\n", encoding="utf-8")
     assert ke._parse_checksums(path) == {"file.txt": "a" * 64}
