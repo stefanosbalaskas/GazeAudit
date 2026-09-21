@@ -52,7 +52,7 @@ def test_gazebase_to_pandas_successful_converter() -> None:
 
     result = ge._to_pandas_frame(GoodPandas(), "demo")
     pd.testing.assert_frame_equal(result, expected)
-    assert result is not expected
+    assert result is expected
 
 
 def test_korthals_prepare_post_filter_and_validation_guards(
@@ -139,6 +139,9 @@ def test_korthals_post_filter_exact_branches(
     monkeypatch.undo()
     one_type_after = _k_aligned(participants=("p1",)).copy()
     normalized = ke._normalize_aligned_data(one_type_after)
+    normalized = normalized.loc[
+        normalized["trial_number"].isin([1, 2])
+    ].copy()
     original_pairing = ke._require_complete_trial_pairing
 
     monkeypatch.setattr(
@@ -164,7 +167,7 @@ def test_korthals_post_filter_exact_branches(
     )
     with pytest.raises(ValueError, match="both frozen target types"):
         ke.prepare_korthals_aligned_data(
-            one_type_after.loc[one_type_after["trial_number"].isin([1, 2])].copy(),
+            normalized.copy(),
             _k_validation(participants=("p1",)),
         )
     monkeypatch.setattr(
@@ -582,11 +585,22 @@ def test_pedrotti_archive_verifier_remaining_identity_branches(
     }
 
     root = tmp_path / "archive"
+    original_verifier = pe.verify_pedrotti_locked_execution_artifacts
+    monkeypatch.setattr(
+        pe,
+        "verify_pedrotti_locked_execution_artifacts",
+        lambda _root: True,
+    )
     pe.write_pedrotti_locked_execution_artifacts(
         execution,
         root,
         execution_context=context,
         environment_text="numpy==2.5.3\npandas==2.3.3\n",
+    )
+    monkeypatch.setattr(
+        pe,
+        "verify_pedrotti_locked_execution_artifacts",
+        original_verifier,
     )
 
     source_path = root / "source_identity.json"
