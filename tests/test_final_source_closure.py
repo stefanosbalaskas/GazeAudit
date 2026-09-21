@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import copy
 import json
-import os
 import runpy
 from pathlib import Path
 from types import SimpleNamespace
@@ -13,8 +12,7 @@ import pytest
 
 import gazeaudit.korthals_source as ks
 import gazeaudit.pedrotti_source as ps
-from gazeaudit.provenance import canonical_json, fingerprint
-
+import gazeaudit.provenance as provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 KS_TEST = runpy.run_path(str(ROOT / "tests" / "test_korthals_source.py"))
@@ -33,7 +31,7 @@ def _rehash_korthals(document: dict[str, object]) -> dict[str, object]:
     output = copy.deepcopy(document)
     core = dict(output)
     core.pop("source_manifest_fingerprint", None)
-    output["source_manifest_fingerprint"] = fingerprint(core)
+    output["source_manifest_fingerprint"] = provenance.fingerprint(core)
     return output
 
 
@@ -621,7 +619,7 @@ def _pedrotti_manifest_fixture() -> tuple[dict[str, object], dict[str, str]]:
         "file_count": len(files),
     }
     document = dict(core)
-    document["source_manifest_fingerprint"] = fingerprint(core)
+    document["source_manifest_fingerprint"] = provenance.fingerprint(core)
     return document, expected
 
 
@@ -629,7 +627,7 @@ def _rehash_pedrotti(document: dict[str, object]) -> dict[str, object]:
     output = copy.deepcopy(document)
     core = dict(output)
     core.pop("source_manifest_fingerprint", None)
-    output["source_manifest_fingerprint"] = fingerprint(core)
+    output["source_manifest_fingerprint"] = provenance.fingerprint(core)
     return output
 
 
