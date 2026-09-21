@@ -12,7 +12,6 @@ import pytest
 import gazeaudit.readiness as readiness
 import gazeaudit.study_qc as study_qc
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
