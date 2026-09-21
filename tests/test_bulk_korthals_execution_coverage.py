@@ -91,8 +91,6 @@ def test_prepare_rejects_nonfinite_target_and_all_missing_gaze() -> None:
 def test_prepare_rejects_validation_group_mismatch_and_duplicate(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    prepared = _prepared()
-
     monkeypatch.setattr(
         ke,
         "_validation_trial_mapping",
@@ -332,7 +330,13 @@ def test_prepared_identity_guard_matrix() -> None:
     identity = dict(prepared.source_identity)
     identity["companion_commit"] = "wrong"
     with pytest.raises(ValueError, match="companion commit"):
-        ke._validate_prepared_identity(dataclasses.replace(prepared, source_identity=identity), protocol)
+        ke._validate_prepared_identity(
+            dataclasses.replace(
+                prepared,
+                source_identity=identity,
+            ),
+            protocol,
+        )
 
     with pytest.raises(ValueError, match="missing columns"):
         ke._validate_prepared_identity(
