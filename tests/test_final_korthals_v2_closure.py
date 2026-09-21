@@ -286,18 +286,10 @@ def test_v2_prepare_zero_trial_metadata_guards(
 
     monkeypatch.undo()
 
-    original_downsample = kv2._downsample_trial_50hz
-
-    def ambiguous_downsample(trial: pd.DataFrame) -> pd.DataFrame:
-        output = original_downsample(trial)
-        if int(trial["trial_number"].iloc[0]) == 2:
-            output[["gaze_x", "gaze_y"]] = np.nan
-        return output
-
     monkeypatch.setattr(
         kv2,
         "_downsample_trial_50hz",
-        ambiguous_downsample,
+        lambda trial: trial.iloc[[0]].copy(),
     )
     monkeypatch.setattr(
         kv2,
@@ -325,7 +317,7 @@ def test_v2_prepare_zero_trial_metadata_guards(
     )
     with pytest.raises(
         ValueError,
-        match="one frozen metadata identity|ambiguous metadata",
+        match="one frozen metadata identity",
     ):
         kv2.prepare_korthals_aligned_data_v2(
             aligned,
