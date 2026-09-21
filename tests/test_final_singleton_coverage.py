@@ -19,7 +19,6 @@ import gazeaudit.korthals_v2 as kv2
 import gazeaudit.pedrotti_freeze as pfreeze
 import gazeaudit.pedrotti_source as ps
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 KEXEC = runpy.run_path(
