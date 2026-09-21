@@ -543,10 +543,15 @@ def test_readiness_internal_guard_and_normalization_paths(
     class Unsupported:
         pass
 
+    original_isna = readiness.pd.isna
     monkeypatch.setattr(
         readiness.pd,
         "isna",
-        lambda value: False if isinstance(value, Unsupported) else pd.isna(value),
+        lambda value: (
+            False
+            if isinstance(value, Unsupported)
+            else original_isna(value)
+        ),
     )
     with pytest.raises(TypeError, match="unsupported analysis-readiness"):
         readiness._normalize(Unsupported())
