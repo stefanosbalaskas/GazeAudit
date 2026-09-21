@@ -211,7 +211,7 @@ def prepare_korthals_from_companion(
                 id=participant_id,
                 preprocessor=preprocessor_factory(),
             )
-            participant.set_clean_data(str(relative_root / "clean"))
+            participant.set_clean_data((relative_root / "clean").as_posix())
             _require_clean_tables(participant_id, participant.clean_data)
             _canonicalize_companion_participant_identity(
                 relative_root / "clean",
@@ -228,7 +228,7 @@ def prepare_korthals_from_companion(
                     participant.preprocessed_data,
                 )
             )
-            validation = participant.validation_check(str(relative_root / "raw"))
+            validation = participant.validation_check((relative_root / "raw").as_posix())
             if not isinstance(validation, pd.DataFrame) or validation.empty:
                 raise ValueError(
                     f"participant {participant_id!r} produced no validation summaries"

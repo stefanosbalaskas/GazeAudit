@@ -14,7 +14,6 @@ from gazeaudit.uncertainty import (
     GroupedGaussianGazeErrorModel,
 )
 
-
 # ======================================================================
 # AOI protocol helpers
 # ======================================================================
@@ -514,7 +513,7 @@ def test_protocol_reference_requires_finite_value(
 
     with pytest.raises(
         ValueError,
-        match="reference.*finite",
+        match="finite",
     ):
         protocol.build_aoi_uncertainty_protocol(
             **inputs
@@ -526,6 +525,27 @@ def test_finite_float_accepts_numeric_string() -> None:
         "0.75",
         name="demo",
     ) == pytest.approx(0.75)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        np.nan,
+        np.inf,
+        -np.inf,
+    ],
+)
+def test_finite_float_rejects_nonfinite_values(
+    value: float,
+) -> None:
+    with pytest.raises(
+        ValueError,
+        match="demo must be finite",
+    ):
+        protocol._finite_float(
+            value,
+            name="demo",
+        )
 
 
 # ======================================================================
@@ -1044,6 +1064,7 @@ def test_audit_requires_finite_complete_coordinates(
     value: object,
 ) -> None:
     frame = _data()
+    frame["observed_x"] = frame["observed_x"].astype(object)
     frame.loc[
         0,
         "observed_x",

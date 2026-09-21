@@ -9,7 +9,6 @@ import pytest
 import gazeaudit.task_contrast as tc
 from gazeaudit.conclusion import ConclusionRule
 
-
 RULE = ConclusionRule(
     relative_tolerance=0.20,
     require_sign=True,

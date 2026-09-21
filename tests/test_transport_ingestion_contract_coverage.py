@@ -12,7 +12,6 @@ import pytest
 import gazeaudit.bids_adapter as bids
 import gazeaudit.pedrotti_prefetch as prefetch
 
-
 # ======================================================================
 # Eye-Tracking-BIDS helpers
 # ======================================================================
@@ -540,7 +539,7 @@ class _Response:
     ) -> None:
         self._chunks = list(chunks)
 
-    def __enter__(self) -> "_Response":
+    def __enter__(self) -> _Response:
         return self
 
     def __exit__(
