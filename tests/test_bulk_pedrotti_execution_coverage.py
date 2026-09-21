@@ -12,7 +12,6 @@ import pytest
 import gazeaudit.pedrotti_execution as pe
 import gazeaudit.pedrotti_source as psource
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = runpy.run_path(str(ROOT / "tests" / "test_pedrotti_execution.py"))
 _trial = BASE["_trial"]
