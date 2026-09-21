@@ -287,6 +287,7 @@ def _build_pedrotti_base(
 
     source_path = root / "source_identity.json"
     source = _read(source_path)
+    source["participant_count"] = 36
     source["numeric_trial_count"] = 1728
     _write(source_path, source)
 
