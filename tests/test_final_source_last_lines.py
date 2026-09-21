@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import runpy
 from pathlib import Path
 
@@ -9,7 +8,7 @@ import pytest
 
 import gazeaudit.korthals_source as ks
 import gazeaudit.pedrotti_source as ps
-from gazeaudit.provenance import fingerprint
+import gazeaudit.provenance as provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +26,7 @@ _valid_summary_and_source = SOURCE["_valid_summary_and_source"]
 def _rehash_korthals(document: dict[str, object]) -> None:
     core = dict(document)
     core.pop("source_manifest_fingerprint", None)
-    document["source_manifest_fingerprint"] = fingerprint(core)
+    document["source_manifest_fingerprint"] = provenance.fingerprint(core)
 
 
 def _refresh_k_intake_manifest(root: Path) -> None:
@@ -45,7 +44,7 @@ def _refresh_k_intake_manifest(root: Path) -> None:
     ]
     core = dict(manifest)
     core.pop("artifact_manifest_fingerprint", None)
-    manifest["artifact_manifest_fingerprint"] = fingerprint(core)
+    manifest["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
     ks._write_json(path, manifest)
 
 
@@ -186,7 +185,7 @@ def test_korthals_intake_verifier_remaining_branches(
         if field != "artifact_manifest_fingerprint":
             core = dict(manifest)
             core.pop("artifact_manifest_fingerprint", None)
-            manifest["artifact_manifest_fingerprint"] = fingerprint(core)
+            manifest["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
         ks._write_json(manifest_path, manifest)
         assert not ks.verify_korthals_source_intake_artifacts(root)
 
@@ -306,7 +305,7 @@ def _refresh_p_artifact(root: Path) -> None:
     ]
     core = dict(artifact)
     core.pop("artifact_manifest_fingerprint", None)
-    artifact["artifact_manifest_fingerprint"] = fingerprint(core)
+    artifact["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
     ps._write_json(path, artifact)
 
 
@@ -404,7 +403,7 @@ def test_pedrotti_intake_verifier_remaining_branches(
         if field != "artifact_manifest_fingerprint":
             core = dict(artifact)
             core.pop("artifact_manifest_fingerprint", None)
-            artifact["artifact_manifest_fingerprint"] = fingerprint(core)
+            artifact["artifact_manifest_fingerprint"] = provenance.fingerprint(core)
         ps._write_json(path, artifact)
         assert not ps.verify_pedrotti_source_intake_artifacts(root)
 
