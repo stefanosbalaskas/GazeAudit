@@ -172,7 +172,17 @@ def test_locked_prepared_positive_and_identity_failure(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     base = _synthetic_prepared(participants=36)
-    prepared = dataclasses.replace(base, source_identity=_locked_shape_identity())
+    identity = _locked_shape_identity()
+    identity.update(
+        {
+            "total_row_count": 72,
+            "total_trial_count": 72,
+            "short_numeric_trial_count": 36,
+            "long_numeric_trial_count": 36,
+            "numeric_trial_count": 72,
+        }
+    )
+    prepared = dataclasses.replace(base, source_identity=identity)
     lock = _lock_for(prepared)
     monkeypatch.setattr(pe, "verify_pedrotti_source_lock", lambda _doc=None: lock)
     assert pe._verify_locked_prepared(prepared, lock_document=lock) is prepared
