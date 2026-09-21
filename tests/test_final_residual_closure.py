@@ -96,7 +96,7 @@ def test_korthals_sampling_remaining_guards(
 
     trial = pd.DataFrame(
         {
-            "trial_time": [0.01, 0.03],
+            "trial_time": [0.011, 0.02],
             "x": [1, 2],
         }
     )
@@ -154,16 +154,29 @@ def test_korthals_endpoint_missing_participant_guard(
 def test_pedrotti_trial_duration_and_locked_entrypoint(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    original_isfinite = pe.np.isfinite
+
+    def controlled_isfinite(value):
+        if np.isscalar(value):
+            return False
+        return original_isfinite(value)
+
+    monkeypatch.setattr(
+        pe.np,
+        "isfinite",
+        controlled_isfinite,
+    )
     with pytest.raises(ValueError, match="duration"):
         pe.make_pedrotti_trial(
             "01",
             1,
             "short",
-            [0.0, 0.0 + np.finfo(float).tiny],
+            [0.0, 1.0],
             [0.0, 1.0],
             [0.0, 1.0],
         )
 
+    monkeypatch.undo()
     sentinel = object()
     monkeypatch.setattr(pe, "inspect_pedrotti_source", lambda _root: sentinel)
     monkeypatch.setattr(pe, "verify_pedrotti_locked_intake", lambda intake, **kwargs: intake)
@@ -194,7 +207,10 @@ def test_pedrotti_missingness_zero_and_negative_numerator_paths(
     object.__setattr__(
         bad,
         "edge_distance",
-        np.array([1000.0] + [0.0] * (len(trial.edge_distance) - 1)),
+        np.array(
+            [1000.0, -2000.0]
+            + [0.0] * (len(trial.edge_distance) - 2)
+        ),
     )
     with pytest.raises(RuntimeError, match="negative path numerator"):
         pe._trial_rate_with_added_missingness(
@@ -303,13 +319,40 @@ def test_freeze_verifier_exception_and_forbidden_token_paths(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    for module, verifier in [
-        (kf, kf.verify_korthals_source_freeze_artifacts),
-        (kf2, kf2.verify_korthals_source_freeze_artifacts_v2),
-        (pf, pf.verify_pedrotti_source_freeze_artifacts),
-    ]:
+    cases = [
+        (
+            kf,
+            kf.verify_korthals_source_freeze_artifacts,
+            "verify_korthals_source_intake_artifacts",
+        ),
+        (
+            kf2,
+            kf2.verify_korthals_source_freeze_artifacts_v2,
+            "verify_korthals_source_intake_artifacts_v2",
+        ),
+        (
+            pf,
+            pf.verify_pedrotti_source_freeze_artifacts,
+            "verify_pedrotti_source_intake_artifacts",
+        ),
+    ]
+
+    for module, verifier, intake_verifier in cases:
         root = tmp_path / module.__name__.split(".")[-1]
-        root.mkdir()
+        (root / "intake").mkdir(parents=True)
+        for name in (
+            "execution_context.json",
+            "pip_freeze.txt",
+            "freeze_manifest.json",
+            "SHA256SUMS",
+        ):
+            (root / name).write_text("x", encoding="utf-8")
+
+        monkeypatch.setattr(
+            module,
+            intake_verifier,
+            lambda _path: True,
+        )
         monkeypatch.setattr(
             module,
             "_read_json",
