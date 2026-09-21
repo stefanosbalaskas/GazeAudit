@@ -16,6 +16,7 @@ import gazeaudit.korthals_freeze_v2 as kfreeze2
 import gazeaudit.korthals_osf as kosf
 import gazeaudit.korthals_source as ks
 import gazeaudit.korthals_v2 as kv2
+import gazeaudit.pedrotti_execution as pe
 import gazeaudit.pedrotti_freeze as pfreeze
 import gazeaudit.pedrotti_source as ps
 
@@ -511,3 +512,176 @@ def test_korthals_osf_explicit_unreachable_guard(
             download_fn=lambda: None,
             sleep_fn=lambda _seconds: None,
         )
+
+
+def test_pedrotti_verifier_fails_closed_on_caught_exception(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "archive"
+    root.mkdir()
+    for name in (
+        "SHA256SUMS",
+        "artifact_manifest.json",
+        "execution_context.json",
+        "execution_manifest.json",
+        "family_recovery.json",
+        "missingness_results.json",
+        "pip_freeze.txt",
+        "reference.json",
+        "sampling_results.json",
+        "source_identity.json",
+    ):
+        (root / name).write_text("", encoding="utf-8")
+
+    monkeypatch.setattr(
+        pe,
+        "_parse_checksums",
+        lambda _path: (_ for _ in ()).throw(ValueError("forced")),
+    )
+    assert not pe.verify_pedrotti_locked_execution_artifacts(root)
+
+
+def test_pedrotti_verified_protocol_fail_closed_guards(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    packaged = pe.load_pedrotti_protocol()
+
+    monkeypatch.setattr(
+        pe,
+        "canonical_json",
+        lambda _value: "[]",
+    )
+    with pytest.raises(TypeError, match="normalize to an object"):
+        pe._verified_protocol({"x": 1})
+
+    monkeypatch.undo()
+    packaged = pe.load_pedrotti_protocol()
+
+    bad_fingerprint = copy.deepcopy(packaged)
+    bad_fingerprint["protocol_fingerprint"] = "wrong"
+    with pytest.raises(ValueError, match="fingerprint differs"):
+        pe._verified_protocol(bad_fingerprint)
+
+    changed = copy.deepcopy(packaged)
+    changed["coverage_probe"] = True
+    with pytest.raises(ValueError, match="content differs"):
+        pe._verified_protocol(changed)
+
+
+def test_pedrotti_tiny_negative_path_numerator_normalizes_to_zero(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    trial = pe.make_pedrotti_trial(
+        "01",
+        1,
+        "short",
+        [0.0, 1.0, 2.0, 3.0],
+        [0.0, 1.0, 2.0, 3.0],
+        [0.0, 0.0, 0.0, 0.0],
+    )
+    object.__setattr__(
+        trial,
+        "edge_distance",
+        np.array([1.0, 0.0, -5.0e-11]),
+    )
+    monkeypatch.setattr(
+        pe,
+        "_added_missingness_positions",
+        lambda *args, **kwargs: np.array([1], dtype=int),
+    )
+
+    observed = pe._trial_rate_missingness(
+        trial,
+        mechanism="mcar_within_trial",
+        fraction=0.25,
+        replicate=1,
+        root_seed=1,
+    )
+    assert observed == 0.0
+
+
+def test_pedrotti_added_missingness_defensive_oversize_guard(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    trial = pe.make_pedrotti_trial(
+        "01",
+        1,
+        "short",
+        [0.0, 1.0, 2.0],
+        [0.0, 1.0, 2.0],
+        [0.0, 0.0, 0.0],
+    )
+    monkeypatch.setattr(
+        pe,
+        "round",
+        lambda _value: trial.finite_positions.size + 1,
+        raising=False,
+    )
+
+    with pytest.raises(ValueError, match="exceeds finite trial rows"):
+        pe._added_missingness_positions(
+            trial,
+            mechanism="mcar_within_trial",
+            fraction=0.5,
+            replicate=1,
+            root_seed=1,
+        )
+
+
+def _pedrotti_prepared_for_aggregation(
+    participant_count: int,
+) -> pe.PreparedPedrottiData:
+    participant_ids = tuple(
+        f"{index:02d}"
+        for index in range(1, participant_count + 1)
+    )
+    trials = []
+    for participant_id in participant_ids:
+        trials.extend(
+            [
+                pe.make_pedrotti_trial(
+                    participant_id,
+                    1,
+                    "short",
+                    [0.0, 1.0],
+                    [0.0, 1.0],
+                    [0.0, 0.0],
+                ),
+                pe.make_pedrotti_trial(
+                    participant_id,
+                    2,
+                    "long",
+                    [0.0, 1.0],
+                    [0.0, 1.0],
+                    [0.0, 0.0],
+                ),
+            ]
+        )
+    return pe.PreparedPedrottiData(
+        source_identity={},
+        trials=tuple(trials),
+        participant_ids=participant_ids,
+    )
+
+
+def test_pedrotti_participant_contrast_nonfinite_guard() -> None:
+    prepared = _pedrotti_prepared_for_aggregation(1)
+
+    def estimator(trial: pe.PedrottiTrial) -> float:
+        return 1.0e308 if trial.condition == "long" else -1.0e308
+
+    with np.errstate(over="ignore", invalid="ignore"):
+        with pytest.raises(ValueError, match="participant contrast is non-finite"):
+            pe._study_estimate(prepared, estimator)
+
+
+def test_pedrotti_study_endpoint_nonfinite_guard() -> None:
+    prepared = _pedrotti_prepared_for_aggregation(2)
+
+    def estimator(trial: pe.PedrottiTrial) -> float:
+        return 1.0e308 if trial.condition == "long" else 0.0
+
+    with np.errstate(over="ignore", invalid="ignore"):
+        with pytest.raises(ValueError, match="study endpoint is non-finite"):
+            pe._study_estimate(prepared, estimator)
