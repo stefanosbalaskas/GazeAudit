@@ -1045,11 +1045,15 @@ def test_pedrotti_record_html_skips_unverifiable_rows_and_rejects_duplicates_or_
     with pytest.raises(ValueError, match="verifiable file table"):
         pfetch._metadata_from_record_html(no_link)
 
+    row = (
+        '<tr><td><a href="/records/7962917/files/01.txt?download=1">'
+        f'01</a> md5:{"a" * 32}</td></tr>'
+    )
     duplicate = (
         f"<html><body>{doi}<table>"
-        f'<tr><td><a href="/records/7962917/files/01.txt?download=1">01</a> md5:{"a" * 32}</td></tr>'
-        f'<tr><td><a href="/records/7962917/files/01.txt?download=1">01</a> md5:{"a" * 32}</td></tr>'
-        "</table></body></html>"
+        + row
+        + row
+        + "</table></body></html>"
     ).encode()
     with pytest.raises(ValueError, match="duplicate Zenodo filename"):
         pfetch._metadata_from_record_html(duplicate)
