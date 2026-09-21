@@ -453,8 +453,15 @@ def test_korthals_v2_intake_verifier_remaining_integrity_branches(
 
 
 def test_pedrotti_summary_trial_total_reconciliation_guard() -> None:
+    class DefensiveTrialCount:
+        def __ne__(self, other: object) -> bool:
+            return other != 96
+
+        def __radd__(self, other: int) -> int:
+            return other + 95
+
     summary, source = _valid_summary_and_source()
-    summary["participants"][0]["trial_count"] = 95
+    summary["participants"][0]["trial_count"] = DefensiveTrialCount()
 
     with pytest.raises(ValueError, match="trial totals do not reconcile"):
         ps._validate_intake_summary(summary, source)
