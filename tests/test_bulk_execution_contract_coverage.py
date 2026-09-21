@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import copy
-import json
+import dataclasses
+import importlib.metadata
+import pathlib
 import runpy
-from dataclasses import replace
-from importlib.metadata import PackageNotFoundError
-from pathlib import Path
-from types import SimpleNamespace
+import types
 
 import numpy as np
 import pandas as pd
@@ -15,10 +14,10 @@ import pytest
 import gazeaudit.gazebase_execution as gb
 import gazeaudit.korthals_execution as ke
 import gazeaudit.korthals_execution_v2 as kev2
-from gazeaudit.study import GazeStudy
+import gazeaudit.study as study_module
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 GB_FIX = runpy.run_path(str(ROOT / "tests" / "test_gazebase_execution.py"))
 K_FIX = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution.py"))
 K2_FIX = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution_v2.py"))
@@ -185,7 +184,7 @@ def test_gazebase_dataset_adapter_rejects_empty_missing_and_misaligned_inputs() 
 def test_gazebase_dataset_adapter_requires_deg2pix_and_pixel_result() -> None:
     fileinfo = _fileinfo(("FXS", "TEX"))
 
-    without_converter = SimpleNamespace(
+    without_converter = types.SimpleNamespace(
         gaze=[
             _recording(pixel=False),
             _recording(pixel=False),
@@ -258,7 +257,7 @@ def test_gazebase_dataset_adapter_requires_reference_labels(
 def test_gazebase_software_version_error_paths() -> None:
     def missing(name: str) -> str:
         if name == "pymovements":
-            raise PackageNotFoundError(name)
+            raise importlib.metadata.PackageNotFoundError(name)
         return "0"
 
     with pytest.raises(RuntimeError, match="not installed"):
@@ -318,7 +317,7 @@ def test_gazebase_execution_requires_detector_sample_contract() -> None:
             _gb_prepared(),
             gazeaudit_commit="a" * 40,
             detector_factory=factory,
-            detector_runner=lambda *args, **kwargs: SimpleNamespace(samples=None),
+            detector_runner=lambda *args, **kwargs: types.SimpleNamespace(samples=None),
             version_getter=_gb_versions(),
         )
 
@@ -328,7 +327,7 @@ def test_gazebase_execution_requires_detector_sample_contract() -> None:
             _gb_prepared(),
             gazeaudit_commit="a" * 40,
             detector_factory=factory,
-            detector_runner=lambda *args, **kwargs: SimpleNamespace(
+            detector_runner=lambda *args, **kwargs: types.SimpleNamespace(
                 samples=pd.DataFrame(
                     {
                         "participant": [1],
@@ -360,7 +359,7 @@ def test_gazebase_execution_rechecks_frozen_reference_identity(
     monkeypatch.setattr(
         gb,
         "audit_detector_robustness",
-        lambda *args, **kwargs: replace(
+        lambda *args, **kwargs: dataclasses.replace(
             baseline.audit,
             fixed_cohort=("changed",),
         ),
@@ -378,7 +377,7 @@ def test_gazebase_execution_rechecks_frozen_reference_identity(
     monkeypatch.setattr(
         gb,
         "audit_detector_robustness",
-        lambda *args, **kwargs: replace(
+        lambda *args, **kwargs: dataclasses.replace(
             baseline.audit,
             reference_effect=baseline.audit.reference_effect + 1.0,
         ),
@@ -444,8 +443,8 @@ def test_gazebase_small_provenance_helpers() -> None:
     assert gb._reference_label("not-an-int") == "undefined"
     assert gb._reference_label(1) == "fixation"
 
-    assert gb._sample_columns(SimpleNamespace()) == set()
-    assert gb._sample_columns(SimpleNamespace(columns=["x", 2])) == {"x", "2"}
+    assert gb._sample_columns(types.SimpleNamespace()) == set()
+    assert gb._sample_columns(types.SimpleNamespace(columns=["x", 2])) == {"x", "2"}
 
     with pytest.raises(TypeError, match="expose to_pandas"):
         gb._to_pandas_frame(object(), "value")
@@ -706,7 +705,7 @@ def test_korthals_prepared_identity_and_classification_guards() -> None:
     bad_identity["protocol_fingerprint"] = "wrong"
     with pytest.raises(ValueError, match="frozen protocol"):
         ke._validate_prepared_identity(
-            replace(prepared, source_identity=bad_identity),
+            dataclasses.replace(prepared, source_identity=bad_identity),
             protocol,
         )
 
@@ -714,20 +713,20 @@ def test_korthals_prepared_identity_and_classification_guards() -> None:
     bad_identity["companion_commit"] = "wrong"
     with pytest.raises(ValueError, match="companion commit"):
         ke._validate_prepared_identity(
-            replace(prepared, source_identity=bad_identity),
+            dataclasses.replace(prepared, source_identity=bad_identity),
             protocol,
         )
 
     with pytest.raises(ValueError, match="missing columns"):
         ke._validate_prepared_identity(
-            replace(prepared, data=prepared.data.drop(columns="observed_x")),
+            dataclasses.replace(prepared, data=prepared.data.drop(columns="observed_x")),
             protocol,
         )
 
     bad_types = prepared.data.assign(target_type="moving_circle")
     with pytest.raises(ValueError, match="unexpected target types"):
         ke._validate_prepared_identity(
-            replace(prepared, data=bad_types),
+            dataclasses.replace(prepared, data=bad_types),
             protocol,
         )
 
@@ -756,7 +755,7 @@ def test_korthals_prepared_identity_and_classification_guards() -> None:
 
 
 def test_korthals_execution_and_writer_public_guards(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     with pytest.raises(TypeError, match="PreparedKorthalsData"):
@@ -793,7 +792,7 @@ def test_korthals_execution_and_writer_public_guards(
 
 
 def test_korthals_artifact_verifier_basic_fail_closed_paths(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     assert not ke.verify_korthals_execution_artifacts(tmp_path / "missing")
@@ -811,7 +810,7 @@ def test_korthals_artifact_verifier_basic_fail_closed_paths(
 
 
 def test_korthals_checksum_parser_guardrails(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     path = tmp_path / "sums"
     path.write_text("\n" + "a" * 64 + "  file\n", encoding="utf-8")
@@ -874,19 +873,19 @@ def test_korthals_v2_prepared_identity_guardrails() -> None:
         identity[field] = value
         with pytest.raises(ValueError, match=message):
             kev2._validate_prepared_identity_v2(
-                replace(prepared, source_identity=identity),
+                dataclasses.replace(prepared, source_identity=identity),
                 protocol,
             )
 
     with pytest.raises(ValueError, match="missing columns"):
         kev2._validate_prepared_identity_v2(
-            replace(prepared, data=prepared.data.drop(columns="observed_x")),
+            dataclasses.replace(prepared, data=prepared.data.drop(columns="observed_x")),
             protocol,
         )
 
     with pytest.raises(ValueError, match="unexpected target types"):
         kev2._validate_prepared_identity_v2(
-            replace(prepared, data=prepared.data.assign(target_type="moving_circle")),
+            dataclasses.replace(prepared, data=prepared.data.assign(target_type="moving_circle")),
             protocol,
         )
 
@@ -897,7 +896,7 @@ def test_korthals_v2_prepared_identity_guardrails() -> None:
 
 
 def test_korthals_v2_writer_public_guards(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     with pytest.raises(TypeError, match="KorthalsAOIExecutionV2"):
@@ -948,7 +947,7 @@ def test_korthals_v2_writer_public_guards(
 
 
 def test_korthals_v2_reveal_rejects_invalid_archive(
-    tmp_path: Path,
+    tmp_path: pathlib.Path,
 ) -> None:
     with pytest.raises(ValueError, match="failed verification"):
         kev2.reveal_korthals_execution_v2(tmp_path / "missing")
