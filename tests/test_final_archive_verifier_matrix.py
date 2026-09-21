@@ -13,7 +13,6 @@ import gazeaudit.korthals_source_lock as lock_module
 import gazeaudit.pedrotti_execution as pe
 import gazeaudit.provenance as provenance
 
-
 ROOT = Path(__file__).resolve().parents[1]
 KV2 = runpy.run_path(str(ROOT / "tests" / "test_korthals_execution_v2.py"))
 PED = runpy.run_path(
