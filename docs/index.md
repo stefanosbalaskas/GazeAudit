@@ -10,7 +10,7 @@ GazeAudit documentation is organised around **research tasks**, not only modules
 
 <div class="callout info">
 <strong>Current release</strong>
-The public release is <code>0.1.0</code>. Use the <a href="install/">Install & environment center</a> to create an isolated environment, choose optional extras, verify Python compatibility, and generate the exact install command. The documentation also describes post-release development on <code>main</code>; when reproducibility matters, record the exact version or commit used.
+The public release is <code>0.2.0</code>. Use the <a href="install/">Install & environment center</a> to create an isolated environment, choose optional extras, verify Python compatibility, and generate the exact install command. The documentation also describes post-release development on <code>main</code>; when reproducibility matters, record the exact version or commit used.
 </div>
 
 <div class="callout tip">
@@ -85,6 +85,8 @@ Use **Ctrl/Cmd + K** anywhere on the site to search methods, workflows, examples
 | Preserve failures, non-finite endpoints, not-run branches, and repair lineage | [Execution Ledger & Recovery Center](execution-ledger/) |
 | Practise branch vs attempt reconciliation after repairs | [Failure → repair → reconciliation](examples/execution-ledger-reconciliation/) |
 | Interpret specification curves, stability, and sensitivity diagnostics | [Robustness Diagnostics & Sensitivity Interpretation Center](robustness-diagnostics/) |
+| Design an ordered sampling, missingness, or spatial-error perturbation protocol | [Sensitivity-analysis design](guides/sensitivity-analysis-design/) |
+| Run a worked controlled perturbation protocol | [Sensitivity protocol example](examples/sensitivity-protocol/) |
 | Practise diagnostic interpretation with exact synthetic outputs | [Diagnostic interpretation walkthrough](examples/robustness-diagnostic-walkthrough/) |
 | Declare an independently justified categorical recovery rule | [Conclusion Rule Design Center](conclusion-rule/) |
 | Practise conclusion-rule edge cases and threshold semantics | [Conclusion-rule edge cases](examples/conclusion-rule-edge-cases/) |
@@ -277,8 +279,10 @@ For deeper provenance or publication operations, use the existing authoritative 
 - [Scientific methods](SCIENTIFIC_METHODS.html)
 - [Validation matrix](VALIDATION_MATRIX.html)
 - [Citation and reuse](CITATION_AND_REUSE.html)
-- [Release notes 0.1.0](RELEASE_NOTES_0.1.0.html)
-- [External publication record](EXTERNAL_PUBLICATION_0.1.0.html)
+- [Release notes 0.2.0](RELEASE_NOTES_0.2.0.html)
+- [GitHub Release v0.2.0](https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.2.0)
+- [Archived release notes 0.1.0](RELEASE_NOTES_0.1.0.html)
+- [Archived v0.1.0 external publication record](EXTERNAL_PUBLICATION_0.1.0.html)
 
 ## Need a quick answer?
 
