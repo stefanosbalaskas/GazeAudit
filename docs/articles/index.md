@@ -47,6 +47,12 @@ These articles explain the methodological ideas behind GazeAudit. They are not s
     <p>Extend the record transparently: keep the submitted audit recoverable, record outcome-inspection timing, and give post-review evidence its own denominator and provenance.</p>
     <p><a href="../guides/reviewer-requested-amendments/">Reviewer amendments →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">7</div>
+    <h3>How should I design a sensitivity analysis?</h3>
+    <p>Separate a scientifically justified perturbation protocol from a post-outcome search for settings that preserve the preferred result.</p>
+    <p><a href="sensitivity-is-not-a-search/">Sensitivity is not a search →</a></p>
+  </article>
 </div>
 
 ## [Measurement uncertainty is a modelling problem](measurement-uncertainty-is-a-modeling-problem/)
@@ -66,6 +72,12 @@ Why a single reasonable pipeline does not answer whether a conclusion depends on
 Why fragility is not a software error, how to localise its source, and how to narrow scientific claims without turning robustness analysis into post-hoc optimisation.
 
 **Continue with:** [Interpret an audit result](../guides/interpret-audit-result/) and the four synthetic [result-pattern reporting examples](../examples/result-patterns/).
+
+## [Sensitivity analysis is not a search for a stable answer](sensitivity-is-not-a-search/)
+
+Why the perturbation protocol—not the most reassuring point on a curve—is the scientific object, and why sampling, missingness, spatial measurement error, and ordinary specification choices should retain distinct meanings.
+
+**Continue with:** the [sensitivity-analysis design guide](../guides/sensitivity-analysis-design/), [sensitivity protocol example](../examples/sensitivity-protocol/), and [sensitivity-audit workflow](../workflows/sensitivity-audit/).
 
 ## From concept to action
 
