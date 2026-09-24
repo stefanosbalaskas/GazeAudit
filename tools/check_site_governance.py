@@ -158,7 +158,7 @@ def check_site_contract() -> None:
     sitemap = SITEMAP.read_text(encoding="utf-8")
 
     required_config = (
-        'release_version: "0.1.0"',
+        'release_version: "0.2.0"',
         "docs_channel: development",
     )
     missing = [token for token in required_config if token not in config]
@@ -185,7 +185,7 @@ def check_site_contract() -> None:
         raise SystemExit("site governance: layout contract missing: " + ", ".join(missing))
 
     required_provenance = (
-        "v0.1.0",
+        "v0.2.0",
         "site.github.build_revision",
         "10.5281/zenodo.22757340",
         "incomplete",
