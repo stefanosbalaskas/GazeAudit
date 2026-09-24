@@ -15,26 +15,26 @@ GazeAudit asks whether an eye-tracking scientific conclusion survives plausible 
 
 No. GazeAudit is designed to sit above existing parsing, preprocessing, and detector ecosystems. It can ingest or adapt outputs from Eye-Tracking-BIDS, pymovements, pEYES, and user-defined backends while retaining those tools' methodological responsibility.
 
-## Which Python versions are supported by release 0.1.0?
+## Which Python versions are supported by release 0.2.0?
 
 The release metadata requires Python 3.10 or newer and the repository test matrix covers Python 3.10–3.13. The current pEYES optional dependency is restricted to Python 3.12+.
 
 ## How do I install it?
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 For pymovements integration:
 
 ```bash
-python -m pip install "gazeaudit[pymovements]==0.1.0"
+python -m pip install "gazeaudit[pymovements]==0.2.0"
 ```
 
 For pEYES integration on Python 3.12+:
 
 ```bash
-python -m pip install "gazeaudit[peyes]==0.1.0"
+python -m pip install "gazeaudit[peyes]==0.2.0"
 ```
 
 ## `audit_study_qc()` returned `review`. Does that mean I should exclude data?
@@ -147,21 +147,19 @@ No. A fragile result shows that the conclusion depends materially on at least on
 
 It means the frozen detector specification space did not satisfy its predeclared completeness gate. It should not be rewritten as a generic negative verdict about GazeBase.
 
-## How should I cite GazeAudit 0.1.0?
+## How should I cite GazeAudit 0.2.0?
 
-Use the version-specific Zenodo DOI for a reproducible release citation:
+Record the exact software version and use the metadata in [`CITATION.cff`](https://github.com/stefanosbalaskas/GazeAudit/blob/main/CITATION.cff). The v0.2.0 GitHub Release and PyPI publication are externally verified in the repository release provenance.
 
-`10.5281/zenodo.22757340`
-
-The concept DOI `10.5281/zenodo.22757339` follows all archived versions and resolves to the latest version.
+GazeAudit 0.2.0 does **not** claim a version-specific Zenodo DOI. If an analysis used v0.1.0, its archived version-specific DOI remains `10.5281/zenodo.22757340`.
 
 ## Should I cite a version or a Git commit?
 
-For a published release, cite the version DOI and record the exact version used. If your analysis depends on post-release development code, record the exact Git commit as well.
+For a published release, record and cite the exact released version. If your analysis depends on development code beyond that release, record the exact Git commit as well. Add a DOI only when it corresponds to the software version or archived artifact you actually used.
 
-## Does the documentation describe only the immutable 0.1.0 tag?
+## Does the documentation describe only the immutable 0.2.0 tag?
 
-No. The public site is built from the repository's current `main` branch, so documentation may describe post-release development in addition to the released API. Pages that demonstrate the public release explicitly use `0.1.0`; reproducible research should always record the exact version or commit actually executed.
+No. The public site is built from the repository's current `main` branch, so documentation may describe post-release development in addition to the released API. Pages that demonstrate the current public release use `0.2.0`; reproducible research should always record the exact version or commit actually executed.
 
 ## Does GazeAudit upload participant data anywhere?
 

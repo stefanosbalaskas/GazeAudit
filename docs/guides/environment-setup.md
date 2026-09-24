@@ -49,7 +49,7 @@ python -m pip --version
 For the public release:
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 For a repository checkout used in development or review:
@@ -72,9 +72,9 @@ A packaging extra means “install these additional software dependencies.” It
 Examples:
 
 ```bash
-python -m pip install "gazeaudit[plot]==0.1.0"
-python -m pip install "gazeaudit[pymovements]==0.1.0"
-python -m pip install "gazeaudit[peyes]==0.1.0"
+python -m pip install "gazeaudit[plot]==0.2.0"
+python -m pip install "gazeaudit[pymovements]==0.2.0"
+python -m pip install "gazeaudit[peyes]==0.2.0"
 ```
 
 The pEYES dependency currently carries a Python 3.12+ environment marker. That marker is a software compatibility rule, not a research recommendation.

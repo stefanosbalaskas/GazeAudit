@@ -1,6 +1,6 @@
 ---
 title: Research workflows
-description: End-to-end GazeAudit workflows for applying the package to a study, measurement uncertainty, analytical robustness, peer-review revision, and reproducible publication.
+description: End-to-end GazeAudit workflows for applying the package to a study, measurement uncertainty, analytical robustness, controlled sensitivity analysis, peer-review revision, and reproducible publication.
 kicker: Workflows
 ---
 
@@ -10,7 +10,7 @@ Use these pages when you already understand the basic functions and need to stru
 
 <figure class="plot-card">
   <img src="{{ '/assets/images/workflow-overview.svg' | relative_url }}" alt="GazeAudit end-to-end workflow">
-  <figcaption>GazeAudit separates measurement uncertainty, analytical decision uncertainty, endpoint definition, robustness diagnostics, review-stage amendments, and publication provenance.</figcaption>
+  <figcaption>GazeAudit separates measurement uncertainty, analytical decision uncertainty, controlled perturbation sensitivity, endpoint definition, robustness diagnostics, review-stage amendments, and publication provenance.</figcaption>
 </figure>
 
 ## [First-study audit](first-study-audit/)
@@ -54,6 +54,20 @@ Typical sequence:
 6. screen marginal and pairwise sensitivity;
 7. interpret instability without post-hoc optimisation.
 
+## [Sensitivity audit](sensitivity-audit/)
+
+**Question:** how does one fixed endpoint behave when a specific ordered uncertainty dimension is deliberately perturbed?
+
+Typical sequence:
+
+1. freeze the endpoint and baseline representation;
+2. name one perturbation dimension such as sampling rate, controlled missingness, or spatial-error scale;
+3. justify the evaluated range independently of the observed endpoint;
+4. declare units, model/mechanism, randomness, and software identity;
+5. execute and preserve the complete curve;
+6. interpret direction and magnitude separately;
+7. integrate the result with the main robustness record without collapsing different uncertainty types into one score.
+
 ## [Peer-review revision toolkit]({{ '/docs/workspace/revision-toolkit/' | relative_url }})
 
 **Question:** how do I add reviewer-requested work without rewriting what existed at submission?
@@ -88,7 +102,7 @@ Typical sequence:
 
 ## Combine workflows deliberately
 
-The first-study workflow is the project-level spine. Measurement, robustness, revision, and publication workflows are governed layers that can be nested where the study requires them.
+The first-study workflow is the project-level spine. Measurement, robustness, sensitivity, revision, and publication workflows are governed layers that can be nested where the study requires them.
 
 For example, a `PipelineSpace` may contain hard versus probabilistic AOI branches, while each probabilistic branch is generated under a declared error model. If peer review later requests a stricter threshold, that analysis belongs in a separately timed revision layer rather than being silently inserted into the submitted specification space. The publication workflow can then bind the submitted and post-review records without collapsing them.
 

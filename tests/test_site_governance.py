@@ -48,8 +48,8 @@ def test_search_catalog_is_generated_and_core_routes_remain_governed() -> None:
 def test_site_provenance_keeps_release_and_development_identity_separate() -> None:
     page = (ROOT / "docs" / "reference" / "site-provenance.md").read_text(encoding="utf-8")
     assert "site.github.build_revision" in page
-    assert "Stable package release: **v0.1.0**" in page
-    assert "current `main` is equivalent to v0.1.0" in page
+    assert "Stable package release: **v0.2.0**" in page
+    assert "current `main` is equivalent to v0.2.0" in page
     assert "incomplete" in page
     assert "robust_negative" in page
     assert "materially_fragile" in page
@@ -61,3 +61,17 @@ def test_sitemap_and_robots_are_bound() -> None:
     assert "<urlset" in sitemap
     assert "absolute_url" in sitemap
     assert "Sitemap: {{ '/sitemap.xml' | absolute_url }}" in robots
+
+
+def test_sensitivity_learning_path_and_publication_page_are_governed() -> None:
+    verifier = (ROOT / "tools" / "check_site_governance.py").read_text(encoding="utf-8")
+    for route in (
+        "/docs/guides/sensitivity-analysis-design/",
+        "/docs/examples/sensitivity-protocol/",
+        "/docs/workflows/sensitivity-audit/",
+        "/docs/EXTERNAL_PUBLICATION_0.2.0.html",
+    ):
+        assert route in verifier
+    publication = (ROOT / "docs" / "EXTERNAL_PUBLICATION_0.2.0.md").read_text(encoding="utf-8")
+    assert "not_published_in_this_tranche" in publication
+    assert "published and verified" in publication

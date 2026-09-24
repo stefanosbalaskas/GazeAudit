@@ -91,7 +91,7 @@ Use each command's `--help` output and the matching frozen protocol/result recor
 For the stable release:
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 When using unreleased functionality from `main`, record the exact Git commit. The [documentation provenance page]({{ '/docs/reference/site-provenance/' | relative_url }}) explains why the site revision and installed package version must not be conflated.

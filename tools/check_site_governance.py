@@ -10,6 +10,7 @@ INIT = ROOT / "src" / "gazeaudit" / "__init__.py"
 API_MAP = ROOT / "docs" / "reference" / "api-map.md"
 CORE_API_INVENTORY = ROOT / "docs" / "reference" / "core-api-inventory.md"
 PROVENANCE_PAGE = ROOT / "docs" / "reference" / "site-provenance.md"
+PUBLICATION_PAGE = ROOT / "docs" / "EXTERNAL_PUBLICATION_0.2.0.md"
 LAYOUT = ROOT / "_layouts" / "default.html"
 SEARCH_INDEX = ROOT / "assets" / "search-index.json"
 ROBOTS = ROOT / "robots.txt"
@@ -117,6 +118,10 @@ def check_search_coverage() -> None:
         "/docs/reference/evidence-vocabulary/",
         "/docs/reference/core-api-inventory/",
         "/docs/reference/site-provenance/",
+        "/docs/guides/sensitivity-analysis-design/",
+        "/docs/examples/sensitivity-protocol/",
+        "/docs/workflows/sensitivity-audit/",
+        "/docs/EXTERNAL_PUBLICATION_0.2.0.html",
     }
     missing_nav = sorted(required_navigation - nav_urls)
     if missing_nav:
@@ -137,6 +142,11 @@ def check_search_coverage() -> None:
         ROOT / "docs" / "reference" / "evidence-vocabulary.md",
         CORE_API_INVENTORY,
         PROVENANCE_PAGE,
+        PUBLICATION_PAGE,
+        ROOT / "docs" / "articles" / "sensitivity-is-not-a-search.md",
+        ROOT / "docs" / "guides" / "sensitivity-analysis-design.md",
+        ROOT / "docs" / "examples" / "sensitivity-protocol.md",
+        ROOT / "docs" / "workflows" / "sensitivity-audit.md",
     )
     missing_metadata: list[str] = []
     for path in metadata_pages:
@@ -154,11 +164,12 @@ def check_site_contract() -> None:
     config = CONFIG.read_text(encoding="utf-8")
     layout = LAYOUT.read_text(encoding="utf-8")
     provenance = PROVENANCE_PAGE.read_text(encoding="utf-8")
+    publication = PUBLICATION_PAGE.read_text(encoding="utf-8")
     robots = ROBOTS.read_text(encoding="utf-8")
     sitemap = SITEMAP.read_text(encoding="utf-8")
 
     required_config = (
-        'release_version: "0.1.0"',
+        'release_version: "0.2.0"',
         "docs_channel: development",
     )
     missing = [token for token in required_config if token not in config]
@@ -170,6 +181,8 @@ def check_site_contract() -> None:
         'property="og:description"',
         'property="og:url"',
         'name="twitter:card"',
+        'type="application/ld+json"',
+        '"@type": "SoftwareSourceCode"',
         "site.docs_channel",
         "site.release_version",
         "site.github.build_revision",
@@ -179,13 +192,16 @@ def check_site_contract() -> None:
         "data-primary-nav",
         "data-mobile-primary-nav",
         "/docs/reference/site-provenance/",
+        "/docs/EXTERNAL_PUBLICATION_0.2.0.html",
+        "pypi.org/project/gazeaudit/0.2.0/",
+        "page.page_type == 'plot-gallery'",
     )
     missing = [token for token in required_layout if token not in layout]
     if missing:
         raise SystemExit("site governance: layout contract missing: " + ", ".join(missing))
 
     required_provenance = (
-        "v0.1.0",
+        "v0.2.0",
         "site.github.build_revision",
         "10.5281/zenodo.22757340",
         "incomplete",
@@ -195,6 +211,17 @@ def check_site_contract() -> None:
     missing = [token for token in required_provenance if token not in provenance]
     if missing:
         raise SystemExit("site governance: provenance page missing: " + ", ".join(missing))
+    required_publication = (
+        "published and verified",
+        "not_published_in_this_tranche",
+        "gazeaudit-0.2.0-py3-none-any.whl",
+        "10.5281/zenodo.22757340",
+    )
+    missing = [token for token in required_publication if token not in publication]
+    if missing:
+        raise SystemExit(
+            "site governance: v0.2.0 publication record missing: " + ", ".join(missing)
+        )
     if "Sitemap:" not in robots or "/sitemap.xml" not in robots:
         raise SystemExit("site governance: robots.txt does not advertise sitemap")
     if "<urlset" not in sitemap or "absolute_url" not in sitemap:

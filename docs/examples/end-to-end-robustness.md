@@ -40,7 +40,7 @@ This produces **12 specifications**. The purpose is not to find the “best” o
 ## 1. Install and import
 
 ```bash
-python -m pip install "gazeaudit==0.1.0"
+python -m pip install "gazeaudit==0.2.0"
 ```
 
 ```python

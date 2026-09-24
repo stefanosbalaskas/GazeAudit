@@ -7,6 +7,14 @@ state containing this entry is not, by itself, evidence that `v0.1.0` has been t
 that a GitHub Release, PyPI distribution, DOI, or archival deposit exists. Those are
 separate publication actions performed only after the release-candidate gate succeeds.
 
+## Unreleased
+
+### Documentation and website
+
+- Align public documentation, homepage installation guidance, and provenance surfaces with the verified v0.2.0 GitHub Release and PyPI publication.
+- Add a sensitivity-analysis learning path spanning conceptual rationale, protocol design, a worked sampling/missingness example, and a study-level workflow.
+- Improve plot and documentation discovery while preserving all frozen scientific validation outcomes and their original evidence boundaries.
+
 ## 0.2.0 — 2026-09-21
 
 ### Scientific and software qualification
