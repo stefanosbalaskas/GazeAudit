@@ -100,7 +100,7 @@ The sections below explain why each stage exists and where researcher judgement 
 For the stable public release:
 
 ```bash
-python -m pip install "gazeaudit==0.1.0"
+python -m pip install "gazeaudit==0.2.0"
 ```
 
 Record the exact package version or commit used in the analysis. The website may document newer development features on `main` than the stable release contains.
