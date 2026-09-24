@@ -44,13 +44,13 @@ python -m pip install --upgrade pip
 Core installation:
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 If this exercise also needs plotting:
 
 ```bash
-python -m pip install "gazeaudit[plot]==0.1.0"
+python -m pip install "gazeaudit[plot]==0.2.0"
 ```
 
 Use the [Install Center]({{ '/docs/install/' | relative_url }}) to generate other extras from the current package metadata instead of guessing their names.
