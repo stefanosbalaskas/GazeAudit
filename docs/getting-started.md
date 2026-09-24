@@ -13,7 +13,7 @@ This page takes you from installation to a small uncertainty-aware AOI analysis 
 For isolated-environment setup, optional extras, tested Python versions, and source-checkout commands, start with the [Install & environment center]({{ '/docs/install/' | relative_url }}).
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 Confirm the installed package:
@@ -29,13 +29,13 @@ The package declares Python `>=3.10`; the repository CI currently tests Python 3
 Install only the adapter family you need. The complete generated extras inventory is maintained in the [Install Center]({{ '/docs/install/' | relative_url }}):
 
 ```bash
-python -m pip install "gazeaudit[pymovements]==0.1.0"
+python -m pip install "gazeaudit[pymovements]==0.2.0"
 ```
 
 For pEYES integration, Python 3.12+ is required by the current pEYES dependency range:
 
 ```bash
-python -m pip install "gazeaudit[peyes]==0.1.0"
+python -m pip install "gazeaudit[peyes]==0.2.0"
 ```
 
 ### Before using your own table
