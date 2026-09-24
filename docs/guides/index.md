@@ -107,6 +107,12 @@ The guides explain **how to design, govern, interpret, troubleshoot, review, rev
     <p>Move from issue code to row/group diagnostics, source inspection, researcher-owned decisions, representation repair, rerun scope, endpoint dependence, and bounded reporting.</p>
     <p><a href="structural-qc-triage/">Structural-QC triage →</a></p>
   </article>
+  <article class="card">
+    <div class="card-icon" aria-hidden="true">17</div>
+    <h3>Design a sensitivity protocol</h3>
+    <p>Choose a baseline, perturbation dimension, justified range, fixed endpoint, reproducibility policy, and interpretation boundary before inspecting the curve.</p>
+    <p><a href="sensitivity-analysis-design/">Sensitivity-analysis design →</a></p>
+  </article>
 </div>
 
 ## Environment setup
@@ -252,6 +258,14 @@ Use the [Conclusion Rule Design Center]({{ '/docs/conclusion-rule/' | relative_u
 Translate specification curves, sign fractions, marginal sensitivity, and pairwise sensitivity into precise Methods and Results language without treating descriptive diagnostics as confidence intervals, posterior probabilities, or causal decompositions.
 
 For a complete worked interpretation exercise, use the [decision-to-report example](../examples/decision-to-report/).
+
+## Sensitivity design
+
+### [Design a sensitivity analysis](sensitivity-analysis-design/)
+
+Define a controlled sampling, missingness, spatial-error, or other ordered perturbation protocol without turning the exercise into a search for a reassuring setting. The guide separates baseline identity, range justification, endpoint invariance, seed/Monte Carlo policy, complete-curve reporting, and scientific interpretation boundaries.
+
+Use the [Sensitivity protocol worked example]({{ '/docs/examples/sensitivity-protocol/' | relative_url }}) for a deterministic sampling + missingness exercise, then integrate the layer with the [Sensitivity audit workflow]({{ '/docs/workflows/sensitivity-audit/' | relative_url }}).
 
 ## Troubleshooting
 
