@@ -117,6 +117,14 @@ def test_gallery_exposes_public_plotting_functions_and_questions() -> None:
     assert catalog.count("  question:") == 14
 
 
+def test_gallery_script_is_scoped_to_gallery_page() -> None:
+    page = _text("docs/plots/index.md")
+    layout = _text("_layouts/default.html")
+    assert "page_type: plot-gallery" in page
+    assert "page.page_type == 'plot-gallery'" in layout
+    assert "assets/js/gallery.js" in layout
+
+
 def test_gallery_controls_target_toolbar_and_grid_separately() -> None:
     script = _text("assets/js/gallery.js")
     assert "document.querySelector('[data-plot-gallery]')" in script
