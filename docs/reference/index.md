@@ -41,7 +41,9 @@ These pages describe public APIs, installed commands, status vocabulary, softwar
 | which repository revision built the documentation | [Documentation provenance]({{ '/docs/reference/site-provenance/' | relative_url }}) | release vs development-doc identity |
 | what the canonical empirical validation outcome is | [Validation matrix]({{ '/docs/VALIDATION_MATRIX.html' | relative_url }}) | protocol-bound validation records |
 | how to cite or reuse GazeAudit | [Citation & reuse]({{ '/docs/CITATION_AND_REUSE.html' | relative_url }}) | citation and reuse instructions |
-| what shipped in v0.1.0 | [Release notes]({{ '/docs/RELEASE_NOTES_0.1.0.html' | relative_url }}) | stable-release scope |
+| what shipped in v0.2.0 | [Release notes]({{ '/docs/RELEASE_NOTES_0.2.0.html' | relative_url }}) | current stable-release scope |
+| how v0.2.0 publication was verified | [External publication record]({{ '/docs/EXTERNAL_PUBLICATION_0.2.0.html' | relative_url }}) | GitHub Release/PyPI payload and Zenodo boundary |
+| what shipped in historical v0.1.0 | [Archived release notes]({{ '/docs/RELEASE_NOTES_0.1.0.html' | relative_url }}) | historical stable-release scope |
 
 ## Find the right reference faster
 
@@ -107,7 +109,8 @@ The stable public package release and the continuously updated documentation are
 | What does the installed public Python function do? | package source/docstring for the exact version or commit used |
 | Which console command is installed? | `[project.scripts]` in `pyproject.toml` for the exact version or commit |
 | What does a current reference page say? | this site at its displayed build revision |
-| What did v0.1.0 ship? | the v0.1.0 release/tag and release notes |
+| What did v0.2.0 ship? | the v0.2.0 release/tag and release notes |
+| How was v0.2.0 published? | the v0.2.0 external publication verification record |
 | What is a frozen scientific validation outcome? | the validation matrix plus the case-specific frozen protocol/result record |
 
 Reference pages can move forward on `main`; they do not rewrite frozen release assets or protocol-bound evidence.
