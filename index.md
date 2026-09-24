@@ -19,7 +19,7 @@ page_type: landing
         </div>
 
         <div class="hero-proof" aria-label="Project facts">
-          <span><strong>0.1.0</strong> stable release</span>
+          <span><strong>0.2.0</strong> stable release</span>
           <span><strong>3.10–3.13</strong> Python</span>
           <span><strong>3</strong> frozen cases</span>
           <span><strong>MIT</strong> licensed</span>
@@ -48,12 +48,12 @@ page_type: landing
   <div class="landing-band-inner">
     <div>
       <span class="band-label">Stable release</span>
-      <strong>Install the archived 0.1.0 release</strong>
+      <strong>Install the current 0.2.0 release</strong>
     </div>
-    <pre class="install-command"><code>pip install gazeaudit==0.1.0</code></pre>
+    <pre class="install-command"><code>pip install gazeaudit==0.2.0</code></pre>
     <div class="band-links">
       <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
-      <a href="https://doi.org/10.5281/zenodo.22757340">Zenodo DOI</a>
+      <a href="https://pypi.org/project/gazeaudit/0.2.0/">PyPI 0.2.0</a>
     </div>
   </div>
 </section>
