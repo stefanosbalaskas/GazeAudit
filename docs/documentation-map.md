@@ -23,6 +23,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
       <a href="{{ '/docs/examples/catalog/' | relative_url }}">Example catalog</a>
       <a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">End-to-end robustness</a>
+      <a href="{{ '/docs/examples/sensitivity-protocol/' | relative_url }}">Sensitivity protocol</a>
       <a href="{{ '/docs/guides/adapt-examples-to-study/' | relative_url }}">Adapt examples safely</a>
     </div>
   </article>
@@ -37,6 +38,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
       <a href="{{ '/docs/guides/structural-qc-triage/' | relative_url }}">Structural-QC triage</a>
       <a href="{{ '/docs/guides/readiness-policy-design/' | relative_url }}">Readiness policy design</a>
       <a href="{{ '/docs/guides/robustness-diagnostics/' | relative_url }}">Read robustness diagnostics</a>
+      <a href="{{ '/docs/guides/sensitivity-analysis-design/' | relative_url }}">Design a sensitivity analysis</a>
       <a href="{{ '/docs/guides/conclusion-rule-design/' | relative_url }}">Conclusion rule design</a>
       <a href="{{ '/docs/guides/claim-boundary-reporting/' | relative_url }}">Claim-boundary reporting</a>
       <a href="{{ '/docs/guides/endpoint-definition/' | relative_url }}">Endpoint definition</a>
@@ -73,6 +75,7 @@ This structure is adapted from the tutorial / how-to / reference / explanation s
     <p>Use conceptual material and bounded case studies when the goal is interpretation, rationale, or methodological context rather than a procedure.</p>
     <div class="documentation-compass-links">
       <a href="{{ '/docs/articles/' | relative_url }}">Articles</a>
+      <a href="{{ '/docs/articles/sensitivity-is-not-a-search/' | relative_url }}">Why sensitivity is not a search</a>
       <a href="{{ '/docs/case-studies/' | relative_url }}">Case studies</a>
       <a href="{{ '/docs/SCIENTIFIC_METHODS.html' | relative_url }}">Scientific methods</a>
     </div>
@@ -95,6 +98,17 @@ For **specification-space robustness**:
 | Look up the public function contract | [`run_specs` API pathway]({{ '/docs/reference/api-pathways/' | relative_url }}#api-run-specs) |
 | Understand why one pipeline is insufficient | [From one pipeline to a robustness audit]({{ '/docs/articles/from-one-pipeline-to-a-robustness-audit/' | relative_url }}) |
 | Inspect the empirical boundary | [Case studies]({{ '/docs/case-studies/' | relative_url }}) |
+
+For **controlled sensitivity analysis**:
+
+| Need | Route |
+|---|---|
+| Learn the sequence on deterministic data | [Sensitivity protocol example]({{ '/docs/examples/sensitivity-protocol/' | relative_url }}) |
+| Design the study-specific perturbation protocol | [Sensitivity-analysis design guide]({{ '/docs/guides/sensitivity-analysis-design/' | relative_url }}) |
+| Structure the analysis as a study-level layer | [Sensitivity-audit workflow]({{ '/docs/workflows/sensitivity-audit/' | relative_url }}) |
+| Look up sampling, missingness, or spatial-sensitivity functions | [API pathways]({{ '/docs/reference/api-pathways/' | relative_url }}) |
+| Understand why the curve is not an optimisation search | [Sensitivity is not a search]({{ '/docs/articles/sensitivity-is-not-a-search/' | relative_url }}) |
+| Choose a reproducible visual | [Plot gallery]({{ '/docs/plots/' | relative_url }}) |
 
 The pages are related, but they should not collapse into one giant page. Reference stays factual; how-to guidance stays task-oriented; teaching examples remain explicit about synthetic choices; conceptual pages can explain rationale without pretending to be executable instructions.
 
