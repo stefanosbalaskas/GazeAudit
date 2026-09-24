@@ -6,7 +6,7 @@ See the [v0.2.0 external publication record](EXTERNAL_PUBLICATION_0.2.0.html) an
 
 ## Citing the software
 
-Use the metadata in the repository root [`CITATION.cff`](../CITATION.cff) and report the **exact installed version** used for the analysis.
+Use the metadata in the repository root [`CITATION.cff`](../CITATION.cff) and report the **exact installed version** and, when relevant, the **exact GazeAudit commit** used for the analysis.
 
 For v0.2.0, record at minimum:
 
