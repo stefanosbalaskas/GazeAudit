@@ -119,7 +119,7 @@ page_type: landing
         <p class="router-step">Specification-space audit</p>
         <h3>Ask whether the endpoint survives other defensible analytical choices.</h3>
         <p>Declare a finite decision space, execute a common endpoint across every specification, then inspect sign, magnitude, specification curves, and factor sensitivity without searching for a favourable pipeline.</p>
-        <div class="router-actions"><a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification-space guide →</a><a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">Complete audit →</a></div>
+        <div class="router-actions"><a href="{{ '/docs/guides/specification-space/' | relative_url }}">Specification-space guide →</a><a href="{{ '/docs/guides/sensitivity-analysis-design/' | relative_url }}">Sensitivity design →</a><a href="{{ '/docs/examples/end-to-end-robustness/' | relative_url }}">Complete audit →</a></div>
       </article>
 
       <article role="tabpanel" id="router-panel-publish" aria-labelledby="router-tab-publish" data-router-panel="publish" hidden>
