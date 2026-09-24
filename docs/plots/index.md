@@ -2,6 +2,7 @@
 title: Plot gallery
 description: Code-generated GazeAudit plots for structural QC, analysis readiness, robustness, sensitivity, AOI uncertainty, and recovery diagnostics.
 kicker: Visual reference
+page_type: plot-gallery
 permalink: /docs/plots/
 ---
 
@@ -63,7 +64,7 @@ python -m pip install "gazeaudit[plot]"
 <article id="plot-{{ plot.id }}" class="plot-card" data-gallery-card data-plot-id="{{ plot.id }}" data-category="{{ plot.category }}" data-methods="{{ plot.method_ids | join: ' ' }}" data-search="{{ plot.title | escape }} {{ plot.category }} {{ plot.question | escape }} {{ plot.function }} {{ plot.method_ids | join: ' ' }} {{ plot.next_label | escape }}">
   <figure>
     <a class="plot-card-image-link" href="{{ '/assets/plots/' | append: plot.filename | relative_url }}" aria-label="Open {{ plot.title }} SVG">
-      <img src="{{ '/assets/plots/' | append: plot.filename | relative_url }}" alt="{{ plot.question }}" loading="lazy">
+      <img src="{{ '/assets/plots/' | append: plot.filename | relative_url }}" alt="{{ plot.question }}" loading="lazy" decoding="async">
     </a>
     <figcaption class="plot-card-body">
       <div class="plot-card-topline"><p class="plot-card-meta">{{ plot.category | capitalize }}</p><code>{{ plot.function }}</code></div>
