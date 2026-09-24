@@ -2,7 +2,7 @@
 
 **Measurement uncertainty and inferential robustness for eye-tracking research.**
 
-[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) · [Data contract](https://stefanosbalaskas.github.io/GazeAudit/docs/data-contract/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.1.0/) · [Zenodo DOI](https://doi.org/10.5281/zenodo.22757340)
+[Documentation](https://stefanosbalaskas.github.io/GazeAudit/) · [Documentation compass](https://stefanosbalaskas.github.io/GazeAudit/docs/documentation-map/) · [Data contract](https://stefanosbalaskas.github.io/GazeAudit/docs/data-contract/) · [Install](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) · [Getting started](https://stefanosbalaskas.github.io/GazeAudit/docs/getting-started/) · [Examples](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/) · [Workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) · [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) · [PyPI](https://pypi.org/project/gazeaudit/0.2.0/) · [Release provenance](https://github.com/stefanosbalaskas/GazeAudit/blob/main/release/0.2.0-external-publication-verification.json)
 
 GazeAudit is a scientific Python package built around one question:
 
@@ -17,20 +17,20 @@ GazeAudit sits **above** existing parsing, preprocessing, and event-detection ec
 
 ## Install
 
-The current public release is `0.1.0`:
+The current public release is `0.2.0`:
 
 ```bash
-python -m pip install gazeaudit==0.1.0
+python -m pip install gazeaudit==0.2.0
 ```
 
 Optional interoperability extras:
 
 ```bash
-python -m pip install "gazeaudit[pymovements]==0.1.0"
-python -m pip install "gazeaudit[peyes]==0.1.0"  # Python 3.12+
+python -m pip install "gazeaudit[pymovements]==0.2.0"
+python -m pip install "gazeaudit[peyes]==0.2.0"  # Python 3.12+
 ```
 
-The package declares Python `>=3.10`; release `0.1.0` is exercised on Python 3.10–3.13 in the repository test matrix. See the [Install & environment center](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) for generated extras, console scripts, source-checkout commands, and environment verification.
+The package declares Python `>=3.10`; release `0.2.0` is exercised on Python 3.10–3.13 in the repository test matrix. See the [Install & environment center](https://stefanosbalaskas.github.io/GazeAudit/docs/install/) for generated extras, console scripts, source-checkout commands, and environment verification.
 
 ## Documentation
 
@@ -55,7 +55,8 @@ The website is organised by research task rather than only by modules:
 | adapt a teaching example to a real study without inheriting demonstration values | [Adapt examples to your study](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/adapt-examples-to-study/) |
 | model gaze-position uncertainty | [AOI uncertainty guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/aoi-uncertainty/) |
 | build a defensible analysis multiverse | [Specification-space guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/specification-space/) |
-| stress-test sampling rate | [Sampling sensitivity example](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/sampling-sensitivity/) |
+| design a defensible sampling, missingness, or spatial-error perturbation protocol | [Sensitivity-analysis design guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/sensitivity-analysis-design/) |
+| run a worked sampling + missingness sensitivity protocol | [Sensitivity protocol example](https://stefanosbalaskas.github.io/GazeAudit/docs/examples/sensitivity-protocol/) |
 | design a complete uncertainty/robustness analysis | [Research workflows](https://stefanosbalaskas.github.io/GazeAudit/docs/workflows/) |
 | inspect the three frozen validation cases visually | [Case studies](https://stefanosbalaskas.github.io/GazeAudit/docs/case-studies/) |
 | build deterministic publication evidence | [Publication audit guide](https://stefanosbalaskas.github.io/GazeAudit/docs/guides/publication-audits/) |
@@ -255,11 +256,9 @@ Those additions do **not** retroactively alter the frozen GazeBase (`incomplete`
 
 ## Citation
 
-For analyses using release `0.1.0`, cite the version-specific Zenodo DOI **[10.5281/zenodo.22757340](https://doi.org/10.5281/zenodo.22757340)** and record the exact software version or commit used.
+For analyses using release `0.2.0`, record the exact software version and use the citation metadata in [`CITATION.cff`](CITATION.cff). The verified GitHub Release and PyPI publication record is preserved in [`release/0.2.0-external-publication-verification.json`](release/0.2.0-external-publication-verification.json).
 
-The concept DOI **[10.5281/zenodo.22757339](https://doi.org/10.5281/zenodo.22757339)** represents all Zenodo versions and resolves to the latest archived version.
-
-Citation metadata are provided in [`CITATION.cff`](CITATION.cff). External publication provenance is recorded in [`release/0.1.0-external-publication-verification.json`](release/0.1.0-external-publication-verification.json).
+Release `0.2.0` was not deposited to Zenodo in its publication tranche. Analyses that used release `0.1.0` can cite its version-specific Zenodo DOI **[10.5281/zenodo.22757340](https://doi.org/10.5281/zenodo.22757340)**. The Zenodo concept DOI **[10.5281/zenodo.22757339](https://doi.org/10.5281/zenodo.22757339)** identifies the archived Zenodo record family; it should not be presented as a version-specific DOI for `0.2.0`.
 
 ## License
 
@@ -267,4 +266,4 @@ MIT.
 
 ## Development documentation on `main`
 
-Post-release development now includes provenance-bound analysis-readiness governance and a [code-generated plot gallery](https://stefanosbalaskas.github.io/GazeAudit/docs/plots/) covering QC, cohort impact, repairs, specification curves, sensitivity, AOI geometry, and recovery diagnostics. These additions do not alter the frozen v0.1.0 scientific outcomes.
+Post-release development now includes provenance-bound analysis-readiness governance and a [code-generated plot gallery](https://stefanosbalaskas.github.io/GazeAudit/docs/plots/) covering QC, cohort impact, repairs, specification curves, sensitivity, AOI geometry, and recovery diagnostics. These documentation additions do not alter the protocol-bound GazeBase, Korthals, or Pedrotti/de Chambrier scientific outcomes first frozen in the scientific MVP.
