@@ -46,6 +46,19 @@
   <meta name="twitter:title" content="{{ page_title | escape }} · {{ site.title }}">
   <meta name="twitter:description" content="{{ page_description | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": {{ site.title | jsonify }},
+    "description": {{ site.description | jsonify }},
+    "codeRepository": "https://github.com/{{ site.repository }}",
+    "programmingLanguage": "Python",
+    "license": "https://opensource.org/license/mit",
+    "version": {{ site.release_version | jsonify }},
+    "url": {{ '/' | absolute_url | jsonify }}
+  }
+  </script>
   <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ '/sitemap.xml' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/enhancements.css' | relative_url }}">
@@ -405,8 +418,9 @@
         <a href="{{ '/docs/guides/researcher-audit-checklist/' | relative_url }}">Researcher checklist</a>
         <a href="{{ '/docs/workspace/' | relative_url }}">Researcher workspace</a>
         <a href="{{ '/docs/reference/site-provenance/' | relative_url }}">Docs provenance</a>
-        <a href="https://doi.org/10.5281/zenodo.22757340">DOI 10.5281/zenodo.22757340</a>
-        <a href="https://pypi.org/project/gazeaudit/0.1.0/">PyPI</a>
+        <a href="{{ '/docs/EXTERNAL_PUBLICATION_0.2.0.html' | relative_url }}">v0.2.0 publication record</a>
+        <a href="https://pypi.org/project/gazeaudit/0.2.0/">PyPI 0.2.0</a>
+        <a href="https://doi.org/10.5281/zenodo.22757340">v0.1.0 Zenodo archive</a>
         <a href="https://github.com/stefanosbalaskas/GazeAudit">GitHub</a>
         <span>MIT License</span>
       </div>
@@ -419,7 +433,7 @@
   <script src="{{ '/assets/js/search-tools.js' | relative_url }}" defer></script>
   {% if page.page_type == 'api-pathways' %}<script src="{{ '/assets/js/api-symbol-reference.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'install' %}<script src="{{ '/assets/js/install-builder.js' | relative_url }}" defer></script>{% endif %}
-  <script src="{{ '/assets/js/gallery.js' | relative_url }}" defer></script>
+  {% if page.page_type == 'plot-gallery' %}<script src="{{ '/assets/js/gallery.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'landing' %}<script src="{{ '/assets/js/landing.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'methods' %}<script src="{{ '/assets/js/methods.js' | relative_url }}" defer></script>{% endif %}
   {% if page.page_type == 'planner' %}<script src="{{ '/assets/js/planner.js' | relative_url }}" defer></script>{% endif %}
