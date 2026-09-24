@@ -124,4 +124,5 @@ def test_publication_docs_bind_index_and_interpretation_boundary() -> None:
     assert "protocol identity" in citation
     assert "execution identity" in citation
     assert "artifact identity" in citation
-    assert "does **not** publish to PyPI" in citation
+    assert "GitHub Release and PyPI stages are verified" in citation
+    assert "Zenodo remained outside that release tranche" in citation
