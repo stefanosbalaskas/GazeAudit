@@ -61,3 +61,17 @@ def test_sitemap_and_robots_are_bound() -> None:
     assert "<urlset" in sitemap
     assert "absolute_url" in sitemap
     assert "Sitemap: {{ '/sitemap.xml' | absolute_url }}" in robots
+
+
+def test_sensitivity_learning_path_and_publication_page_are_governed() -> None:
+    verifier = (ROOT / "tools" / "check_site_governance.py").read_text(encoding="utf-8")
+    for route in (
+        "/docs/guides/sensitivity-analysis-design/",
+        "/docs/examples/sensitivity-protocol/",
+        "/docs/workflows/sensitivity-audit/",
+        "/docs/EXTERNAL_PUBLICATION_0.2.0.html",
+    ):
+        assert route in verifier
+    publication = (ROOT / "docs" / "EXTERNAL_PUBLICATION_0.2.0.md").read_text(encoding="utf-8")
+    assert "not_published_in_this_tranche" in publication
+    assert "published and verified" in publication
