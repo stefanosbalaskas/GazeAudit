@@ -181,6 +181,8 @@ def check_site_contract() -> None:
         'property="og:description"',
         'property="og:url"',
         'name="twitter:card"',
+        'type="application/ld+json"',
+        '"@type": "SoftwareSourceCode"',
         "site.docs_channel",
         "site.release_version",
         "site.github.build_revision",
@@ -190,6 +192,9 @@ def check_site_contract() -> None:
         "data-primary-nav",
         "data-mobile-primary-nav",
         "/docs/reference/site-provenance/",
+        "/docs/EXTERNAL_PUBLICATION_0.2.0.html",
+        "pypi.org/project/gazeaudit/0.2.0/",
+        "page.page_type == 'plot-gallery'",
     )
     missing = [token for token in required_layout if token not in layout]
     if missing:
