@@ -395,6 +395,12 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 
 **Use this when:** sampling rate is a plausible source of inferential sensitivity.
 
+## [Sensitivity protocol worked example](sensitivity-protocol/)
+
+Declare one synthetic endpoint, a controlled sampling-rate grid, a seeded missingness grid, and complete plotting/reporting rules before inspecting the curves.
+
+**Use this when:** you want a reusable template for the **declare → execute → preserve → interpret** sequence across ordered perturbation analyses rather than only a sampling-specific example.
+
 ## Suggested learning path
 
 1. Start with the [first real audit](first-real-audit/) when you want to adapt GazeAudit to your own canonical CSV.
@@ -420,7 +426,8 @@ Create a canonical `GazeStudy`, downsample the same participant-by-trial stream 
 21. Build the [publication/archive handoff](publication-archive-handoff/) to practise packaging the complete record for review and preservation.
 22. Run the [AOI boundary example](aoi-boundary/) if spatial measurement uncertainty is part of the question.
 23. Use [sampling sensitivity](sampling-sensitivity/) when temporal resolution is part of the scientific question.
-24. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
+24. Run the [sensitivity protocol example](sensitivity-protocol/) when you need to coordinate sampling and missingness perturbations under one fixed endpoint and reproducibility record.
+25. Move to the [first-study workflow](../workflows/first-study-audit/) when assembling the full research process.
 
 ## Visual convention
 
