@@ -3,9 +3,9 @@ description: Measurement uncertainty and inferential robustness for eye-tracking
 url: https://stefanosbalaskas.github.io
 baseurl: /GazeAudit
 repository: stefanosbalaskas/GazeAudit
-release_version: "0.1.0"
+release_version: "0.2.0"
 docs_channel: development
-stable_release_url: https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.1.0
+stable_release_url: https://github.com/stefanosbalaskas/GazeAudit/releases/tag/v0.2.0
 theme: jekyll-theme-primer
 markdown: kramdown
 kramdown:
