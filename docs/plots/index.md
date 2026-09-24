@@ -26,6 +26,24 @@ Install plotting support with:
 python -m pip install "gazeaudit[plot]"
 ```
 
+## Choose a plot by research question
+
+| Research question | Plot |
+|---|---|
+| Where are structural data problems concentrated? | [Structural QC issue profile](#plot-qc-issue-profile) |
+| Which trial or participant units need readiness review? | [Trial readiness](#plot-trial-readiness) · [Participant readiness](#plot-participant-readiness) |
+| What would a declared readiness policy retain? | [Cohort impact](#plot-cohort-impact) · [Policy trade-offs](#plot-policy-tradeoffs) · [Threshold sensitivity](#plot-threshold-sweep) |
+| How does the endpoint vary across specifications? | [Specification curve](#plot-specification-curve) |
+| Which declared factors align with the largest endpoint shifts? | [Factor sensitivity](#plot-factor-sensitivity) |
+| How does the endpoint respond to added missingness or lower-rate representation? | [Missingness sensitivity](#plot-missingness-sensitivity) · [Sampling sensitivity](#plot-sampling-sensitivity) |
+| How does gaze relate spatially to a declared AOI? | [Gaze trajectory and AOI](#plot-gaze-trajectory-aoi) |
+| How does membership change around an AOI boundary? | [AOI probability profile](#plot-aoi-probability-profile) |
+| Where does recovery hold over two perturbation dimensions? | [Recovery matrix](#plot-recovery-matrix) |
+
+<div class="callout info">
+<strong>Spatial-error sensitivity.</strong> <code>spatial_sensitivity_curve()</code> produces an ordered sensitivity table across declared error-model scales. Use <code>plot_sensitivity_curve()</code> on the endpoint or risk quantity you intend to report, and preserve AOI identity explicitly when the table contains multiple AOIs. See the <a href="{{ '/docs/guides/sensitivity-analysis-design/' | relative_url }}">sensitivity-analysis design guide</a>.
+</div>
+
 <div class="plot-gallery-toolbar" data-plot-gallery-toolbar>
   <label class="sr-only" for="plot-gallery-search">Filter plot gallery</label>
   <input id="plot-gallery-search" type="search" placeholder="Search title, question, method, or plotting function…" data-gallery-search>
